@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Shared Items | Giving Tree</title>
+    <link rel="stylesheet" href="/assets/style/base.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body { background: #f1f5f9; text-align: left; }
+        
+        .my-header {
+            background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.95)),
+                        url('https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?auto=format&fit=crop&w=1600&q=80');
+            background-size: cover; background-position: center;
+            padding: 80px 0 120px; color: white; text-align: center;
+        }
+
+        .items-grid {
+            max-width: 1200px; margin: -60px auto 100px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px; padding: 0 20px;
+        }
+
+        .item-card {
+            background: white; border-radius: 24px; overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;
+            transition: 0.3s;
+        }
+
+        .item-card:hover { transform: translateY(-10px); border-color: #1abc9c; }
+
+        .item-img { height: 200px; width: 100%; object-fit: cover; }
+
+        .card-body { padding: 25px; }
+        .card-body h3 { margin: 0 0 10px 0; font-size: 18px; color: #1e293b; }
+
+        .btn-delete {
+            width: 100%; padding: 12px; background: #fff1f2; color: #e11d48;
+            border: 1px solid #fecdd3; border-radius: 12px; font-weight: 700;
+            cursor: pointer; transition: 0.2s; margin-top: 15px;
+        }
+
+        .btn-delete:hover { background: #e11d48; color: white; }
+
+        .empty-state {
+            grid-column: 1/-1; text-align: center; background: white;
+            padding: 60px; border-radius: 30px; border: 2px dashed #cbd5e0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="logo">🌳 Giving Tree</div>
+        <nav class="nav-links">
+            <a href="/">Home</a>
+            <a href="/items">Browse</a>
+            <a href="/post-item">Give Item</a>
+            <a href="/logout" class="logout-btn">Logout</a>
+        </nav>
+    </div>
+
+    <header class="my-header">
+        <div class="container">
+            <h1 style="color:white; font-size: 36px; font-weight: 800;">My Shared Items</h1>
+            <p style="opacity:0.7;">Manage the treasures you've contributed to the community.</p>
+        </div>
+    </header>
+
+    <div class="items-grid" id="myItemsList">
+        <!-- Injected here -->
+    </div>
+
+    <script>
+        fetch('/api/my-items/data')
+            .then(res => res.json())
+            .then(data => {
+                const grid = document.getElementById('myItemsList');
+                if (data.items.length === 0) {
+                    grid.innerHTML = `<div class="empty-state">
+                        <i class="fas fa-box-open" style="font-size:48px; color:#cbd5e0;"></i>
+                        <h3 style="margin-top:20px;">You haven't shared anything yet.</h3>
+                        <a href="/post-item" class="btn primary" style="display:inline-block; margin-top:20px;">Share your first item</a>
+                    </div>`;
+                    return;
+                }
+
+                let html = "";
+                data.items.forEach(i => {
+                    html += `
+                    <div class="item-card">
+                        <img src="/uploads/${i.image}" class="item-img">
+                        <div class="card-body">
+                            <h3>${i.title}</h3>
+                            <div style="font-size:12px; color:#94a3b8;"><i class="fas fa-location-dot"></i> ${i.location}</div>
+                            <form action="/delete-item" method="POST" onsubmit="return confirm('Remove this forever?')">
+                                <input type="hidden" name="id" value="${i.id}">
+                                <button type="submit" class="btn-delete">Remove Item</button>
+                            </form>
+                        </div>
+                    </div>`;
+                });
+                grid.innerHTML = html;
+            });
+    </script>
+</body>
+</html>

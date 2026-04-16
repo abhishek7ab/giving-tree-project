@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Activity Hub | Giving Tree</title>
+    <link rel="stylesheet" href="/assets/style/base.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+   <style>
+    /* --- 1. THE "PREMIUM MESH" BACKGROUND --- */
+    body { 
+        background-color: #f1f5f9; 
+        /* Subtle texture and mesh gradient to make the background look "expensive" */
+        background-image: 
+            radial-gradient(at 0% 0%, rgba(26, 188, 156, 0.08) 0px, transparent 50%),
+            radial-gradient(at 100% 100%, rgba(26, 188, 156, 0.08) 0px, transparent 50%),
+            url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2394a3b8' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        text-align: left; 
+        margin: 0;
+    }
+
+    /* --- 2. PARALLAX IMAGE HEADER --- */
+    .hub-header {
+        /* High-quality community image with a deep Slate overlay */
+        background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.95)),
+                    url('https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed; /* This creates the cool Parallax depth */
+        padding: 120px 0 180px;
+        color: white;
+        text-align: center;
+        position: relative;
+    }
+
+    /* Soft Bottom Curve: Removes the "sharp line" look */
+    .hub-header::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100px;
+        background: linear-gradient(to top, #f1f5f9, transparent);
+    }
+
+    /* --- 3. FLOATING LAYOUT --- */
+    .hub-container {
+        max-width: 1200px;
+        margin: -100px auto 100px; /* Pulls content deeper into the header for a 3D effect */
+        display: grid;
+        grid-template-columns: 1fr 380px;
+        gap: 40px;
+        padding: 0 20px;
+        position: relative;
+        z-index: 5;
+    }
+
+    /* --- 4. GLASSMORPHISM CARDS --- */
+    .hub-section {
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(12px);
+        border-radius: 32px;
+        padding: 40px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        margin-bottom: 30px;
+    }
+
+    .sidebar-box {
+        background: white;
+        border-radius: 32px;
+        padding: 35px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.05);
+        border-left: 6px solid #1abc9c; /* Signature Brand Color */
+    }
+
+    /* --- 5. ACTIVITY ITEMS POLISH --- */
+    .activity-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 22px;
+        background: #fff;
+        border: 1px solid #f1f5f9;
+        border-radius: 22px;
+        margin-bottom: 18px;
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    .activity-item:hover {
+        transform: translateY(-5px) scale(1.01);
+        border-color: #1abc9c;
+        box-shadow: 0 15px 30px rgba(26, 188, 156, 0.08);
+    }
+
+    .item-icon {
+        width: 60px; height: 60px; border-radius: 18px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 22px;
+        box-shadow: inset 0 0 10px rgba(0,0,0,0.02);
+    }
+
+    /* --- 6. MODERN FORMS & PILLS --- */
+    .section-header h2 { font-size: 22px; font-weight: 800; color: #0f172a; letter-spacing: -0.5px; }
+
+    .update-form {
+        display: flex; gap: 10px; background: #f8fafc; padding: 8px; border-radius: 14px; border: 1px solid #e2e8f0;
+    }
+
+    .status-badge {
+        padding: 8px 16px; border-radius: 100px; font-size: 11px; font-weight: 800; 
+        text-transform: uppercase; letter-spacing: 0.8px;
+    }
+
+    .bg-pending { background: #fffbeb; color: #b45309; }
+    .bg-accepted { background: #f0fdf4; color: #15803d; }
+    .bg-rejected { background: #fef2f2; color: #b91c1c; }
+
+    .update-form button {
+        background: #1abc9c; color: white; border: none; padding: 8px 18px; border-radius: 10px;
+        font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.3s;
+        box-shadow: 0 4px 12px rgba(26, 188, 156, 0.2);
+    }
+
+    .update-form button:hover { background: #16a085; transform: translateY(-2px); }
+
+    /* --- 7. SIDEBAR STEP REFINEMENT --- */
+    .step-num { color: #f1f5f9; font-size: 32px; font-weight: 900; -webkit-text-stroke: 1px #cbd5e1; }
+    .guide-step { transition: 0.3s; padding: 10px; border-radius: 15px; }
+    .guide-step:hover { background: #f8fafc; }
+</style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="logo">🌳 Giving Tree</div>
+        <nav class="nav-links">
+            <a href="/">Home</a>
+            <a href="/items">Browse</a>
+            <a href="/post-item">Give Item</a>
+            <div class="user-section">
+                <a href="/logout" class="logout-btn">Logout</a>
+            </div>
+        </nav>
+    </div>
+
+<header class="hub-header">
+    <div class="container">
+        <span style="background: rgba(26, 188, 156, 0.2); color: #1abc9c; padding: 6px 15px; border-radius: 50px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
+            Community Dashboard
+        </span>
+        <h1 style="color:white; font-size: 48px; font-weight: 800; margin-top: 15px; letter-spacing: -1.5px;">Activity Hub</h1>
+        <p style="opacity: 0.8; font-size: 18px; max-width: 600px; margin: 10px auto;">Real-time management for your local community contributions.</p>
+    </div>
+</header>
+
+    <div class="hub-container">
+        <!-- MAIN LISTS -->
+        <main>
+            <section class="hub-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-inbox"></i> Incoming Requests</h2>
+                    <span class="count-pill" id="receiveCount">0 New</span>
+                </div>
+                <div id="receivedList">
+                    <!-- Data injected here -->
+                </div>
+            </section>
+
+            <section class="hub-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-paper-plane"></i> Sent by You</h2>
+                    <span class="count-pill" id="sendCount">0 Total</span>
+                </div>
+                <div id="sentList">
+                    <!-- Data injected here -->
+                </div>
+            </section>
+        </main>
+
+        <!-- SIDEBAR -->
+        <aside>
+            <div class="sidebar-box">
+                <h3 style="font-size:18px; margin:0;"><i class="fas fa-shield-check"></i> Success Guide</h3>
+                
+                <div class="guide-step">
+                    <div class="step-num">01</div>
+                    <div class="step-info">
+                        <h5>Fast Response</h5>
+                        <p>Items shared within 24 hours have a 90% success rate.</p>
+                    </div>
+                </div>
+
+                <div class="guide-step">
+                    <div class="step-num">02</div>
+                    <div class="step-info">
+                        <h5>Safety First</h5>
+                        <p>Always meet in public, well-lit neighborhood landmarks.</p>
+                    </div>
+                </div>
+
+                <div class="guide-step">
+                    <div class="step-num">03</div>
+                    <div class="step-info">
+                        <h5>Clear Comms</h5>
+                        <p>Email your neighbor once a request is accepted.</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        fetch('/api/activity/data')
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('receiveCount').innerText = `${data.received.length} Incoming`;
+            document.getElementById('sendCount').innerText = `${data.sent.length} Sent`;
+
+            // INCOMING REQUESTS
+            let recHTML = "";
+            if(data.received.length === 0) recHTML = '<p style="text-align:center; color:#94a3b8; padding:20px;">No requests received yet.</p>';
+            data.received.forEach(r => {
+                const status = r.status.toLowerCase();
+                recHTML += `
+                <div class="activity-item">
+                    <div class="item-main">
+                        <div class="item-icon bg-${status}"><i class="fas fa-box"></i></div>
+                        <div class="item-text">
+                            <h4>${r.title}</h4>
+                            <p><strong>From:</strong> ${r.requester_email}</p>
+                        </div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:15px;">
+                        <span class="status-badge bg-${status}">${r.status}</span>
+                        ${r.status === 'Pending' ? `
+                            <form action="/update-status" method="POST" class="update-form">
+                                <input type="hidden" name="id" value="${r.id}">
+                                <select name="status">
+                                    <option value="Accepted">Accept</option>
+                                    <option value="Rejected">Reject</option>
+                                </select>
+                                <button type="submit">Update</button>
+                            </form>
+                        ` : ''}
+                    </div>
+                </div>`;
+            });
+            document.getElementById('receivedList').innerHTML = recHTML;
+
+            // SENT REQUESTS
+// SENT REQUESTS (Updated with Reveal logic)
+let sentHTML = "";
+if(data.sent.length === 0) sentHTML = '<p style="text-align:center; color:#94a3b8; padding:20px;">You haven\'t requested any items.</p>';
+
+data.sent.forEach(s => {
+    const status = s.status.toLowerCase();
+    
+    // Logic: Only show owner email if they accepted your request
+    const contactInfo = s.status === 'Accepted' 
+        ? `<div style="margin-top:10px; background:#dcfce7; color:#16a34a; padding:8px 12px; border-radius:10px; font-size:12px; font-weight:700;">
+            <i class="fas fa-envelope"></i> Contact Owner: ${s.owner_email}
+           </div>` 
+        : '';
+
+    sentHTML += `
+    <div class="activity-item">
+        <div class="item-main">
+            <div class="item-icon" style="background:#e0f2fe; color:#0284c7;"><i class="fas fa-paper-plane"></i></div>
+            <div class="item-text">
+                <h4>${s.title}</h4>
+                <p><i class="fas fa-map-marker-alt"></i> ${s.location}</p>
+                ${contactInfo}
+            </div>
+        </div>
+        <span class="status-badge bg-${status}">${s.status}</span>
+    </div>`;
+    });
+    document.getElementById('sentList').innerHTML = sentHTML;
+        });
+    </script>
+</body>
+</html>

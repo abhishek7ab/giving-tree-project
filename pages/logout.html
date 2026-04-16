@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Logged Out | Giving Tree</title>
+    <link rel="stylesheet" href="/assets/style/base.css">
+    <link rel="stylesheet" href="/assets/style/component.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body { 
+            background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.8)), 
+                        url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logout-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .logout-card {
+            background: white;
+            width: 100%;
+            max-width: 450px;
+            padding: 60px 40px;
+            border-radius: 28px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .logout-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(26, 188, 156, 0.1);
+            color: #1abc9c;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 25px;
+        }
+
+        .logout-card h2 {
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .logout-card p {
+            color: #7f8c8d;
+            margin-bottom: 35px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .btn-relogin {
+            width: 100%;
+            padding: 16px;
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR (Corrected and Aligned) -->
+<div class="navbar">
+    <div class="logo"><i class="fas fa-leaf"></i> Giving Tree</div>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <div class="user-section">
+            <a href="/login" style="border:none; color:white;">Login</a>
+            <a href="/register" class="register-btn">Join Now</a>
+        </div>
+    </div>
+</div>
+
+<div class="logout-container">
+    <div class="logout-card">
+        <div class="logout-icon">
+            <i class="fas fa-sign-out-alt"></i>
+        </div>
+        <h2>See you soon!</h2>
+        <p>You have been safely logged out. Thank you for being a part of our sharing community.</p>
+
+        <a href="/login" class="btn primary btn-relogin">
+            <i class="fas fa-user" style="margin-right: 10px;"></i> Login Again
+        </a>
+        
+        <div style="margin-top: 25px;">
+            <a href="/" style="color: #1abc9c; text-decoration: none; font-weight: 600; font-size: 14px;">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

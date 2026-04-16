@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Giving Tree | Complete Community Hub</title>
+    <link rel="stylesheet" href="/assets/style/base.css">
+    <link rel="stylesheet" href="/assets/style/component.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        /* Extra polish for the dynamic cards */
+        .preview-card {
+            background: white;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid #f1f5f9;
+            text-align: left;
+            width: 320px;
+        }
+        .preview-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.1);
+            border-color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="logo"><i class="fas fa-leaf"></i> Giving Tree</div>
+    <nav class="nav-links" id="navLinks">
+        <a href="/">Home</a>
+        <a href="/items">Browse Items</a>
+    </nav>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="container">
+        <div id="welcomeGreeting">
+            <span class="hero-tag" style="background: rgba(26,188,156,0.2); color:#1abc9c; padding:5px 15px; border-radius:50px; font-size:12px; font-weight:700;">Join 1,000+ neighbors sharing today</span>
+            <h1 class="gradient-text">Small Acts. <br>Big Connections.</h1>
+            <p>Your unused items could be someone's answer. Join a local community built on trust and sustainability.</p>
+        </div>
+        <div class="action-grid" id="mainActions"></div>
+    </div>
+</section>
+
+<!-- IMPACT STATS (GLOBAL) -->
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">Community Impact</h2>
+        <div class="impact-grid" style="display: flex; justify-content: space-around; gap: 20px;">
+            <div class="impact-card">
+                <div class="stat-circle">120+</div>
+                <p style="font-weight:700; color:#7f8c8d; text-transform:uppercase;">Items Shared</p>
+            </div>
+            <div class="impact-card">
+                <div class="stat-circle">80+</div>
+                <p style="font-weight:700; color:#7f8c8d; text-transform:uppercase;">Members</p>
+            </div>
+            <div class="impact-card">
+                <div class="stat-circle">95%</div>
+                <p style="font-weight:700; color:#7f8c8d; text-transform:uppercase;">Waste Reduction</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- NEW TO THE TREE (DYNAMIC PREVIEW) -->
+<section class="section light-bg">
+    <div class="container">
+        <h2 class="section-title">New to the Tree</h2>
+        
+        <!-- This grid is populated by JS with real items from the DB -->
+        <div class="preview-grid" id="recentItemsGrid">
+            <div style="text-align:center; width:100%; color:#94a3b8;">Loading latest treasures...</div>
+        </div>
+
+        <div style="margin-top: 50px;">
+            <a href="/items" class="btn primary">Explore Full Catalog</a>
+        </div>
+    </div>
+</section>
+
+<!-- STORY SECTION -->
+<section class="section">
+    <div class="container split-layout">
+        <div class="content-side">
+            <h2 class="section-title" style="text-align: left;">More than just "Free Stuff"</h2>
+            <p style="font-size: 18px; color: #7f8c8d;">We make it easy to declutter with a purpose. Every item shared is a step toward a tighter, zero-waste neighborhood.</p>
+            <ul class="check-list">
+                <li><i class="fas fa-check-circle"></i> Zero-waste lifestyle</li>
+                <li><i class="fas fa-check-circle"></i> Local verified members</li>
+                <li><i class="fas fa-check-circle"></i> Direct neighborhood impact</li>
+            </ul>
+        </div>
+        <div class="image-side"><img src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?auto=format&fit=crop&w=800" class="img-main"></div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="container">
+        <h2 style="color:white;">Giving Tree</h2>
+        <p>Connecting neighborhoods through generosity.</p>
+        <p style="margin-top:40px; font-size:12px; opacity:0.5;">© 2026 Giving Tree | Developed with Care</p>
+    </div>
+</footer>
+
+<script>
+// --- 1. THE TOAST BRAIN ---
+function showToast(message, type = 'success') {
+    let container = document.getElementById('toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'toast-container';
+        document.body.appendChild(container);
+    }
+    const toast = document.createElement('div');
+    toast.className = `toast ${type === 'error' ? 'error' : ''}`;
+    toast.innerHTML = `<i class="fas ${type === 'error' ? 'fa-exclamation-circle' : 'fa-check-circle'}"></i> 
+                       <span style="font-weight:600;">${message}</span>`;
+    container.appendChild(toast);
+    setTimeout(() => toast.classList.add('show'), 100);
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 500);
+    }, 4000);
+}
+
+// --- 2. AUTH & IMPACT STATS LOGIC ---
+fetch('/api/user')
+.then(res => res.json())
+.then(data => {
+    const nav = document.getElementById('navLinks');
+    const welcome = document.getElementById('welcomeGreeting');
+    const actions = document.getElementById('mainActions');
+    const baseNav = `<a href="/">Home</a><a href="/items">Browse Items</a>`;
+
+    if (data.loggedIn) {
+        const name = data.name || data.email.split('@')[0];
+        const isAdmin = data.role === 'admin';
+
+        if (window.location.search.includes('t=')) {
+            showToast(`Welcome back, ${name}!`, "success");
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+
+        // Updated Navbar
+        nav.innerHTML = `
+            ${baseNav}
+            <a href="/requests">Requests</a>
+            <a href="/my-items">My Items</a>
+            ${isAdmin ? `<a href="/admin/dashboard" onclick="window.location.href='/admin/dashboard'; return true;" style="color:#ff4757; font-weight:800; cursor:pointer;">Admin Panel</a>` : ''}
+            <div class="user-section">
+                <span class="user-name"><i class="fas fa-user-circle"></i> ${name}</span>
+                <a href="/logout" class="logout-btn">Logout</a>
+            </div>`;
+
+        // Updated Welcome Header with User Stats
+        welcome.innerHTML = `
+            <h1 class="gradient-text">Welcome back, ${name}!</h1>
+            <div style="display: flex; gap: 20px; justify-content: center; margin: 25px 0;">
+                <div style="background: white; padding: 15px 30px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); border-left: 5px solid #1abc9c; text-align: left;">
+                    <span style="font-size: 10px; color: #718096; font-weight: 800; text-transform: uppercase;">Items Shared</span>
+                    <h2 style="margin: 0; color: #2d3748;">${data.stats.total_shared}</h2>
+                </div>
+                <div style="background: white; padding: 15px 30px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); border-left: 5px solid #e74c3c; text-align: left;">
+                    <span style="font-size: 10px; color: #718096; font-weight: 800; text-transform: uppercase;">People Helped</span>
+                    <h2 style="margin: 0; color: #2d3748;">${data.stats.people_helped}</h2>
+                </div>
+            </div>
+        `;
+
+        // Dynamic Action Cards
+        if (isAdmin) {
+            actions.innerHTML = `
+                <div class="action-card admin-card-style"><i class="fas fa-tools"></i><h3>System Admin</h3><p>Manage all items and moderate users.</p><a href="/admin/dashboard" class="btn primary" style="background:#e74c3c">Enter Panel</a></div>
+                <div class="action-card"><i class="fas fa-plus"></i><h3>Post Item</h3><p>Create a new giveaway listing.</p><a href="/post-item" class="btn secondary">Post Now</a></div>`;
+        } else {
+            actions.innerHTML = `
+                <div class="action-card"><i class="fas fa-search"></i><h3>Borrower</h3><p>Find useful items shared by neighbors.</p><a href="/items" class="btn primary">Browse Catalog</a></div>
+                <div class="action-card"><i class="fas fa-hand-holding-heart"></i><h3>Donor</h3><p>Give your unused items a second life.</p><a href="/post-item" class="btn secondary">Post Item</a></div>`;
+        }
+    } else {
+        nav.innerHTML = `${baseNav}<div class="user-section"><a href="/login" style="border:none; color:white;">Login</a><a href="/register" class="register-btn">Join Now</a></div>`;
+        actions.innerHTML = `
+            <div class="action-card"><i class="fas fa-search"></i><h3>Borrower</h3><p>Find items near you.</p><a href="/login" class="btn primary">Start Browsing</a></div>
+            <div class="action-card"><i class="fas fa-hand-holding-heart"></i><h3>Donor</h3><p>Help your community.</p><a href="/login" class="btn secondary">Give Item</a></div>`;
+    }
+});
+
+// --- 3. FETCH RECENT ITEMS FOR PREVIEW GRID ---
+fetch('/api/items/recent')
+.then(res => res.json())
+.then(items => {
+    const grid = document.getElementById('recentItemsGrid');
+    if (items.length === 0) {
+        grid.innerHTML = `<p style="color:#94a3b8;">No items shared recently. Be the first!</p>`;
+        return;
+    }
+    let html = "";
+    items.forEach(item => {
+        html += `
+        <div class="preview-card">
+            <div style="background-image: url('/uploads/${item.image}'); height:200px; background-size:cover; background-position:center; position:relative;">
+                <div class="live-badge" style="position:absolute; top:15px; left:15px; background:#1abc9c; color:white; padding:4px 10px; border-radius:6px; font-size:10px; font-weight:800;">JUST ADDED</div>
+            </div>
+            <div style="padding:20px;">
+                <h4 style="margin:0; font-size:18px; color:#1e293b;">${item.title}</h4>
+                <span style="color:#94a3b8; font-size:13px;"><i class="fas fa-map-marker-alt"></i> ${item.location}</span>
+            </div>
+        </div>`;
+    });
+    grid.innerHTML = html;
+});
+</script>
+</body>
+</html>

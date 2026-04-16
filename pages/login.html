@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login | Giving Tree</title>
+    <link rel="stylesheet" href="/assets/style/base.css">
+    <link rel="stylesheet" href="/assets/style/component.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body { 
+            background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.8)), 
+                        url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .auth-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .auth-card {
+            background: white;
+            width: 100%;
+            max-width: 400px;
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .auth-card h2 {
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .auth-card p {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #34495e;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .input-icon-wrapper {
+            position: relative;
+        }
+
+        .input-icon-wrapper i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #bdc3c7;
+        }
+
+        .input-icon-wrapper input {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border: 2px solid #f0f3f2;
+            border-radius: 10px;
+            font-family: 'Poppins';
+            font-size: 14px;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+
+        .input-icon-wrapper input:focus {
+            border-color: #1abc9c;
+            outline: none;
+            background: #f9fffefc;
+        }
+
+        .auth-btn {
+            width: 100%;
+            margin-top: 10px;
+            padding: 15px;
+            font-size: 16px;
+        }
+
+        .auth-footer {
+            margin-top: 25px;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+        .auth-footer a {
+            color: #1abc9c;
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo">🌳 Giving Tree</div>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/register">Register</a>
+    </div>
+</div>
+
+<div class="auth-container">
+    <div class="auth-card">
+        <h2>Welcome Back</h2>
+        <p>Login to manage your shared items</p>
+
+        <form action="/login" method="POST">
+            <div class="form-group">
+                <label>Email Address</label>
+                <div class="input-icon-wrapper">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" name="email" placeholder="name@example.com" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <div class="input-icon-wrapper">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" name="password" placeholder="••••••••" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn primary auth-btn">Login to Account</button>
+        </form>
+
+        <div class="auth-footer">
+            Don't have an account? <a href="/register">Create one</a>
+        </div>
+    </div>
+</div>
+<!-- ✅ ADDED POP-UP LOGIC HERE -->
+<script>
+    // Logic to detect errors in the URL and show a Popup Alert
+    const urlParams = new URLSearchParams(window.location.search);
+    const error = urlParams.get('error');
+
+    if (error === 'wrongpassword') {
+        alert("❌ Incorrect Password! Please try again.");
+    } else if (error === 'usernotfound') {
+        alert("🔍 Account not found! Please check your email or Register.");
+    } else if (error === 'database') {
+        alert("⚠️ Database error. Please try again later.");
+    } else if (error === 'servererror') {
+        alert("🚨 Something went wrong. Please contact admin.");
+    }
+
+    // Professional Polish: Clean the URL after showing the alert 
+    // so the popup doesn't appear again if the user refreshes the page.
+    if (error) {
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+</script>
+
+</body>
+</html>

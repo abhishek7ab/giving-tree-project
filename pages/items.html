@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Community Catalog | Giving Tree</title>
+    <link rel="stylesheet" href="/assets/style/base.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body { background: #f8fafc; text-align: left; margin: 0; }
+        
+        /* --- PREMIUM PARALLAX HEADER --- */
+        .items-header {
+            background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.9)),
+                        url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+            background-size: cover; background-position: center; background-attachment: fixed;
+            padding: 100px 0 180px; color: white; text-align: center; position: relative;
+        }
+
+        .items-header::after {
+            content: ""; position: absolute; bottom: 0; left: 0; right: 0; height: 100px;
+            background: linear-gradient(to top, #f8fafc, transparent);
+        }
+
+        /* --- FLOATING SEARCH BAR --- */
+        .search-pill {
+            max-width: 800px; margin: -50px auto 40px; background: white;
+            padding: 10px; border-radius: 100px; box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            display: flex; position: relative; z-index: 100; border: 1px solid #edf2f7;
+        }
+
+        .search-pill input {
+            flex: 1; border: none; outline: none; padding: 0 25px;
+            font-family: 'Poppins'; font-size: 16px;
+        }
+
+        .btn-search {
+            background: #1abc9c; color: white; border: none;
+            padding: 12px 35px; border-radius: 100px; font-weight: 700;
+            cursor: pointer; transition: 0.3s;
+        }
+
+        /* --- ITEM CARDS --- */
+        .items-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 35px; max-width: 1200px; margin: 0 auto 100px; padding: 0 20px;
+        }
+
+        .pro-card {
+            background: white; border-radius: 28px; overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.02); border: 1px solid #f1f5f9;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .pro-card:hover { transform: translateY(-12px); border-color: #1abc9c; box-shadow: 0 25px 50px rgba(0,0,0,0.1); }
+
+        .img-box { height: 220px; width: 100%; overflow: hidden; }
+        .img-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .pro-card:hover .img-box img { transform: scale(1.1); }
+
+        .card-body { padding: 25px; }
+        .card-body h3 { margin: 0; font-size: 20px; color: #1e293b; }
+        .card-body p { color: #64748b; font-size: 14px; margin: 10px 0 20px; height: 40px; overflow: hidden; }
+
+        .loc-tag { font-size: 12px; color: #94a3b8; font-weight: 600; display: flex; align-items: center; gap: 5px; }
+
+        .btn-req {
+            width: 100%; padding: 14px; background: #1abc9c; color: white;
+            border: none; border-radius: 14px; font-weight: 700;
+            cursor: pointer; transition: 0.3s; margin-top: 15px; text-transform: uppercase;
+        }
+        .btn-req:hover { background: #16a085; box-shadow: 0 8px 15px rgba(26,188,156,0.3); }
+    </style>
+</head>
+<body>
+
+    <div class="navbar" style="background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px); border: none;">
+        <div class="logo">🌳 Giving Tree</div>
+        <nav class="nav-links" id="navLinks">
+            <a href="/">Home</a>
+            <a href="/requests">Requests</a>
+            <a href="/post-item">Give Item</a>
+            <a href="/logout" class="logout-btn">Logout</a>
+        </nav>
+    </div>
+
+    <header class="items-header">
+        <div class="container">
+            <h1 style="color:white; font-size: 48px; font-weight: 800;">Community Catalog</h1>
+            <p style="opacity: 0.8; font-size: 18px;">Find items shared by neighbors. Everything is free.</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- SEARCH -->
+        <div class="search-pill">
+            <input type="text" id="searchInput" placeholder="What are you looking for?">
+            <button class="btn-search" onclick="searchItems()">Search</button>
+        </div>
+
+        <!-- GRID -->
+        <div class="items-grid" id="itemsGrid">
+            <!-- Dynamic items will load here -->
+        </div>
+    </div>
+
+    <script>
+        function loadItems(query = '') {
+            fetch(`/api/items/data?search=${query}`)
+                .then(res => res.json())
+                .then(data => {
+                    let html = "";
+                    if (data.items.length === 0) {
+                        html = `<div style="grid-column: 1/-1; text-align:center; padding:100px; color:#94a3b8;">
+                                    <i class="fas fa-search" style="font-size:48px;"></i>
+                                    <h3>No items found matching your search.</h3>
+                                </div>`;
+                    } else {
+                        data.items.forEach(i => {
+                            html += `
+                            <div class="pro-card">
+                                <div class="img-box">
+                                    <img src="${i.image ? '/uploads/' + i.image : 'https://via.placeholder.com/400'}" alt="Item">
+                                </div>
+                                <div class="card-body">
+                                    <h3>${i.title}</h3>
+                                    <p>${i.description}</p>
+                                    <div class="loc-tag"><i class="fas fa-location-dot"></i> ${i.location}</div>
+                                    <form action="/request-item" method="POST">
+                                        <input type="hidden" name="item_id" value="${i.id}">
+                                        <button type="submit" class="btn-req">Request Item</button>
+                                    </form>
+                                </div>
+                            </div>`;
+                        });
+                    }
+                    document.getElementById('itemsGrid').innerHTML = html;
+                });
+        }
+
+        function searchItems() {
+            const val = document.getElementById('searchInput').value;
+            loadItems(val);
+        }
+
+        // Initial Load
+        loadItems();
+    </script>
+</body>
+</html>
