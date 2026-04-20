@@ -105,43 +105,74 @@
     const BACKEND_URL = "https://giving-tree-backend.onrender.com";
 
     function loadItems(query = '') {
-        fetch(`${BACKEND_URL}/api/items/data?search=${query}`)
-            .then(res => res.json())
-            .then(data => {
-                let html = "";
+        fetch(`${BACKEND_URL}/api/items/data?search=${query}`, {
+            credentials: "include"
+        })
+        .then(res => res.json())
+        .then(data => {
+            let html = "";
 
-                if (!data.items || data.items.length === 0) {
-                    html = "<h2 style='text-align:center;'>No items found</h2>";
-                } else {
-    data.items.forEach(i => {
-        const imageUrl = i.image ? i.image : 'https://dummyimage.com/400x300/cccccc/000000&text=No+Image';
+            if (!data.items || data.items.length === 0) {
+                html = "<h2 style='text-align:center;'>No items found</h2>";
+            } else {
+                data.items.forEach(i => {
 
-        html += `
-        <div class="pro-card">
-        <div class="img-box">
-            <img src="${imageUrl}" alt="Item">
-        </div>
-        <div class="card-body">
-            <h3>${i.title}</h3>
-            <p>${i.description}</p>
-            <p>📍 ${i.location}</p>
-            <button class="btn-req">Request Item</button>
-        </div>
-    </div>
-    `;
-});
-                }
+                    const imageUrl = i.image
+                        ? i.image
+                        : "https://dummyimage.com/400x300/cccccc/000000&text=No+Image";
 
-                document.getElementById("itemsGrid").innerHTML = html;
-            })
-            .catch(err => {
-                console.error("ERROR:", err);
-            });
+                    html += `
+                    <div class="pro-card">
+                        <div class="img-box">
+                            <img src="${imageUrl}" alt="Item">
+                        </div>
+                        <div class="card-body">
+                            <h3>${i.title}</h3>
+                            <p>${i.description}</p>
+                            <p>📍 ${i.location}</p>
+                            <button class="btn-req" onclick="requestItem(${i.id})">
+                                Request Item
+                            </button>
+                        </div>
+                    </div>
+                    `;
+                });
+            }
+
+            document.getElementById("itemsGrid").innerHTML = html;
+        })
+        .catch(err => {
+            console.error("ERROR:", err);
+        });
     }
 
     function searchItems() {
         const val = document.getElementById("searchInput").value;
         loadItems(val);
+    }
+
+    // 🔥 NEW FUNCTION (THIS WAS MISSING)
+    function requestItem(itemId) {
+        fetch(`${BACKEND_URL}/request-item`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "include",
+            body: JSON.stringify({ item_id: itemId })
+        })
+        .then(res => {
+            if (!res.ok) throw new Error("Request failed");
+            return res.text();
+        })
+        .then(data => {
+            alert("Request sent successfully ✅");
+            console.log(data);
+        })
+        .catch(err => {
+            console.error(err);
+            alert("You must be logged in or request failed ❌");
+        });
     }
 
     loadItems();
