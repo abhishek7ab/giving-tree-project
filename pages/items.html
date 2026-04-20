@@ -113,21 +113,23 @@
                 if (!data.items || data.items.length === 0) {
                     html = "<h2 style='text-align:center;'>No items found</h2>";
                 } else {
-                    data.items.forEach(i => {
-                        html += `
-                        <div class="pro-card">
-                            <div class="img-box">
-                                <img src="${i.image || 'https://via.placeholder.com/400'}" alt="Item">
-                            </div>
-                            <div class="card-body">
-                                <h3>${i.title}</h3>
-                                <p>${i.description}</p>
-                                <p>📍 ${i.location}</p>
-                                <button class="btn-req">Request Item</button>
-                            </div>
-                        </div>
-                        `;
-                    });
+    data.items.forEach(i => {
+        const imageUrl = i.image ? i.image : 'https://dummyimage.com/400x300/cccccc/000000&text=No+Image';
+
+        html += `
+        <div class="pro-card">
+        <div class="img-box">
+            <img src="${imageUrl}" alt="Item">
+        </div>
+        <div class="card-body">
+            <h3>${i.title}</h3>
+            <p>${i.description}</p>
+            <p>📍 ${i.location}</p>
+            <button class="btn-req">Request Item</button>
+        </div>
+    </div>
+    `;
+});
                 }
 
                 document.getElementById("itemsGrid").innerHTML = html;
