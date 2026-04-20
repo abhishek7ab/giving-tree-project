@@ -7,9 +7,8 @@ const { isLoggedIn, isAdmin } = require('../middleware/authMiddleware');
 // ✅ DEBUG CHECK
 console.log("ITEM CONTROLLER CHECK:", itemController);
 
-// ✅ Multer (memory storage for Vercel)
+// ✅ Multer (Cloudinary upload)
 const multer = require('multer');
-
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
@@ -23,7 +22,6 @@ const safe = (fn) => {
         return fn(req, res, next);
     };
 };
-
 // ================= ROUTES =================
 
 // Pages
@@ -33,12 +31,13 @@ router.get('/post-item', isLoggedIn, safe(itemController.showPostItem));
 router.get('/admin/dashboard', isLoggedIn, isAdmin, safe(itemController.showAdminPanel));
 
 // API Data
-router.get('/api/items/data', isLoggedIn, safe(itemController.getItemsData));
+router.get('/api/items/data', safe(itemController.getItemsData));
 router.get('/api/my-items/data', isLoggedIn, safe(itemController.getMyItemsData));
 router.get('/api/admin/data', isLoggedIn, isAdmin, safe(itemController.getAdminData));
 router.get('/api/items/recent', safe(itemController.getRecentItems));
 
 // Forms / Actions
+// Ensure 'image' matches the name attribute in your HTML file input
 router.post('/post-item', isLoggedIn, upload.single('image'), itemController.postItem);
 router.post('/admin/delete-item', isLoggedIn, isAdmin, safe(itemController.deleteItem));
 
