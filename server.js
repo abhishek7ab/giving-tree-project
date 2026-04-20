@@ -3,6 +3,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 const path = require('path');
+const cors = require('cors');
 
 const authRoutes = require('./routes/authRoutes');
 const itemRoutes = require('./routes/itemRoutes');
@@ -14,6 +15,10 @@ const JWT_SECRET = process.env.JWT_SECRET || 'giving-tree-jwt-secret-2024';
 
 const app = express();
 app.set('trust proxy', 1);
+app.use(cors({
+  origin: '*',
+  credentials: true
+}));
 
 // 🔥 IMPORTANT: Body Parsers MUST come before routes
 app.use(cookieParser());
