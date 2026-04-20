@@ -67,15 +67,23 @@ exports.showPostItem = (req, res) => {
 // ================= 5. POST ITEM =================
 exports.postItem = async (req, res) => {
     try {
+        // 🔍 DEBUG LOGS (VERY IMPORTANT)
         console.log("BODY:", req.body);
         console.log("FILE:", req.file);
 
         const { title, description, location } = req.body;
 
-        // ✅ Cloudinary image URL
+        // Check if file is coming
+        if (!req.file) {
+            console.log("❌ No file received");
+        }
+
+        // Cloudinary URL
         const image = req.file ? req.file.path : null;
+        console.log("IMAGE URL:", image);
 
         const user_id = req.session?.user?.id;
+        console.log("USER ID:", user_id);
 
         if (!user_id) {
             return res.redirect('/login');
@@ -86,7 +94,10 @@ exports.postItem = async (req, res) => {
         res.redirect('/items');
 
     } catch (err) {
-        console.error("POST ITEM ERROR:", err);
+        // ❗ IMPORTANT: Proper error logging
+        console.error("POST ITEM ERROR:", err.message);
+        console.error("FULL ERROR:", err);
+
         res.status(500).send("Internal Server Error");
     }
 };
