@@ -70,14 +70,18 @@ exports.postItem = async (req, res) => {
     console.log("🔥 FILE:", req.file);
 
     try {
-        const body = req.body || {};
-        const { title, description, location } = body;
+        const { title, description, location } = req.body;
 
         if (!req.file) {
             return res.status(400).send("❌ File NOT received by server");
         }
 
-        const image = req.file.path; // Cloudinary gives URL here
+        // 🔥 Upload to Cloudinary
+        const result = await uploadToCloudinary(req.file.buffer);
+        const image = result.secure_url;
+
+        console.log("✅ IMAGE URL:", image);
+
         const user_id = req.session?.user?.id;
 
         if (!user_id) {
