@@ -4,22 +4,13 @@ const router = express.Router();
 const itemController = require('../controllers/itemController');
 const { isLoggedIn, isAdmin } = require('../middleware/authMiddleware');
 
-// ✅ DEBUG CHECK (VERY IMPORTANT)
+// ✅ DEBUG CHECK
 console.log("ITEM CONTROLLER CHECK:", itemController);
 
-// ✅ Cloudinary setup
+// ✅ Multer (memory storage for Vercel)
 const multer = require('multer');
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
-const cloudinary = require('../config/cloudinary');
 
-const storage = new CloudinaryStorage({
-    cloudinary: cloudinary,
-    params: {
-        folder: 'giving-tree',
-        allowed_formats: ['jpg', 'png', 'jpeg']
-    }
-});
-
+const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 // ================= SAFE ROUTE HELPER =================
@@ -48,7 +39,6 @@ router.get('/api/admin/data', isLoggedIn, isAdmin, safe(itemController.getAdminD
 router.get('/api/items/recent', safe(itemController.getRecentItems));
 
 // Forms / Actions
-// Ensure 'image' matches the name attribute in your HTML file input
 router.post('/post-item', isLoggedIn, upload.single('image'), itemController.postItem);
 router.post('/admin/delete-item', isLoggedIn, isAdmin, safe(itemController.deleteItem));
 

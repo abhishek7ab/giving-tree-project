@@ -66,38 +66,31 @@ exports.showPostItem = (req, res) => {
 
 // ================= 5. POST ITEM =================
 exports.postItem = async (req, res) => {
-    console.log("--- DEBUG: postItem triggered ---");
+    console.log("🔥 BODY:", req.body);
+    console.log("🔥 FILE:", req.file);
+
     try {
         const body = req.body || {};
         const { title, description, location } = body;
 
-        console.log("Received Body:", body);
-        console.log("Received File:", req.file);
-
-        if (!title) {
-            return res.status(400).send("<h1>Form Error</h1><p>Missing title. Check form enctype and inputs.</p>");
+        if (!req.file) {
+            return res.status(400).send("❌ File NOT received by server");
         }
 
-        const image = req.file ? req.file.path : null;
+        const image = req.file.path; // Cloudinary gives URL here
         const user_id = req.session?.user?.id;
 
         if (!user_id) {
-            return res.status(401).send("Error: Session missing. Please login again.");
-        }
-
-        if (!image) {
-            return res.status(400).send("Error: Image upload failed. Check Cloudinary config.");
+            return res.status(401).send("Session missing");
         }
 
         await itemModel.createItem(title, description, location, image, user_id);
+
         res.redirect('/items');
 
     } catch (err) {
-        console.error("DETAILED ERROR:", err);
-        res.status(500).json({
-            error: "Upload Failed",
-            message: err.message
-        });
+        console.error("❌ ERROR STACK:", err.stack);
+        res.status(500).send(err.message);
     }
 };
 
