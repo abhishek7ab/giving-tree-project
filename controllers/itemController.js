@@ -66,43 +66,35 @@ exports.showPostItem = (req, res) => {
 
 // ================= 5. POST ITEM =================
 exports.postItem = async (req, res) => {
-    console.log("🔥 FUNCTION HIT");  // 🔥 CRITICAL DEBUG
+    // This will show up in Vercel Logs
+    console.log("---> POST ITEM ATTEMPT START <---");
 
     try {
-        console.log("BODY:", req.body);
-        console.log("FILE:", req.file);
-
         const { title, description, location } = req.body;
-
-        // ⚠️ Handle missing file safely
-        if (!req.file) {
-            console.log("❌ No file received");
-            return res.status(400).send("Image upload failed");
-        }
-
-        // Cloudinary URL
-        const image = req.file.path;
-        console.log("IMAGE URL:", image);
-
+        const image = req.file ? req.file.path : null;
+        
+        // Use the decoded JWT user id
         const user_id = req.session?.user?.id;
-        console.log("USER ID:", user_id);
 
         if (!user_id) {
-            console.log("❌ No user session");
-            return res.redirect('/login');
+            return res.status(401).send("Error: You are not logged in. Please log in again.");
+        }
+
+        if (!image) {
+            return res.status(400).send("Error: Image upload failed. Check Cloudinary settings.");
         }
 
         await itemModel.createItem(title, description, location, image, user_id);
-
-        console.log("✅ Item created successfully");
-
         res.redirect('/items');
 
     } catch (err) {
-        console.error("❌ POST ITEM ERROR MESSAGE:", err.message);
-        console.error("❌ FULL ERROR OBJECT:", err);
-
-        res.status(500).send("Internal Server Error");
+        console.error("DETAILED ERROR:", err);
+        // This will show the error on your CHROME BROWSER so you can read it!
+        res.status(500).json({
+            error: "Database or Upload Failed",
+            message: err.message,
+            stack: err.stack
+        });
     }
 };
 
