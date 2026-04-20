@@ -1,3 +1,4 @@
+const { uploadToCloudinary } = require('../config/cloudinary');
 const path = require('path');
 const itemModel = require('../models/itemModel');
 const userModel = require('../models/userModel');
