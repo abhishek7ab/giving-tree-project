@@ -48,8 +48,7 @@ router.get('/api/admin/data', isLoggedIn, isAdmin, safe(itemController.getAdminD
 router.get('/api/items/recent', safe(itemController.getRecentItems));
 
 // Forms / Actions
-router.post('/post-item', isLoggedIn, upload.single('image'), safe(itemController.postItem));
-router.post('/delete-item', isLoggedIn, safe(itemController.deleteItem));
+router.post('/post-item', isLoggedIn, safe(itemController.postItem));
 router.post('/admin/delete-item', isLoggedIn, isAdmin, safe(itemController.deleteItem));
 
 module.exports = router;
