@@ -1,45 +1,55 @@
 const express = require('express');
 const router = express.Router();
+
 const itemController = require('../controllers/itemController');
 const { isLoggedIn, isAdmin } = require('../middleware/authMiddleware');
+
+// ✅ DEBUG CHECK (VERY IMPORTANT)
+console.log("ITEM CONTROLLER CHECK:", itemController);
+
+// ✅ Cloudinary setup
 const multer = require('multer');
-const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('../config/cloudinary');
 
-// Cloudinary config
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET
-});
-
-// Multer storage using Cloudinary
 const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: 'giving-tree',
-    allowed_formats: ['jpg', 'jpeg', 'png', 'gif'],
-    transformation: [{ width: 800, height: 600, crop: 'limit' }]
-  }
+    cloudinary: cloudinary,
+    params: {
+        folder: 'giving-tree',
+        allowed_formats: ['jpg', 'png', 'jpeg']
+    }
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage });
+
+// ================= SAFE ROUTE HELPER =================
+const safe = (fn) => {
+    return (req, res, next) => {
+        if (!fn) {
+            console.error("❌ Missing controller function!");
+            return res.status(500).send("Server configuration error");
+        }
+        return fn(req, res, next);
+    };
+};
+
+// ================= ROUTES =================
 
 // Pages
-router.get('/items', isLoggedIn, itemController.getItems);
-router.get('/my-items', isLoggedIn, itemController.showMyItems);
-router.get('/post-item', isLoggedIn, itemController.showPostItem);
-router.get('/admin/dashboard', isLoggedIn, isAdmin, itemController.showAdminPanel);
+router.get('/items', isLoggedIn, safe(itemController.getItems));
+router.get('/my-items', isLoggedIn, safe(itemController.showMyItems));
+router.get('/post-item', isLoggedIn, safe(itemController.showPostItem));
+router.get('/admin/dashboard', isLoggedIn, isAdmin, safe(itemController.showAdminPanel));
 
-// API JSON Data
-router.get('/api/items/data', isLoggedIn, itemController.getItemsData);
-router.get('/api/my-items/data', isLoggedIn, itemController.getMyItemsData);
-router.get('/api/admin/data', isLoggedIn, isAdmin, itemController.getAdminData);
-router.get('/api/items/recent', itemController.getRecentItems);
+// API Data
+router.get('/api/items/data', isLoggedIn, safe(itemController.getItemsData));
+router.get('/api/my-items/data', isLoggedIn, safe(itemController.getMyItemsData));
+router.get('/api/admin/data', isLoggedIn, isAdmin, safe(itemController.getAdminData));
+router.get('/api/items/recent', safe(itemController.getRecentItems));
 
 // Forms / Actions
-router.post('/post-item', isLoggedIn, upload.single('image'), itemController.postItem);
-router.post('/delete-item', isLoggedIn, itemController.deleteItem);
-router.post('/admin/delete-item', isLoggedIn, isAdmin, itemController.deleteItem);
+router.post('/post-item', isLoggedIn, upload.single('image'), safe(itemController.postItem));
+router.post('/delete-item', isLoggedIn, safe(itemController.deleteItem));
+router.post('/admin/delete-item', isLoggedIn, isAdmin, safe(itemController.deleteItem));
 
 module.exports = router;
