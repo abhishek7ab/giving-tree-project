@@ -35,7 +35,7 @@ exports.getMyItemsData = async (req, res) => {
     }
 };
 
-// ================= 3. ADMIN =================
+// ================= 3. ADMIN PANEL =================
 exports.showAdminPanel = (req, res) => {
     res.sendFile(path.join(__dirname, '../pages/admin.html'));
 };
@@ -64,36 +64,46 @@ exports.showPostItem = (req, res) => {
     res.sendFile(path.join(__dirname, '../pages/post-item.html'));
 };
 
-// ================= 5. POST ITEM =================
+// ================= 5. POST ITEM (THE FIX) =================
 exports.postItem = async (req, res) => {
-    // This will show up in Vercel Logs
-    console.log("---> POST ITEM ATTEMPT START <---");
-
+    console.log("--- DEBUG: POST ITEM START ---");
+    
     try {
-        const { title, description, location } = req.body;
+        // SAFETY FALLBACK: Prevents the "Cannot destructure title of undefined" crash
+        const body = req.body || {};
+        const { title, description, location } = body;
+
+        // 1. Validate Text Data Received
+        if (!title || !description) {
+            console.error("DEBUG ERROR: req.body is empty. Check HTML enctype.");
+            return res.status(400).send("Error: Server did not receive form text. Ensure your form has enctype='multipart/form-data'.");
+        }
+
+        // 2. Validate Image Received (Cloudinary URL)
         const image = req.file ? req.file.path : null;
-        
-        // Use the decoded JWT user id
-        const user_id = req.session?.user?.id;
-
-        if (!user_id) {
-            return res.status(401).send("Error: You are not logged in. Please log in again.");
-        }
-
         if (!image) {
-            return res.status(400).send("Error: Image upload failed. Check Cloudinary settings.");
+            console.error("DEBUG ERROR: No file path found in req.file");
+            return res.status(400).send("Error: Image file not received. Please try again.");
         }
 
+        // 3. Validate User (From JWT-to-Session middleware bridge)
+        const user_id = req.session?.user?.id;
+        if (!user_id) {
+            console.error("DEBUG ERROR: No user_id in session/token");
+            return res.status(401).send("Error: Session expired. Please log in again.");
+        }
+
+        // 4. Save to Database
         await itemModel.createItem(title, description, location, image, user_id);
+        
+        console.log("DEBUG SUCCESS: Item Shared Successfully!");
         res.redirect('/items');
 
     } catch (err) {
-        console.error("DETAILED ERROR:", err);
-        // This will show the error on your CHROME BROWSER so you can read it!
+        console.error("POST ITEM CATCH ERROR:", err);
         res.status(500).json({
-            error: "Database or Upload Failed",
-            message: err.message,
-            stack: err.stack
+            error: "Submission Failed",
+            message: err.message
         });
     }
 };
@@ -104,13 +114,14 @@ exports.deleteItem = async (req, res) => {
         const id = req.body.id;
         const user_id = req.session?.user?.id;
 
-        await itemModel.deleteItem(id, user_id);
+        if (!user_id) return res.status(401).send("Not logged in");
 
+        await itemModel.deleteItem(id, user_id);
         res.redirect('/my-items');
 
     } catch (err) {
         console.error("DELETE ERROR:", err.message);
-        res.send("Error deleting item");
+        res.status(500).send("Error deleting item");
     }
 };
 
@@ -123,6 +134,6 @@ exports.getRecentItems = async (req, res) => {
         res.json(result.rows);
     } catch (err) {
         console.error("RECENT ITEMS ERROR:", err.message);
-        res.json({ error: "DB Error" });
+        res.status(500).json({ error: "DB Error" });
     }
 };
