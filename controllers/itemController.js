@@ -66,43 +66,40 @@ exports.showPostItem = (req, res) => {
 
 // ================= 5. POST ITEM (THE FIX) =================
 exports.postItem = async (req, res) => {
-    console.log("--- DEBUG: POST ITEM START ---");
-    
+    console.log("--- DEBUG: postItem triggered ---");
     try {
-        // SAFETY FALLBACK: Prevents the "Cannot destructure title of undefined" crash
+        // 1. SAFETY CHECK: If req.body is undefined, make it an empty object so it doesn't crash
         const body = req.body || {};
         const { title, description, location } = body;
 
-        // 1. Validate Text Data Received
-        if (!title || !description) {
-            console.error("DEBUG ERROR: req.body is empty. Check HTML enctype.");
-            return res.status(400).send("Error: Server did not receive form text. Ensure your form has enctype='multipart/form-data'.");
+        // 2. LOGGING: This will show up in your Vercel logs so we can see what happened
+        console.log("Received Body:", body);
+        console.log("Received File:", req.file);
+
+        if (!title) {
+            return res.status(400).send("<h1>Form Error</h1><p>The server did not receive your text data. Please ensure your HTML form has enctype='multipart/form-data' and exactly one form tag.</p>");
         }
 
-        // 2. Validate Image Received (Cloudinary URL)
         const image = req.file ? req.file.path : null;
-        if (!image) {
-            console.error("DEBUG ERROR: No file path found in req.file");
-            return res.status(400).send("Error: Image file not received. Please try again.");
-        }
-
-        // 3. Validate User (From JWT-to-Session middleware bridge)
-        const user_id = req.session?.user?.id;
-        if (!user_id) {
-            console.error("DEBUG ERROR: No user_id in session/token");
-            return res.status(401).send("Error: Session expired. Please log in again.");
-        }
-
-        // 4. Save to Database
-        await itemModel.createItem(title, description, location, image, user_id);
         
-        console.log("DEBUG SUCCESS: Item Shared Successfully!");
+        // Use the mocked session from our JWT middleware
+        const user_id = req.session?.user?.id;
+
+        if (!user_id) {
+            return res.status(401).send("Error: Session missing. Please logout and login again.");
+        }
+
+        if (!image) {
+            return res.status(400).send("Error: Image upload failed. Ensure Cloudinary keys are correct in Vercel.");
+        }
+
+        await itemModel.createItem(title, description, location, image, user_id);
         res.redirect('/items');
 
     } catch (err) {
-        console.error("POST ITEM CATCH ERROR:", err);
+        console.error("DETAILED ERROR:", err);
         res.status(500).json({
-            error: "Submission Failed",
+            error: "Upload Failed",
             message: err.message
         });
     }
