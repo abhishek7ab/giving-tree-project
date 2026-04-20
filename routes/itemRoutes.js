@@ -48,7 +48,8 @@ router.get('/api/admin/data', isLoggedIn, isAdmin, safe(itemController.getAdminD
 router.get('/api/items/recent', safe(itemController.getRecentItems));
 
 // Forms / Actions
-router.post('/post-item', isLoggedIn, safe(itemController.postItem));
+// Ensure 'image' matches the name attribute in your HTML file input
+router.post('/post-item', isLoggedIn, upload.single('image'), itemController.postItem);
 router.post('/admin/delete-item', isLoggedIn, isAdmin, safe(itemController.deleteItem));
 
 module.exports = router;
