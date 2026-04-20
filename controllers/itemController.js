@@ -5,7 +5,7 @@ const db = require('../database/db');
 
 // ================= 1. BROWSE CATALOG =================
 exports.getItems = (req, res) => {
-    res.sendFile(path.join(__dirname, '../pages/items.html'));
+    res.sendFile(path.join(process.cwd(), 'pages', 'items.html'));
 };
 
 exports.getItemsData = async (req, res) => {
@@ -21,7 +21,7 @@ exports.getItemsData = async (req, res) => {
 
 // ================= 2. MY ITEMS =================
 exports.showMyItems = (req, res) => {
-    res.sendFile(path.join(__dirname, '../pages/my-items.html'));
+    res.sendFile(path.join(process.cwd(), 'pages', 'my-items.html'));
 };
 
 exports.getMyItemsData = async (req, res) => {
@@ -37,7 +37,7 @@ exports.getMyItemsData = async (req, res) => {
 
 // ================= 3. ADMIN PANEL =================
 exports.showAdminPanel = (req, res) => {
-    res.sendFile(path.join(__dirname, '../pages/admin.html'));
+    res.sendFile(path.join(process.cwd(), 'pages', 'admin.html'));
 };
 
 exports.getAdminData = async (req, res) => {
@@ -61,36 +61,32 @@ exports.getAdminData = async (req, res) => {
 
 // ================= 4. SHOW POST ITEM PAGE =================
 exports.showPostItem = (req, res) => {
-    res.sendFile(path.join(__dirname, '../pages/post-item.html'));
+    res.sendFile(path.join(process.cwd(), 'pages', 'post-item.html'));
 };
 
-// ================= 5. POST ITEM (THE FIX) =================
+// ================= 5. POST ITEM =================
 exports.postItem = async (req, res) => {
     console.log("--- DEBUG: postItem triggered ---");
     try {
-        // 1. SAFETY CHECK: If req.body is undefined, make it an empty object so it doesn't crash
         const body = req.body || {};
         const { title, description, location } = body;
 
-        // 2. LOGGING: This will show up in your Vercel logs so we can see what happened
         console.log("Received Body:", body);
         console.log("Received File:", req.file);
 
         if (!title) {
-            return res.status(400).send("<h1>Form Error</h1><p>The server did not receive your text data. Please ensure your HTML form has enctype='multipart/form-data' and exactly one form tag.</p>");
+            return res.status(400).send("<h1>Form Error</h1><p>Missing title. Check form enctype and inputs.</p>");
         }
 
         const image = req.file ? req.file.path : null;
-        
-        // Use the mocked session from our JWT middleware
         const user_id = req.session?.user?.id;
 
         if (!user_id) {
-            return res.status(401).send("Error: Session missing. Please logout and login again.");
+            return res.status(401).send("Error: Session missing. Please login again.");
         }
 
         if (!image) {
-            return res.status(400).send("Error: Image upload failed. Ensure Cloudinary keys are correct in Vercel.");
+            return res.status(400).send("Error: Image upload failed. Check Cloudinary config.");
         }
 
         await itemModel.createItem(title, description, location, image, user_id);
