@@ -2,6 +2,7 @@ require('dotenv').config(); // MUST be first
 
 const express = require('express');
 const session = require('express-session');
+const pgSession = require('connect-pg-simple')(session);
 const path = require('path');
 
 const authRoutes = require('./routes/authRoutes');
@@ -9,7 +10,7 @@ const itemRoutes = require('./routes/itemRoutes');
 const requestRoutes = require('./routes/requestRoutes');
 const userModel = require('./models/userModel');
 
-const db = require('./database/db'); 
+const db = require('./database/db');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -26,12 +27,17 @@ const PORT = process.env.PORT || 3000;
 
 // SESSION
 app.use(session({
+  store: new pgSession({
+    pool: db,
+    tableName: 'session'
+  }),
   secret: process.env.SESSION_SECRET || 'giving-tree-secret-key',
   resave: false,
   saveUninitialized: false,
   cookie: {
     maxAge: 24 * 60 * 60 * 1000,
-    httpOnly: true
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production'
   }
 }));
 
@@ -87,5 +93,6 @@ app.listen(PORT, () => {
   console.log("🌳 GIVING TREE SERVER IS LIVE");
   console.log(`🚀 Running on port: ${PORT}`);
   console.log("===========================================");
-  console.log("DB URL:", process.env.DATABASE_URL);
 });
+
+module.exports = app;
