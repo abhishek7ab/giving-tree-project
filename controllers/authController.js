@@ -14,73 +14,49 @@ exports.showRegister = (req, res) => {
 
 // ================= REGISTER =================
 exports.registerUser = async (req, res) => {
-
     const { name, email, password } = req.body;
 
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
-
-        userModel.createUser(name, email, hashedPassword, (err) => {
-
-            if (err) {
-                console.log(err);
-                return res.send("Error registering user");
-            }
-
-            res.redirect('/login');
-        });
-
-    } catch (error) {
-        console.log(error);
-        res.send("Error hashing password");
+        await userModel.createUser(name, email, hashedPassword);
+        res.redirect('/login');
+    } catch (err) {
+        console.log(err);
+        res.send("Error registering user");
     }
 };
 
 // ================= LOGIN =================
 exports.loginUser = async (req, res) => {
-
     const { email, password } = req.body;
 
-    userModel.findUserByEmail(email, async (err, results) => {
+    try {
+        const user = await userModel.findUserByEmail(email);
 
-        if (err) {
-            // Redirect with database error flag
-            return res.redirect('/login?error=database');
-        }
-
-        if (results.length === 0) {
-            // Redirect with user not found flag
+        if (!user) {
             return res.redirect('/login?error=usernotfound');
         }
 
-        const user = results[0];
+        const isMatch = await bcrypt.compare(password, user.password);
 
-        try {
-            const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.redirect('/login?error=wrongpassword');
+        }
 
-            if (!isMatch) {
-                // ✅ PINPOINT CHANGE: Redirect back to login with a flag instead of showing raw text
-                return res.redirect('/login?error=wrongpassword');
-            }
-
-            // ✅ STRUCTURE PRESERVED: Role, Name, and Email all saved to session
-// Inside the bcrypt.compare check:
         req.session.user = {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        role: user.role // <--- THIS LINE IS THE MOST IMPORTANT
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            role: user.role
         };
 
-            console.log(`User Logged In: ${user.email} | Role: ${user.role}`);
+        console.log(`User Logged In: ${user.email} | Role: ${user.role}`);
+        res.redirect('/?t=' + Date.now());
 
-            res.redirect('/?t=' + Date.now());
-        } catch (error) {
-            console.log(error);
-            // Redirect with general error flag
-            res.redirect('/login?error=servererror');
-        }
-    });
+    } catch (err) {
+        console.log(err);
+        res.redirect('/login?error=database');
+    }
 };
 
 // ================= LOGOUT =================
@@ -89,7 +65,6 @@ exports.logoutUser = (req, res) => {
         if (err) {
             return res.send("Error logging out");
         }
-
         res.sendFile(path.join(__dirname, '../pages/logout.html'));
     });
 };

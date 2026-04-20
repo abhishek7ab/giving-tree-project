@@ -1,33 +1,38 @@
 const path = require('path');
 const itemModel = require('../models/itemModel');
-const userModel = require('../models/userModel'); 
+const userModel = require('../models/userModel');
+const db = require('../database/db');
 
 // ================= 1. BROWSE CATALOG =================
-// 1. Serves the file you just created
 exports.getItems = (req, res) => {
     res.sendFile(path.join(__dirname, '../pages/items.html'));
 };
 
-// 2. The API that the "Fetch" in the HTML calls
-exports.getItemsData = (req, res) => {
-    const searchTerm = req.query.search || '';
-    // Use your existing itemModel to get data
-    itemModel.getAllItems(searchTerm, 'All', (err, results) => {
-        if (err) return res.json({ error: "DB Error" });
+exports.getItemsData = async (req, res) => {
+    try {
+        const searchTerm = req.query.search || '';
+        const results = await itemModel.getAllItems(searchTerm, 'All');
         res.json({ items: results });
-    });
+    } catch (err) {
+        console.error(err);
+        res.json({ error: "DB Error" });
+    }
 };
+
 // ================= 2. MY SHARED ITEMS =================
 exports.showMyItems = (req, res) => {
     res.sendFile(path.join(__dirname, '../pages/my-items.html'));
 };
 
-exports.getMyItemsData = (req, res) => {
-    const user_id = req.session.user.id;
-    itemModel.getItemsByUser(user_id, (err, results) => {
-        if (err) return res.json({ error: "Database error" });
+exports.getMyItemsData = async (req, res) => {
+    try {
+        const user_id = req.session.user.id;
+        const results = await itemModel.getItemsByUser(user_id);
         res.json({ items: results });
-    });
+    } catch (err) {
+        console.error(err);
+        res.json({ error: "Database error" });
+    }
 };
 
 // ================= 3. ADMIN PANEL =================
@@ -35,14 +40,15 @@ exports.showAdminPanel = (req, res) => {
     res.sendFile(path.join(__dirname, '../pages/admin.html'));
 };
 
-exports.getAdminData = (req, res) => {
-    itemModel.getAllItems('', 'All', (err, items) => {
-        if (err) return res.json({ error: "Items error" });
-        userModel.getAllUsers((err, users) => {
-            if (err) return res.json({ error: "Users error" });
-            res.json({ items, users, stats: { totalItems: items.length, totalUsers: users.length } });
-        });
-    });
+exports.getAdminData = async (req, res) => {
+    try {
+        const items = await itemModel.getAllItems('', 'All');
+        const users = await userModel.getAllUsers();
+        res.json({ items, users, stats: { totalItems: items.length, totalUsers: users.length } });
+    } catch (err) {
+        console.error(err);
+        res.json({ error: "Admin data error" });
+    }
 };
 
 // ================= 4. POST ITEM =================
@@ -50,30 +56,40 @@ exports.showPostItem = (req, res) => {
     res.sendFile(path.join(__dirname, '../pages/post-item.html'));
 };
 
-exports.postItem = (req, res) => {
-    const { title, description, location } = req.body;
-    const image = req.file ? req.file.filename : null;
-    const user_id = req.session.user.id;
-    itemModel.createItem(title, description, location, image, user_id, (err) => {
-        if (err) return res.send("Error posting item");
+exports.postItem = async (req, res) => {
+    try {
+        const { title, description, location } = req.body;
+        const image = req.file ? req.file.filename : null;
+        const user_id = req.session.user.id;
+        await itemModel.createItem(title, description, location, image, user_id);
         res.redirect('/items');
-    });
+    } catch (err) {
+        console.error(err);
+        res.send("Error posting item");
+    }
 };
 
 // ================= 5. DELETE ITEM =================
-exports.deleteItem = (req, res) => {
-    const id = req.body.id;
-    const user_id = req.session.user.id;
-    itemModel.deleteItem(id, user_id, (err) => {
-        if (err) return res.send("Error deleting item");
+exports.deleteItem = async (req, res) => {
+    try {
+        const id = req.body.id;
+        const user_id = req.session.user.id;
+        await itemModel.deleteItem(id, user_id);
         res.redirect('/my-items');
-    });
+    } catch (err) {
+        console.error(err);
+        res.send("Error deleting item");
+    }
 };
-exports.getRecentItems = (req, res) => {
-    const sql = "SELECT * FROM items WHERE status = 'available' ORDER BY id DESC LIMIT 3";
-    const db = require('../database/db');
-    db.query(sql, (err, results) => {
-        if (err) return res.json({ error: "DB Error" });
-        res.json(results);
-    });
+
+// ================= 6. RECENT ITEMS =================
+exports.getRecentItems = async (req, res) => {
+    try {
+        const sql = "SELECT * FROM items WHERE status = 'available' ORDER BY id DESC LIMIT 3";
+        const result = await db.query(sql);
+        res.json(result.rows);
+    } catch (err) {
+        console.error(err);
+        res.json({ error: "DB Error" });
+    }
 };

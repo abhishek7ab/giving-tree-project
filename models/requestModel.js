@@ -1,41 +1,49 @@
 const db = require('../database/db');
 
-
-exports.createRequest = (item_id, email, callback) => {
-
-    const sql = "INSERT INTO requests (item_id, requester_email, status) VALUES (?, ?, 'pending')";
-
-    db.query(sql, [item_id, email], callback);
-
+exports.createRequest = async (item_id, email) => {
+    const sql = "INSERT INTO requests (item_id, requester_email, status) VALUES ($1, $2, 'pending') RETURNING *";
+    const result = await db.query(sql, [item_id, email]);
+    return result.rows[0];
 };
 
-// This function gets items YOU requested and joins with the OWNER'S email
-exports.getRequestsByRequester = (email, callback) => {
+exports.getRequests = async () => {
     const sql = `
         SELECT 
-            requests.id, 
-            requests.status, 
-            items.title, 
-            items.location, 
+            requests.id,
+            requests.status,
+            requests.requester_email,
+            items.title,
+            items.location,
             items.image,
             users.email as owner_email
         FROM requests
         JOIN items ON requests.item_id = items.id
         JOIN users ON items.user_id = users.id
-        WHERE requests.requester_email = ?`;
-    db.query(sql, [email], callback);
-};
-exports.updateStatus = (id, status, callback) => {
-    const sql = "UPDATE requests SET status = ? WHERE id = ?";
-    db.query(sql, [status, id], callback);
-}; 
-// Function for a Borrower to see their own sent requests
-exports.getRequestsByRequester = (email, callback) => {
-    const sql = `
-        SELECT requests.id, requests.status, items.title, items.location, items.image
-        FROM requests
-        JOIN items ON requests.item_id = items.id
-        WHERE requests.requester_email = ?`;
-    db.query(sql, [email], callback);
+    `;
+    const result = await db.query(sql);
+    return result.rows;
 };
 
+exports.getRequestsByRequester = async (email) => {
+    const sql = `
+        SELECT 
+            requests.id,
+            requests.status,
+            items.title,
+            items.location,
+            items.image,
+            users.email as owner_email
+        FROM requests
+        JOIN items ON requests.item_id = items.id
+        JOIN users ON items.user_id = users.id
+        WHERE requests.requester_email = $1
+    `;
+    const result = await db.query(sql, [email]);
+    return result.rows;
+};
+
+exports.updateStatus = async (id, status) => {
+    const sql = "UPDATE requests SET status = $1 WHERE id = $2";
+    const result = await db.query(sql, [status, id]);
+    return result.rowCount;
+};

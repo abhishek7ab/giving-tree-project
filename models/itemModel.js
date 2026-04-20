@@ -1,35 +1,34 @@
 const db = require('../database/db');
 
-exports.createItem = (title, description, location, image, user_id, callback) => {
-    const sql = "INSERT INTO items (title, description, location, image, user_id) VALUES (?, ?, ?, ?, ?)";
-    db.query(sql, [title, description, location, image, user_id], callback);
+exports.createItem = async (title, description, location, image, user_id) => {
+    const sql = "INSERT INTO items (title, description, location, image, user_id) VALUES ($1, $2, $3, $4, $5) RETURNING *";
+    const result = await db.query(sql, [title, description, location, image, user_id]);
+    return result.rows[0];
 };
 
-// Updated: Now accepts optional filter parameters
-exports.getAllItems = (search, category, callback) => {
+exports.getAllItems = async (search, category) => {
     let sql = "SELECT * FROM items WHERE 1=1";
     let params = [];
+    let i = 1;
 
     if (search) {
-        sql += " AND (title LIKE ? OR description LIKE ?)";
+        sql += ` AND (title ILIKE $${i} OR description ILIKE $${i+1})`;
         params.push(`%${search}%`, `%${search}%`);
+        i += 2;
     }
 
     if (category && category !== 'All') {
-        sql += " AND category = ?";
+        sql += ` AND category = $${i}`;
         params.push(category);
+        i++;
     }
 
-    db.query(sql, params, callback);
+    const result = await db.query(sql, params);
+    return result.rows;
 };
 
-exports.getAllItems = (search, category, callback) => {
-    // If you don't have the search/category logic yet, use this simple one:
-    const sql = "SELECT * FROM items";
-    db.query(sql, callback);
+exports.deleteItem = async (id, user_id) => {
+    const sql = "DELETE FROM items WHERE id = $1 AND user_id = $2";
+    const result = await db.query(sql, [id, user_id]);
+    return result.rowCount;
 };
-
-exports.deleteItem = (id, user_id, callback) => {
-    const sql = "DELETE FROM items WHERE id = ? AND user_id = ?";
-    db.query(sql, [id, user_id], callback);
-}

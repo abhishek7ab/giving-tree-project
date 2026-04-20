@@ -20,6 +20,7 @@ router.get('/admin/dashboard', isLoggedIn, isAdmin, itemController.showAdminPane
 router.get('/api/items/data', isLoggedIn, itemController.getItemsData);
 router.get('/api/my-items/data', isLoggedIn, itemController.getMyItemsData);
 router.get('/api/admin/data', isLoggedIn, isAdmin, itemController.getAdminData);
+router.get('/api/items/recent', itemController.getRecentItems); // ✅ moved here
 
 // Forms / Actions
 router.post('/post-item', isLoggedIn, upload.single('image'), itemController.postItem);
@@ -27,4 +28,3 @@ router.post('/delete-item', isLoggedIn, itemController.deleteItem);
 router.post('/admin/delete-item', isLoggedIn, isAdmin, itemController.deleteItem);
 
 module.exports = router;
-router.get('/api/items/recent', itemController.getRecentItems);
