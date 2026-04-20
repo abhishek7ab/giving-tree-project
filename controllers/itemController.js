@@ -14,7 +14,7 @@ exports.getItemsData = async (req, res) => {
         const items = await itemModel.getAllItems(searchTerm, 'All');
         res.json({ items });
     } catch (err) {
-        console.error("GET ITEMS ERROR:", err);
+        console.error("GET ITEMS ERROR:", err.message);
         res.json({ error: "DB Error" });
     }
 };
@@ -30,7 +30,7 @@ exports.getMyItemsData = async (req, res) => {
         const items = await itemModel.getItemsByUser(user_id);
         res.json({ items });
     } catch (err) {
-        console.error("MY ITEMS ERROR:", err);
+        console.error("MY ITEMS ERROR:", err.message);
         res.json({ error: "Database error" });
     }
 };
@@ -54,7 +54,7 @@ exports.getAdminData = async (req, res) => {
             }
         });
     } catch (err) {
-        console.error("ADMIN ERROR:", err);
+        console.error("ADMIN ERROR:", err.message);
         res.json({ error: "Admin data error" });
     }
 };
@@ -66,37 +66,41 @@ exports.showPostItem = (req, res) => {
 
 // ================= 5. POST ITEM =================
 exports.postItem = async (req, res) => {
+    console.log("🔥 FUNCTION HIT");  // 🔥 CRITICAL DEBUG
+
     try {
-        // 🔍 DEBUG LOGS (VERY IMPORTANT)
         console.log("BODY:", req.body);
         console.log("FILE:", req.file);
 
         const { title, description, location } = req.body;
 
-        // Check if file is coming
+        // ⚠️ Handle missing file safely
         if (!req.file) {
             console.log("❌ No file received");
+            return res.status(400).send("Image upload failed");
         }
 
         // Cloudinary URL
-        const image = req.file ? req.file.path : null;
+        const image = req.file.path;
         console.log("IMAGE URL:", image);
 
         const user_id = req.session?.user?.id;
         console.log("USER ID:", user_id);
 
         if (!user_id) {
+            console.log("❌ No user session");
             return res.redirect('/login');
         }
 
         await itemModel.createItem(title, description, location, image, user_id);
 
+        console.log("✅ Item created successfully");
+
         res.redirect('/items');
 
     } catch (err) {
-        // ❗ IMPORTANT: Proper error logging
-        console.error("POST ITEM ERROR:", err.message);
-        console.error("FULL ERROR:", err);
+        console.error("❌ POST ITEM ERROR MESSAGE:", err.message);
+        console.error("❌ FULL ERROR OBJECT:", err);
 
         res.status(500).send("Internal Server Error");
     }
@@ -113,7 +117,7 @@ exports.deleteItem = async (req, res) => {
         res.redirect('/my-items');
 
     } catch (err) {
-        console.error("DELETE ERROR:", err);
+        console.error("DELETE ERROR:", err.message);
         res.send("Error deleting item");
     }
 };
@@ -126,7 +130,7 @@ exports.getRecentItems = async (req, res) => {
         );
         res.json(result.rows);
     } catch (err) {
-        console.error("RECENT ITEMS ERROR:", err);
+        console.error("RECENT ITEMS ERROR:", err.message);
         res.json({ error: "DB Error" });
     }
 };
