@@ -1,8 +1,8 @@
 require('dotenv').config(); // MUST be first
 
 const express = require('express');
-const session = require('express-session');
-const pgSession = require('connect-pg-simple')(session);
+const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
 const path = require('path');
 
 const authRoutes = require('./routes/authRoutes');
@@ -12,7 +12,11 @@ const userModel = require('./models/userModel');
 
 const db = require('./database/db');
 
+const JWT_SECRET = process.env.JWT_SECRET || 'giving-tree-jwt-secret-2024';
+
 const app = express();
+app.set('trust proxy', 1);
+
 const PORT = process.env.PORT || 3000;
 
 // 🔥 TEST DB CONNECTION
@@ -25,23 +29,8 @@ const PORT = process.env.PORT || 3000;
   }
 })();
 
-// SESSION
-app.use(session({
-  store: new pgSession({
-    pool: db,
-    tableName: 'session'
-  }),
-  secret: process.env.SESSION_SECRET || 'giving-tree-secret-key',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    maxAge: 24 * 60 * 60 * 1000,
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production'
-  }
-}));
-
-// BODY PARSER
+// MIDDLEWARE
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -57,28 +46,27 @@ app.use('/', requestRoutes);
 // USER API
 app.get('/api/user', async (req, res) => {
   try {
-    if (!req.session.user) {
-      return res.json({ loggedIn: false });
-    }
+    const token = req.cookies?.token;
+    if (!token) return res.json({ loggedIn: false });
 
-    const stats = await userModel.getUserStats(req.session.user.id);
-
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const stats = await userModel.getUserStats(decoded.id);
     const userStats = (stats && stats.length > 0)
       ? stats[0]
       : { total_shared: 0, people_helped: 0 };
 
     res.json({
       loggedIn: true,
-      id: req.session.user.id,
-      name: req.session.user.name,
-      email: req.session.user.email,
-      role: req.session.user.role || 'user',
+      id: decoded.id,
+      name: decoded.name,
+      email: decoded.email,
+      role: decoded.role || 'user',
       stats: userStats
     });
 
   } catch (err) {
     console.error("❌ USER API ERROR:", err.message);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.json({ loggedIn: false });
   }
 });
 

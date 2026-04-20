@@ -1,23 +1,34 @@
-// This function checks if a user is logged in
+const jwt = require('jsonwebtoken');
+const JWT_SECRET = process.env.JWT_SECRET || 'giving-tree-jwt-secret-2024';
+
 exports.isLoggedIn = (req, res, next) => {
-    if (req.session.user) {
-        // User is logged in, proceed to the next function
+    const token = req.cookies?.token;
+
+    if (!token) return res.redirect('/login');
+
+    try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        req.session = req.session || {};
+        req.session.user = decoded;
         return next();
+    } catch (err) {
+        return res.redirect('/login');
     }
-    // User is not logged in, redirect to login page
-    res.redirect('/login');
 };
 
-// This function checks if the user is an admin
 exports.isAdmin = (req, res, next) => {
-    console.log("--- ADMIN CHECK ---");
-    console.log("Session Data:", req.session.user);
-    
-    if (req.session.user && req.session.user.role === 'admin') {
-        console.log("Access Granted!");
-        return next();
+    const token = req.cookies?.token;
+
+    if (!token) return res.redirect('/login');
+
+    try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        req.session = req.session || {};
+        req.session.user = decoded;
+
+        if (decoded.role === 'admin') return next();
+        return res.status(403).send("<h1>403 Access Denied</h1>");
+    } catch (err) {
+        return res.redirect('/login');
     }
-    
-    console.log("Access Denied. Role found:", req.session.user ? req.session.user.role : "None");
-    res.status(403).send("<h1>403 Access Denied</h1>");
 };

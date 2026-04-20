@@ -1,6 +1,9 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const userModel = require('../models/userModel');
 const path = require('path');
+
+const JWT_SECRET = process.env.JWT_SECRET || 'giving-tree-jwt-secret-2024';
 
 // ================= SHOW LOGIN =================
 exports.showLogin = (req, res) => {
@@ -15,7 +18,6 @@ exports.showRegister = (req, res) => {
 // ================= REGISTER =================
 exports.registerUser = async (req, res) => {
     const { name, email, password } = req.body;
-
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
         await userModel.createUser(name, email, hashedPassword);
@@ -29,26 +31,28 @@ exports.registerUser = async (req, res) => {
 // ================= LOGIN =================
 exports.loginUser = async (req, res) => {
     const { email, password } = req.body;
-
     try {
         const user = await userModel.findUserByEmail(email);
 
-        if (!user) {
-            return res.redirect('/login?error=usernotfound');
-        }
+        if (!user) return res.redirect('/login?error=usernotfound');
 
         const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) return res.redirect('/login?error=wrongpassword');
 
-        if (!isMatch) {
-            return res.redirect('/login?error=wrongpassword');
-        }
+        // Create JWT token
+        const token = jwt.sign(
+            { id: user.id, email: user.email, name: user.name, role: user.role },
+            JWT_SECRET,
+            { expiresIn: '24h' }
+        );
 
-        req.session.user = {
-            id: user.id,
-            email: user.email,
-            name: user.name,
-            role: user.role
-        };
+        // Set token as cookie
+        res.cookie('token', token, {
+            httpOnly: true,
+            maxAge: 24 * 60 * 60 * 1000,
+            sameSite: 'lax',
+            secure: false
+        });
 
         console.log(`User Logged In: ${user.email} | Role: ${user.role}`);
         res.redirect('/?t=' + Date.now());
@@ -61,10 +65,6 @@ exports.loginUser = async (req, res) => {
 
 // ================= LOGOUT =================
 exports.logoutUser = (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            return res.send("Error logging out");
-        }
-        res.sendFile(path.join(__dirname, '../pages/logout.html'));
-    });
+    res.clearCookie('token');
+    res.sendFile(path.join(__dirname, '../pages/logout.html'));
 };
