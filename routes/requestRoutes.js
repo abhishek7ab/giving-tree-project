@@ -12,7 +12,7 @@ router.get('/requests', requestController.viewRequests);
 router.get('/api/activity/data', requestController.getActivityData);
 
 // Actions
-router.post('/request-item', requestController.requestItem);
+router.post('/request-item', isLoggedIn, requestController.requestItem);
 router.post('/update-status', requestController.updateRequestStatus);
 
 module.exports = router;

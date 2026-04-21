@@ -18,10 +18,7 @@ app.set('trust proxy', 1);
 
 // ✅ CORS (flexible for development + deploy)
 app.use(cors({
-    origin: [
-        "https://giving-tree-project-iumxv5h00-abhishek-9cccb818.vercel.app",
-        "http://localhost:3000"
-    ],
+    origin: true,
     credentials: true
 }));
 

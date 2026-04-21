@@ -40,19 +40,19 @@ exports.loginUser = async (req, res) => {
         if (!isMatch) return res.redirect('/login?error=wrongpassword');
 
         // Create JWT token
-        const token = jwt.sign(
-            { id: user.id, email: user.email, name: user.name, role: user.role },
-            JWT_SECRET,
-            { expiresIn: '24h' }
-        );
+    const token = jwt.sign(
+    { id: user.id, email: user.email, name: user.name, role: user.role },
+    JWT_SECRET,
+    { expiresIn: '24h' }
+    );
 
-        // Set token as cookie
-        res.cookie('token', token, {
-            httpOnly: true,
-            maxAge: 24 * 60 * 60 * 1000,
-            sameSite: 'lax',
-            secure: false
-        });
+// ✅ Set cookie (FINAL CORRECT VERSION)
+    res.cookie("token", token, {
+    httpOnly: true,
+    secure: true,                     // REQUIRED for HTTPS (Render + Vercel)
+    sameSite: "None",                // REQUIRED for cross-origin
+    maxAge: 24 * 60 * 60 * 1000      // 24 hours
+    });
 
         console.log(`User Logged In: ${user.email} | Role: ${user.role}`);
         res.redirect('/?t=' + Date.now());

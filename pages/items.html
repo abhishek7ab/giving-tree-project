@@ -150,27 +150,28 @@ fetch(`${BACKEND_URL}/api/items/data?search=${query}`)
     }
 
     // 🔥 NEW FUNCTION (THIS WAS MISSING)
-    function requestItem(itemId) {
+function requestItem(itemId) {
     fetch(`${BACKEND_URL}/request-item`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
+        credentials: "include",
         body: JSON.stringify({ item_id: itemId })
     })
-        .then(res => {
-            if (!res.ok) throw new Error("Request failed");
-            return res.text();
-        })
-        .then(data => {
-            alert("Request sent successfully ✅");
-            console.log(data);
-        })
-        .catch(err => {
-            console.error(err);
-            alert("You must be logged in or request failed ❌");
-        });
-    }
+    .then(res => {
+        if (!res.ok) throw new Error("Request failed");
+        return res.text();
+    })
+    .then(data => {
+        alert("Request sent successfully ✅");
+        console.log(data);
+    })
+    .catch(err => {
+        console.error(err);
+        alert("You must be logged in or request failed ❌");
+    });
+}
 
     loadItems();
 </script>
