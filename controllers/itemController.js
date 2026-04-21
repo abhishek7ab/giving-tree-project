@@ -128,3 +128,30 @@ exports.getRecentItems = async (req, res) => {
         res.status(500).json({ error: "DB Error" });
     }
 };
+// ================= 8. REQUEST ITEM =================
+exports.requestItem = async (req, res) => {
+    try {
+        const { item_id } = req.body;
+
+        console.log("📩 Request received for item:", item_id);
+
+        // ⚠️ TEMP: no session (since cross-domain issue)
+        const user_id = req.session?.user?.id || 1; // fallback for testing
+
+        if (!item_id) {
+            return res.status(400).send("Item ID missing");
+        }
+
+        // 👉 INSERT INTO REQUEST TABLE (adjust if needed)
+        await db.query(
+            "INSERT INTO requests (item_id, user_id, status) VALUES ($1, $2, 'pending')",
+            [item_id, user_id]
+        );
+
+        res.json({ success: true, message: "Request sent!" });
+
+    } catch (err) {
+        console.error("❌ REQUEST ERROR:", err);
+        res.status(500).send("Request failed");
+    }
+};
