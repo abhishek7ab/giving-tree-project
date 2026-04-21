@@ -27,30 +27,52 @@
     <h2 style="text-align:center; color:#2c3e50;">Share an Item</h2>
     
     <!-- ONLY ONE FORM TAG HERE -->
-    <form action="https://giving-tree-backend.onrender.com/post-item" method="POST" enctype="multipart/form-data">
-        
-        <div class="input-group">
-            <label>Item Name</label>
-            <input type="text" name="title" class="modern-input" placeholder="e.g. Wooden Table" required>
-        </div>
+    <div class="post-container">
 
-        <div class="input-group">
-            <label>Description</label>
-            <textarea name="description" class="modern-input" rows="4" placeholder="Tell us about it..." required></textarea>
-        </div>
+    <div class="post-card">
+        <h2>✨ Share an Item</h2>   
+        <p class="subtitle">Help your community by sharing something useful</p>
 
-        <div class="input-group">
-            <label>City / Location</label>
-            <input type="text" name="location" class="modern-input" placeholder="e.g. Mumbai" required>
-        </div>
+        <form action="/post-item" method="POST" enctype="multipart/form-data">
 
-        <div class="input-group">
-            <label>Upload Photo</label>
-            <input type="file" name="image" accept="image/*" required>
-        </div>
+            <div class="input-group">
+                <label>Item Name</label>
+                <input type="text" name="title" placeholder="e.g. Wooden Table" required>
+            </div>
 
-        <button type="submit" class="btn-submit">Publish Item</button>
-    </form>
+            <div class="input-group">
+                <label>Description</label>
+                <textarea name="description" placeholder="Tell us about it..." required></textarea>
+            </div>
+
+            <div class="input-group">
+                <label>Location</label>
+                <input type="text" name="location" placeholder="e.g. Pune" required>
+            </div>
+
+            <div class="input-group">
+                <label>Upload Image</label>
+
+                <div class="upload-box">
+                    <input type="file" name="image" id="imageInput" required>
+                    <label for="imageInput" class="upload-label">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Click to upload image</span>
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                🚀 Publish Item
+            </button>
+
+        </form>
+
+        <p><a href="/items">← Back to Items</a></p>
+
+    </div>
+</div>
+    
     
     <p style="text-align:center; margin-top:20px;"><a href="/items" style="color:#7f8c8d; text-decoration:none;">← Back to Items</a></p>
 </div>

@@ -307,3 +307,111 @@
 .g-num { font-size: 20px; font-weight: 800; color: #e2e8f0; }
 .g-content h4 { margin: 0; font-size: 14px; color: #1e293b; }
 .g-content p { margin: 5px 0 0 0; font-size: 12px; color: #64748b; line-height: 1.5; }
+/* ===== POST ITEM FORM (MODERN UI) ===== */
+
+.post-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 90vh;
+}
+
+.post-card {
+    background: white;
+    padding: 40px;
+    border-radius: 25px;
+    width: 420px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    text-align: center;
+}
+
+.post-card h2 {
+    margin-bottom: 5px;
+    color: #1e293b;
+}
+
+.subtitle {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 25px;
+}
+
+.input-group {
+    text-align: left;
+    margin-bottom: 18px;
+}
+
+.input-group label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #1e293b;
+}
+
+.input-group input,
+.input-group textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    margin-top: 5px;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+textarea {
+    resize: none;
+    height: 80px;
+}
+
+/* 🔥 Upload Box */
+.upload-box {
+    border: 2px dashed #1abc9c;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: 0.3s;
+}
+
+.upload-box:hover {
+    background: #f0fdfa;
+}
+
+.upload-box input {
+    display: none;
+}
+
+.upload-label {
+    cursor: pointer;
+    color: #1abc9c;
+    font-weight: 600;
+    display: block;
+}
+
+/* 🔥 Submit Button */
+.btn-submit {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    background: linear-gradient(135deg, #1abc9c, #16a085);
+    color: white;
+    font-weight: bold;
+    border-radius: 12px;
+    margin-top: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-submit:hover {
+    transform: scale(1.03);
+}
+
+/* 🔙 Back link */
+.back-link {
+    display: block;
+    margin-top: 15px;
+    color: #64748b;
+    text-decoration: none;
+    font-size: 14px;
+}
