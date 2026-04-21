@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const requestController = require('../controllers/requestController');
+const { isLoggedIn } = require('../middleware/authMiddleware');
 
 // TEMP: removed isLoggedIn to avoid crash
 // You can add it back later after fixing auth
