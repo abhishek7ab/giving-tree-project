@@ -1,4 +1,5 @@
 require('dotenv').config();
+
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
@@ -9,41 +10,49 @@ const authRoutes = require('./routes/authRoutes');
 const itemRoutes = require('./routes/itemRoutes');
 const requestRoutes = require('./routes/requestRoutes');
 const userModel = require('./models/userModel');
-const db = require('./database/db');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'giving-tree-jwt-secret-2024';
 
 const app = express();
 app.set('trust proxy', 1);
-const cors = require('cors');
 
+// ✅ CORS (flexible for development + deploy)
 app.use(cors({
-    origin: "https://giving-tree-project-iumxv5h00-abhishek-9cccb818.vercel.app",
+    origin: [
+        "https://giving-tree-project-iumxv5h00-abhishek-9cccb818.vercel.app",
+        "http://localhost:3000"
+    ],
     credentials: true
 }));
 
-// 🔥 IMPORTANT: Body Parsers MUST come before routes
+// ✅ Middlewares
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Static Files
+// ✅ Static files
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
-// Routes
+// ✅ Routes
 app.use('/', authRoutes);
 app.use('/', itemRoutes);
 app.use('/', requestRoutes);
 
-// User API
+// ✅ User API
 app.get('/api/user', async (req, res) => {
   try {
     const token = req.cookies?.token;
-    if (!token) return res.json({ loggedIn: false });
+
+    if (!token) {
+      return res.json({ loggedIn: false });
+    }
 
     const decoded = jwt.verify(token, JWT_SECRET);
+
     const stats = await userModel.getUserStats(decoded.id);
-    const userStats = (stats && stats.length > 0) ? stats[0] : { total_shared: 0, people_helped: 0 };
+    const userStats = (stats && stats.length > 0)
+      ? stats[0]
+      : { total_shared: 0, people_helped: 0 };
 
     res.json({
       loggedIn: true,
@@ -53,14 +62,22 @@ app.get('/api/user', async (req, res) => {
       role: decoded.role || 'user',
       stats: userStats
     });
+
   } catch (err) {
+    console.error("USER API ERROR:", err.message);
     res.json({ loggedIn: false });
   }
 });
 
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'pages/index.html')));
+// ✅ Home route
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'pages/index.html'));
+});
 
+// ✅ Start server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
 
 module.exports = app;

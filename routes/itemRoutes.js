@@ -4,15 +4,12 @@ const router = express.Router();
 const itemController = require('../controllers/itemController');
 const { isLoggedIn, isAdmin } = require('../middleware/authMiddleware');
 
-// ✅ DEBUG CHECK
-console.log("ITEM CONTROLLER CHECK:", itemController);
-
-// ✅ Multer (Cloudinary upload)
+// Multer (Cloudinary upload)
 const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-// ================= SAFE ROUTE HELPER =================
+// Safe wrapper
 const safe = (fn) => {
     return (req, res, next) => {
         if (!fn) {
@@ -22,24 +19,23 @@ const safe = (fn) => {
         return fn(req, res, next);
     };
 };
+
 // ================= ROUTES =================
 
 // Pages
-router.get('/items', isLoggedIn, safe(itemController.getItems));
-router.get('/my-items', isLoggedIn, safe(itemController.showMyItems));
-router.get('/post-item', isLoggedIn, safe(itemController.showPostItem));
+router.get('/items', safe(itemController.getItems));
+router.get('/my-items', safe(itemController.showMyItems));
+router.get('/post-item', safe(itemController.showPostItem));
 router.get('/admin/dashboard', isLoggedIn, isAdmin, safe(itemController.showAdminPanel));
 
-// API Data
+// API
 router.get('/api/items/data', safe(itemController.getItemsData));
-router.get('/api/my-items/data', isLoggedIn, safe(itemController.getMyItemsData));
+router.get('/api/my-items/data', safe(itemController.getMyItemsData));
 router.get('/api/admin/data', isLoggedIn, isAdmin, safe(itemController.getAdminData));
 router.get('/api/items/recent', safe(itemController.getRecentItems));
 
-// Forms / Actions
-// Ensure 'image' matches the name attribute in your HTML file input
-router.post('/post-item', isLoggedIn, upload.single('image'), itemController.postItem);
+// Actions
+router.post('/post-item', upload.single('image'), itemController.postItem);
 router.post('/admin/delete-item', isLoggedIn, isAdmin, safe(itemController.deleteItem));
-router.post('/request-item', safe(itemController.requestItem));
 
 module.exports = router;
