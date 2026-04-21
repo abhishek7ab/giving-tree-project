@@ -4,78 +4,149 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Share an Item | Giving Tree</title>
+
+    <!-- CSS -->
     <link rel="stylesheet" href="/assets/style/base.css">
     <link rel="stylesheet" href="/assets/style/component.css">
+
+    <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     <style>
-        body { background-color: #f1f5f9; font-family: 'Poppins', sans-serif; }
-        .main-form-card { background: white; max-width: 600px; margin: 50px auto; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .input-group { margin-bottom: 20px; }
-        .input-group label { display: block; font-weight: 600; margin-bottom: 8px; color: #1e293b; }
-        .modern-input { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; box-sizing: border-box; }
-        .btn-submit { width: 100%; padding: 15px; background: #1abc9c; color: white; border: none; border-radius: 10px; font-weight: 800; cursor: pointer; margin-top: 20px; }
+        body {
+            background-color: #f1f5f9;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .main-form-card {
+            background: white;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1e293b;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background: #1abc9c;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 20px;
+        }
     </style>
 </head>
+
 <body>
 
-<div class="navbar" style="background:#1abc9c; padding: 20px; color:white; text-align:center; font-weight:800;">
+<!-- Navbar -->
+<div class="navbar" style="background:#1abc9c; padding:20px; color:white; text-align:center; font-weight:800;">
     🌳 GIVING TREE
 </div>
 
+<!-- Form Card -->
 <div class="main-form-card">
-    
-    
-    <!-- ONLY ONE FORM TAG HERE -->
+
     <div class="post-container">
 
-    <div class="post-card">
-        <h2>✨ Share an Item</h2>   
-        <p class="subtitle">Help your community by sharing something useful</p>
+        <div class="post-card">
 
-        <form action="/post-item" method="POST" enctype="multipart/form-data">
+            <h2>✨ Share an Item</h2>
+            <p class="subtitle">Help your community by sharing something useful</p>
 
-            <div class="input-group">
-                <label>Item Name</label>
-                <input type="text" name="title" placeholder="e.g. Wooden Table" required>
-            </div>
+            <form action="/post-item" method="POST" enctype="multipart/form-data">
 
-            <div class="input-group">
-                <label>Description</label>
-                <textarea name="description" placeholder="Tell us about it..." required></textarea>
-            </div>
-
-            <div class="input-group">
-                <label>Location</label>
-                <input type="text" name="location" placeholder="e.g. Pune" required>
-            </div>
-
-            <div class="input-group">
-                <label>Upload Image</label>
-
-                <div class="upload-box">
-                    <input type="file" name="image" id="imageInput" required>
-                    <label for="imageInput" class="upload-label">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <span>Click to upload image</span>
-                    </label>
+                <!-- Title -->
+                <div class="input-group">
+                    <label>Item Name</label>
+                    <input type="text" name="title" placeholder="e.g. Wooden Table" required>
                 </div>
-            </div>
 
-            <button type="submit" class="btn-submit">
-                🚀 Publish Item
-            </button>
+                <!-- Description -->
+                <div class="input-group">
+                    <label>Description</label>
+                    <textarea name="description" placeholder="Tell us about it..." required></textarea>
+                </div>
 
-        </form>
+                <!-- Location -->
+                <div class="input-group">
+                    <label>Location</label>
+                    <input type="text" name="location" placeholder="e.g. Pune" required>
+                </div>
 
-        <p><a href="/items">← Back to Items</a></p>
+                <!-- Image Upload -->
+                <div class="input-group">
+                    <label>Upload Image</label>
+
+                    <div class="upload-box">
+                        <input type="file" name="image" id="imageInput" required>
+                        <label for="imageInput" class="upload-label">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span>Click to upload image</span>
+                        </label>
+                    </div>
+
+                    <!-- 🔥 IMAGE PREVIEW -->
+                    <img id="previewImage"
+                         style="display:none; width:100%; margin-top:15px; border-radius:10px;" />
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" class="btn-submit">
+                    🚀 Publish Item
+                </button>
+
+            </form>
+
+            <!-- Back -->
+            <p style="text-align:center; margin-top:20px;">
+                <a href="/items" style="color:#64748b; text-decoration:none;">
+                    ← Back to Items
+                </a>
+            </p>
+
+        </div>
 
     </div>
+
 </div>
-    
-    
-    <p style="text-align:center; margin-top:20px;"><a href="/items" style="color:#7f8c8d; text-decoration:none;">← Back to Items</a></p>
-</div>
+
+<!-- 🔥 IMAGE PREVIEW SCRIPT -->
+<script>
+const imageInput = document.getElementById("imageInput");
+const preview = document.getElementById("previewImage");
+
+imageInput.addEventListener("change", function () {
+    const file = this.files[0];
+
+    if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            preview.src = e.target.result;
+            preview.style.display = "block";
+        };
+
+        reader.readAsDataURL(file);
+    }
+});
+</script>
 
 </body>
 </html>
