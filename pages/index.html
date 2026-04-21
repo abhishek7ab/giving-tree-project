@@ -26,29 +26,53 @@
         }
     </style>
 </head>
+
 <body>
 
-<!-- NAVBAR -->
+<!-- ✅ SINGLE CLEAN NAVBAR -->
 <div class="navbar">
-    <div class="logo"><i class="fas fa-leaf"></i> Giving Tree</div>
+    <div class="logo">
+        <i class="fas fa-leaf"></i> Giving Tree
+    </div>
+
     <nav class="nav-links" id="navLinks">
         <a href="/">Home</a>
         <a href="/items">Browse Items</a>
+        <a href="/post-item">Give Item</a>
+
+        <!-- 🔥 ADMIN (CONTROLLED BY JS) -->
+        <a id="adminLink"
+           href="https://giving-tree-backend.onrender.com/admin/dashboard"
+           style="display:none; color:#ff4757; font-weight:700;">
+           🛡 Admin
+        </a>
+
+        <a href="/logout">Logout</a>
     </nav>
 </div>
 
-<!-- HERO -->
+<!-- ✅ HERO SECTION -->
 <section class="hero">
     <div class="container">
         <div id="welcomeGreeting">
-            <span class="hero-tag" style="background: rgba(26,188,156,0.2); color:#1abc9c; padding:5px 15px; border-radius:50px; font-size:12px; font-weight:700;">Join 1,000+ neighbors sharing today</span>
-            <h1 class="gradient-text">Small Acts. <br>Big Connections.</h1>
-            <p>Your unused items could be someone's answer. Join a local community built on trust and sustainability.</p>
+            <span class="hero-tag" style="background: rgba(26,188,156,0.2); color:#1abc9c; padding:5px 15px; border-radius:50px; font-size:12px; font-weight:700;">
+                Join 1,000+ neighbors sharing today
+            </span>
+
+            <h1 class="gradient-text">
+                Small Acts. <br>Big Connections.
+            </h1>
+
+            <p>
+                Your unused items could be someone's answer. 
+                Join a local community built on trust and sustainability.
+            </p>
         </div>
+
         <div class="action-grid" id="mainActions"></div>
     </div>
 </section>
-
+    
 <!-- IMPACT STATS (GLOBAL) -->
 <section class="section">
     <div class="container">

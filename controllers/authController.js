@@ -65,6 +65,11 @@ exports.loginUser = async (req, res) => {
 
 // ================= LOGOUT =================
 exports.logoutUser = (req, res) => {
-    res.clearCookie('token');
-    res.sendFile(path.join(__dirname, '../pages/logout.html'));
+    res.clearCookie('token', {
+        httpOnly: true,
+        secure: false,       // same as login
+        sameSite: 'lax'      // MUST match login
+    });
+
+    return res.redirect('/login');
 };
