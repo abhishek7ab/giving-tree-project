@@ -16,33 +16,31 @@ const JWT_SECRET = process.env.JWT_SECRET || 'giving-tree-jwt-secret-2024';
 const app = express();
 app.set('trust proxy', 1);
 
-// ✅ CORS (flexible for development + deploy)
+// CORS
 app.use(cors({
     origin: true,
     credentials: true
 }));
 
-// ✅ Middlewares
+// Middlewares
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ✅ Static files
+// Static
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
-// ✅ Routes
+// Routes
 app.use('/', authRoutes);
 app.use('/', itemRoutes);
 app.use('/', requestRoutes);
 
-// ✅ User API
+// API
 app.get('/api/user', async (req, res) => {
   try {
     const token = req.cookies?.token;
 
-    if (!token) {
-      return res.json({ loggedIn: false });
-    }
+    if (!token) return res.json({ loggedIn: false });
 
     const decoded = jwt.verify(token, JWT_SECRET);
 
@@ -54,8 +52,6 @@ app.get('/api/user', async (req, res) => {
     res.json({
       loggedIn: true,
       id: decoded.id,
-      name: decoded.name,
-      email: decoded.email,
       role: decoded.role || 'user',
       stats: userStats
     });
@@ -66,12 +62,12 @@ app.get('/api/user', async (req, res) => {
   }
 });
 
-// ✅ Home route
+// Home
 app.get('/', (req, res) => {
   return res.redirect("https://giving-tree-frontend.vercel.app/index.html");
 });
 
-// ✅ Start server
+// Start
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
