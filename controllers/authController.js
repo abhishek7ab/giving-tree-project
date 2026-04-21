@@ -18,7 +18,8 @@ exports.register = async (req, res) => {
     try {
         const { name, email, password } = req.body;
 
-        const existingUser = await userModel.findByEmail(email);
+        // ❌ removed duplicate findByEmail
+        const existingUser = await userModel.findUserByEmail(email);
 
         if (existingUser) {
             return res.redirect("https://giving-tree-frontend.vercel.app/register.html?error=userexists");
@@ -39,7 +40,8 @@ exports.loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        const user = await userModel.findByEmail(email);
+        // ❌ removed duplicate findByEmail
+        const user = await userModel.findUserByEmail(email);
 
         if (!user) {
             return res.redirect("https://giving-tree-frontend.vercel.app/login.html?error=usernotfound");

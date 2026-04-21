@@ -1,12 +1,13 @@
 const { uploadToCloudinary } = require('../config/cloudinary');
-const path = require('path');
 const itemModel = require('../models/itemModel');
 const userModel = require('../models/userModel');
 const db = require('../database/db');
 
+const FRONTEND_BASE_URL = 'https://giving-tree-frontend.vercel.app';
+
 // ================= 1. BROWSE CATALOG =================
 exports.getItems = (req, res) => {
-    res.sendFile(path.join(process.cwd(), 'pages', 'items.html'));
+    return res.redirect(`${FRONTEND_BASE_URL}/items.html`);
 };
 
 exports.getItemsData = async (req, res) => {
@@ -15,30 +16,33 @@ exports.getItemsData = async (req, res) => {
         const items = await itemModel.getAllItems(searchTerm, 'All');
         res.json({ items });
     } catch (err) {
-        console.error("GET ITEMS ERROR:", err.message);
+        console.error(err);
         res.json({ error: "DB Error" });
     }
 };
 
 // ================= 2. MY ITEMS =================
 exports.showMyItems = (req, res) => {
-    res.sendFile(path.join(process.cwd(), 'pages', 'my-items.html'));
+    return res.redirect(`${FRONTEND_BASE_URL}/my-items.html`);
 };
 
 exports.getMyItemsData = async (req, res) => {
     try {
         const user_id = req.session?.user?.id;
+        if (!user_id) return res.status(401).json({ error: "Not logged in" });
+
         const items = await itemModel.getItemsByUser(user_id);
         res.json({ items });
+
     } catch (err) {
-        console.error("MY ITEMS ERROR:", err.message);
+        console.error(err);
         res.json({ error: "Database error" });
     }
 };
 
-// ================= 3. ADMIN PANEL =================
+// ================= 3. ADMIN =================
 exports.showAdminPanel = (req, res) => {
-    res.sendFile(path.join(process.cwd(), 'pages', 'admin.html'));
+    return res.redirect(`${FRONTEND_BASE_URL}/admin.html`);
 };
 
 exports.getAdminData = async (req, res) => {
@@ -54,55 +58,48 @@ exports.getAdminData = async (req, res) => {
                 totalUsers: users.length
             }
         });
+
     } catch (err) {
-        console.error("ADMIN ERROR:", err.message);
-        res.json({ error: "Admin data error" });
+        console.error(err);
+        res.json({ error: "Admin error" });
     }
 };
 
-// ================= 4. SHOW POST ITEM PAGE =================
+// ================= 4. POST PAGE =================
 exports.showPostItem = (req, res) => {
-    res.sendFile(path.join(process.cwd(), 'pages', 'post-item.html'));
+    return res.redirect(`${FRONTEND_BASE_URL}/post-item.html`);
 };
 
 // ================= 5. POST ITEM =================
 exports.postItem = async (req, res) => {
-    console.log("🔥 BODY:", req.body);
-    console.log("🔥 FILE:", req.file);
-
     try {
         const { title, description, location } = req.body;
 
         if (!req.file) {
-            return res.status(400).send("❌ File NOT received by server");
+            return res.status(400).send("File missing");
         }
 
-        // 🔥 Upload to Cloudinary
         const result = await uploadToCloudinary(req.file.buffer);
         const image = result.secure_url;
 
-        console.log("✅ IMAGE URL:", image);
-
-        const user_id = req.session?.user?.id || 1; // temp fix
-
-        if (!user_id) {
-        console.log("⚠️ Guest posting item");
-        }
+        // ❌ removed fallback user_id = 1
+        const user_id = req.session?.user?.id;
+        if (!user_id) return res.status(401).send("Not logged in");
 
         await itemModel.createItem(title, description, location, image, user_id);
 
         res.redirect('/items');
 
     } catch (err) {
-        console.error("❌ ERROR STACK:", err.stack);
-        res.status(500).send(err.message);
+        console.error(err);
+        res.status(500).send("Server error");
     }
 };
 
-// ================= 6. DELETE ITEM =================
+// ================= DELETE =================
 exports.deleteItem = async (req, res) => {
     try {
-        const id = req.body.id;
+        const { id } = req.body;
         const user_id = req.session?.user?.id;
 
         if (!user_id) return res.status(401).send("Not logged in");
@@ -111,47 +108,42 @@ exports.deleteItem = async (req, res) => {
         res.redirect('/my-items');
 
     } catch (err) {
-        console.error("DELETE ERROR:", err.message);
+        console.error(err);
         res.status(500).send("Error deleting item");
     }
 };
 
-// ================= 7. RECENT ITEMS =================
+// ================= RECENT =================
 exports.getRecentItems = async (req, res) => {
     try {
         const result = await db.query(
-            "SELECT * FROM items WHERE status = 'available' ORDER BY id DESC LIMIT 3"
+            "SELECT * FROM items WHERE status='available' ORDER BY id DESC LIMIT 3"
         );
         res.json(result.rows);
+
     } catch (err) {
-        console.error("RECENT ITEMS ERROR:", err.message);
+        console.error(err);
         res.status(500).json({ error: "DB Error" });
     }
 };
-// ================= 8. REQUEST ITEM =================
+
+// ================= REQUEST =================
 exports.requestItem = async (req, res) => {
     try {
         const { item_id } = req.body;
 
-        console.log("📩 Request received for item:", item_id);
+        const user_id = req.session?.user?.id;
+        if (!user_id) return res.status(401).send("Not logged in");
 
-        // ⚠️ TEMP: no session (since cross-domain issue)
-        const user_id = req.session?.user?.id || 1; // fallback for testing
-
-        if (!item_id) {
-            return res.status(400).send("Item ID missing");
-        }
-
-        // 👉 INSERT INTO REQUEST TABLE (adjust if needed)
         await db.query(
-            "INSERT INTO requests (item_id, user_id, status) VALUES ($1, $2, 'pending')",
+            "INSERT INTO requests (item_id, user_id, status) VALUES ($1,$2,'pending')",
             [item_id, user_id]
         );
 
-        res.json({ success: true, message: "Request sent!" });
+        res.json({ success: true });
 
     } catch (err) {
-        console.error("❌ REQUEST ERROR:", err);
+        console.error(err);
         res.status(500).send("Request failed");
     }
 };

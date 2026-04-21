@@ -3,10 +3,6 @@ const router = express.Router();
 
 const authController = require('../controllers/authController');
 
-// DEBUG (optional)
-console.log(authController);
-
-// Routes
 router.get('/login', authController.showLogin);
 router.get('/register', authController.showRegister);
 

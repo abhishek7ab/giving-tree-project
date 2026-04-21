@@ -16,26 +16,34 @@ const JWT_SECRET = process.env.JWT_SECRET || 'giving-tree-jwt-secret-2024';
 const app = express();
 app.set('trust proxy', 1);
 
-// CORS
+// ✅ Detect environment
+const isProduction = process.env.NODE_ENV === 'production';
+
+// ✅ Dynamic frontend URL
+const FRONTEND_URL = isProduction
+  ? "https://giving-tree-frontend.vercel.app"
+  : "http://localhost:3001"; // change if your frontend runs on another port
+
+// ✅ CORS (fixed properly)
 app.use(cors({
-    origin: true,
-    credentials: true
+  origin: FRONTEND_URL,
+  credentials: true
 }));
 
-// Middlewares
+// ✅ Middlewares
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Static
+// ✅ Static files
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
-// Routes
+// ✅ Routes
 app.use('/', authRoutes);
 app.use('/', itemRoutes);
 app.use('/', requestRoutes);
 
-// API
+// ✅ API
 app.get('/api/user', async (req, res) => {
   try {
     const token = req.cookies?.token;
@@ -62,15 +70,17 @@ app.get('/api/user', async (req, res) => {
   }
 });
 
-// Home
+// ✅ Home route
 app.get('/', (req, res) => {
-  return res.redirect("https://giving-tree-frontend.vercel.app/index.html");
+  return res.redirect(`${FRONTEND_URL}/index.html`);
 });
 
-// Start
+// ✅ Start server
 const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`🌍 Mode: ${isProduction ? "Production" : "Development"}`);
 });
 
 module.exports = app;
