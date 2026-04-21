@@ -105,9 +105,7 @@
     const BACKEND_URL = "https://giving-tree-backend.onrender.com";
 
     function loadItems(query = '') {
-        fetch(`${BACKEND_URL}/api/items/data?search=${query}`, {
-            credentials: "include"
-        })
+fetch(`${BACKEND_URL}/api/items/data?search=${query}`)
         .then(res => res.json())
         .then(data => {
             let html = "";
@@ -153,14 +151,13 @@
 
     // 🔥 NEW FUNCTION (THIS WAS MISSING)
     function requestItem(itemId) {
-        fetch(`${BACKEND_URL}/request-item`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            credentials: "include",
-            body: JSON.stringify({ item_id: itemId })
-        })
+    fetch(`${BACKEND_URL}/request-item`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ item_id: itemId })
+    })
         .then(res => {
             if (!res.ok) throw new Error("Request failed");
             return res.text();

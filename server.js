@@ -15,9 +15,11 @@ const JWT_SECRET = process.env.JWT_SECRET || 'giving-tree-jwt-secret-2024';
 
 const app = express();
 app.set('trust proxy', 1);
+const cors = require('cors');
+
 app.use(cors({
-  origin: '*',
-  credentials: true
+    origin: "https://giving-tree-project-iumxv5h00-abhishek-9cccb818.vercel.app",
+    credentials: true
 }));
 
 // 🔥 IMPORTANT: Body Parsers MUST come before routes
