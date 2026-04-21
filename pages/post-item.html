@@ -5,11 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Share an Item | Giving Tree</title>
 
-    <!-- CSS -->
     <link rel="stylesheet" href="/assets/style/base.css">
     <link rel="stylesheet" href="/assets/style/component.css">
 
-    <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
@@ -32,13 +30,6 @@
             margin-bottom: 20px;
         }
 
-        .input-group label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #1e293b;
-        }
-
         .btn-submit {
             width: 100%;
             padding: 15px;
@@ -50,101 +41,168 @@
             cursor: pointer;
             margin-top: 20px;
         }
+
+        /* 🔥 Upload UI */
+        .upload-box {
+            border: 2px dashed #1abc9c;
+            padding: 30px;
+            text-align: center;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+
+        .upload-box:hover {
+            background: #ecfeff;
+        }
+
+        .upload-content i {
+            font-size: 30px;
+            color: #1abc9c;
+        }
+
+        .upload-content p {
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        .preview-container {
+            position: relative;
+            margin-top: 15px;
+        }
+
+        .preview-container img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        #removeImage {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            padding: 5px 10px;
+        }
     </style>
 </head>
 
 <body>
 
-<!-- Navbar -->
 <div class="navbar" style="background:#1abc9c; padding:20px; color:white; text-align:center; font-weight:800;">
     🌳 GIVING TREE
 </div>
 
-<!-- Form Card -->
 <div class="main-form-card">
 
-    <div class="post-container">
+    <div class="post-card">
 
-        <div class="post-card">
+        <h2>✨ Share an Item</h2>
+        <p class="subtitle">Help your community by sharing something useful</p>
 
-            <h2>✨ Share an Item</h2>
-            <p class="subtitle">Help your community by sharing something useful</p>
+        <form action="/post-item" method="POST" enctype="multipart/form-data">
 
-            <form action="/post-item" method="POST" enctype="multipart/form-data">
+            <div class="input-group">
+                <label>Item Name</label>
+                <input type="text" name="title" required>
+            </div>
 
-                <!-- Title -->
-                <div class="input-group">
-                    <label>Item Name</label>
-                    <input type="text" name="title" placeholder="e.g. Wooden Table" required>
-                </div>
+            <div class="input-group">
+                <label>Description</label>
+                <textarea name="description" required></textarea>
+            </div>
 
-                <!-- Description -->
-                <div class="input-group">
-                    <label>Description</label>
-                    <textarea name="description" placeholder="Tell us about it..." required></textarea>
-                </div>
+            <div class="input-group">
+                <label>Location</label>
+                <input type="text" name="location" required>
+            </div>
 
-                <!-- Location -->
-                <div class="input-group">
-                    <label>Location</label>
-                    <input type="text" name="location" placeholder="e.g. Pune" required>
-                </div>
+            <!-- 🔥 NEW UPLOAD SYSTEM -->
+            <div class="input-group">
+                <label>Upload Image</label>
 
-                <!-- Image Upload -->
-                <div class="input-group">
-                    <label>Upload Image</label>
+                <div class="upload-box" id="uploadBox">
+                    <input type="file" name="image" id="imageInput" hidden required>
 
-                    <div class="upload-box">
-                        <input type="file" name="image" id="imageInput" required>
-                        <label for="imageInput" class="upload-label">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <span>Click to upload image</span>
-                        </label>
+                    <div class="upload-content">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Click or Drag & Drop Image</p>
                     </div>
-
-                    <!-- 🔥 IMAGE PREVIEW -->
-                    <img id="previewImage"
-                         style="display:none; width:100%; margin-top:15px; border-radius:10px;" />
                 </div>
 
-                <!-- Submit -->
-                <button type="submit" class="btn-submit">
-                    🚀 Publish Item
-                </button>
+                <!-- Preview -->
+                <div class="preview-container" id="previewContainer" style="display:none;">
+                    <img id="previewImage">
+                    <button type="button" id="removeImage">✖</button>
+                </div>
+            </div>
 
-            </form>
+            <button type="submit" class="btn-submit">🚀 Publish Item</button>
 
-            <!-- Back -->
-            <p style="text-align:center; margin-top:20px;">
-                <a href="/items" style="color:#64748b; text-decoration:none;">
-                    ← Back to Items
-                </a>
-            </p>
+        </form>
 
-        </div>
+        <p style="text-align:center; margin-top:20px;">
+            <a href="/items">← Back to Items</a>
+        </p>
 
     </div>
 
 </div>
 
-<!-- 🔥 IMAGE PREVIEW SCRIPT -->
+<!-- 🔥 SCRIPT -->
 <script>
+const uploadBox = document.getElementById("uploadBox");
 const imageInput = document.getElementById("imageInput");
 const preview = document.getElementById("previewImage");
+const previewContainer = document.getElementById("previewContainer");
+const removeBtn = document.getElementById("removeImage");
 
-imageInput.addEventListener("change", function () {
-    const file = this.files[0];
+// Click
+uploadBox.addEventListener("click", () => imageInput.click());
+
+// Change
+imageInput.addEventListener("change", handleFile);
+
+// Drag
+uploadBox.addEventListener("dragover", e => {
+    e.preventDefault();
+    uploadBox.style.background = "#ecfeff";
+});
+
+uploadBox.addEventListener("dragleave", () => {
+    uploadBox.style.background = "";
+});
+
+uploadBox.addEventListener("drop", e => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    imageInput.files = e.dataTransfer.files;
+    handleFile({ target: { files: [file] } });
+});
+
+// Handle file
+function handleFile(e) {
+    const file = e.target.files[0];
 
     if (file) {
         const reader = new FileReader();
 
-        reader.onload = function (e) {
-            preview.src = e.target.result;
-            preview.style.display = "block";
+        reader.onload = function (event) {
+            preview.src = event.target.result;
+            previewContainer.style.display = "block";
         };
 
         reader.readAsDataURL(file);
     }
+}
+
+// Remove
+removeBtn.addEventListener("click", () => {
+    preview.src = "";
+    previewContainer.style.display = "none";
+    imageInput.value = "";
 });
 </script>
 
