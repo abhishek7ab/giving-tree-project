@@ -68,7 +68,7 @@ app.get('/api/user', async (req, res) => {
 
 // ✅ Home route
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'pages/index.html'));
+  return res.redirect("https://giving-tree-frontend.vercel.app/index.html");
 });
 
 // ✅ Start server
