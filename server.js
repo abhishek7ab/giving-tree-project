@@ -125,28 +125,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// ✅ Ensure database initialization (for both serverless cold-starts & standalone)
-let dbInitPromise = null;
-function ensureDbInit() {
-  if (!dbInitPromise) {
-    dbInitPromise = initDB().catch((err) => {
-      logger.error({ err }, 'Failed to initialize DB schema');
-      dbInitPromise = null;
-    });
-  }
-  return dbInitPromise;
-}
 
-app.use(async (req, res, next) => {
-  if (process.env.NODE_ENV !== 'test') {
-    try {
-      await ensureDbInit();
-    } catch (e) {
-      // Proceed; route handlers handle DB connection issues appropriately
-    }
-  }
-  next();
-});
 
 // ✅ Static files with no-cache on HTML for live instant updates
 const fs = require('fs');
