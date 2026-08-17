@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const userModel = require('../models/userModel');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'giving_tree_default_jwt_secret_pune_2026_safe_32_chars';
+const isProduction = process.env.NODE_ENV === 'production';
 
 const { ALLOWED_PUNE_LOCATIONS } = require('../middleware/validation');
 
