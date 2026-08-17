@@ -180,10 +180,13 @@
                 body: JSON.stringify(payload)
             });
 
-            const data = await res.json().catch(() => ({}));
+            const text = await res.text();
+            let data = {};
+            try { data = JSON.parse(text); } catch(e) {}
 
             if (!res.ok) {
-                throw new Error(data.message || data.error || 'Your password or email is incorrect.');
+                const errMsg = data.message || data.error || data.details || (text && text.length < 160 ? text : null) || 'Your password or Gmail is incorrect.';
+                throw new Error(errMsg);
             }
 
             window.location.href = data.redirect || '/index.html';

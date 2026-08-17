@@ -96,6 +96,14 @@ app.post('/register', authLimiter);
 app.use('/api/', apiLimiter);
 
 // ✅ Middlewares
+app.use((req, res, next) => {
+  if (req.url.startsWith('/api/index.js')) {
+    req.url = req.url.slice('/api/index.js'.length) || '/';
+  } else if (req.url.startsWith('/api/index')) {
+    req.url = req.url.slice('/api/index'.length) || '/';
+  }
+  next();
+});
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
