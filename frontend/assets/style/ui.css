@@ -835,7 +835,7 @@ textarea[aria-invalid="true"]:focus {
 }
 
 .modal-overlay.active {
-    display: flex;
+    display: flex !important;
     animation: modalFadeIn var(--dur-base) var(--ease-out);
 }
 

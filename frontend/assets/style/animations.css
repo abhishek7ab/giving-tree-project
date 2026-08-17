@@ -445,14 +445,18 @@
 
 /* ===== MODAL ANIMATIONS ===== */
 .modal-overlay {
+    display: none;
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(10px);
     z-index: 9998;
-    display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.modal-overlay.active {
+    display: flex;
     animation: fadeIn 0.3s ease;
 }
 
