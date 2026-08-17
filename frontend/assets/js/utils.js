@@ -66,3 +66,19 @@ function escapeHtml(value) {
     div.textContent = value || '';
     return div.innerHTML;
 }
+
+// ---- Newsletter Form Handler ----
+function handleNewsletterSubmit(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const form = e.target || e;
+    const input = form.querySelector ? form.querySelector('input[type="email"]') : null;
+    const email = input ? input.value.trim() : '';
+    if (!email) {
+        showToast('Please enter a valid email address.', 'warning');
+        return false;
+    }
+    showToast('🎉 Thank you for subscribing to community updates!', 'success');
+    if (form.reset) form.reset();
+    return false;
+}
+

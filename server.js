@@ -16,6 +16,7 @@ const itemRoutes = require('./routes/itemRoutes');
 const requestRoutes = require('./routes/requestRoutes');
 const userModel = require('./models/userModel');
 const requestController = require('./controllers/requestController');
+const db = require('./database/db');
 const initDB = require('./database/init');
 
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -109,6 +110,29 @@ app.use((req, res, next) => {
   next();
 });
 
+// ✅ Ensure database initialization (for both serverless cold-starts & standalone)
+let dbInitPromise = null;
+function ensureDbInit() {
+  if (!dbInitPromise) {
+    dbInitPromise = initDB().catch((err) => {
+      logger.error({ err }, 'Failed to initialize DB schema');
+      dbInitPromise = null;
+    });
+  }
+  return dbInitPromise;
+}
+
+app.use(async (req, res, next) => {
+  if (process.env.NODE_ENV !== 'test') {
+    try {
+      await ensureDbInit();
+    } catch (e) {
+      // Proceed; route handlers handle DB connection issues appropriately
+    }
+  }
+  next();
+});
+
 // ✅ Static files with no-cache on HTML for live instant updates
 app.use(express.static(path.join(__dirname, 'frontend'), {
   setHeaders: (res, filePath) => {
@@ -171,7 +195,6 @@ app.get('/api/user', async (req, res) => {
     let userRole = decoded.role || 'user';
     let userName = decoded.name || 'Neighbor';
     try {
-        const db = require('./database/db');
         const userRes = await db.query("SELECT name, role, city, latitude, longitude FROM users WHERE id = $1 AND archived_at IS NULL", [decoded.id]);
         if (userRes.rows.length) {
             const row = userRes.rows[0];
@@ -204,7 +227,6 @@ app.get('/api/user', async (req, res) => {
 });
 
 // ✅ Public community stats
-const db = require('./database/db');
 app.get('/api/stats', async (req, res) => {
   try {
     const itemsResult = await db.query("SELECT COUNT(*) AS count FROM items WHERE archived_at IS NULL");
@@ -218,30 +240,6 @@ app.get('/api/stats', async (req, res) => {
   } catch (err) {
     console.error("STATS API ERROR:", err.message);
     res.json({ items_shared: 0, members: 0, completed: 0 });
-  }
-});
-
-// ✅ Delete account
-app.delete('/api/user/delete', async (req, res) => {
-  try {
-    const token = req.cookies?.token;
-    if (!token) return res.status(401).json({ error: 'Not logged in' });
-    if (req.body?.confirmDelete !== 'yes') {
-      return res.status(400).json({ error: 'Confirmation required' });
-    }
-
-    const decoded = jwt.verify(token, JWT_SECRET);
-    const deletedCount = await userModel.deleteUserById(decoded.id);
-
-    if (!deletedCount) {
-      return res.status(400).json({ error: 'Could not delete account' });
-    }
-
-    res.clearCookie('token');
-    return res.json({ success: true });
-  } catch (err) {
-    console.error('DELETE ACCOUNT ERROR:', err);
-    return res.status(500).json({ error: 'Could not delete account' });
   }
 });
 
@@ -290,7 +288,7 @@ function validateEnv() {
 
 validateEnv();
 
-// ✅ Start server
+// ✅ Start server (only when executed directly, e.g. local dev; skipped on Vercel/tests)
 let PORT = process.env.PORT || 3000;
 
 function startServer(port) {
@@ -315,6 +313,8 @@ function startServer(port) {
     });
 }
 
-startServer(PORT);
+if (require.main === module) {
+    startServer(PORT);
+}
 
 module.exports = app;

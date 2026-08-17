@@ -22,7 +22,6 @@ const STATIC_ASSETS = [
   '/assets/style/cards.css',
   '/assets/style/ui.css',
   '/assets/style/pages.css',
-  '/assets/style/themes.css',
   '/assets/style/animations.css',
   '/assets/vendor/leaflet/leaflet.css',
   '/assets/vendor/leaflet/leaflet.js',

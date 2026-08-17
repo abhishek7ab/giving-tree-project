@@ -1,0 +1,12 @@
+.git
+.agents
+.claude
+Dockerfile
+.dockerignore
+tests
+scripts
+.env
+.env.test
+.env.local
+jest.config.js
+README.md

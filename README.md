@@ -129,6 +129,29 @@ All 31 unit and integration tests should pass with green checkmarks.
 
 ---
 
+## 🚀 Deploying to Vercel
+
+Giving Tree is fully pre-configured for one-click deployment on [Vercel](https://vercel.com).
+
+### 1. Push to GitHub
+Make sure your latest code is pushed to your GitHub repository:
+```bash
+git push origin main
+```
+
+### 2. Import Project into Vercel
+1. Go to your [Vercel Dashboard](https://vercel.com/dashboard) and click **"Add New Project"**.
+2. Import your `giving-tree-project` repository.
+3. In the **Environment Variables** section, add your production environment variables:
+   - `DATABASE_URL`: Your hosted PostgreSQL connection string (Neon, Supabase, Vercel Postgres, Railway, etc.)
+   - `JWT_SECRET`: A secure random string (at least 32 characters)
+   - `FRONTEND_URL`: Your production Vercel domain URL (e.g. `https://giving-tree.vercel.app`)
+   - `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` *(optional, for image uploads)*
+   - `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_USER`, `EMAIL_PASS` *(optional, for email notifications)*
+4. Click **Deploy**. Vercel will automatically build and deploy the app.
+
+---
+
 ## 🤝 Want to Help or Contribute?
 
 Found a bug or have an idea to make Giving Tree better?
