@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Admin | Giving Tree</title>
+
+    <link rel="stylesheet" href="/assets/style/variables.css">
+    <link rel="stylesheet" href="/assets/style/base.css">
+    <link rel="stylesheet" href="/assets/style/navbar.css">
+    <link rel="stylesheet" href="/assets/style/footer.css">
+    <link rel="stylesheet" href="/assets/style/buttons.css">
+    <link rel="stylesheet" href="/assets/style/cards.css">
+    <link rel="stylesheet" href="/assets/style/ui.css">
+    <link rel="stylesheet" href="/assets/style/animations.css">
+    <link rel="stylesheet" href="/assets/style/pages.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        :root {
+            --admin-dark: var(--bg-deep);
+            --admin-card: var(--bg-surface);
+            --admin-accent: var(--accent);
+            --admin-accent-glow: var(--accent-glow);
+            --text-main: var(--text-1);
+            --text-muted: var(--text-2);
+        }
+
+        body {
+            background: var(--admin-dark) !important;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            color: var(--text-main);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Global dark selection for entire admin page */
+        ::selection {
+            background: var(--accent-dim);
+            color: #f8fafc;
+        }
+
+        ::-moz-selection {
+            background: var(--accent-dim);
+            color: #f8fafc;
+        }
+
+        /* Override any inherited white backgrounds */
+        *,
+        *::before,
+        *::after {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* --- PREMIUM ADMIN NAVBAR --- */
+        .admin-nav {
+            background: linear-gradient(90deg, #080d1a 0%, #0d1528 50%, #080d1a 100%);
+            padding: 0 40px;
+            height: 68px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.15);
+            box-shadow:
+                0 1px 0 0 rgba(16, 185, 129, 0.3),
+                0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .admin-nav .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .admin-nav .brand-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: var(--accent-dim);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            color: var(--admin-accent);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+            animation: iconPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes iconPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+            }
+
+            50% {
+                box-shadow: 0 0 25px rgba(16, 185, 129, 0.4);
+            }
+        }
+
+        .admin-nav .brand-text {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.5px;
+        }
+
+        .admin-nav .brand-text span {
+            color: var(--admin-accent);
+        }
+
+        .admin-nav .admin-badge {
+            background: rgba(239, 68, 68, 0.12);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.25);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-left: 12px;
+        }
+
+        .admin-nav .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .admin-nav .nav-link {
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.25s ease;
+            position: relative;
+        }
+
+        .admin-nav .nav-link:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .admin-nav .nav-link:hover i {
+            color: var(--admin-accent);
+        }
+
+        .admin-nav .nav-divider {
+            width: 1px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.08);
+            margin: 0 8px;
+        }
+
+        .admin-nav .nav-logout {
+            background: rgba(239, 68, 68, 0.08) !important;
+            border: 1px solid rgba(239, 68, 68, 0.2) !important;
+            color: rgba(239, 68, 68, 0.85) !important;
+            padding: 8px 16px !important;
+            border-radius: 8px !important;
+            font-size: 12.5px !important;
+            font-weight: 600 !important;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.25s ease !important;
+        }
+
+        .admin-nav .nav-logout::after {
+            display: none !important;
+        }
+
+        .admin-nav .nav-logout:hover {
+            background: rgba(239, 68, 68, 0.2) !important;
+            border-color: rgba(239, 68, 68, 0.4) !important;
+            color: #ef4444 !important;
+            transform: none !important;
+        }
+
+        /* Nav shimmer accent line */
+        .admin-nav::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 70px;
+            height: 2px;
+            background: var(--admin-accent);
+            border-radius: 2px;
+            box-shadow: 0 0 10px var(--admin-accent-glow);
+            animation: navScan 5s ease-in-out infinite;
+        }
+        @keyframes navScan {
+            0%   { left: 0; opacity: 1; }
+            50%  { left: calc(100% - 70px); opacity: 0.5; }
+            100% { left: 0; opacity: 1; }
+        }
+
+        /* --- HEADER --- */
+        .admin-header {
+            padding: 60px 40px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .admin-header h1 {
+            font-size: 36px;
+            font-weight: 800;
+            margin: 0 0 10px 0;
+            color: var(--text-main);
+            letter-spacing: -1px;
+        }
+
+        .admin-header p {
+            color: var(--text-muted);
+            margin: 0;
+            font-size: 16px;
+        }
+
+        /* --- STAT CARDS --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px 60px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 50px;
+        }
+
+        .stat-card {
+            background: var(--admin-card);
+            padding: 24px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+        .stat-card.items-card:hover  { border-color: rgba(56,189,248,0.35); box-shadow: 0 15px 35px rgba(0,0,0,0.3), 0 0 20px rgba(56,189,248,0.08); }
+        .stat-card.users-card:hover  { border-color: rgba(52,211,153,0.35); box-shadow: 0 15px 35px rgba(0,0,0,0.3), 0 0 20px rgba(52,211,153,0.08); }
+        .stat-card.health-card:hover { border-color: rgba(251,191,36,0.35);  box-shadow: 0 15px 35px rgba(0,0,0,0.3), 0 0 20px rgba(251,191,36,0.08); }
+
+        .stat-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .icon-items {
+            background: rgba(14, 165, 233, 0.15);
+            color: #38bdf8;
+        }
+
+        .icon-users {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+        }
+
+        .icon-health {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
+        }
+
+        .stat-info span {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-info h2 {
+            font-size: 32px;
+            margin: 5px 0 0;
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        /* --- SECTIONS & TABLES --- */
+        .admin-section {
+            background: var(--admin-card);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .section-header h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-header h3 i {
+            color: var(--admin-accent);
+        }
+
+        /* Search Bar (Matching Login Style) */
+        .search-box {
+            position: relative;
+            width: 300px;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .search-box input {
+            width: 100%;
+            background: var(--admin-dark);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            padding: 12px 15px 12px 40px;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            outline: none;
+            transition: 0.3s;
+            box-sizing: border-box;
+        }
+
+        .search-box input:focus {
+            border-color: var(--admin-accent);
+            box-shadow: 0 0 12px var(--admin-accent-glow);
+        }
+
+        /* Table — all !important to override base.css white backgrounds */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .admin-table {
+            width: 100% !important;
+            border-collapse: separate !important;
+            border-spacing: 0 8px !important;
+            text-align: left !important;
+            background: transparent !important;
+        }
+
+        .admin-table thead,
+        .admin-table tbody,
+        .admin-table tr {
+            background: transparent !important;
+        }
+
+        .admin-table th {
+            padding: 0 20px 10px !important;
+            font-size: 12px !important;
+            font-weight: 700 !important;
+            color: var(--text-muted) !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.5px !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+            background: transparent !important;
+        }
+
+        .admin-table td {
+            background: rgba(15, 23, 42, 0.5) !important;
+            padding: 16px 20px !important;
+            font-size: 14px !important;
+            vertical-align: middle !important;
+            border-bottom: none !important;
+        }
+
+        .admin-table tr td:first-child {
+            border-radius: 12px 0 0 12px;
+        }
+
+        .admin-table tr td:last-child {
+            border-radius: 0 12px 12px 0;
+        }
+
+        .admin-table tr:hover {
+            background: transparent !important;
+        }
+
+        .admin-table tr:hover td {
+            background: rgba(16, 185, 129, 0.06) !important;
+        }
+
+        /* Kill ALL white flash on click/focus/select */
+        .admin-table tr:active,
+        .admin-table tr:focus,
+        .admin-table tr:focus-within {
+            background: transparent !important;
+        }
+
+        .admin-table tr:active td,
+        .admin-table tr:focus td,
+        .admin-table tr:focus-within td,
+        .admin-table td:active,
+        .admin-table td:focus,
+        .admin-table th:active,
+        .admin-table th:focus {
+            background: rgba(15, 23, 42, 0.5) !important;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+        .admin-table *,
+        .admin-section * {
+            -webkit-tap-highlight-color: transparent !important;
+        }
+
+        /* Avatars & Badges */
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: var(--admin-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--admin-accent);
+            font-weight: 700;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .badge-pill {
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-admin {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .badge-user {
+            background: rgba(148, 163, 184, 0.1);
+            color: #cbd5e1;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+
+        .btn-delete-small {
+            background: rgba(225, 29, 72, 0.15) !important;
+            color: #fb7185 !important;
+            border: 1px solid rgba(225, 29, 72, 0.35) !important;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer !important;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            user-select: none;
+            position: relative;
+            z-index: 10;
+        }
+
+        .btn-delete-small:hover {
+            background: #e11d48 !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 15px rgba(225, 29, 72, 0.4);
+            border-color: #e11d48 !important;
+            transform: translateY(-1px);
+        }
+
+        .confirm-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 6, 23, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 999999 !important;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .confirm-overlay.active {
+            display: flex !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+
+        .confirm-modal {
+            width: 100%;
+            max-width: 430px;
+            background: #1e293b;
+            border: 1px solid rgba(251, 113, 133, 0.38);
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45), 0 0 32px rgba(225, 29, 72, 0.18);
+            padding: 28px;
+        }
+
+        .warning-icon {
+            width: 52px;
+            height: 52px;
+            margin-bottom: 16px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: rgba(225, 29, 72, 0.16);
+            border: 1px solid rgba(251, 113, 133, 0.45);
+            color: #fb7185;
+            font-size: 23px;
+        }
+
+        .confirm-modal h4 {
+            margin: 0 0 10px;
+            font-size: 20px;
+            color: #f8fafc;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .confirm-modal p {
+            margin: 0 0 22px;
+            color: #94a3b8;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .confirm-note {
+            margin: -8px 0 22px;
+            padding: 10px 12px;
+            border-left: 3px solid #fb7185;
+            border-radius: 6px;
+            background: rgba(225, 29, 72, 0.09);
+            color: #fecdd3;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .confirm-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .btn-modal {
+            border: none;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            transition: 0.25s;
+        }
+
+        .btn-cancel {
+            background: rgba(148, 163, 184, 0.15);
+            color: #cbd5e1;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+
+        .btn-cancel:hover {
+            background: rgba(148, 163, 184, 0.25);
+        }
+
+        .btn-danger {
+            background: rgba(225, 29, 72, 0.15);
+            color: #fb7185;
+            border: 1px solid rgba(225, 29, 72, 0.3);
+        }
+
+        .btn-danger:hover {
+            background: #e11d48;
+            color: #fff;
+        }
+
+        /* Export Button */
+        .btn-export {
+            background: rgba(26,188,156,0.08);
+            color: var(--admin-accent);
+            border: 1px solid rgba(26,188,156,0.2);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.25s;
+        }
+        .btn-export:hover {
+            background: rgba(26,188,156,0.15);
+            border-color: rgba(26,188,156,0.4);
+            box-shadow: 0 0 12px var(--admin-accent-glow);
+        }
+        .section-controls { display: flex; align-items: center; gap: 12px; }
+        .live-time { font-size: 15px; color: var(--admin-accent); font-weight: 500; margin-left: 14px; font-variant-numeric: tabular-nums; }
+        .badge-available { background: rgba(52,211,153,0.12); color: #34d399; border: 1px solid rgba(52,211,153,0.25); }
+        .btn-delete-small * {
+            pointer-events: none !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="confirm-overlay" id="confirmOverlay" role="presentation">
+        <div class="confirm-modal" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle"
+            aria-describedby="confirmMessage">
+            <div class="warning-icon" aria-hidden="true"><i class="fas fa-triangle-exclamation"></i></div>
+            <h4 id="confirmTitle">Confirm action</h4>
+            <div id="confirmMessage" style="color: #cbd5e1; font-size: 14px; margin-bottom: 20px;">Are you sure you want to continue?</div>
+            <div class="confirm-note"><i class="fas fa-circle-exclamation"></i> ⚠️ WARNING: This action is permanent and cannot be undone.</div>
+            <div class="confirm-actions">
+                <button type="button" class="btn-modal btn-cancel" id="cancelDeleteButton"
+                    onclick="closeDeleteModal()">Cancel</button>
+                <button type="button" class="btn-modal btn-danger" id="confirmDeleteButton"
+                    onclick="confirmDelete()">Delete permanently</button>
+            </div>
+        </div>
+    </div>
+
+    <nav class="admin-nav">
+        <div class="nav-brand">
+            <div class="brand-icon"><i class="fas fa-shield-halved"></i></div>
+            <span class="brand-text">GIVING <span>TREE</span></span>
+            <span class="admin-badge">Admin</span>
+        </div>
+        <div class="nav-actions">
+            <a href="/index.html" class="nav-link"><i class="fas fa-globe"></i> Main Site</a>
+            <a href="/items.html" class="nav-link"><i class="fas fa-boxes-stacked"></i> Browse</a>
+            <div class="nav-divider"></div>
+            <a href="/logout" class="nav-logout"><i class="fas fa-arrow-right-from-bracket"></i> Logout</a>
+        </div>
+    </nav>
+
+    <div class="admin-header">
+        <div>
+            <h1>Dashboard Overview <span class="live-time" id="liveTime"></span></h1>
+            <p>Monitor community activity and manage platform resources.</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- STATS -->
+        <div class="stats-grid">
+            <div class="stat-card items-card">
+                <div class="stat-icon icon-items"><i class="fas fa-boxes-stacked"></i></div>
+                <div class="stat-info">
+                    <span>Total Inventory</span>
+                    <h2 id="countItems">-</h2>
+                </div>
+            </div>
+            <div class="stat-card users-card">
+                <div class="stat-icon icon-users"><i class="fas fa-users"></i></div>
+                <div class="stat-info">
+                    <span>Active Members</span>
+                    <h2 id="countUsers">-</h2>
+                </div>
+            </div>
+            <div class="stat-card health-card">
+                <div class="stat-icon icon-health"><i class="fas fa-server"></i></div>
+                <div class="stat-info">
+                    <span>System Status</span>
+                    <h2 style="color: #34d399;">Online</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- USERS -->
+        <div class="admin-section">
+            <div class="section-header">
+                <h3><i class="fas fa-user-group"></i> Member Management</h3>
+                <div class="section-controls">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="userSearch" placeholder="Search members by name or email...">
+                    </div>
+                    <button class="btn-export" onclick="exportCSV('users')"><i class="fas fa-download"></i> Export</button>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>User Details</th>
+                            <th>Email Address</th>
+                            <th>Phone</th>
+                            <th>Role</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userList">
+                        <tr>
+                            <td colspan="5" style="text-align: center; color: var(--text-muted);">Loading members...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ITEMS -->
+        <div class="admin-section">
+            <div class="section-header">
+                <h3><i class="fas fa-box-open"></i> Community Inventory</h3>
+                <div class="section-controls">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="itemSearch" placeholder="Search items by title or location...">
+                    </div>
+                    <button class="btn-export" onclick="exportCSV('items')"><i class="fas fa-download"></i> Export</button>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Ref ID</th>
+                            <th>Item Details</th>
+                            <th>Location</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="itemList">
+                        <tr>
+                            <td colspan="5" style="text-align: center; color: var(--text-muted);">Loading inventory...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const BACKEND_URL = "";
+        let allUsers = [];
+        let allItems = [];
+        let pendingDeleteForm = null;
+        let pendingDeleteTrigger = null;
+
+        function escapeHtml(value) {
+            return String(value ?? '').replace(/[&<>'"]/g, character => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '"': '&quot;'
+            }[character]));
+        }
+
+        let pendingDelete = { type: null, id: null, name: '' };
+
+        function showToast(message, type = 'success') {
+            const existing = document.getElementById('adminToast');
+            if (existing) existing.remove();
+
+            const toast = document.createElement('div');
+            toast.id = 'adminToast';
+            toast.style.position = 'fixed';
+            toast.style.bottom = '24px';
+            toast.style.right = '24px';
+            toast.style.padding = '12px 20px';
+            toast.style.borderRadius = '10px';
+            toast.style.fontSize = '13.5px';
+            toast.style.fontWeight = '600';
+            toast.style.display = 'flex';
+            toast.style.alignItems = 'center';
+            toast.style.gap = '10px';
+            toast.style.zIndex = '9999';
+            toast.style.boxShadow = '0 10px 25px rgba(0,0,0,0.4)';
+            toast.style.transition = 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+
+            if (type === 'success') {
+                toast.style.background = '#10b981';
+                toast.style.color = '#ffffff';
+                toast.innerHTML = `<i class="fas fa-check-circle"></i> <span>${escapeHtml(message)}</span>`;
+            } else {
+                toast.style.background = '#ef4444';
+                toast.style.color = '#ffffff';
+                toast.innerHTML = `<i class="fas fa-exclamation-circle"></i> <span>${escapeHtml(message)}</span>`;
+            }
+
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(10px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        function promptRemoveUserBtn(event, btn) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            const button = btn || (event ? event.currentTarget || event.target.closest('button') : null);
+            if (!button) return;
+            const userId = button.dataset.userId || button.getAttribute('data-user-id');
+            const userName = button.dataset.userName || button.getAttribute('data-user-name') || 'Member';
+            const userEmail = button.dataset.userEmail || button.getAttribute('data-user-email') || '';
+            promptRemoveUser(userId, userName, userEmail);
+        }
+
+        function promptRemoveItemBtn(event, btn) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            const button = btn || (event ? event.currentTarget || event.target.closest('button') : null);
+            if (!button) return;
+            const itemId = button.dataset.itemId || button.getAttribute('data-item-id');
+            const itemTitle = button.dataset.itemTitle || button.getAttribute('data-item-title') || 'Item';
+            const itemLocation = button.dataset.itemLocation || button.getAttribute('data-item-location') || 'Local';
+            promptRemoveItem(itemId, itemTitle, itemLocation);
+        }
+
+        function promptRemoveUser(userId, userName, userEmail) {
+            let id = null;
+            if (typeof userId === 'object' && userId !== null) {
+                if (userId.dataset) {
+                    id = Number(userId.dataset.userId || userId.dataset.id);
+                    userName = userId.dataset.userName || userId.dataset.name || userName;
+                    userEmail = userId.dataset.userEmail || userId.dataset.email || userEmail;
+                } else {
+                    id = Number(userId.id || userId.userId);
+                    userName = userId.name || userId.userName || userName;
+                    userEmail = userId.email || userId.userEmail || userEmail;
+                }
+            } else {
+                id = Number(userId);
+            }
+
+            if (!id || isNaN(id)) {
+                console.error('Invalid user ID in promptRemoveUser:', userId);
+                return;
+            }
+
+            pendingDelete = { type: 'user', id: id, name: String(userName || 'Member'), email: String(userEmail || '') };
+            console.log('pendingDelete set to:', pendingDelete);
+
+            const titleEl = document.getElementById('confirmTitle');
+            const msgEl = document.getElementById('confirmMessage');
+            const btnEl = document.getElementById('confirmDeleteButton');
+            const cancelBtn = document.getElementById('cancelDeleteButton');
+            const overlay = document.getElementById('confirmOverlay');
+
+            if (btnEl) {
+                btnEl.dataset.targetId = String(id);
+                btnEl.dataset.targetType = 'user';
+                btnEl.dataset.targetName = String(userName || 'Member');
+                btnEl.dataset.targetEmail = String(userEmail || '');
+                btnEl.disabled = false;
+                btnEl.innerHTML = '<i class="fas fa-user-xmark"></i> Remove Member Permanently';
+                btnEl.onclick = confirmDelete;
+            }
+
+            if (titleEl) titleEl.innerHTML = '<i class="fas fa-user-slash" style="color:#fb7185; margin-right:8px;"></i> Remove Member Account?';
+            if (msgEl) msgEl.innerHTML = `
+                <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:12px; padding:14px; margin-bottom:16px; text-align:left;">
+                    <div style="font-size:15px; font-weight:700; color:#fff; margin-bottom:4px;">
+                        <i class="fas fa-user" style="color:var(--admin-accent); margin-right:6px;"></i> ${escapeHtml(userName || 'Member')}
+                    </div>
+                    <div style="font-size:13.5px; color:#94a3b8;">
+                        <i class="fas fa-envelope" style="color:var(--admin-accent); margin-right:6px;"></i> ${escapeHtml(userEmail || '')}
+                    </div>
+                </div>
+                <p style="margin:0 0 16px; color:#cbd5e1; font-size:13.5px; line-height:1.5;">
+                    You are about to remove this member from the platform. Their account access and all their shared community items will also be removed.
+                </p>
+            `;
+            if (cancelBtn) {
+                cancelBtn.textContent = 'Keep Member';
+                cancelBtn.onclick = closeDeleteModal;
+            }
+
+            if (overlay) {
+                overlay.classList.add('active');
+                overlay.style.display = 'flex';
+                overlay.style.visibility = 'visible';
+                overlay.style.opacity = '1';
+                if (cancelBtn) cancelBtn.focus();
+            }
+        }
+
+        function promptRemoveItem(itemId, itemTitle, itemLocation) {
+            let id = null;
+            if (typeof itemId === 'object' && itemId !== null) {
+                if (itemId.dataset) {
+                    id = Number(itemId.dataset.itemId || itemId.dataset.id);
+                    itemTitle = itemId.dataset.itemTitle || itemId.dataset.title || itemTitle;
+                    itemLocation = itemId.dataset.itemLocation || itemId.dataset.location || itemLocation;
+                } else {
+                    id = Number(itemId.id || itemId.itemId);
+                    itemTitle = itemId.title || itemId.itemTitle || itemTitle;
+                    itemLocation = itemId.location || itemId.itemLocation || itemLocation;
+                }
+            } else {
+                id = Number(itemId);
+            }
+
+            if (!id || isNaN(id)) {
+                console.error('Invalid item ID in promptRemoveItem:', itemId);
+                return;
+            }
+
+            pendingDelete = { type: 'item', id: id, name: String(itemTitle || 'Item'), location: String(itemLocation || 'Local') };
+            console.log('pendingDelete set to:', pendingDelete);
+
+            const titleEl = document.getElementById('confirmTitle');
+            const msgEl = document.getElementById('confirmMessage');
+            const btnEl = document.getElementById('confirmDeleteButton');
+            const cancelBtn = document.getElementById('cancelDeleteButton');
+            const overlay = document.getElementById('confirmOverlay');
+
+            if (btnEl) {
+                btnEl.dataset.targetId = String(id);
+                btnEl.dataset.targetType = 'item';
+                btnEl.dataset.targetName = String(itemTitle || 'Item');
+                btnEl.dataset.targetLocation = String(itemLocation || 'Local');
+                btnEl.disabled = false;
+                btnEl.innerHTML = '<i class="fas fa-trash-alt"></i> Delete Item Permanently';
+                btnEl.onclick = confirmDelete;
+            }
+
+            if (titleEl) titleEl.innerHTML = '<i class="fas fa-trash-alt" style="color:#fb7185; margin-right:8px;"></i> Delete Inventory Item?';
+            if (msgEl) msgEl.innerHTML = `
+                <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:12px; padding:14px; margin-bottom:16px; text-align:left;">
+                    <div style="font-size:15px; font-weight:700; color:#fff; margin-bottom:4px;">
+                        <i class="fas fa-box-open" style="color:#38bdf8; margin-right:6px;"></i> ${escapeHtml(itemTitle || 'Item')}
+                        <span style="font-size:12px; color:#94a3b8; font-weight:500; margin-left:6px;">(Ref #${id})</span>
+                    </div>
+                    <div style="font-size:13.5px; color:#94a3b8;">
+                        <i class="fas fa-map-marker-alt" style="color:var(--admin-accent); margin-right:6px;"></i> ${escapeHtml(itemLocation || 'Local')}
+                    </div>
+                </div>
+                <p style="margin:0 0 16px; color:#cbd5e1; font-size:13.5px; line-height:1.5;">
+                    This item will be permanently removed from Community Inventory. It will no longer be visible or available for neighbors to request.
+                </p>
+            `;
+            if (cancelBtn) {
+                cancelBtn.textContent = 'Keep Item';
+                cancelBtn.onclick = closeDeleteModal;
+            }
+
+            if (overlay) {
+                overlay.classList.add('active');
+                overlay.style.display = 'flex';
+                overlay.style.visibility = 'visible';
+                overlay.style.opacity = '1';
+                if (cancelBtn) cancelBtn.focus();
+            }
+        }
+
+        function closeDeleteModal() {
+            const overlay = document.getElementById('confirmOverlay');
+            if (overlay) {
+                overlay.classList.remove('active');
+                overlay.style.display = 'none';
+            }
+            const btnEl = document.getElementById('confirmDeleteButton');
+            if (btnEl) {
+                delete btnEl.dataset.targetId;
+                delete btnEl.dataset.targetType;
+                delete btnEl.dataset.targetName;
+                delete btnEl.dataset.targetEmail;
+                btnEl.disabled = false;
+            }
+            pendingDelete = { type: null, id: null, name: '' };
+        }
+
+        let isDeleteInProgress = false;
+
+        async function confirmDelete() {
+            if (isDeleteInProgress) {
+                console.log('Delete already in progress, skipping duplicate call.');
+                return;
+            }
+
+            const confirmBtn = document.getElementById('confirmDeleteButton');
+            let id = Number(pendingDelete?.id || confirmBtn?.dataset?.targetId);
+            let type = pendingDelete?.type || confirmBtn?.dataset?.targetType || 'user';
+            let name = pendingDelete?.name || confirmBtn?.dataset?.targetName || 'Member';
+            let email = pendingDelete?.email || confirmBtn?.dataset?.targetEmail || '';
+
+            console.log('confirmDelete triggered with target:', { id, type, name, email });
+            if (!id || isNaN(id)) {
+                console.warn('Cannot delete: no target ID found');
+                showToast('Please select a member or item to remove.', 'error');
+                return;
+            }
+
+            isDeleteInProgress = true;
+            const isItem = type === 'item';
+            const actionUrl = isItem ? '/admin/delete-item' : '/admin/delete-user';
+
+            if (confirmBtn) {
+                confirmBtn.disabled = true;
+                confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Removing...';
+            }
+
+            try {
+                const res = await fetch(actionUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        id: Number(id),
+                        confirmDelete: 'yes'
+                    })
+                });
+
+                const data = await res.json().catch(() => ({}));
+                console.log('Delete response:', res.status, data);
+
+                if (!res.ok) {
+                    throw new Error(data.error || data.details || 'Failed to remove.');
+                }
+
+                closeDeleteModal();
+                showToast(isItem ? `Item "${name}" deleted successfully!` : `Member "${name}" (${email || ''}) removed successfully!`, 'success');
+                await loadAdminData();
+            } catch (err) {
+                console.error('Delete error:', err);
+                showToast(err.message || 'Failed to perform action.', 'error');
+                closeDeleteModal();
+            } finally {
+                isDeleteInProgress = false;
+                if (confirmBtn) confirmBtn.disabled = false;
+            }
+        }
+
+        function renderUsers(users) {
+            const tbody = document.getElementById('userList');
+            if (users.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:40px; color:var(--text-muted);"><i class="fas fa-users-slash" style="font-size:32px; margin-bottom:12px; display:block; color:#334155;"></i>No members match your search.</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = users.map(u => {
+                const initials = (u.name || 'U').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                const canDelete = u.role !== 'admin' && String(u.email || '').toLowerCase().trim() !== 'badaveabhishek2004@gmail.com';
+                const safeName = escapeHtml(u.name || 'this member');
+                const safeEmail = escapeHtml(u.email || '');
+                const safeCity = escapeHtml(u.city || '');
+                return `
+                <tr>
+                    <td>
+                        <div class="user-info">
+                            <div class="avatar">${initials}</div>
+                            <div>
+                                <strong>${safeName}</strong>
+                                ${safeCity ? `<div style="font-size:11px; color:var(--admin-accent); margin-top:2px;"><i class="fas fa-map-marker-alt" style="font-size:10px;"></i> ${safeCity}</div>` : ''}
+                            </div>
+                        </div>
+                    </td>
+                    <td><span style="color:var(--text-muted)">${safeEmail}</span></td>
+                    <td><span style="color:var(--text-muted)">${u.phone || '-'}</span></td>
+                    <td><span class="badge-pill ${u.role === 'admin' ? 'badge-admin' : 'badge-user'}">${u.role}</span></td>
+                    <td>
+                        ${canDelete ? `
+                        <button type="button" class="btn-delete-small" data-action="remove-user" data-user-id="${u.id}" data-user-name="${safeName}" data-user-email="${safeEmail}" onclick="promptRemoveUser(${u.id}, '${safeName.replace(/'/g, "\\'")}', '${safeEmail.replace(/'/g, "\\'")}')">
+                            <i class="fas fa-user-xmark"></i> Remove
+                        </button>
+                        ` : `<span style="color:var(--text-muted); font-size:12px; font-weight:600;"><i class="fas fa-shield-alt" style="color:var(--admin-accent);"></i> Protected (Admin)</span>`}
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        function renderItems(items) {
+            const tbody = document.getElementById('itemList');
+            if (items.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:40px; color:var(--text-muted);"><i class="fas fa-box-open" style="font-size:32px; margin-bottom:12px; display:block; color:#334155;"></i>No items match your search.</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = items.map(i => {
+                const status = i.status || 'available';
+                const statusClass = status === 'claimed' ? 'badge-claimed' : 'badge-available';
+                const safeTitle = escapeHtml(i.title || 'this item');
+                const safeLoc = escapeHtml(i.location || 'Local');
+                return `
+                <tr>
+                    <td><code style="background:rgba(0,0,0,0.2); padding:4px 8px; border-radius:6px; font-size:12px; color:var(--text-muted)">#${i.id}</code></td>
+                    <td><strong style="color:var(--text-main)">${safeTitle}</strong></td>
+                    <td><i class="fas fa-map-marker-alt" style="color:var(--admin-accent); font-size:12px; margin-right:5px;"></i> <span style="color:var(--text-muted)">${safeLoc}</span></td>
+                    <td><span class="badge-pill ${statusClass}">${status}</span></td>
+                    <td>
+                        <button type="button" class="btn-delete-small" data-action="delete-item" data-item-id="${i.id}" data-item-title="${safeTitle}" data-item-location="${safeLoc}" onclick="promptRemoveItem(${i.id}, '${safeTitle.replace(/'/g, "\\'")}', '${safeLoc.replace(/'/g, "\\'")}')">
+                            <i class="fas fa-trash-alt"></i> Delete
+                        </button>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        // Global delegated click listener
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('#confirmDeleteButton')) {
+                e.preventDefault();
+                e.stopPropagation();
+                confirmDelete();
+                return;
+            }
+
+            if (e.target.closest('#cancelDeleteButton')) {
+                e.preventDefault();
+                e.stopPropagation();
+                closeDeleteModal();
+                return;
+            }
+
+            const userBtn = e.target.closest('[data-action="remove-user"]');
+            if (userBtn) {
+                e.preventDefault();
+                e.stopPropagation();
+                promptRemoveUser(userBtn.dataset.userId, userBtn.dataset.userName, userBtn.dataset.userEmail);
+                return;
+            }
+
+            const itemBtn = e.target.closest('[data-action="delete-item"]');
+            if (itemBtn) {
+                e.preventDefault();
+                e.stopPropagation();
+                promptRemoveItem(itemBtn.dataset.itemId, itemBtn.dataset.itemTitle, itemBtn.dataset.itemLocation);
+                return;
+            }
+
+            if (e.target.id === 'confirmOverlay') {
+                closeDeleteModal();
+            }
+        });
+
+        // Fetch Data
+        async function loadAdminData() {
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/admin/data`, { credentials: "include" });
+                if (!res.ok) {
+                    if (res.status === 401 || res.status === 403) {
+                        window.location.href = '/login.html?error=adminonly';
+                        return;
+                    }
+                    throw new Error('Failed to fetch admin data');
+                }
+                const data = await res.json();
+                if (data.error) throw new Error(data.error);
+
+                allUsers = data.users || [];
+                allItems = data.items || [];
+
+                const countItemsEl = document.getElementById('countItems');
+                const countUsersEl = document.getElementById('countUsers');
+                if (countItemsEl) countItemsEl.innerText = data.stats?.totalItems ?? allItems.length;
+                if (countUsersEl) countUsersEl.innerText = data.stats?.totalUsers ?? allUsers.length;
+
+                renderUsers(allUsers);
+                renderItems(allItems);
+            } catch (err) {
+                console.error("Failed to load admin data", err);
+                document.getElementById('userList').innerHTML = `<tr><td colspan="5" style="text-align: center; padding:30px; color: #ef4444;"><i class="fas fa-exclamation-triangle" style="font-size:24px; margin-bottom:8px; display:block;"></i>Failed to load member data. <a href="javascript:loadAdminData()" style="color:var(--admin-accent); font-weight:600; text-decoration:underline;">Retry</a></td></tr>`;
+                document.getElementById('itemList').innerHTML = `<tr><td colspan="5" style="text-align: center; padding:30px; color: #ef4444;"><i class="fas fa-exclamation-triangle" style="font-size:24px; margin-bottom:8px; display:block;"></i>Failed to load inventory data. <a href="javascript:loadAdminData()" style="color:var(--admin-accent); font-weight:600; text-decoration:underline;">Retry</a></td></tr>`;
+            }
+        }
+
+        loadAdminData();
+
+        // Search Handlers
+        document.getElementById('userSearch').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = allUsers.filter(u =>
+                u.name.toLowerCase().includes(term) ||
+                u.email.toLowerCase().includes(term)
+            );
+            renderUsers(filtered);
+        });
+
+        document.getElementById('itemSearch').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = allItems.filter(i =>
+                i.title.toLowerCase().includes(term) ||
+                i.location.toLowerCase().includes(term)
+            );
+            renderItems(filtered);
+        });
+
+        // Live Clock
+        setInterval(() => {
+            const el = document.getElementById('liveTime');
+            if (el) el.textContent = new Date().toLocaleTimeString('en-US', { hour12: false });
+        }, 1000);
+
+        // CSV Export
+        function exportCSV(type) {
+            let headers, rows, filename;
+            if (type === 'users') {
+                headers = ['Name', 'Email', 'Phone', 'Role'];
+                rows = allUsers.map(u => [u.name, u.email, u.phone || '-', u.role]);
+                filename = 'members_export.csv';
+            } else {
+                headers = ['ID', 'Title', 'Location', 'Status'];
+                rows = allItems.map(i => [i.id, i.title, i.location, i.status || 'available']);
+                filename = 'inventory_export.csv';
+            }
+            const csv = [headers, ...rows].map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeDeleteModal();
+        });
+    </script>
+    <script src="/assets/js/animations.js"></script>
+</body>
+
+</html>

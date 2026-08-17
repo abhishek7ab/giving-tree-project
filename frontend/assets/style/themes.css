@@ -1,0 +1,439 @@
+/* ===== GIVING TREE - DYNAMIC THEME SYSTEM ===== */
+/* Inspired by Crypgo's premium crypto design */
+
+/* ===== THEME DEFINITIONS ===== */
+
+/* Default: Emerald Theme */
+:root,
+[data-theme="emerald"] {
+    --primary-hue: 160;
+    --primary-sat: 84%;
+    --primary-light: 39%;
+
+    --accent: hsl(160, 84%, 39%);
+    --accent-light: hsl(160, 84%, 49%);
+    --accent-dark: hsl(160, 84%, 29%);
+    --accent-dim: hsla(160, 84%, 39%, 0.1);
+    --accent-gradient: linear-gradient(135deg, hsl(160, 84%, 39%) 0%, hsl(160, 84%, 29%) 100%);
+    --accent-glow: 0 0 40px hsla(160, 84%, 39%, 0.3);
+
+    --theme-name: "Emerald";
+    --theme-emoji: "💚";
+}
+
+/* Sapphire Blue Theme */
+[data-theme="sapphire"] {
+    --primary-hue: 217;
+    --primary-sat: 91%;
+    --primary-light: 60%;
+
+    --accent: hsl(217, 91%, 60%);
+    --accent-light: hsl(217, 91%, 70%);
+    --accent-dark: hsl(217, 91%, 50%);
+    --accent-dim: hsla(217, 91%, 60%, 0.1);
+    --accent-gradient: linear-gradient(135deg, hsl(217, 91%, 60%) 0%, hsl(217, 91%, 50%) 100%);
+    --accent-glow: 0 0 40px hsla(217, 91%, 60%, 0.3);
+
+    --theme-name: "Sapphire";
+    --theme-emoji: "💙";
+}
+
+/* Amethyst Purple Theme */
+[data-theme="amethyst"] {
+    --primary-hue: 271;
+    --primary-sat: 81%;
+    --primary-light: 56%;
+
+    --accent: hsl(271, 81%, 56%);
+    --accent-light: hsl(271, 81%, 66%);
+    --accent-dark: hsl(271, 81%, 46%);
+    --accent-dim: hsla(271, 81%, 56%, 0.1);
+    --accent-gradient: linear-gradient(135deg, hsl(271, 81%, 56%) 0%, hsl(271, 81%, 46%) 100%);
+    --accent-glow: 0 0 40px hsla(271, 81%, 56%, 0.3);
+
+    --theme-name: "Amethyst";
+    --theme-emoji: "💜";
+}
+
+/* Ruby Red Theme */
+[data-theme="ruby"] {
+    --primary-hue: 348;
+    --primary-sat: 83%;
+    --primary-light: 47%;
+
+    --accent: hsl(348, 83%, 47%);
+    --accent-light: hsl(348, 83%, 57%);
+    --accent-dark: hsl(348, 83%, 37%);
+    --accent-dim: hsla(348, 83%, 47%, 0.1);
+    --accent-gradient: linear-gradient(135deg, hsl(348, 83%, 47%) 0%, hsl(348, 83%, 37%) 100%);
+    --accent-glow: 0 0 40px hsla(348, 83%, 47%, 0.3);
+
+    --theme-name: "Ruby";
+    --theme-emoji: "❤️";
+}
+
+/* Citrine Orange Theme */
+[data-theme="citrine"] {
+    --primary-hue: 32;
+    --primary-sat: 95%;
+    --primary-light: 55%;
+
+    --accent: hsl(32, 95%, 55%);
+    --accent-light: hsl(32, 95%, 65%);
+    --accent-dark: hsl(32, 95%, 45%);
+    --accent-dim: hsla(32, 95%, 55%, 0.1);
+    --accent-gradient: linear-gradient(135deg, hsl(32, 95%, 55%) 0%, hsl(32, 95%, 45%) 100%);
+    --accent-glow: 0 0 40px hsla(32, 95%, 55%, 0.3);
+
+    --theme-name: "Citrine";
+    --theme-emoji: "🧡";
+}
+
+/* Topaz Gold Theme */
+[data-theme="topaz"] {
+    --primary-hue: 45;
+    --primary-sat: 93%;
+    --primary-light: 47%;
+
+    --accent: hsl(45, 93%, 47%);
+    --accent-light: hsl(45, 93%, 57%);
+    --accent-dark: hsl(45, 93%, 37%);
+    --accent-dim: hsla(45, 93%, 47%, 0.1);
+    --accent-gradient: linear-gradient(135deg, hsl(45, 93%, 47%) 0%, hsl(45, 93%, 37%) 100%);
+    --accent-glow: 0 0 40px hsla(45, 93%, 47%, 0.3);
+
+    --theme-name: "Topaz";
+    --theme-emoji: "💛";
+}
+
+/* Mint Green Theme */
+[data-theme="mint"] {
+    --primary-hue: 152;
+    --primary-sat: 76%;
+    --primary-light: 60%;
+
+    --accent: hsl(152, 76%, 60%);
+    --accent-light: hsl(152, 76%, 70%);
+    --accent-dark: hsl(152, 76%, 50%);
+    --accent-dim: hsla(152, 76%, 60%, 0.1);
+    --accent-gradient: linear-gradient(135deg, hsl(152, 76%, 60%) 0%, hsl(152, 76%, 50%) 100%);
+    --accent-glow: 0 0 40px hsla(152, 76%, 60%, 0.3);
+
+    --theme-name: "Mint";
+    --theme-emoji: "🍃";
+}
+
+/* Rose Pink Theme */
+[data-theme="rose"] {
+    --primary-hue: 330;
+    --primary-sat: 81%;
+    --primary-light: 60%;
+
+    --accent: hsl(330, 81%, 60%);
+    --accent-light: hsl(330, 81%, 70%);
+    --accent-dark: hsl(330, 81%, 50%);
+    --accent-dim: hsla(330, 81%, 60%, 0.1);
+    --accent-gradient: linear-gradient(135deg, hsl(330, 81%, 60%) 0%, hsl(330, 81%, 50%) 100%);
+    --accent-glow: 0 0 40px hsla(330, 81%, 60%, 0.3);
+
+    --theme-name: "Rose";
+    --theme-emoji: "🌸";
+}
+
+/* ===== THEME TRANSITIONS ===== */
+:root {
+    transition:
+        --accent 0.3s ease,
+        --accent-light 0.3s ease,
+        --accent-dark 0.3s ease,
+        --accent-dim 0.3s ease,
+        --accent-gradient 0.3s ease,
+        --accent-glow 0.3s ease;
+}
+
+/* Smooth theme transitions for all themed elements */
+* {
+    transition-property: background-color, border-color, color, box-shadow, transform;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+}
+
+/* ===== THEME SWITCHER WIDGET ===== */
+.theme-switcher-widget {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-end;
+}
+
+.theme-toggle-btn {
+    width: 56px;
+    height: 56px;
+    background: var(--accent-gradient);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), var(--accent-glow);
+    transition: all 0.3s ease;
+    font-size: 24px;
+    color: white;
+    backdrop-filter: blur(10px);
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+.theme-toggle-btn:hover {
+    transform: scale(1.1) translateY(-5px);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5), 0 0 60px var(--accent);
+}
+
+.theme-toggle-btn:active {
+    transform: scale(0.95);
+}
+
+.theme-picker-panel {
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+    display: none;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 280px;
+    animation: slideInUp 0.3s ease;
+}
+
+@keyframes slideInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.theme-picker-panel.active {
+    display: flex;
+}
+
+.theme-picker-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.theme-picker-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: white;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.theme-close-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    border-radius: 8px;
+}
+
+.theme-close-btn:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.theme-options-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.theme-option {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.theme-option::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--theme-accent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.theme-option:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px);
+}
+
+.theme-option.active {
+    border-color: var(--theme-accent);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.theme-option.active::before {
+    opacity: 1;
+}
+
+.theme-color-preview {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--theme-accent);
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 16px var(--theme-shadow);
+    transition: all 0.3s ease;
+}
+
+.theme-option:hover .theme-color-preview {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 6px 24px var(--theme-shadow);
+}
+
+.theme-option-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: white;
+    text-align: center;
+}
+
+.theme-option-emoji {
+    font-size: 18px;
+}
+
+/* Theme-specific option colors */
+.theme-option[data-theme="emerald"] {
+    --theme-accent: hsl(160, 84%, 39%);
+    --theme-shadow: hsla(160, 84%, 39%, 0.4);
+}
+
+.theme-option[data-theme="sapphire"] {
+    --theme-accent: hsl(217, 91%, 60%);
+    --theme-shadow: hsla(217, 91%, 60%, 0.4);
+}
+
+.theme-option[data-theme="amethyst"] {
+    --theme-accent: hsl(271, 81%, 56%);
+    --theme-shadow: hsla(271, 81%, 56%, 0.4);
+}
+
+.theme-option[data-theme="ruby"] {
+    --theme-accent: hsl(348, 83%, 47%);
+    --theme-shadow: hsla(348, 83%, 47%, 0.4);
+}
+
+.theme-option[data-theme="citrine"] {
+    --theme-accent: hsl(32, 95%, 55%);
+    --theme-shadow: hsla(32, 95%, 55%, 0.4);
+}
+
+.theme-option[data-theme="topaz"] {
+    --theme-accent: hsl(45, 93%, 47%);
+    --theme-shadow: hsla(45, 93%, 47%, 0.4);
+}
+
+.theme-option[data-theme="mint"] {
+    --theme-accent: hsl(152, 76%, 60%);
+    --theme-shadow: hsla(152, 76%, 60%, 0.4);
+}
+
+.theme-option[data-theme="rose"] {
+    --theme-accent: hsl(330, 81%, 60%);
+    --theme-shadow: hsla(330, 81%, 60%, 0.4);
+}
+
+/* Current theme indicator */
+.current-theme-badge {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.current-theme-color {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 2px 8px var(--accent-glow);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .theme-switcher-widget {
+        bottom: 16px;
+        right: 16px;
+    }
+
+    .theme-toggle-btn {
+        width: 48px;
+        height: 48px;
+        font-size: 20px;
+    }
+
+    .theme-picker-panel {
+        min-width: 260px;
+        padding: 16px;
+    }
+
+    .theme-options-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+}
+
+/* Accessibility */
+.theme-option:focus,
+.theme-toggle-btn:focus,
+.theme-close-btn:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+/* Print styles - default to emerald */
+@media print {
+    .theme-switcher-widget {
+        display: none !important;
+    }
+}

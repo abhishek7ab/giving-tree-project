@@ -1,0 +1,267 @@
+/* ============================================================
+   GIVING TREE — base.css
+   Reset, Typography, Layout Primitives, Accessibility & Grid Systems.
+   ============================================================ */
+
+/* ---- Modern Cascade Layers Definition ---- */
+@layer reset, base, layout, components, pages, utilities;
+
+@layer reset {
+    *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    html {
+        scroll-behavior: smooth;
+        -webkit-text-size-adjust: 100%;
+        tab-size: 4;
+    }
+
+    body {
+        min-height: 100vh;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, svg, video, canvas {
+        display: block;
+        max-width: 100%;
+        height: auto;
+    }
+
+    input, button, textarea, select {
+        font: inherit;
+        color: inherit;
+    }
+
+    button {
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    ul, ol {
+        list-style: none;
+    }
+}
+
+@layer base {
+    body {
+        font-family: 'Plus Jakarta Sans', 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background-color: var(--bg-deep);
+        background-image: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(255, 255, 255, 0.04) 0%, transparent 60%);
+        background-attachment: fixed;
+        color: var(--text-1);
+        font-size: 15px;
+        line-height: 1.68;
+    }
+
+    /* Accessible focus ring for keyboard navigation */
+    :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+        border-radius: 4px;
+    }
+
+    /* Screen reader only utility */
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+
+    /* Skip to content accessibility link */
+    .skip-link {
+        position: absolute;
+        top: -100px;
+        left: 20px;
+        background: var(--skip-link-bg);
+        color: var(--skip-link-color);
+        padding: 12px 20px;
+        border-radius: var(--radius-sm);
+        font-weight: 700;
+        z-index: 10000;
+        transition: top var(--dur-fast) var(--ease);
+    }
+    .skip-link:focus {
+        top: 20px;
+    }
+}
+
+@layer layout {
+    /* ---- Layout Containers ---- */
+    .container {
+        width: 100%;
+        max-width: var(--max-w-content);
+        margin: 0 auto;
+        padding: 0 28px;
+    }
+
+    .container-sm {
+        width: 100%;
+        max-width: 840px;
+        margin: 0 auto;
+        padding: 0 24px;
+    }
+
+    .container-fluid {
+        width: 100%;
+        padding: 0 28px;
+    }
+
+    /* ---- Section Layout ---- */
+    .section {
+        padding: clamp(70px, 9vw, 120px) 0;
+        text-align: center;
+        position: relative;
+    }
+
+    .section-title {
+        font-size: var(--fs-xl);
+        font-weight: 800;
+        margin-bottom: 14px;
+        color: var(--text-1);
+        letter-spacing: -0.03em;
+        text-align: center;
+    }
+
+    .section-title::after {
+        content: "";
+        width: 36px;
+        height: 2px;
+        background: rgba(255, 255, 255, 0.22);
+        display: block;
+        margin: 12px auto 0;
+        border-radius: 2px;
+    }
+
+    .subtitle {
+        font-size: var(--fs-base);
+        color: var(--text-2);
+        margin-bottom: 0;
+        max-width: var(--max-w-copy);
+        margin-left: auto;
+        margin-right: auto;
+        line-height: 1.65;
+    }
+
+    /* ---- Split Layout Primitives ---- */
+    .split-layout {
+        display: flex;
+        align-items: center;
+        gap: clamp(40px, 6vw, 80px);
+        text-align: left;
+    }
+
+    .content-side { flex: 1; min-width: 0; }
+    .image-side   { flex: 1; min-width: 0; position: relative; }
+
+    /* ---- Hero Layout ---- */
+    .hero {
+        padding: clamp(70px, 9vw, 130px) 20px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        min-height: 75vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--bg-deep);
+        background-image:
+            linear-gradient(180deg, rgba(9, 13, 22, 0.82) 0%, rgba(9, 13, 22, 0.96) 100%),
+            url('/assets/hero-bg.png');
+        background-size: cover;
+        background-position: center 30%;
+    }
+
+    .hero::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse 60% 50% at 50% 20%, rgba(255, 255, 255, 0.04) 0%, transparent 70%);
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .hero > * { position: relative; z-index: 1; }
+
+    .hero-tag {
+        background: rgba(255, 255, 255, 0.08);
+        color: #ffffff;
+        padding: 6px 18px;
+        border-radius: 50px;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 24px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        letter-spacing: 0.3px;
+        animation: fadeInDown 0.7s var(--ease) both;
+    }
+
+    .hero-tag i {
+        color: var(--accent);
+    }
+
+    /* Clean Headline */
+    .gradient-text {
+        font-size: var(--fs-3xl);
+        font-weight: 800;
+        margin: 0 0 20px;
+        line-height: 1.08;
+        letter-spacing: -0.03em;
+        color: #ffffff;
+        background: none;
+        -webkit-text-fill-color: initial;
+        animation: fadeInUp 0.8s var(--ease) 0.1s both;
+    }
+}
+
+@layer utilities {
+    /* ---- Utility Primitives ---- */
+    .text-center { text-align: center; }
+    .text-left   { text-align: left; }
+    .text-right  { text-align: right; }
+    .mt-auto     { margin-top: auto; }
+    .w-full      { width: 100%; }
+    
+    .flex-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .flex-between {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .grid-auto-fit {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+        gap: 28px;
+    }
+}
+
+/* ---- Responsive Queries ---- */
+@media (max-width: 900px) {
+    .split-layout { flex-direction: column; text-align: center; }
+    .container    { padding: 0 20px; }
+}

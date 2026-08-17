@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Shared Items & Wishlist | Giving Tree</title>
+    <meta name="description" content="Manage your shared items, update availability, and view your saved neighborhood wishlist on Giving Tree.">
+
+    <link rel="stylesheet" href="/assets/style/variables.css">
+    <link rel="stylesheet" href="/assets/style/base.css">
+    <link rel="stylesheet" href="/assets/style/navbar.css">
+    <link rel="stylesheet" href="/assets/style/footer.css">
+    <link rel="stylesheet" href="/assets/style/buttons.css">
+    <link rel="stylesheet" href="/assets/style/cards.css">
+    <link rel="stylesheet" href="/assets/style/ui.css">
+    <link rel="stylesheet" href="/assets/style/animations.css">
+    <link rel="stylesheet" href="/assets/style/pages.css">
+    <link rel="stylesheet" href="/assets/vendor/leaflet/leaflet.css">
+    <script src="/assets/vendor/leaflet/leaflet.js"></script>
+    <script src="/assets/js/utils.js"></script>
+    <script src="/assets/js/location-picker.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#10b981">
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="/index.html" class="logo">
+            <div class="logo-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.4 19 2c1 2 2 4.1 2 7 0 6-4.5 11-10 11z"/><path d="M11 20v-6"/></svg></div>
+            <span class="logo-text">Giving<span> Tree</span></span>
+        </a>
+
+        <div style="display: flex; align-items: center; gap: 12px; height: 100%;">
+            <nav class="nav-links" id="navLinks">
+                <a href="/index.html" class="nav-link"><svg class="nav-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Home</a>
+                <a href="/items.html" class="nav-link"><svg class="nav-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg> Browse Items</a>
+                <a href="/post-item.html" class="nav-link nav-cta"><svg class="nav-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg> Give Item</a>
+                <a href="/my-items.html" class="nav-link active"><svg class="nav-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg> My Items</a>
+            </nav>
+            <a href="/requests.html" class="nav-notif-bell" title="Notifications">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                <span class="nav-notif-badge" id="navNotifBadge"></span>
+            </a>
+            <button class="nav-mobile-toggle" id="mobileMenuToggle" aria-label="Toggle navigation menu">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <header class="my-header">
+        <div class="container">
+            <h1 style="color:white; font-size: 38px; font-weight: 800; margin-bottom: 8px;">My Community Contributions</h1>
+            <p style="color:var(--text-2); font-size:16px;">Manage your shared listings, edit availability, and track saved items.</p>
+        </div>
+    </header>
+
+    <!-- Tab Switcher -->
+    <div class="tab-switcher">
+        <button class="tab-btn active" id="tabMyShared" onclick="switchTab('shared')">
+            <i class="fas fa-box-open"></i> My Shared Listings (<span id="sharedCountBadge">0</span>)
+        </button>
+        <button class="tab-btn" id="tabWishlist" onclick="switchTab('wishlist')">
+            <i class="fas fa-heart"></i> Saved Wishlist (<span id="wishlistCountBadge">0</span>)
+        </button>
+    </div>
+
+    <div class="items-grid" id="myItemsList">
+        <!-- Injected here -->
+    </div>
+
+    <!-- ================= INLINE EDIT ITEM MODAL ================= -->
+    <div class="detail-modal-overlay" id="editItemModal" onclick="handleEditOverlayClick(event)">
+        <div class="edit-modal-card">
+            <button class="detail-modal-close" onclick="closeEditModal()"><i class="fas fa-times"></i></button>
+            <h3 style="color:var(--text-1); font-size:20px; font-weight:800; margin:0 0 20px;"><i class="fas fa-edit" style="color:var(--accent);"></i> Edit Item Details</h3>
+            
+            <form id="editItemForm" onsubmit="handleEditSubmit(event)">
+                <input type="hidden" id="editItemId">
+                
+                <div class="edit-group">
+                    <label>Item Title</label>
+                    <input type="text" id="editTitle" required maxlength="100">
+                </div>
+
+                <div class="edit-group">
+                    <label>Description</label>
+                    <textarea id="editDescription" rows="3" required maxlength="2000"></textarea>
+                </div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                    <div class="edit-group">
+                        <label>Category</label>
+                        <select id="editCategory" required>
+                            <option>Furniture</option><option>Electronics</option><option>Appliances</option><option>Books</option><option>Clothing</option>
+                            <option>Kitchen &amp; Dining</option><option>Baby &amp; Kids</option><option>Sports &amp; Outdoors</option><option>Home &amp; Garden</option><option>Pet Supplies</option><option>Office &amp; Study</option><option>Other</option>
+                        </select>
+                    </div>
+                    <div class="edit-group">
+                        <label>Condition</label>
+                        <select id="editCondition" required>
+                            <option>New</option><option>Like new</option><option>Good</option><option>Fair</option><option>For repair</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="edit-group">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                        <label style="margin-bottom:0;">Pickup Location</label>
+                        <button type="button" class="btn-detect-loc" id="btnDetectEditGps" style="padding:4px 10px; font-size:11px;">
+                            <i class="fas fa-location-crosshairs"></i> Use Current Location
+                        </button>
+                    </div>
+                    <input type="text" id="editLocation" required maxlength="100">
+                    <input type="hidden" id="editLat">
+                    <input type="hidden" id="editLng">
+
+                    <div class="location-picker-box" style="margin-top:8px;">
+                        <div id="editItemMap" class="location-picker-map" style="height:140px;"></div>
+                        <div class="location-picker-toolbar">
+                            <span id="editItemCoordsBadge" class="coords-pill-badge">
+                                <i class="fas fa-location-dot"></i> Drag pin to update location
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                    <div class="edit-group">
+                        <label>Weight / Portability</label>
+                        <select id="editWeight">
+                            <option value="Light (Easy to carry)">Light (Easy to carry)</option>
+                            <option value="Medium (Need a bag/box)">Medium (Need a bag/box)</option>
+                            <option value="Heavy (Need vehicle / 2 people)">Heavy (Need vehicle / 2 people)</option>
+                        </select>
+                    </div>
+
+                    <div class="edit-group">
+                        <label>Pickup Availability (Optional)</label>
+                        <input type="text" id="editPickup" placeholder="e.g. Weekday evenings after 6 PM" maxlength="150">
+                    </div>
+                </div>
+
+                <div style="display:flex; gap:10px; margin-top:20px;">
+                    <button type="button" class="btn secondary" onclick="closeEditModal()" style="flex:1;">Cancel</button>
+                    <button type="submit" class="btn primary" id="saveEditBtn" style="flex:2;">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= DELETE CONFIRMATION MODAL ================= -->
+    <div class="modal-overlay" id="confirmOverlay" style="display:none;">
+        <div class="modal-box">
+            <div class="modal-icon" style="background:var(--danger-dim); border-color:rgba(244,63,94,0.3); color:var(--danger);">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3 id="confirmTitle">Remove Item?</h3>
+            <p id="confirmMessage">Are you sure you want to permanently remove this item listing?</p>
+            <div class="modal-actions">
+                <button class="btn-cancel-modal" onclick="closeDeleteModal()">Keep Item</button>
+                <button class="btn-confirm" id="confirmDeleteBtn" style="background:var(--danger);" onclick="executeDelete()">
+                    <i class="fas fa-trash"></i> Yes, Remove
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTab = 'shared';
+        let sharedItems = [];
+        let savedItems = [];
+        let pendingDeleteId = null;
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.getElementById('tabMyShared').classList.toggle('active', tab === 'shared');
+            document.getElementById('tabWishlist').classList.toggle('active', tab === 'wishlist');
+            renderItems();
+        }
+
+        async function fetchMyData() {
+            try {
+                // Fetch shared items
+                const resShared = await fetch('/api/my-items/data', { credentials: 'include' });
+                const dataShared = await resShared.json();
+                sharedItems = dataShared.items || [];
+                document.getElementById('sharedCountBadge').textContent = sharedItems.length;
+
+                // Fetch saved items
+                const resSaved = await fetch('/api/saved-items', { credentials: 'include' });
+                const dataSaved = await resSaved.json();
+                savedItems = dataSaved.items || [];
+                document.getElementById('wishlistCountBadge').textContent = savedItems.length;
+
+                renderItems();
+            } catch(e) {
+                console.error("Data fetch error:", e);
+            }
+        }
+
+        function renderItems() {
+            const grid = document.getElementById('myItemsList');
+            
+            if (currentTab === 'shared') {
+                if (!sharedItems.length) {
+                    grid.innerHTML = `
+                        <div class="empty-state">
+                            <div style="width:72px; height:72px; background:var(--accent-dim); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; font-size:28px; color:var(--accent);">
+                                <i class="fas fa-box-open"></i>
+                            </div>
+                            <h3 style="color:var(--text-1); font-size:20px; margin-bottom:8px;">You haven't shared any items yet</h3>
+                            <p style="color:var(--text-2); font-size:14px; margin-bottom:20px;">Give your unused treasures a second life and connect with neighbors.</p>
+                            <a href="/post-item.html" class="btn primary" style="display:inline-flex;">
+                                <i class="fas fa-plus"></i> Share an Item Now
+                            </a>
+                        </div>`;
+                    return;
+                }
+
+                grid.innerHTML = sharedItems.map(i => {
+                    const rawImg = String(i.image || '').trim();
+                    const hasImg = rawImg !== '' && !rawImg.includes('dummyimage.com');
+                    const imgTag = hasImg 
+                        ? `<img src="${rawImg}" alt="" class="item-img" onerror="this.remove();">` 
+                        : '';
+                    const safeTitle = escapeHtml(i.title);
+                    const isReserved = i.status === 'reserved' || i.is_reserved;
+                    const isCompleted = i.status === 'given' || i.status === 'completed';
+
+                    return `
+                    <div class="item-card" data-animate="fade-up">
+                        <div class="img-box" style="position:relative; width:100%; height:200px; overflow:hidden; background:var(--bg-surface);">
+                            ${imgTag}
+                            <div class="img-placeholder-fallback">
+                                <i class="fas fa-box-open" style="font-size:36px; opacity:0.5;"></i>
+                                <span style="font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; opacity:0.6;">My Shared Item</span>
+                            </div>
+                            <span class="card-status-badge ${isReserved ? 'reserved' : isCompleted ? 'completed' : 'available'}" style="position:absolute; top:14px; left:14px; z-index:5;">
+                                ${isReserved ? 'Reserved' : isCompleted ? 'Given Away' : 'Available'}
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            <h3>${safeTitle}</h3>
+                            <div style="font-size:12.5px; color:var(--text-2); margin-bottom:8px; cursor:pointer;" onclick="viewItemOnMap(${i.id})" title="Click to view pickup spot on map">
+                                <i class="fas fa-map-marker-alt" style="color:var(--accent);"></i> ${escapeHtml(i.location || 'Local')}
+                                <span> · ${escapeHtml(i.category || 'General')}</span>
+                            </div>
+
+                            <p style="font-size:13px; color:var(--text-2); line-height:1.5; margin:0 0 14px; display:-webkit-box; -webkit-line-clamp:2; line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">
+                                ${escapeHtml(i.description || '')}
+                            </p>
+
+                            <div class="card-control-grid">
+                                <button class="btn-ctrl" onclick="openEditModal(${i.id})">
+                                    <i class="fas fa-edit"></i> Edit Details
+                                </button>
+                                <button class="btn-ctrl btn-ctrl-status" onclick="toggleItemStatus(${i.id}, '${isReserved ? 'available' : 'reserved'}')">
+                                    <i class="fas ${isReserved ? 'fa-check' : 'fa-hand-paper'}"></i> ${isReserved ? 'Make Available' : 'Mark Reserved'}
+                                </button>
+                            </div>
+
+                            <button class="btn-delete" onclick="promptDelete(${i.id}, '${safeTitle.replace(/'/g, "\\'")}')">
+                                <i class="fas fa-trash-alt"></i> Remove Item
+                            </button>
+                        </div>
+                    </div>`;
+                }).join('');
+            } else {
+                // Wishlist Tab
+                if (!savedItems.length) {
+                    grid.innerHTML = `
+                        <div class="empty-state">
+                            <div style="width:72px; height:72px; background:rgba(244,63,94,0.12); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; font-size:28px; color:#f43f5e;">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <h3 style="color:var(--text-1); font-size:20px; margin-bottom:8px;">Your Wishlist is Empty</h3>
+                            <p style="color:var(--text-2); font-size:14px; margin-bottom:20px;">Explore the community catalog and tap the heart icon on items you'd like to save.</p>
+                            <a href="/items.html" class="btn primary" style="display:inline-flex;">
+                                <i class="fas fa-search"></i> Browse Community Items
+                            </a>
+                        </div>`;
+                    return;
+                }
+
+                grid.innerHTML = savedItems.map(i => {
+                    const rawImg = String(i.image || '').trim();
+                    const hasImg = rawImg !== '' && !rawImg.includes('dummyimage.com');
+                    const imgTag = hasImg 
+                        ? `<img src="${rawImg}" alt="" class="item-img" onerror="this.remove();">` 
+                        : '';
+                    const safeTitle = escapeHtml(i.title);
+
+                    return `
+                    <div class="item-card" data-animate="fade-up">
+                        <div class="img-box" style="position:relative; width:100%; height:200px; overflow:hidden; background:var(--bg-surface);">
+                            ${imgTag}
+                            <div class="img-placeholder-fallback">
+                                <i class="fas fa-box-open" style="font-size:36px; opacity:0.5;"></i>
+                                <span style="font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; opacity:0.6;">Saved Treasure</span>
+                            </div>
+                            <button class="btn-wishlist active" onclick="removeWishlistItem(event, ${i.id})" title="Remove from Wishlist">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="#f43f5e" stroke="currentColor" stroke-width="2.2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <h3>${safeTitle}</h3>
+                            <div style="font-size:12.5px; color:var(--text-2); margin-bottom:8px;">
+                                <i class="fas fa-map-marker-alt" style="color:var(--accent);"></i> ${escapeHtml(i.location || 'Local')}
+                                <span> · Posted by ${escapeHtml(i.donor_name || 'Neighbor')}</span>
+                            </div>
+                            <p style="font-size:13px; color:var(--text-2); line-height:1.5; margin:0 0 16px; display:-webkit-box; -webkit-line-clamp:2; line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">
+                                ${escapeHtml(i.description || '')}
+                            </p>
+                            <a href="/items.html" class="btn primary" style="width:100%; text-align:center; padding:10px; font-size:13px;">
+                                <i class="fas fa-hand-holding-heart"></i> View in Catalog
+                            </a>
+                        </div>
+                    </div>`;
+                }).join('');
+            }
+
+            if (window.initAnimations) {
+                setTimeout(initAnimations, 50);
+            }
+        }
+
+        // ================= EDIT ITEM MODAL =================
+        let editItemPicker = null;
+        async function openEditModal(itemId) {
+            const item = sharedItems.find(x => Number(x.id) === Number(itemId));
+            if (!item) return;
+
+            document.getElementById('editItemId').value = item.id;
+            document.getElementById('editTitle').value = item.title || '';
+            document.getElementById('editDescription').value = item.description || '';
+            document.getElementById('editCategory').value = item.category || 'Other';
+            document.getElementById('editCondition').value = item.condition || 'Good';
+            document.getElementById('editLocation').value = item.location || '';
+            document.getElementById('editLat').value = item.latitude || '';
+            document.getElementById('editLng').value = item.longitude || '';
+            document.getElementById('editWeight').value = item.weight_category || 'Light (Easy to carry)';
+            document.getElementById('editPickup').value = item.pickup_availability || '';
+
+            document.getElementById('editItemModal').classList.add('active');
+
+            if (window.GivingTreeLocation) {
+                setTimeout(() => {
+                    if (!editItemPicker) {
+                        editItemPicker = GivingTreeLocation.initPicker({
+                            mapContainerId: 'editItemMap',
+                            addressInputId: 'editLocation',
+                            latInputId: 'editLat',
+                            lngInputId: 'editLng',
+                            coordsBadgeId: 'editItemCoordsBadge',
+                            detectBtnId: 'btnDetectEditGps',
+                            pinType: 'pickup',
+                            initialLat: item.latitude || GivingTreeLocation.DEFAULT_COORDS.lat,
+                            initialLng: item.longitude || GivingTreeLocation.DEFAULT_COORDS.lng
+                        });
+                    } else {
+                        editItemPicker.invalidateSize();
+                        if (item.latitude && item.longitude) {
+                            editItemPicker.setCoords(item.latitude, item.longitude);
+                        }
+                    }
+                }, 100);
+            }
+        }
+
+        function closeEditModal() {
+            document.getElementById('editItemModal').classList.remove('active');
+        }
+
+        function handleEditOverlayClick(e) {
+            if (e.target.id === 'editItemModal') closeEditModal();
+        }
+
+        async function handleEditSubmit(e) {
+            e.preventDefault();
+            const itemId = document.getElementById('editItemId').value;
+            const btn = document.getElementById('saveEditBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+            const latVal = document.getElementById('editLat').value;
+            const lngVal = document.getElementById('editLng').value;
+
+            const payload = {
+                title: document.getElementById('editTitle').value.trim(),
+                description: document.getElementById('editDescription').value.trim(),
+                category: document.getElementById('editCategory').value,
+                condition: document.getElementById('editCondition').value,
+                location: document.getElementById('editLocation').value.trim(),
+                latitude: latVal ? Number(latVal) : null,
+                longitude: lngVal ? Number(lngVal) : null,
+                weight_category: document.getElementById('editWeight').value,
+                pickup_availability: document.getElementById('editPickup').value.trim()
+            };
+
+            try {
+                const res = await fetch(`/api/items/${itemId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify(payload)
+                });
+                if (!res.ok) throw new Error('Failed to update');
+                
+                showToast('Item updated successfully! 🌿', 'success');
+                closeEditModal();
+                await fetchMyData();
+            } catch(err) {
+                showToast('Could not save changes. Please try again.', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+            }
+        }
+
+        function viewItemOnMap(itemId) {
+            const item = sharedItems.find(x => Number(x.id) === Number(itemId)) || savedItems.find(x => Number(x.id) === Number(itemId));
+            if (!item) return;
+            if (!window.GivingTreeLocation) {
+                console.warn('GivingTreeLocation map engine is not loaded yet');
+                return;
+            }
+            GivingTreeLocation.openDeliveryMapModal({
+                title: `Pickup Spot: ${item.title}`,
+                pickupLocation: item.location,
+                pickupLat: item.latitude,
+                pickupLng: item.longitude
+            });
+        }
+
+        // ================= STATUS TOGGLE =================
+        async function toggleItemStatus(itemId, newStatus) {
+            try {
+                const res = await fetch(`/api/items/${itemId}/status`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ status: newStatus })
+                });
+                if (!res.ok) throw new Error('Status update failed');
+                showToast(`Listing is now marked as ${newStatus}!`, 'success');
+                await fetchMyData();
+            } catch(e) {
+                showToast('Failed to update status.', 'error');
+            }
+        }
+
+        // ================= DELETE MODAL =================
+        function promptDelete(itemId, itemTitle) {
+            pendingDeleteId = itemId;
+            document.getElementById('confirmTitle').textContent = `Delete "${itemTitle}"?`;
+            document.getElementById('confirmMessage').textContent = `Are you sure you want to permanently remove "${itemTitle}"? All active requests for this item will be cancelled.`;
+            document.getElementById('confirmOverlay').style.display = 'flex';
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('confirmOverlay').style.display = 'none';
+            pendingDeleteId = null;
+        }
+
+        async function executeDelete() {
+            if (!pendingDeleteId) return;
+            const btn = document.getElementById('confirmDeleteBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Removing...';
+
+            try {
+                const res = await fetch('/delete-item', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    credentials: 'include',
+                    body: new URLSearchParams({ id: pendingDeleteId, confirmDelete: 'yes' })
+                });
+                showToast('Item removed from community catalog.', 'info');
+                closeDeleteModal();
+                await fetchMyData();
+            } catch(e) {
+                showToast('Failed to remove item.', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-trash"></i> Yes, Remove';
+            }
+        }
+
+        // ================= REMOVE WISHLIST ITEM =================
+        async function removeWishlistItem(event, itemId) {
+            event.stopPropagation();
+            try {
+                await fetch(`/api/items/${itemId}/save`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+                showToast('Removed from saved items', 'info');
+                await fetchMyData();
+            } catch(e) {
+                console.error(e);
+            }
+        }
+
+        fetchMyData();
+    </script>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-brand-logo"><i class="fas fa-leaf"></i><span>Giving Tree</span></div>
+                    <p>Connecting neighborhoods through generosity. Every item shared brings our community closer together.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/index.html"><i class="fas fa-chevron-right"></i>Home</a></li>
+                        <li><a href="/items.html"><i class="fas fa-chevron-right"></i>Browse Items</a></li>
+                        <li><a href="/post-item.html"><i class="fas fa-chevron-right"></i>Give an Item</a></li>
+                        <li><a href="/requests.html"><i class="fas fa-chevron-right"></i>Activity Hub</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Stay in the Loop</h4>
+                    <p style="font-size:13px; color:var(--text-3); margin:0 0 8px; line-height:1.7;">Get notified when new items are shared in your area.</p>
+                    <form class="footer-newsletter-form" onsubmit="handleNewsletterSubmit(event)">
+                        <input type="email" placeholder="your@email.com" required id="footerEmailInput">
+                        <button type="submit" class="footer-newsletter-btn"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Giving Tree | Developed with ❤️ for the Community</p>
+                <p>Made in India 🇮🇳</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/assets/js/utils.js"></script>
+    <script src="/assets/js/location-picker.js"></script>
+    <script src="/assets/js/navbar-auth.js"></script>
+    <script src="/assets/js/notifications.js"></script>
+    <script src="/assets/js/animations.js"></script>
+</body>
+</html>

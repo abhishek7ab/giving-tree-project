@@ -1,0 +1,420 @@
+/* ============================================================
+   GIVING TREE — crypgo.css
+   Shared Crypgo-inspired layout layer applied across ALL pages.
+
+   This file layers on top of the existing variables/base/navbar/
+   buttons/cards system and adds the premium crypto-page patterns:
+   gradient heroes, glass cards, stat tickers, feature grids,
+   process timelines, glow-on-hover, and CTA banners.
+   ============================================================ */
+
+/* ---- Root additions (non-destructive) ---- */
+:root {
+    --grad-hero: linear-gradient(135deg, #ffffff 0%, var(--accent) 55%, var(--accent-dark) 100%);
+    --surface-glow: 0 24px 60px rgba(0, 0, 0, 0.5);
+    --card-glass: rgba(15, 23, 42, 0.55);
+}
+
+/* ============================================================
+   HERO / PAGE HEADER
+   ============================================================ */
+.crypgo-hero {
+    position: relative;
+    padding: clamp(110px, 14vw, 180px) 20px clamp(60px, 8vw, 110px);
+    text-align: center;
+    overflow: hidden;
+    background:
+        radial-gradient(ellipse at 50% 0%, var(--accent-glow) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 20%, var(--accent-dim) 0%, transparent 45%),
+        radial-gradient(ellipse at 15% 80%, var(--accent-dim) 0%, transparent 45%),
+        var(--bg-deep);
+}
+
+/* Subtle animated grid overlay (crypto "chart paper" vibe) */
+.crypgo-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        repeating-linear-gradient(0deg, transparent 0 38px, var(--border) 38px 39px),
+        repeating-linear-gradient(90deg, transparent 0 38px, var(--border) 38px 39px);
+    opacity: 0.4;
+    mask-image: radial-gradient(ellipse at center, #000 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.crypgo-hero-float {
+    position: absolute;
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    background: var(--card-glass);
+    backdrop-filter: var(--glass-blur);
+    padding: 18px 22px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: var(--surface-glow);
+    z-index: 1;
+    animation: crypgoFloat 6s ease-in-out infinite;
+}
+
+.crypgo-hero-float .float-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    background: var(--accent-dim);
+    border: 1px solid var(--accent-border);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.crypgo-hero-float .float-label {
+    font-size: 11px;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+}
+
+.crypgo-hero-float .float-value {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text-1);
+    line-height: 1.1;
+}
+
+.crypgo-hero-float:nth-of-type(1) { top: 22%; left: 8%; animation-delay: 0s; }
+.crypgo-hero-float:nth-of-type(2) { top: 55%; right: 7%; animation-delay: 1.2s; }
+.crypgo-hero-float:nth-of-type(3) { bottom: 14%; left: 16%; animation-delay: 2.4s; }
+
+@keyframes crypgoFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-14px); }
+}
+
+.crypgo-hero-content { position: relative; z-index: 2; max-width: 960px; margin: 0 auto; }
+
+.crypgo-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent-dim);
+    border: 1px solid var(--accent-border);
+    color: var(--accent);
+    padding: 8px 20px;
+    border-radius: var(--radius-full);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 24px;
+}
+
+.crypgo-hero h1 {
+    font-size: clamp(40px, 7vw, 84px);
+    font-weight: 900;
+    line-height: 1.03;
+    letter-spacing: -0.03em;
+    margin: 0 0 24px;
+    background: var(--grad-hero);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.crypgo-hero p.crypgo-lead {
+    font-size: clamp(16px, 2.2vw, 21px);
+    color: var(--text-2);
+    line-height: 1.7;
+    max-width: 640px;
+    margin: 0 auto 40px;
+}
+
+.crypgo-hero-ctas {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* ============================================================
+   STAT TICKER
+   ============================================================ */
+.crypgo-ticker {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--card-glass);
+    backdrop-filter: var(--glass-blur);
+    overflow: hidden;
+    padding: 20px 0;
+    position: relative;
+}
+
+.crypgo-ticker-track {
+    display: flex;
+    gap: 56px;
+    width: max-content;
+    animation: crypgoScroll 32s linear infinite;
+}
+
+.crypgo-ticker:hover .crypgo-ticker-track { animation-play-state: paused; }
+
+@keyframes crypgoScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+.crypgo-tick {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    white-space: nowrap;
+    padding: 0 12px;
+}
+
+.crypgo-tick .tick-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: var(--accent-dim);
+    border: 1px solid var(--accent-border);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+.crypgo-tick .tick-label { font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+.crypgo-tick .tick-value { font-size: 24px; font-weight: 800; color: var(--text-1); line-height: 1; }
+.crypgo-tick .tick-change { font-size: 12px; font-weight: 700; color: var(--accent); background: var(--accent-dim); padding: 4px 10px; border-radius: 8px; }
+
+/* ============================================================
+   FEATURE / VALUE CARDS
+   ============================================================ */
+.crypgo-feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+.crypgo-feature-card {
+    position: relative;
+    background: var(--bg-card);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 36px 30px;
+    overflow: hidden;
+    transition: transform var(--dur-base) var(--ease), border-color var(--dur-base) var(--ease), box-shadow var(--dur-base) var(--ease);
+}
+
+.crypgo-feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--accent-gradient);
+    opacity: 0;
+    transition: opacity var(--dur-base) var(--ease);
+}
+
+.crypgo-feature-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--accent-border);
+    box-shadow: var(--surface-glow), 0 0 40px var(--accent-glow);
+}
+
+.crypgo-feature-card:hover::before { opacity: 1; }
+
+.crypgo-feature-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    background: var(--accent-dim);
+    border: 1px solid var(--accent-border);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    margin-bottom: 22px;
+    transition: transform var(--dur-base) var(--ease-spring), box-shadow var(--dur-base) var(--ease);
+}
+
+.crypgo-feature-card:hover .crypgo-feature-icon {
+    transform: scale(1.08) rotate(4deg);
+    box-shadow: 0 0 30px var(--accent-glow);
+}
+
+.crypgo-feature-card h3 { font-size: 20px; font-weight: 800; color: var(--text-1); margin: 0 0 12px; }
+.crypgo-feature-card p { font-size: 14px; color: var(--text-2); line-height: 1.7; margin: 0; }
+
+/* ============================================================
+   SECTION HEADERS
+   ============================================================ */
+.crypgo-section { padding: clamp(70px, 9vw, 120px) 0; }
+.crypgo-section-alt { background: radial-gradient(ellipse at 50% 60%, var(--accent-dim) 0%, transparent 60%), var(--bg-deep); }
+
+.crypgo-section-head { text-align: center; max-width: 640px; margin: 0 auto clamp(48px, 6vw, 72px); }
+
+.crypgo-section-head h2 { font-size: clamp(32px, 5vw, 52px); font-weight: 900; letter-spacing: -0.02em; color: var(--text-1); margin: 16px 0 16px; }
+.crypgo-section-head p { font-size: 17px; color: var(--text-2); line-height: 1.7; margin: 0; }
+
+/* ============================================================
+   PROCESS TIMELINE
+   ============================================================ */
+.crypgo-timeline {
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.crypgo-timeline::before {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0; left: 50%;
+    width: 2px;
+    transform: translateX(-50%);
+    background: linear-gradient(180deg, transparent, var(--accent) 20%, var(--accent) 80%, transparent);
+}
+
+.crypgo-step {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 60px 1fr;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.crypgo-step:nth-child(odd) .crypgo-step-card { grid-column: 1; grid-row: 1; text-align: right; }
+.crypgo-step:nth-child(even) .crypgo-step-card { grid-column: 3; grid-row: 1; text-align: left; }
+
+.crypgo-step-dot {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: center;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 5px solid var(--bg-deep);
+    box-shadow: 0 0 0 2px var(--accent), 0 0 20px var(--accent-glow);
+    z-index: 2;
+}
+
+.crypgo-step-card {
+    background: var(--bg-card);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 30px;
+    transition: transform var(--dur-base) var(--ease), border-color var(--dur-base) var(--ease), box-shadow var(--dur-base) var(--ease);
+}
+
+.crypgo-step-card:hover { transform: scale(1.03); border-color: var(--accent-border); box-shadow: 0 0 40px var(--accent-glow); }
+
+.crypgo-step-num {
+    font-size: 40px;
+    font-weight: 900;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+    margin-bottom: 10px;
+}
+
+.crypgo-step-card h3 { font-size: 20px; font-weight: 800; color: var(--text-1); margin: 0 0 10px; }
+.crypgo-step-card p { font-size: 14px; color: var(--text-2); line-height: 1.7; margin: 0; }
+
+/* ============================================================
+   CTA BANNER
+   ============================================================ */
+.crypgo-cta {
+    position: relative;
+    padding: clamp(70px, 9vw, 110px) 24px;
+    text-align: center;
+    background:
+        radial-gradient(circle at 50% 50%, var(--accent-glow) 0%, transparent 60%),
+        var(--bg-deep);
+    overflow: hidden;
+}
+
+.crypgo-cta-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.crypgo-cta h2 { font-size: clamp(34px, 6vw, 58px); font-weight: 900; color: var(--text-1); letter-spacing: -0.02em; margin: 0 0 20px; }
+.crypgo-cta p { font-size: 18px; color: var(--text-2); line-height: 1.7; margin: 0 0 40px; }
+
+/* ============================================================
+   GLOW BUTTONS (used across heroes & CTAs)
+   ============================================================ */
+.crypgo-btn-primary,
+.crypgo-btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px 36px;
+    border-radius: var(--radius-full);
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none !important;
+    cursor: pointer;
+    transition: transform var(--dur-base) var(--ease), box-shadow var(--dur-base) var(--ease), background var(--dur-base) var(--ease);
+}
+
+.crypgo-btn-primary {
+    background: var(--accent-gradient);
+    color: #ffffff;
+    border: 1px solid var(--accent-border);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25), 0 0 24px var(--accent-glow);
+}
+
+.crypgo-btn-primary:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(0,0,0,0.35), 0 0 40px var(--accent-glow); }
+
+.crypgo-btn-secondary {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-1);
+    border: 1px solid var(--border-hover);
+    backdrop-filter: var(--glass-blur);
+}
+
+.crypgo-btn-secondary:hover { transform: translateY(-3px); background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.3); }
+
+/* ============================================================
+   SCROLL-REVEAL TRIGGER (used by theme-animations.js)
+   ============================================================ */
+[data-crypgo-reveal] {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+
+[data-crypgo-reveal].is-revealed { opacity: 1; transform: translateY(0); }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 900px) {
+    .crypgo-hero-float { display: none; }
+
+    .crypgo-timeline::before { left: 24px; }
+    .crypgo-step { grid-template-columns: 48px 1fr; column-gap: 18px; }
+    .crypgo-step:nth-child(odd) .crypgo-step-card,
+    .crypgo-step:nth-child(even) .crypgo-step-card { grid-column: 2; grid-row: auto; text-align: left; }
+    .crypgo-step-dot { grid-column: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .crypgo-ticker-track { animation: none; }
+    .crypgo-hero-float { animation: none; }
+    [data-crypgo-reveal] { opacity: 1; transform: none; }
+}

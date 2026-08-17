@@ -1,1 +1,11 @@
 node_modules/
+.env
+dist/
+coverage/
+*.log
+test-output.log
+playwright-report/
+test-results/
+temp_*
+.DS_Store
+Thumbs.db

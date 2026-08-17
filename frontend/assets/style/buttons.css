@@ -1,0 +1,310 @@
+/* ============================================================
+   GIVING TREE — buttons.css
+   Universal Button System: Primary, Emerald CTA, Secondary, Danger,
+   Ghost, Icon, Sizing Scale, and Loading States.
+   ============================================================ */
+
+/* ---- Core Base Button ---- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 13px 28px;
+    border-radius: var(--radius-full);
+    font-family: 'Plus Jakarta Sans', 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 14.5px;
+    letter-spacing: 0.2px;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition:
+        transform    var(--dur-fast) var(--ease-out),
+        background   var(--dur-base) var(--ease-out),
+        border-color var(--dur-base) var(--ease-out),
+        box-shadow   var(--dur-base) var(--ease-out),
+        color        var(--dur-base) var(--ease-out);
+    white-space: nowrap;
+    position: relative;
+    user-select: none;
+    -webkit-user-select: none;
+    vertical-align: middle;
+}
+
+.btn:active {
+    transform: translateY(0) scale(0.98) !important;
+}
+
+.btn:disabled,
+.btn[disabled] {
+    opacity: 0.55;
+    cursor: not-allowed;
+    pointer-events: none;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Accessible focus ring */
+.btn:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+}
+
+/* ---- Button Size Modifiers ---- */
+.btn-xs {
+    padding: 6px 14px;
+    font-size: 12px;
+    gap: 6px;
+}
+
+.btn-sm {
+    padding: 8px 18px;
+    font-size: 13px;
+    gap: 7px;
+}
+
+.btn-md {
+    padding: 13px 28px;
+    font-size: 14.5px;
+}
+
+.btn-lg {
+    padding: 16px 36px;
+    font-size: 16px;
+    gap: 12px;
+}
+
+.btn-block,
+.btn-full {
+    width: 100%;
+    display: flex;
+}
+
+/* ---- Button Variants ---- */
+
+/* 1. Primary Button (Crisp White Luxury) */
+.btn.primary,
+.btn-primary,
+.primary {
+    background: #ffffff;
+    color: #0f172a;
+    box-shadow: 0 4px 16px rgba(255, 255, 255, 0.15);
+    border: 1px solid #ffffff;
+}
+
+.btn.primary:hover,
+.btn-primary:hover,
+.primary:hover {
+    background: #f1f5f9;
+    color: #090d16;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(255, 255, 255, 0.25);
+}
+
+/* 2. Emerald Primary CTA Variant */
+.btn.emerald,
+.btn-emerald {
+    background: var(--accent-gradient);
+    color: #ffffff;
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.25);
+}
+
+.btn.emerald:hover,
+.btn-emerald:hover {
+    background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+    border-color: rgba(52, 211, 153, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.38);
+    color: #ffffff;
+}
+
+/* 3. Secondary Glass Button */
+.btn.secondary,
+.btn-secondary,
+.secondary {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+}
+
+.btn.secondary:hover,
+.btn-secondary:hover,
+.secondary:hover {
+    background: rgba(255, 255, 255, 0.10);
+    border-color: rgba(255, 255, 255, 0.30);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    color: #ffffff;
+}
+
+/* 4. Danger Button */
+.btn.danger,
+.btn-danger,
+.btn-remove {
+    background: var(--danger-dim);
+    color: #f43f5e;
+    border: 1px solid rgba(244, 63, 94, 0.32);
+    font-weight: 700;
+}
+
+.btn.danger:hover,
+.btn-danger:hover,
+.btn-remove:hover {
+    background: var(--danger);
+    color: #ffffff;
+    border-color: var(--danger);
+    box-shadow: 0 8px 24px rgba(244, 63, 94, 0.4);
+    transform: translateY(-2px);
+}
+
+.btn-remove {
+    padding: 12px;
+    width: 100%;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* 5. Ghost / Subtle Link Button */
+.btn-ghost {
+    background: transparent;
+    color: var(--text-2);
+    border: 1px solid transparent;
+}
+
+.btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-1);
+    border-color: var(--border);
+    transform: translateY(-1px);
+}
+
+/* 6. Icon Action Button */
+.btn-icon {
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border-radius: var(--radius-sm);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    color: var(--text-2);
+    flex-shrink: 0;
+}
+
+.btn-icon:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--text-1);
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+}
+
+.btn-icon.circle {
+    border-radius: 50%;
+}
+
+/* ---- Form Specific Submit Buttons ---- */
+.btn-submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ffffff;
+    background: #ffffff;
+    color: #0f172a;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(255, 255, 255, 0.15);
+    transition:
+        transform    var(--dur-fast) var(--ease-out),
+        background   var(--dur-base) var(--ease-out),
+        box-shadow   var(--dur-base) var(--ease-out);
+}
+
+.btn-submit:hover {
+    background: #f1f5f9;
+    color: #090d16;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(255, 255, 255, 0.25);
+}
+
+.auth-btn {
+    width: 100%;
+    margin-top: 10px;
+    padding: 15px;
+    font-size: 15px;
+}
+
+.register-btn {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    padding: 9px 20px !important;
+    border-radius: 14px !important;
+    font-weight: 700 !important;
+    font-size: 13.5px !important;
+    border: 1px solid #ffffff !important;
+    text-decoration: none !important;
+    box-shadow: 0 4px 14px rgba(255, 255, 255, 0.15);
+    transition:
+        transform    var(--dur-fast) var(--ease-out),
+        background   var(--dur-base) var(--ease-out),
+        box-shadow   var(--dur-base) var(--ease-out) !important;
+}
+
+.register-btn::after { display: none !important; }
+
+.register-btn:hover {
+    background: #f1f5f9 !important;
+    color: #090d16 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 24px rgba(255, 255, 255, 0.25) !important;
+}
+
+/* Action card buttons */
+.action-card .btn {
+    width: 220px;
+    box-sizing: border-box;
+}
+
+/* ---- Loading Spinner State ---- */
+.btn.is-loading {
+    color: transparent !important;
+    pointer-events: none;
+    position: relative;
+}
+
+.btn.is-loading::after {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    top: 50%;
+    left: 50%;
+    margin: -9px 0 0 -9px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: btnSpin 0.7s linear infinite;
+}
+
+.btn.primary.is-loading::after,
+.btn-primary.is-loading::after,
+.btn-submit.is-loading::after {
+    border: 2px solid rgba(15, 23, 42, 0.2);
+    border-top-color: #0f172a;
+}
+
+@keyframes btnSpin {
+    to { transform: rotate(360deg); }
+}

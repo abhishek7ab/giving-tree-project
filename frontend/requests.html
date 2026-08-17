@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity &amp; Requests | Giving Tree</title>
+    <meta name="description" content="Manage your incoming and outgoing community item requests and coordinate handovers with neighbors.">
+
+    <link rel="stylesheet" href="/assets/style/variables.css">
+    <link rel="stylesheet" href="/assets/style/base.css">
+    <link rel="stylesheet" href="/assets/style/navbar.css">
+    <link rel="stylesheet" href="/assets/style/footer.css">
+    <link rel="stylesheet" href="/assets/style/buttons.css">
+    <link rel="stylesheet" href="/assets/style/cards.css">
+    <link rel="stylesheet" href="/assets/style/ui.css">
+    <link rel="stylesheet" href="/assets/style/animations.css">
+    <link rel="stylesheet" href="/assets/style/pages.css">
+    <link rel="stylesheet" href="/assets/vendor/leaflet/leaflet.css">
+    <script src="/assets/vendor/leaflet/leaflet.js"></script>
+    <script src="/assets/js/utils.js"></script>
+    <script src="/assets/js/location-picker.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#10b981">
+    <style>
+        .main-wrapper {
+            flex: 1;
+            max-width: 980px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 36px 20px 80px;
+        }
+
+        /* Page Header */
+        .hub-hero {
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .hub-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(16, 185, 129, 0.12);
+            color: var(--accent);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 11.5px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            margin-bottom: 12px;
+        }
+
+        .hub-hero-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0 0 8px;
+            letter-spacing: -0.8px;
+            line-height: 1.2;
+        }
+
+        .hub-hero-title span {
+            background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hub-hero-subtitle {
+            font-size: 14.5px;
+            color: var(--text-2);
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Quick Metric Pills */
+        .quick-metrics-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .metric-pill {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 12px;
+            color: var(--text-2);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+        }
+
+        .metric-pill strong {
+            color: #ffffff;
+            font-weight: 800;
+        }
+
+        .metric-pill.highlight {
+            border-color: rgba(16, 185, 129, 0.3);
+            background: rgba(16, 185, 129, 0.08);
+            color: var(--accent);
+        }
+
+        /* Segmented Tabs */
+        .tab-nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
+            padding: 6px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+        }
+
+        .tab-nav-group {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-2);
+            padding: 9px 18px;
+            border-radius: 12px;
+            font-size: 13.5px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            font-family: inherit;
+        }
+
+        .tab-btn:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-btn.active {
+            background: var(--accent);
+            color: #042f24;
+            border-color: var(--accent);
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+        }
+
+        .tab-pill-badge {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 7px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .tab-btn.active .tab-pill-badge {
+            background: rgba(0, 0, 0, 0.2);
+            color: #042f24;
+        }
+
+        /* Activity Request Cards */
+        .activity-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .hub-card {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 22px 24px;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hub-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.4), transparent);
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        .hub-card:hover {
+            border-color: rgba(16, 185, 129, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 14px 40px -10px rgba(0, 0, 0, 0.7), 0 0 20px rgba(16, 185, 129, 0.1);
+        }
+
+        .hub-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-core {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 18px;
+        }
+
+        .card-left {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            flex: 1;
+        }
+
+        .item-thumb-box {
+            width: 68px;
+            height: 68px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            flex-shrink: 0;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .item-thumb-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .hub-card:hover .item-thumb-box img {
+            transform: scale(1.06);
+        }
+
+        .item-thumb-box .thumb-icon {
+            font-size: 24px;
+            color: var(--accent);
+        }
+
+        .card-details h3 {
+            font-size: 17.5px;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0 0 6px;
+            letter-spacing: -0.3px;
+        }
+
+        .neighbor-row {
+            font-size: 13px;
+            color: var(--text-2);
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .neighbor-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2px 10px 2px 4px;
+            border-radius: 20px;
+            font-weight: 700;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .neighbor-chip:hover {
+            border-color: var(--accent);
+            background: rgba(16, 185, 129, 0.12);
+            color: var(--accent);
+        }
+
+        .neighbor-avatar {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: #042f24;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        /* Status Badge */
+        .status-badge-glow {
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+            text-transform: capitalize;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            flex-shrink: 0;
+        }
+
+        .status-badge-glow.pending {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.35);
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.15);
+        }
+
+        .status-badge-glow.accepted {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.2);
+        }
+
+        .status-badge-glow.completed {
+            background: rgba(16, 185, 129, 0.25);
+            color: #6ee7b7;
+            border: 1px solid #10b981;
+            box-shadow: 0 0 14px rgba(16, 185, 129, 0.3);
+        }
+
+        .status-badge-glow.rejected {
+            background: rgba(244, 63, 94, 0.15);
+            color: #fb7185;
+            border: 1px solid rgba(244, 63, 94, 0.35);
+        }
+
+        .pulse-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: currentColor;
+            display: inline-block;
+            box-shadow: 0 0 6px currentColor;
+        }
+
+        /* Handover Info Box */
+        .handover-spot-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .spot-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-2);
+        }
+
+        .spot-info strong {
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        .note-bubble {
+            width: 100%;
+            background: rgba(16, 185, 129, 0.06);
+            border-left: 3px solid var(--accent);
+            padding: 8px 12px;
+            border-radius: 0 8px 8px 0;
+            font-size: 12.5px;
+            color: #d1fae5;
+            font-style: italic;
+            margin-top: 4px;
+        }
+
+        /* Actions Footer */
+        .card-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .actions-left {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .actions-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Vibrant Action Buttons */
+        .btn-hub-primary {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #ffffff;
+            font-weight: 700;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 10px;
+            font-size: 13px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+            font-family: inherit;
+        }
+
+        .btn-hub-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45);
+            background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+            color: #042f24;
+        }
+
+        .btn-hub-danger {
+            background: rgba(244, 63, 94, 0.12);
+            color: #fb7185;
+            border: 1px solid rgba(244, 63, 94, 0.3);
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .btn-hub-danger:hover {
+            background: #f43f5e;
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .btn-hub-glass {
+            background: rgba(255, 255, 255, 0.05);
+            color: #e2e8f0;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .btn-hub-glass:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .btn-hub-gold {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.35);
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .btn-hub-gold:hover {
+            background: #f59e0b;
+            color: #042f24;
+            transform: translateY(-1px);
+        }
+
+        .btn-hub-chat {
+            background: rgba(16, 185, 129, 0.12);
+            color: var(--accent);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            position: relative;
+        }
+
+        .btn-hub-chat:hover {
+            background: var(--accent);
+            color: #042f24;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+        }
+
+        .unread-bubble {
+            background: #f43f5e;
+            color: white;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 1px 6px;
+            border-radius: 20px;
+            margin-left: 2px;
+        }
+
+        /* Empty State */
+        .hub-empty-state {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px dashed rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 60px 24px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .hub-empty-icon {
+            width: 58px;
+            height: 58px;
+            border-radius: 16px;
+            background: rgba(16, 185, 129, 0.12);
+            color: var(--accent);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin: 0 auto 16px;
+        }
+
+        .hub-empty-state h3 {
+            font-size: 18px;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0 0 6px;
+        }
+
+        .hub-empty-state p {
+            font-size: 13.5px;
+            color: var(--text-2);
+            max-width: 400px;
+            margin: 0 auto 20px;
+            line-height: 1.5;
+        }
+
+        /* ================= CHAT MODAL ================= */
+        .chat-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 8, 18, 0.85);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .chat-overlay.active {
+            display: flex;
+        }
+
+        .chat-modal {
+            background: #0f172a;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 500px;
+            height: 580px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 25px rgba(16, 185, 129, 0.15);
+            overflow: hidden;
+        }
+
+        .chat-header {
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+        }
+
+        .chat-close:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .chat-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .chat-msg {
+            max-width: 82%;
+            padding: 11px 15px;
+            border-radius: 14px;
+            font-size: 13px;
+            line-height: 1.45;
+            word-break: break-word;
+        }
+
+        .chat-msg.mine {
+            align-self: flex-end;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #ffffff;
+            border-bottom-right-radius: 4px;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
+        }
+
+        .chat-msg.other {
+            align-self: flex-start;
+            background: rgba(255, 255, 255, 0.06);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom-left-radius: 4px;
+        }
+
+        .chat-meta {
+            font-size: 10.5px;
+            margin-top: 4px;
+            opacity: 0.75;
+        }
+
+        .chat-quick-chips {
+            padding: 8px 16px;
+            background: rgba(10, 15, 29, 0.95);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+        }
+
+        .chat-chip {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-2);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 11.5px;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .chat-chip:hover {
+            background: var(--accent-dim);
+            color: var(--accent);
+            border-color: rgba(16, 185, 129, 0.35);
+        }
+
+        .chat-compose {
+            padding: 14px 18px;
+            background: rgba(8, 12, 24, 0.98);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .chat-compose textarea {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            color: #ffffff;
+            padding: 10px 14px;
+            font-size: 13px;
+            font-family: inherit;
+            resize: none;
+            height: 40px;
+            outline: none;
+        }
+
+        .chat-compose textarea:focus {
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .chat-send {
+            background: var(--accent);
+            color: #042f24;
+            font-weight: 800;
+            border: none;
+            border-radius: 12px;
+            padding: 0 18px;
+            height: 40px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-family: inherit;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <div class="navbar">
+        <a href="/index.html" class="logo">
+            <div class="logo-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.4 19 2c1 2 2 4.1 2 7 0 6-4.5 11-10 11z"/><path d="M11 20v-6"/></svg></div>
+            <span class="logo-text">Giving<span> Tree</span></span>
+        </a>
+
+        <div style="display: flex; align-items: center; gap: 12px; height: 100%;">
+            <nav class="nav-links" id="navLinks">
+                <a href="/index.html" class="nav-link"><svg class="nav-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Home</a>
+                <a href="/items.html" class="nav-link"><svg class="nav-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg> Browse Items</a>
+                <a href="/post-item.html" class="nav-link nav-cta"><svg class="nav-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg> Give Item</a>
+                <a href="/requests.html" class="nav-link active"><svg class="nav-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg> Requests</a>
+            </nav>
+            <a href="/requests.html" class="nav-notif-bell" title="Notifications">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                <span class="nav-notif-badge" id="navNotifBadge"></span>
+            </a>
+            <button class="nav-mobile-toggle" id="mobileMenuToggle" aria-label="Toggle navigation menu">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN WRAPPER -->
+    <main class="main-wrapper">
+        <div class="hub-hero">
+            <div class="hub-tag">
+                <i class="fas fa-bolt" style="font-size:10px;"></i> Real-time Activity Hub
+            </div>
+            <h1 class="hub-hero-title">Activity &amp; <span>Coordination</span></h1>
+            <p class="hub-hero-subtitle">Coordinate safe local pickups, live chat with neighbors, and track completed community handovers.</p>
+
+            <div class="quick-metrics-row">
+                <div class="metric-pill highlight">
+                    <i class="fas fa-inbox"></i> <strong id="summaryIncomingVal">0</strong> Incoming
+                </div>
+                <div class="metric-pill">
+                    <i class="fas fa-paper-plane"></i> <strong id="summaryOutgoingVal">0</strong> Outgoing
+                </div>
+                <div class="metric-pill">
+                    <i class="fas fa-handshake"></i> <strong id="summaryCompletedVal">0</strong> Completed
+                </div>
+                <div class="metric-pill">
+                    <i class="fas fa-seedling"></i> <strong id="summaryWasteVal">0 kg</strong> Waste Diverted
+                </div>
+            </div>
+        </div>
+
+        <!-- Segmented Tab Navigation -->
+        <div class="tab-nav-container">
+            <div class="tab-nav-group">
+                <button type="button" class="tab-btn active" id="tabBtnIncoming" onclick="switchHubTab('incoming')">
+                    <i class="fas fa-inbox"></i> Requests For Your Items
+                    <span class="tab-pill-badge" id="receiveCount">0</span>
+                </button>
+                <button type="button" class="tab-btn" id="tabBtnOutgoing" onclick="switchHubTab('outgoing')">
+                    <i class="fas fa-paper-plane"></i> You've Requested
+                    <span class="tab-pill-badge" id="sendCount">0</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Dynamic Activity Feed -->
+        <div id="activityContentWrapper">
+            <div id="receivedSectionWrapper">
+                <div class="activity-feed" id="receivedList"></div>
+            </div>
+            <div id="sentSectionWrapper" style="display:none;">
+                <div class="activity-feed" id="sentList"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ================= CHAT MODAL ================= -->
+    <div class="chat-overlay" id="chatOverlay" onclick="handleChatOverlayClick(event)">
+        <div class="chat-modal">
+            <div class="chat-header">
+                <div>
+                    <h4 id="chatTitle" style="font-size:15px; font-weight:800; color:#ffffff; margin:0 0 2px;">Chat</h4>
+                    <span style="font-size:11px; color:var(--accent); font-weight:700;"><i class="fas fa-circle" style="font-size:8px;"></i> Live Neighbor Channel</span>
+                </div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <button type="button" class="btn-hub-glass" style="padding:4px 10px; font-size:11.5px;" onclick="openCurrentChatRoute()">
+                        <i class="fas fa-map-pin"></i> Spot
+                    </button>
+                    <button type="button" class="chat-close" onclick="closeChatModal()" aria-label="Close Chat">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="chat-body" id="chatMessages"></div>
+
+            <!-- Quick Action Scheduling Chips -->
+            <div class="chat-quick-chips">
+                <button type="button" class="chat-chip" onclick="insertQuickChat('📅 I\'m free tomorrow after 5 PM')">📅 Free tomorrow 5 PM</button>
+                <button type="button" class="chat-chip" onclick="insertQuickChat('📍 Let\'s meet at the main gate')">📍 Main gate</button>
+                <button type="button" class="chat-chip" onclick="insertQuickChat('🚗 I\'m on my way!')">🚗 On my way!</button>
+                <button type="button" class="chat-chip" onclick="insertQuickChat('✅ Item collected, thank you! 🌿')">✅ Collected</button>
+            </div>
+
+            <div class="chat-compose">
+                <textarea id="chatInput" maxlength="500" placeholder="Coordinate timing and meetup spot..."></textarea>
+                <button type="button" class="chat-send" onclick="sendChatMessage()">
+                    <i class="fas fa-paper-plane"></i> Send
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= POST-HANDOVER REVIEW MODAL ================= -->
+    <div class="detail-modal-overlay" id="reviewModal" onclick="handleReviewOverlayClick(event)">
+        <div class="edit-modal-card">
+            <button class="detail-modal-close" onclick="closeReviewModal()"><i class="fas fa-times"></i></button>
+            <div style="text-align:center; margin-bottom:20px;">
+                <div style="width:52px; height:52px; border-radius:50%; background:rgba(245,158,11,0.15); color:#f59e0b; display:flex; align-items:center; justify-content:center; font-size:22px; margin:0 auto 12px; border:1px solid rgba(245,158,11,0.3);">
+                    <i class="fas fa-star"></i>
+                </div>
+                <h3 style="font-size:19px; font-weight:800; color:#ffffff; margin-bottom:4px;">Rate Handover with <span id="revieweeNameSpan">Neighbor</span></h3>
+                <p style="font-size:13px; color:var(--text-2); margin:0;">Leave verified community feedback to build neighbor trust.</p>
+            </div>
+
+            <form id="reviewForm" onsubmit="submitReview(event)">
+                <input type="hidden" id="reviewRequestId">
+                <input type="hidden" id="reviewRatingVal" value="5">
+
+                <div class="edit-group" style="text-align:center;">
+                    <div style="display:flex; justify-content:center; gap:8px; font-size:26px; color:#f59e0b; cursor:pointer;" id="starPicker">
+                        <i class="fas fa-star" onclick="setStarRating(1)"></i>
+                        <i class="fas fa-star" onclick="setStarRating(2)"></i>
+                        <i class="fas fa-star" onclick="setStarRating(3)"></i>
+                        <i class="fas fa-star" onclick="setStarRating(4)"></i>
+                        <i class="fas fa-star" onclick="setStarRating(5)"></i>
+                    </div>
+                </div>
+
+                <div class="edit-group" style="margin-top:16px;">
+                    <label>Short Note (Optional)</label>
+                    <textarea id="reviewComment" rows="3" placeholder="e.g. Prompt, friendly, and item was in great condition!" maxlength="500"></textarea>
+                </div>
+
+                <div style="display:flex; gap:10px; margin-top:20px;">
+                    <button type="button" class="btn secondary" onclick="closeReviewModal()" style="flex:1;">Cancel</button>
+                    <button type="submit" class="btn primary" id="submitReviewBtn" style="flex:2;">
+                        <i class="fas fa-heart"></i> Submit Feedback
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= PUBLIC NEIGHBOR PROFILE MODAL ================= -->
+    <div class="detail-modal-overlay" id="neighborProfileModal" onclick="handleProfileOverlayClick(event)">
+        <div class="neighbor-modal-card">
+            <button class="detail-modal-close" onclick="closeNeighborModal()"><i class="fas fa-times"></i></button>
+            <div class="neighbor-avatar-large" id="profileAvatar"><i class="fas fa-user"></i></div>
+            <h3 class="neighbor-name" id="profileName">Neighbor</h3>
+            <div class="neighbor-city" id="profileCity"><i class="fas fa-map-marker-alt"></i> Pune, India</div>
+
+            <div class="neighbor-stats-grid" style="margin: 18px 0;">
+                <div class="neighbor-stat-tile">
+                    <div class="neighbor-stat-val" id="profileStatShared">0</div>
+                    <div class="neighbor-stat-lbl">Shared</div>
+                </div>
+                <div class="neighbor-stat-tile">
+                    <div class="neighbor-stat-val" id="profileStatGiven">0</div>
+                    <div class="neighbor-stat-lbl">Given</div>
+                </div>
+                <div class="neighbor-stat-tile">
+                    <div class="neighbor-stat-val" id="profileStatRating">5.0 ⭐</div>
+                    <div class="neighbor-stat-lbl">Trust Score</div>
+                </div>
+            </div>
+
+            <div class="neighbor-reviews-box">
+                <h4><i class="fas fa-heart" style="color:var(--accent);"></i> Neighbor Reviews (<span id="profileReviewCount">0</span>)</h4>
+                <div id="profileReviewsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        let currentUserEmail = "";
+        let activeChatRequestId = null;
+        let socket = null;
+        const allRequestsById = new Map();
+        let currentActiveTab = 'incoming';
+
+        function switchHubTab(tabName) {
+            currentActiveTab = tabName;
+            const btnIncoming = document.getElementById('tabBtnIncoming');
+            const btnOutgoing = document.getElementById('tabBtnOutgoing');
+            const secIncoming = document.getElementById('receivedSectionWrapper');
+            const secOutgoing = document.getElementById('sentSectionWrapper');
+
+            btnIncoming?.classList.toggle('active', tabName === 'incoming');
+            btnOutgoing?.classList.toggle('active', tabName === 'outgoing');
+
+            if (tabName === 'incoming') {
+                if (secIncoming) secIncoming.style.display = 'block';
+                if (secOutgoing) secOutgoing.style.display = 'none';
+            } else {
+                if (secIncoming) secIncoming.style.display = 'none';
+                if (secOutgoing) secOutgoing.style.display = 'block';
+            }
+        }
+
+        async function viewDeliveryRoute(requestId) {
+            let r = allRequestsById.get(Number(requestId));
+            if (!r) {
+                try {
+                    const res = await fetch('/api/activity/data', { credentials: 'include' });
+                    const data = await res.json();
+                    const all = [...(data.received || []), ...(data.sent || [])];
+                    r = all.find(x => Number(x.id) === Number(requestId));
+                    if (r) allRequestsById.set(Number(r.id), r);
+                } catch(e) {}
+            }
+            if (!r) {
+                showToast('Could not load item details.', 'warning');
+                return;
+            }
+            if (!window.GivingTreeLocation) {
+                showToast('Map engine is loading, please wait.', 'info');
+                return;
+            }
+            GivingTreeLocation.openDeliveryMapModal({
+                title: `Delivery Spot: ${r.title || 'Item Pickup'}`,
+                pickupLocation: r.location,
+                pickupLat: r.item_latitude,
+                pickupLng: r.item_longitude,
+                deliveryLocation: r.requester_location,
+                deliveryLat: r.requester_latitude,
+                deliveryLng: r.requester_longitude,
+                deliveryInstructions: r.delivery_instructions
+            });
+        }
+
+        function openCurrentChatRoute() {
+            if (activeChatRequestId) {
+                viewDeliveryRoute(activeChatRequestId);
+            }
+        }
+
+        function connectSocket() {
+            if (typeof io !== 'function') return;
+            socket = io({ withCredentials: true });
+            socket.on('connect', () => {
+                if (currentUserEmail) socket.emit('join-user', currentUserEmail);
+                if (activeChatRequestId) socket.emit('join-request', activeChatRequestId);
+            });
+            socket.on('notification:new', (notification) => {
+                showToast(notification.title || 'New Notification', 'info');
+                fetchActivityData();
+            });
+            socket.on('chat:new_message', (msg) => {
+                if (activeChatRequestId && Number(msg.request_id) === Number(activeChatRequestId)) {
+                    appendSingleMessage(msg);
+                }
+                fetchActivityData();
+            });
+        }
+
+        function fetchActivityData() {
+            return fetch(`/api/activity/data`, { credentials: "include" })
+                .then(res => {
+                    if (res.status === 401) {
+                        renderNotLoggedInState();
+                        return null;
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    if (!data) return;
+                    if (data.error) {
+                        renderNotLoggedInState();
+                        return;
+                    }
+                    renderActivity(data);
+                })
+                .catch(() => {
+                    renderNotLoggedInState();
+                });
+        }
+
+        function renderNotLoggedInState() {
+            document.getElementById('receiveCount').innerText = '0';
+            document.getElementById('sendCount').innerText = '0';
+            document.getElementById('summaryIncomingVal').innerText = '0';
+            document.getElementById('summaryOutgoingVal').innerText = '0';
+            document.getElementById('summaryCompletedVal').innerText = '0';
+            document.getElementById('summaryWasteVal').innerText = '0 kg';
+
+            const wrapper = document.getElementById('activityContentWrapper');
+            if (wrapper) {
+                wrapper.innerHTML = `
+                <div class="hub-empty-state">
+                    <div class="hub-empty-icon"><i class="fas fa-lock"></i></div>
+                    <h3>Sign In to View Your Requests</h3>
+                    <p>Coordinate pickups with neighbors, track handover status, and chat in real time.</p>
+                    <a href="/login.html?redirect=/requests.html" class="btn-hub-primary" style="display:inline-flex; padding:10px 26px; border-radius:50px; text-decoration:none;">
+                        <i class="fas fa-sign-in-alt"></i> Log In
+                    </a>
+                </div>`;
+            }
+        }
+
+        function renderActivity(data) {
+            if (!data) return;
+            const received = Array.isArray(data.received) ? data.received : [];
+            const sent = Array.isArray(data.sent) ? data.sent : [];
+            currentUserEmail = String(data.currentUserEmail || '').toLowerCase();
+            if (!socket) connectSocket();
+            if (socket && currentUserEmail) socket.emit('join-user', currentUserEmail);
+
+            const incomingUnread = received.reduce((sum, r) => sum + Number(r.unread_count || 0), 0);
+            const sentUnread = sent.reduce((sum, s) => sum + Number(s.unread_count || 0), 0);
+
+            document.getElementById('receiveCount').innerText = String(received.length);
+            document.getElementById('sendCount').innerText = String(sent.length);
+
+            document.getElementById('summaryIncomingVal').innerText = String(received.length);
+            document.getElementById('summaryOutgoingVal').innerText = String(sent.length);
+
+            const allReqs = [...received, ...sent];
+            const completedCount = allReqs.filter(r => String(r.status || '').toLowerCase() === 'completed').length;
+            const wasteDiverted = (completedCount * 4.5).toFixed(1);
+
+            document.getElementById('summaryCompletedVal').innerText = String(completedCount);
+            document.getElementById('summaryWasteVal').innerText = `${wasteDiverted} kg`;
+
+            // ================= INCOMING REQUESTS (For Your Items) =================
+            const receivedList = document.getElementById('receivedList');
+            if (receivedList) {
+                if (received.length === 0) {
+                    receivedList.innerHTML = `
+                    <div class="hub-empty-state">
+                        <div class="hub-empty-icon"><i class="fas fa-inbox"></i></div>
+                        <h3>No incoming requests yet</h3>
+                        <p>When neighbors request treasures you have posted, they will appear here.</p>
+                        <a href="/post-item.html" class="btn-hub-primary" style="display:inline-flex; padding:9px 22px; border-radius:50px; text-decoration:none;">
+                            <i class="fas fa-plus"></i> Share an Item
+                        </a>
+                    </div>`;
+                } else {
+                    let recHTML = "";
+                    received.forEach(r => {
+                        allRequestsById.set(Number(r.id), r);
+                        const status = (r.status || 'Pending').toLowerCase();
+                        const isPending = status === 'pending';
+                        const isAccepted = status === 'accepted';
+                        const isCompleted = status === 'completed';
+
+                        const neighborName = r.requester_name || r.requester_email || 'Neighbor';
+                        const firstLetter = neighborName.charAt(0).toUpperCase();
+
+                        let distText = '';
+                        if (window.GivingTreeLocation && r.item_latitude && r.requester_latitude) {
+                            const distKm = GivingTreeLocation.getDistanceKm(r.item_latitude, r.item_longitude, r.requester_latitude, r.requester_longitude);
+                            distText = GivingTreeLocation.formatDistance(distKm);
+                        }
+
+                        recHTML += `
+                        <div class="hub-card">
+                            <div class="card-core">
+                                <div class="card-left">
+                                    <div class="item-thumb-box">
+                                        ${r.image ? `<img src="${r.image}" alt="${escapeHtml(r.title)}" onerror="this.parentElement.innerHTML='<i class=\\'fas fa-box thumb-icon\\'></i>'">` : `<i class="fas fa-box thumb-icon"></i>`}
+                                    </div>
+                                    <div class="card-details">
+                                        <h3>${escapeHtml(r.title)}</h3>
+                                        <div class="neighbor-row">
+                                            <span>From</span>
+                                            <span class="neighbor-chip" onclick="openNeighborModal(${r.requester_user_id})">
+                                                <span class="neighbor-avatar">${firstLetter}</span>
+                                                ${escapeHtml(neighborName)}
+                                            </span>
+                                            <span>•</span>
+                                            <span>${timeAgo(r.created_at)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="status-badge-glow ${status}">
+                                    <span class="pulse-dot"></span>
+                                    ${isCompleted ? 'Handover Complete' : isAccepted ? 'In Coordination' : escapeHtml(r.status || 'Pending')}
+                                </div>
+                            </div>
+
+                            <div class="handover-spot-box">
+                                <div class="spot-info">
+                                    <i class="fas fa-location-dot" style="color:var(--accent);"></i>
+                                    <span>Pickup / Delivery: <strong>${escapeHtml(r.requester_location || 'Local Pune Area')}</strong></span>
+                                    ${distText ? `<span style="background:rgba(16,185,129,0.12); color:var(--accent); padding:2px 8px; border-radius:12px; font-size:11px; font-weight:700;">📍 ${distText}</span>` : ''}
+                                </div>
+                                <button type="button" class="btn-hub-glass" style="padding:4px 10px; font-size:11.5px;" onclick="viewDeliveryRoute(${r.id})">
+                                    <i class="fas fa-map-marked-alt" style="color:var(--accent);"></i> Map Route
+                                </button>
+                                ${r.delivery_instructions ? `<div class="note-bubble">"${escapeHtml(r.delivery_instructions)}"</div>` : ''}
+                            </div>
+
+                            <div class="card-actions">
+                                <div class="actions-left">
+                                    ${isPending ? `
+                                        <form action="/update-status" method="POST" style="margin:0; display:inline-flex; gap:8px;">
+                                            <input type="hidden" name="id" value="${r.id}">
+                                            <button name="status" value="Accepted" class="btn-hub-primary"><i class="fas fa-check"></i> Accept Request</button>
+                                            <button name="status" value="Rejected" class="btn-hub-danger"><i class="fas fa-times"></i> Decline</button>
+                                        </form>
+                                    ` : ''}
+
+                                    ${isAccepted ? `
+                                        <form action="/update-status" method="POST" style="margin:0; display:inline-flex;">
+                                            <input type="hidden" name="id" value="${r.id}">
+                                            <button name="status" value="completed" class="btn-hub-primary">
+                                                <i class="fas fa-check-double"></i> Mark Handover Complete
+                                            </button>
+                                        </form>
+                                    ` : ''}
+                                </div>
+
+                                <div class="actions-right">
+                                    ${isCompleted && !r.has_reviewed ? `
+                                        <button type="button" class="btn-hub-gold" onclick="openReviewModal(${r.id}, '${escapeHtml(neighborName).replace(/'/g, "\\'")}')">
+                                            <i class="fas fa-star"></i> Leave Feedback
+                                        </button>
+                                    ` : ''}
+
+                                    <button type="button" class="btn-hub-chat" onclick="openChatModal(${r.id})">
+                                        <i class="fas fa-comments"></i> Live Chat
+                                        ${Number(r.unread_count || 0) > 0 ? `<span class="unread-bubble">${r.unread_count}</span>` : ''}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>`;
+                    });
+                    receivedList.innerHTML = recHTML;
+                }
+            }
+
+            // ================= OUTGOING REQUESTS (You've Requested) =================
+            const sentList = document.getElementById('sentList');
+            if (sentList) {
+                if (sent.length === 0) {
+                    sentList.innerHTML = `
+                    <div class="hub-empty-state">
+                        <div class="hub-empty-icon" style="background:rgba(6,182,212,0.12); color:var(--accent-cyan); border-color:rgba(6,182,212,0.3);"><i class="fas fa-paper-plane"></i></div>
+                        <h3>No outgoing requests yet</h3>
+                        <p>Browse free community treasures shared across Pune and request items you need.</p>
+                        <a href="/items.html" class="btn-hub-primary" style="display:inline-flex; padding:9px 22px; border-radius:50px; text-decoration:none;">
+                            <i class="fas fa-search"></i> Browse Items
+                        </a>
+                    </div>`;
+                } else {
+                    let sentHTML = "";
+                    sent.forEach(s => {
+                        allRequestsById.set(Number(s.id), s);
+                        const status = String(s.status).toLowerCase();
+                        const isCompleted = status === 'completed';
+
+                        const ownerName = s.owner_name || s.owner_email || 'Neighbor';
+                        const firstLetter = ownerName.charAt(0).toUpperCase();
+
+                        let distText = '';
+                        if (window.GivingTreeLocation && s.item_latitude && s.requester_latitude) {
+                            const distKm = GivingTreeLocation.getDistanceKm(s.item_latitude, s.item_longitude, s.requester_latitude, s.requester_longitude);
+                            distText = GivingTreeLocation.formatDistance(distKm);
+                        }
+
+                        sentHTML += `
+                        <div class="hub-card">
+                            <div class="card-core">
+                                <div class="card-left">
+                                    <div class="item-thumb-box">
+                                        ${s.image ? `<img src="${s.image}" alt="${escapeHtml(s.title)}" onerror="this.parentElement.innerHTML='<i class=\\'fas fa-box thumb-icon\\'></i>'">` : `<i class="fas fa-box thumb-icon"></i>`}
+                                    </div>
+                                    <div class="card-details">
+                                        <h3>${escapeHtml(s.title)}</h3>
+                                        <div class="neighbor-row">
+                                            <span>Shared by</span>
+                                            <span class="neighbor-chip" onclick="openNeighborModal(${s.owner_id})">
+                                                <span class="neighbor-avatar">${firstLetter}</span>
+                                                ${escapeHtml(ownerName)}
+                                            </span>
+                                            <span>•</span>
+                                            <span>${timeAgo(s.created_at)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="status-badge-glow ${status}">
+                                    <span class="pulse-dot"></span>
+                                    ${isCompleted ? 'Handover Complete' : status === 'accepted' ? 'In Coordination' : escapeHtml(s.status || 'Pending')}
+                                </div>
+                            </div>
+
+                            <div class="handover-spot-box">
+                                <div class="spot-info">
+                                    <i class="fas fa-map-marker-alt" style="color:var(--accent);"></i>
+                                    <span>Pickup Location: <strong>${escapeHtml(s.location || 'Local Area')}</strong></span>
+                                    ${distText ? `<span style="background:rgba(16,185,129,0.12); color:var(--accent); padding:2px 8px; border-radius:12px; font-size:11px; font-weight:700;">📍 ${distText}</span>` : ''}
+                                </div>
+                                <button type="button" class="btn-hub-glass" style="padding:4px 10px; font-size:11.5px;" onclick="viewDeliveryRoute(${s.id})">
+                                    <i class="fas fa-map-marked-alt" style="color:var(--accent);"></i> Map Route
+                                </button>
+                            </div>
+
+                            <div class="card-actions">
+                                <div>
+                                    <span style="font-size:13px; color:var(--text-3);">
+                                        ${status === 'accepted' ? '🎉 Request accepted! Use live chat to coordinate pickup.' : isCompleted ? 'Handover completed.' : 'Waiting for owner to confirm...'}
+                                    </span>
+                                </div>
+
+                                <div class="actions-right">
+                                    ${isCompleted && !s.has_reviewed ? `
+                                        <button type="button" class="btn-hub-gold" onclick="openReviewModal(${s.id}, '${escapeHtml(ownerName).replace(/'/g, "\\'")}')">
+                                            <i class="fas fa-star"></i> Leave Feedback
+                                        </button>
+                                    ` : ''}
+
+                                    <button type="button" class="btn-hub-chat" onclick="openChatModal(${s.id})">
+                                        <i class="fas fa-comments"></i> Live Chat
+                                        ${Number(s.unread_count || 0) > 0 ? `<span class="unread-bubble">${s.unread_count}</span>` : ''}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>`;
+                    });
+                    sentList.innerHTML = sentHTML;
+                }
+            }
+        }
+
+        function handleChatOverlayClick(e) {
+            if (e.target.id === 'chatOverlay') closeChatModal();
+        }
+
+        // ================= CHAT =================
+        async function openChatModal(requestId, fallbackTitle) {
+            if (!requestId) return;
+            activeChatRequestId = Number(requestId);
+            let r = allRequestsById.get(activeChatRequestId);
+            if (!r) {
+                try {
+                    const res = await fetch('/api/activity/data', { credentials: 'include' });
+                    const data = await res.json();
+                    const all = [...(data.received || []), ...(data.sent || [])];
+                    r = all.find(x => Number(x.id) === Number(requestId));
+                    if (r) allRequestsById.set(Number(r.id), r);
+                } catch(e) {}
+            }
+            const itemTitle = (r && r.title) ? r.title : (fallbackTitle || 'Item Handover');
+            document.getElementById('chatTitle').textContent = itemTitle;
+            document.getElementById('chatMessages').innerHTML = '<p style="text-align:center; color:var(--text-3); padding:20px; font-size:13px;">Loading messages...</p>';
+            
+            const overlay = document.getElementById('chatOverlay');
+            if (overlay) {
+                overlay.style.display = 'flex';
+                overlay.classList.add('active');
+            }
+
+            if (socket) socket.emit('join-request', activeChatRequestId);
+            await loadChatMessages();
+        }
+
+        function closeChatModal() {
+            const overlay = document.getElementById('chatOverlay');
+            if (overlay) {
+                overlay.classList.remove('active');
+                overlay.style.display = 'none';
+            }
+            const input = document.getElementById('chatInput');
+            if (input) input.value = '';
+            activeChatRequestId = null;
+        }
+
+        function insertQuickChat(text) {
+            const input = document.getElementById('chatInput');
+            input.value = text;
+            input.focus();
+        }
+
+        async function loadChatMessages() {
+            if (!activeChatRequestId) return;
+            try {
+                const res = await fetch(`/api/requests/${activeChatRequestId}/messages`, { credentials: "include" });
+                if (!res.ok) throw new Error('Failed to load chat');
+                const data = await res.json();
+                renderChatMessages(data.messages || []);
+            } catch(e) {
+                document.getElementById('chatMessages').innerHTML = `<p style="text-align:center; color:var(--text-3); padding:20px; font-size:13px;">Error loading messages.</p>`;
+            }
+        }
+
+        const renderedChatMsgIds = new Set();
+
+        function renderChatMessages(messages) {
+            const box = document.getElementById('chatMessages');
+            renderedChatMsgIds.clear();
+            if (!messages || !messages.length) {
+                box.innerHTML = '<p style="text-align:center; color:var(--text-3); padding:20px; font-size:13px;">No messages yet. Say hello and coordinate pickup!</p>';
+                return;
+            }
+            box.innerHTML = messages.map(m => {
+                if (m.id) renderedChatMsgIds.add(m.id);
+                const isMine = String(m.sender_email).toLowerCase() === currentUserEmail;
+                return `
+                <div class="chat-msg ${isMine ? 'mine' : 'other'}">
+                    <div>${escapeHtml(m.message)}</div>
+                    <div class="chat-meta">${isMine ? 'You' : escapeHtml(m.sender_email)} · ${timeAgo(m.created_at)}</div>
+                </div>`;
+            }).join('');
+            box.scrollTop = box.scrollHeight;
+        }
+
+        function appendSingleMessage(msg) {
+            if (!msg) return;
+            if (msg.id && renderedChatMsgIds.has(msg.id)) return;
+            if (msg.id) renderedChatMsgIds.add(msg.id);
+
+            const box = document.getElementById('chatMessages');
+            const emptyNotice = box.querySelector('p');
+            if (emptyNotice) box.innerHTML = '';
+
+            const isMine = String(msg.sender_email).toLowerCase() === currentUserEmail;
+            const div = document.createElement('div');
+            div.className = `chat-msg ${isMine ? 'mine' : 'other'}`;
+            div.innerHTML = `<div>${escapeHtml(msg.message)}</div><div class="chat-meta">${isMine ? 'You' : escapeHtml(msg.sender_email)} · just now</div>`;
+            box.appendChild(div);
+            box.scrollTop = box.scrollHeight;
+        }
+
+        async function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const msg = input.value.trim();
+            if (!msg || !activeChatRequestId) return;
+
+            input.value = '';
+            try {
+                const res = await fetch(`/api/requests/${activeChatRequestId}/messages`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    credentials: "include",
+                    body: JSON.stringify({ message: msg })
+                });
+                if (!res.ok) {
+                    input.value = msg;
+                    throw new Error('Failed to send');
+                }
+                const data = await res.json();
+                if (data.message) appendSingleMessage(data.message);
+            } catch(e) {
+                showToast('Failed to send message.', 'error');
+            }
+        }
+
+        // ================= REVIEW =================
+        function openReviewModal(requestId, neighborName) {
+            document.getElementById('reviewRequestId').value = requestId;
+            document.getElementById('revieweeNameSpan').textContent = neighborName;
+            document.getElementById('reviewComment').value = '';
+            setStarRating(5);
+            document.getElementById('reviewModal').classList.add('active');
+        }
+
+        function closeReviewModal() {
+            document.getElementById('reviewModal').classList.remove('active');
+        }
+
+        function handleReviewOverlayClick(e) {
+            if (e.target.id === 'reviewModal') closeReviewModal();
+        }
+
+        function setStarRating(rating) {
+            document.getElementById('reviewRatingVal').value = rating;
+            const stars = document.querySelectorAll('#starPicker i');
+            stars.forEach((s, idx) => {
+                s.className = idx < rating ? 'fas fa-star' : 'far fa-star';
+            });
+        }
+
+        async function submitReview(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitReviewBtn');
+            const reqId = document.getElementById('reviewRequestId').value;
+            const rating = document.getElementById('reviewRatingVal').value;
+            const comment = document.getElementById('reviewComment').value;
+
+            btn.disabled = true;
+            btn.innerHTML = 'Submitting...';
+
+            try {
+                const res = await fetch('/api/reviews', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        request_id: Number(reqId),
+                        rating: Number(rating),
+                        comment: comment.trim()
+                    })
+                });
+
+                if (!res.ok) throw new Error('Failed to submit review');
+
+                showToast('Thank you! Review saved. 🌿', 'success');
+                closeReviewModal();
+                fetchActivityData();
+            } catch (err) {
+                showToast(err.message || 'Error submitting review.', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'Submit Feedback';
+            }
+        }
+
+        // ================= NEIGHBOR PROFILE =================
+        async function openNeighborModal(userId) {
+            if (!userId) return;
+            const modal = document.getElementById('neighborProfileModal');
+            try {
+                const res = await fetch(`/api/users/${userId}/public`);
+                if (!res.ok) throw new Error('User not found');
+                const profile = await res.json();
+
+                document.getElementById('profileName').textContent = profile.name || 'Neighbor';
+                document.getElementById('profileCity').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${escapeHtml(profile.location || 'Pune, India')}`;
+                
+                const avatarEl = document.getElementById('profileAvatar');
+                if (profile.avatar_url) {
+                    avatarEl.innerHTML = `<img src="${profile.avatar_url}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;" alt="${escapeHtml(profile.name)}">`;
+                } else {
+                    avatarEl.innerHTML = `<i class="fas fa-user"></i>`;
+                }
+
+                document.getElementById('profileStatShared').textContent = profile.stats?.items_shared || 0;
+                document.getElementById('profileStatGiven').textContent = profile.stats?.items_given || 0;
+                document.getElementById('profileStatRating').textContent = profile.stats?.avg_rating ? `${Number(profile.stats.avg_rating).toFixed(1)} ⭐` : '5.0 ⭐';
+
+                const revCount = document.getElementById('profileReviewCount');
+                revCount.textContent = profile.stats?.total_reviews || 0;
+
+                const revList = document.getElementById('profileReviewsList');
+                if (!profile.recent_reviews || !profile.recent_reviews.length) {
+                    revList.innerHTML = `<p style="font-size:13px; color:var(--text-3); text-align:center; padding:12px;">No reviews yet.</p>`;
+                } else {
+                    revList.innerHTML = profile.recent_reviews.map(r => `
+                        <div class="review-item-card">
+                            <div class="review-item-header">
+                                <span class="review-author">${escapeHtml(r.reviewer_name || 'Neighbor')}</span>
+                                <span style="color:#f59e0b; font-size:12px;">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
+                            </div>
+                            <p class="review-comment">${escapeHtml(r.comment || 'Smooth handover!')}</p>
+                        </div>
+                    `).join('');
+                }
+
+                modal.classList.add('active');
+            } catch(e) {
+                showToast('Could not load neighbor profile.', 'error');
+            }
+        }
+
+        function closeNeighborModal() {
+            document.getElementById('neighborProfileModal').classList.remove('active');
+        }
+
+        function handleProfileOverlayClick(e) {
+            if (e.target.id === 'neighborProfileModal') closeNeighborModal();
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeChatModal();
+                if (window.GivingTreeLocation) GivingTreeLocation.closeDeliveryMapModal();
+                closeReviewModal();
+                closeNeighborModal();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.target && e.target.id === 'chatInput' && e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendChatMessage();
+            }
+        });
+
+        fetchActivityData();
+    </script>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-brand-logo"><i class="fas fa-leaf"></i><span>Giving Tree</span></div>
+                    <p>Connecting neighborhoods through generosity. Every item shared brings our community closer together.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/index.html"><i class="fas fa-chevron-right"></i>Home</a></li>
+                        <li><a href="/items.html"><i class="fas fa-chevron-right"></i>Browse Items</a></li>
+                        <li><a href="/post-item.html"><i class="fas fa-chevron-right"></i>Give an Item</a></li>
+                        <li><a href="/requests.html"><i class="fas fa-chevron-right"></i>Activity Hub</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Stay in the Loop</h4>
+                    <p style="font-size:13px; color:var(--text-3); margin:0 0 8px; line-height:1.7;">Get notified when new items are shared in your area.</p>
+                    <form class="footer-newsletter-form" onsubmit="handleNewsletterSubmit(event)">
+                        <input type="email" placeholder="your@email.com" required id="footerEmailInput">
+                        <button type="submit" class="footer-newsletter-btn"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Giving Tree | Developed with ❤️ for the Community</p>
+                <p>Made in India 🇮🇳</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/assets/js/navbar-auth.js"></script>
+    <script src="/assets/js/notifications.js"></script>
+    <script src="/assets/js/animations.js"></script>
+</body>
+</html>
