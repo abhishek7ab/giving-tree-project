@@ -1,5 +1,5 @@
 const db = require('../database/db');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 const PUNE_LOCALITY_COORDS = {
     'Kothrud, Pune': { lat: 18.5074, lng: 73.8077 },

@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const userModel = require('../models/userModel');
 
@@ -170,7 +170,7 @@ exports.loginUser = async (req, res) => {
     } catch (err) {
         console.error("LOGIN ERROR:", err);
         if (req.headers.accept?.includes('application/json')) {
-            return res.status(500).json({ error: 'servererror', message: 'Unable to log in. Please try again.' });
+            return res.status(500).json({ error: 'servererror', message: err.message || 'Unable to log in. Please try again.' });
         }
         return res.redirect("/login.html?error=servererror");
     }
