@@ -9,3 +9,5 @@ test-results/
 temp_*
 .DS_Store
 Thumbs.db
+.claude/
+.vscode/
