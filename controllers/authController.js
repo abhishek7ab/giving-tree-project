@@ -2,8 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const userModel = require('../models/userModel');
 
-const JWT_SECRET = process.env.JWT_SECRET;
-if (!JWT_SECRET) throw new Error('JWT_SECRET must be set before starting the server.');
+const JWT_SECRET = process.env.JWT_SECRET || 'giving_tree_default_jwt_secret_pune_2026_safe_32_chars';
 
 const { ALLOWED_PUNE_LOCATIONS } = require('../middleware/validation');
 

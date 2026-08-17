@@ -1,10 +1,13 @@
 const { Pool } = require('pg');
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
-  }
-});
+const poolConfig = {
+  connectionString: process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/giving_tree_db',
+};
 
-module.exports = pool;
+if (process.env.DATABASE_URL) {
+  poolConfig.ssl = { rejectUnauthorized: false };
+}
+
+const pool = new Pool(poolConfig);
+
+module.exports = pool;
