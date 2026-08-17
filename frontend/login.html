@@ -185,8 +185,11 @@
             try { data = JSON.parse(text); } catch(e) {}
 
             if (!res.ok) {
-                const errMsg = data.message || data.error || data.details || (text && text.length < 160 ? text : null) || 'Your password or Gmail is incorrect.';
-                throw new Error(errMsg);
+                let errMsg = data.message || data.error || data.details;
+                if (!errMsg && text && !text.includes('<')) {
+                    errMsg = text;
+                }
+                throw new Error(errMsg || 'Your password or Gmail is incorrect. Please check your credentials.');
             }
 
             window.location.href = data.redirect || '/index.html';

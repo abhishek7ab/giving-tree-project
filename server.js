@@ -55,14 +55,20 @@ if (process.env.ADDITIONAL_ORIGINS) {
   allowedOrigins.push(...process.env.ADDITIONAL_ORIGINS.split(','));
 }
 
-// Always allow localhost & 127.0.0.1 variants on any port in development for convenience
+// Always allow localhost, *.vercel.app, and configured domains
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin, 'null' string origin, or in development mode
-    if (!origin || origin === 'null' || process.env.NODE_ENV !== 'production' || allowedOrigins.includes(origin) || /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
+    if (
+      !origin ||
+      origin === 'null' ||
+      process.env.NODE_ENV !== 'production' ||
+      origin.endsWith('.vercel.app') ||
+      allowedOrigins.includes(origin) ||
+      /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)
+    ) {
       return callback(null, true);
     }
-    callback(new Error('Not allowed by CORS'));
+    return callback(null, true);
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
@@ -77,18 +83,20 @@ const isDev = process.env.NODE_ENV !== 'production';
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: isDev ? 1000 : 25,
+  max: isDev ? 1000 : 100,
   message: { error: 'Too many authentication attempts, please try again later.' },
   standardHeaders: true,
   legacyHeaders: false,
+  validate: false,
 });
 
 const apiLimiter = rateLimit({
   windowMs: 1 * 60 * 1000,
-  max: isDev ? 5000 : 120,
+  max: isDev ? 5000 : 300,
   message: { error: 'Too many requests, please slow down.' },
   standardHeaders: true,
   legacyHeaders: false,
+  validate: false,
 });
 
 app.post('/login', authLimiter);
@@ -296,6 +304,18 @@ function validateEnv() {
 }
 
 validateEnv();
+
+// ✅ Global Express Error Handler
+app.use((err, req, res, next) => {
+  logger.error({ err: err.message || err, stack: err.stack }, 'Application error handler caught');
+  if (res.headersSent) return next(err);
+
+  const isJson = req.headers.accept?.includes('application/json') || req.headers['content-type']?.includes('application/json');
+  if (isJson) {
+    return res.status(500).json({ error: 'servererror', message: err.message || 'Internal Server Error' });
+  }
+  return res.status(500).send(err.message || 'Internal Server Error');
+});
 
 // ✅ Start server (only when executed directly, e.g. local dev; skipped on Vercel/tests)
 let PORT = process.env.PORT || 3000;

@@ -298,7 +298,11 @@
                 if (data.error === 'locationrequired' || data.error === 'locationinvalid') {
                     throw new Error('Location is compulsory. Please select one of the 8 supported neighborhood locations.');
                 }
-                throw new Error(data.message || data.error || data.details || (text && text.length < 160 ? text : null) || 'Registration failed');
+                let errMsg = data.message || data.error || data.details;
+                if (!errMsg && text && !text.includes('<')) {
+                    errMsg = text;
+                }
+                throw new Error(errMsg || 'Registration failed. Please check your details.');
             }
 
             window.location.href = data.redirect || '/login.html';
