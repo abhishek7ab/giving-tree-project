@@ -154,12 +154,12 @@ exports.loginUser = async (req, res) => {
             { expiresIn: '7d' }
         );
 
-        const isProduction = process.env.NODE_ENV === 'production';
         res.cookie("token", token, {
             httpOnly: true,
             secure: isProduction,
-            sameSite: isProduction ? 'none' : 'lax',
-            domain: isProduction ? process.env.COOKIE_DOMAIN : undefined,
+            sameSite: 'lax',
+            path: '/',
+            domain: process.env.COOKIE_DOMAIN || undefined,
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         });
 
@@ -197,12 +197,12 @@ exports.updateName = async (req, res) => {
             JWT_SECRET,
             { expiresIn: '7d' }
         );
-        const isProduction = process.env.NODE_ENV === 'production';
         res.cookie("token", token, {
             httpOnly: true,
             secure: isProduction,
-            sameSite: isProduction ? 'none' : 'lax',
-            domain: isProduction ? process.env.COOKIE_DOMAIN : undefined,
+            sameSite: 'lax',
+            path: '/',
+            domain: process.env.COOKIE_DOMAIN || undefined,
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
 
@@ -268,12 +268,12 @@ exports.deleteOwnAccount = async (req, res) => {
 
         await userModel.deleteUserById(userId);
 
-        const isProduction = process.env.NODE_ENV === 'production';
         res.clearCookie('token', {
             httpOnly: true,
             secure: isProduction,
-            sameSite: isProduction ? 'none' : 'lax',
-            domain: isProduction ? process.env.COOKIE_DOMAIN : undefined
+            sameSite: 'lax',
+            path: '/',
+            domain: process.env.COOKIE_DOMAIN || undefined
         });
 
         return res.json({ success: true, message: 'Account deleted successfully' });
@@ -285,13 +285,13 @@ exports.deleteOwnAccount = async (req, res) => {
 
 // ================= LOGOUT =================
 exports.logoutUser = (req, res) => {
-    const isProduction = process.env.NODE_ENV === 'production';
-    res.clearCookie('token', {
-        httpOnly: true,
-        secure: isProduction,
-        sameSite: isProduction ? 'none' : 'lax',
-        domain: isProduction ? process.env.COOKIE_DOMAIN : undefined
-    });
+        res.clearCookie('token', {
+            httpOnly: true,
+            secure: isProduction,
+            sameSite: 'lax',
+            path: '/',
+            domain: process.env.COOKIE_DOMAIN || undefined
+        });
 
     return res.redirect("/logout.html");
 };
@@ -312,12 +312,12 @@ exports.makeMeAdmin = async (req, res) => {
         const decoded = jwt.verify(token, JWT_SECRET);
         await userModel.makeUserAdmin(decoded.id);
 
-        const isProduction = process.env.NODE_ENV === 'production';
         res.clearCookie('token', {
             httpOnly: true,
             secure: isProduction,
-            sameSite: isProduction ? 'none' : 'lax',
-            domain: isProduction ? process.env.COOKIE_DOMAIN : undefined
+            sameSite: 'lax',
+            path: '/',
+            domain: process.env.COOKIE_DOMAIN || undefined
         });
         res.send("<h1>Success! You are now an Admin.</h1><p><a href='/login.html'>Log In again</a> to apply the admin role.</p>");
     } catch (err) {
