@@ -1,30 +1,29 @@
 /* ============================================================
    GIVING TREE — buttons.css
-   Universal Button System: Primary, Emerald CTA, Secondary, Danger,
-   Ghost, Icon, Sizing Scale, and Loading States.
+   Editorial Button System (Inspired by eBay Playbook)
+   Deep Forest Primary, Warm Accent Variants, Tactile Elevations
    ============================================================ */
 
-/* ---- Core Base Button ---- */
 .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    padding: 13px 28px;
+    padding: 14px 28px;
     border-radius: var(--radius-full);
-    font-family: 'Plus Jakarta Sans', 'Poppins', sans-serif;
+    font-family: inherit;
     font-weight: 700;
-    font-size: 14.5px;
-    letter-spacing: 0.2px;
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
     text-decoration: none;
     cursor: pointer;
     border: 1px solid transparent;
     transition:
         transform    var(--dur-fast) var(--ease-out),
-        background   var(--dur-base) var(--ease-out),
-        border-color var(--dur-base) var(--ease-out),
-        box-shadow   var(--dur-base) var(--ease-out),
-        color        var(--dur-base) var(--ease-out);
+        background   var(--dur-fast) var(--ease-out),
+        border-color var(--dur-fast) var(--ease-out),
+        box-shadow   var(--dur-fast) var(--ease-out),
+        color        var(--dur-fast) var(--ease-out);
     white-space: nowrap;
     position: relative;
     user-select: none;
@@ -33,12 +32,12 @@
 }
 
 .btn:active {
-    transform: translateY(0) scale(0.98) !important;
+    transform: translateY(1px) scale(0.98) !important;
 }
 
 .btn:disabled,
 .btn[disabled] {
-    opacity: 0.55;
+    opacity: 0.45;
     cursor: not-allowed;
     pointer-events: none;
     transform: none !important;
@@ -51,27 +50,39 @@
     box-shadow: var(--focus-ring);
 }
 
-/* ---- Button Size Modifiers ---- */
+/* Arrow micro-interaction in button */
+.btn .btn-arrow {
+    display: inline-flex;
+    transition: transform var(--dur-fast) var(--ease-out);
+}
+.btn:hover .btn-arrow {
+    transform: translateX(4px);
+}
+
+/* ---- Button Sizes ---- */
 .btn-xs {
     padding: 6px 14px;
-    font-size: 12px;
+    font-size: 0.8rem;
     gap: 6px;
+    border-radius: var(--radius-full);
 }
 
 .btn-sm {
     padding: 8px 18px;
-    font-size: 13px;
+    font-size: 0.875rem;
     gap: 7px;
+    border-radius: var(--radius-full);
 }
 
 .btn-md {
-    padding: 13px 28px;
-    font-size: 14.5px;
+    padding: 14px 28px;
+    font-size: 0.95rem;
 }
 
 .btn-lg {
-    padding: 16px 36px;
-    font-size: 16px;
+    padding: 18px 36px;
+    font-size: 1.1rem;
+    font-weight: 800;
     gap: 12px;
 }
 
@@ -83,201 +94,195 @@
 
 /* ---- Button Variants ---- */
 
-/* 1. Primary Button (Crisp White Luxury) */
-.btn.primary,
+/* 1. Primary Button (Deep Forest Green) */
 .btn-primary,
+.btn.primary,
 .primary {
-    background: #ffffff;
-    color: #0f172a;
-    box-shadow: 0 4px 16px rgba(255, 255, 255, 0.15);
-    border: 1px solid #ffffff;
+    background-color: var(--tree-green);
+    color: #FFFFFF !important;
+    border: 1px solid var(--tree-green);
+    box-shadow: 0 4px 14px rgba(22, 74, 54, 0.25);
 }
 
-.btn.primary:hover,
 .btn-primary:hover,
+.btn.primary:hover,
 .primary:hover {
-    background: #f1f5f9;
-    color: #090d16;
+    background-color: var(--tree-green-dark);
+    border-color: var(--tree-green-dark);
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 22px rgba(22, 74, 54, 0.35);
+    color: #FFFFFF !important;
 }
 
-/* 2. Emerald Primary CTA Variant */
-.btn.emerald,
-.btn-emerald {
-    background: var(--accent-gradient);
-    color: #ffffff;
-    border: 1px solid rgba(16, 185, 129, 0.35);
-    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.25);
+/* 2. Coral / Orange Accent CTA */
+.btn-coral,
+.btn.coral {
+    background-color: var(--coral);
+    color: #FFFFFF !important;
+    border: 1px solid var(--coral);
+    box-shadow: 0 4px 14px rgba(242, 124, 107, 0.3);
 }
 
-.btn.emerald:hover,
-.btn-emerald:hover {
-    background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
-    border-color: rgba(52, 211, 153, 0.5);
+.btn-coral:hover,
+.btn.coral:hover {
+    background-color: #E26857;
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.38);
-    color: #ffffff;
+    box-shadow: 0 8px 22px rgba(242, 124, 107, 0.45);
 }
 
-/* 3. Secondary Glass Button */
-.btn.secondary,
+/* 3. Warm Sunshine Yellow CTA */
+.btn-warm,
+.btn.warm {
+    background-color: var(--warm-yellow);
+    color: var(--tree-green) !important;
+    border: 1px solid var(--warm-yellow);
+    box-shadow: 0 4px 14px rgba(244, 211, 94, 0.35);
+    font-weight: 800;
+}
+
+.btn-warm:hover,
+.btn.warm:hover {
+    background-color: #E6C449;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(244, 211, 94, 0.5);
+}
+
+/* 4. Secondary Outline / Inverted Pill */
 .btn-secondary,
+.btn.secondary,
 .secondary {
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--text-1);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(12px);
+    background: transparent;
+    color: var(--tree-green);
+    border: 1.5px solid var(--border-medium);
 }
 
-.btn.secondary:hover,
 .btn-secondary:hover,
+.btn.secondary:hover,
 .secondary:hover {
-    background: rgba(255, 255, 255, 0.10);
-    border-color: rgba(255, 255, 255, 0.30);
+    background: #FFFFFF;
+    border-color: var(--tree-green);
+    color: var(--tree-green);
     transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
-    color: #ffffff;
+    box-shadow: var(--shadow-sm);
 }
 
-/* 4. Danger Button */
-.btn.danger,
+/* 5. Inverted on Forest Dark Sections */
+.btn-white {
+    background-color: #FFFFFF;
+    color: var(--tree-green) !important;
+    border: 1px solid #FFFFFF;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+}
+
+.btn-white:hover {
+    background-color: var(--cream);
+    color: var(--tree-green-dark) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+}
+
+/* 6. Danger / Delete Button */
 .btn-danger,
-.btn-remove {
-    background: var(--danger-dim);
-    color: #f43f5e;
-    border: 1px solid rgba(244, 63, 94, 0.32);
+.btn.danger {
+    background: var(--danger-bg);
+    color: var(--danger);
+    border: 1px solid rgba(220, 38, 38, 0.3);
     font-weight: 700;
 }
 
-.btn.danger:hover,
 .btn-danger:hover,
-.btn-remove:hover {
+.btn.danger:hover {
     background: var(--danger);
-    color: #ffffff;
+    color: #FFFFFF;
     border-color: var(--danger);
-    box-shadow: 0 8px 24px rgba(244, 63, 94, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(220, 38, 38, 0.35);
+}
+
+.btn-delete-small {
+    background: var(--danger-bg);
+    color: var(--danger);
+    border: 1px solid rgba(220, 38, 38, 0.25);
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all var(--dur-fast) var(--ease-out);
+}
+
+.btn-delete-small:hover {
+    background: var(--danger);
+    color: #FFFFFF;
     transform: translateY(-2px);
 }
 
-.btn-remove {
-    padding: 12px;
-    width: 100%;
-    border-radius: var(--radius-sm);
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-/* 5. Ghost / Subtle Link Button */
+/* 7. Ghost / Link Button */
 .btn-ghost {
     background: transparent;
-    color: var(--text-2);
+    color: var(--ink);
     border: 1px solid transparent;
 }
 
 .btn-ghost:hover {
-    background: rgba(255, 255, 255, 0.06);
-    color: var(--text-1);
-    border-color: var(--border);
-    transform: translateY(-1px);
+    background: var(--green-dim);
+    color: var(--tree-green);
 }
 
-/* 6. Icon Action Button */
-.btn-icon {
-    width: 42px;
-    height: 42px;
-    padding: 0;
-    border-radius: var(--radius-sm);
+/* 8. Export Button */
+.btn-export {
+    background: #FFFFFF;
+    border: 1px solid var(--border-medium);
+    color: var(--ink);
+    padding: 8px 18px;
+    border-radius: var(--radius-full);
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--border);
-    color: var(--text-2);
-    flex-shrink: 0;
+    gap: 8px;
+    transition: all var(--dur-fast) var(--ease-out);
 }
 
-.btn-icon:hover {
-    background: rgba(255, 255, 255, 0.12);
-    color: var(--text-1);
-    border-color: var(--border-hover);
+.btn-export:hover {
+    background: var(--green-dim);
+    border-color: var(--tree-green);
+    color: var(--tree-green);
     transform: translateY(-2px);
 }
 
-.btn-icon.circle {
-    border-radius: 50%;
-}
-
-/* ---- Form Specific Submit Buttons ---- */
-.btn-submit {
+/* 9. Submit & Auth Buttons */
+.btn-submit,
+.auth-btn {
+    width: 100%;
+    padding: 16px;
+    background-color: var(--tree-green);
+    color: #FFFFFF;
+    font-weight: 800;
+    font-size: 1.05rem;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--tree-green);
+    box-shadow: 0 4px 14px rgba(22, 74, 54, 0.25);
+    cursor: pointer;
+    transition: all var(--dur-fast) var(--ease-out);
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    width: 100%;
-    padding: 15px;
-    border: 1px solid #ffffff;
-    background: #ffffff;
-    color: #0f172a;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-weight: 700;
-    font-size: 15px;
-    border-radius: var(--radius-full);
-    cursor: pointer;
-    box-shadow: 0 4px 14px rgba(255, 255, 255, 0.15);
-    transition:
-        transform    var(--dur-fast) var(--ease-out),
-        background   var(--dur-base) var(--ease-out),
-        box-shadow   var(--dur-base) var(--ease-out);
 }
 
-.btn-submit:hover {
-    background: #f1f5f9;
-    color: #090d16;
+.btn-submit:hover,
+.auth-btn:hover {
+    background-color: var(--tree-green-dark);
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 24px rgba(22, 74, 54, 0.35);
 }
 
-.auth-btn {
-    width: 100%;
-    margin-top: 10px;
-    padding: 15px;
-    font-size: 15px;
-}
-
-.register-btn {
-    background: #ffffff !important;
-    color: #0f172a !important;
-    padding: 9px 20px !important;
-    border-radius: 14px !important;
-    font-weight: 700 !important;
-    font-size: 13.5px !important;
-    border: 1px solid #ffffff !important;
-    text-decoration: none !important;
-    box-shadow: 0 4px 14px rgba(255, 255, 255, 0.15);
-    transition:
-        transform    var(--dur-fast) var(--ease-out),
-        background   var(--dur-base) var(--ease-out),
-        box-shadow   var(--dur-base) var(--ease-out) !important;
-}
-
-.register-btn::after { display: none !important; }
-
-.register-btn:hover {
-    background: #f1f5f9 !important;
-    color: #090d16 !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 0 8px 24px rgba(255, 255, 255, 0.25) !important;
-}
-
-/* Action card buttons */
-.action-card .btn {
-    width: 220px;
-    box-sizing: border-box;
-}
-
-/* ---- Loading Spinner State ---- */
+/* Loading Spinner State */
 .btn.is-loading {
     color: transparent !important;
     pointer-events: none;
@@ -293,16 +298,9 @@
     left: 50%;
     margin: -9px 0 0 -9px;
     border: 2px solid rgba(255, 255, 255, 0.3);
-    border-top-color: #ffffff;
+    border-top-color: #FFFFFF;
     border-radius: 50%;
     animation: btnSpin 0.7s linear infinite;
-}
-
-.btn.primary.is-loading::after,
-.btn-primary.is-loading::after,
-.btn-submit.is-loading::after {
-    border: 2px solid rgba(15, 23, 42, 0.2);
-    border-top-color: #0f172a;
 }
 
 @keyframes btnSpin {

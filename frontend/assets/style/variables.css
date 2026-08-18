@@ -1,102 +1,133 @@
 /* ============================================================
    GIVING TREE — variables.css
-   Modern, restrained design tokens for a high-end dark slate UI.
-   Single Emerald Accent (#10b981), Slate Surfaces, Crisp Typography.
+   Editorial Design System Tokens (Inspired by eBay Playbook)
+   Warm Cream & Forest Green Palette, Oversized Typography Scales
    ============================================================ */
 
 :root {
-    /* ---- Backgrounds & Surface Scale (Dark Slate Theme) ---- */
-    --bg-deep:       #090d16;
-    --bg-card:       rgba(15, 23, 42, 0.85);
-    --bg-card-hover: rgba(22, 32, 56, 0.92);
-    --bg-surface:    rgba(26, 38, 57, 0.70);
-    --bg-raise:      #1e293b;
-    --bg-input:      rgba(15, 23, 42, 0.75);
-    --bg-overlay:    rgba(9, 13, 22, 0.80);
+    /* ---- Core Brand Palette ---- */
+    --tree-green:      #164A36;  /* Deep Forest Green - Headlines & Primary Brand */
+    --tree-green-dark: #0F3325;  /* Dark Forest - Hover & Depth */
+    --leaf-green:      #5E9F68;  /* Lush Leaf Green */
+    --fresh-green:     #A8D5BA;  /* Fresh Mint/Sage Tint */
+    --green-dim:       rgba(22, 74, 54, 0.08);
+    --green-border:    rgba(22, 74, 54, 0.15);
 
-    /* ---- Glass, Borders & Lines ---- */
-    --border:        rgba(255, 255, 255, 0.08);
-    --border-hover:  rgba(255, 255, 255, 0.18);
-    --border-focus:  rgba(16, 185, 129, 0.50);
-    --border-accent: rgba(16, 185, 129, 0.30);
-    --glass-blur:    blur(20px);
-    --glass-blur-lg: blur(32px);
+    /* ---- Editorial Color Block Accents ---- */
+    --warm-yellow:     #F4D35E;  /* Sunshine Highlight */
+    --warm-yellow-dim: rgba(244, 211, 94, 0.20);
+    --coral:           #F27C6B;  /* Energetic Coral - Highlights & CTAs */
+    --coral-dim:       rgba(242, 124, 107, 0.15);
+    --lilac:           #C9B8E8;  /* Soft Editorial Lilac */
+    --lilac-dim:       rgba(201, 184, 232, 0.25);
+    --sky:             #B8DDE8;  /* Soft Sky Blue */
+    --sky-dim:         rgba(184, 221, 232, 0.25);
 
-    /* ---- Restrained Primary Brand Colors (Emerald) ---- */
-    --accent:          #10b981;
-    --accent-hover:    #059669;
-    --accent-dark:     #047857;
-    --accent-light:    #34d399;
-    --accent-dim:      rgba(16, 185, 129, 0.12);
-    --accent-border:   rgba(16, 185, 129, 0.28);
-    --accent-glow:     rgba(16, 185, 129, 0.20);
-    --accent-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    /* ---- Backgrounds & Surface Hierarchy (Warm Editorial) ---- */
+    --cream:           #F8F5EC;  /* Base Warm Off-White Canvas */
+    --surface-warm:    #F2EDE0;  /* Secondary Warm Section Surface */
+    --surface-card:    #FFFFFF;  /* Crisp White Card Surface */
+    --surface-card-hover: #FCFBF7;
+    --surface-elevated:#FFFFFF;
+    --surface-dark:    #164A36;  /* Inverted Forest Dark Block */
+    --bg-overlay:      rgba(23, 34, 29, 0.70);
 
-    /* ---- Text Hierarchy Scale ---- */
-    --text-1:     #ffffff;
-    --text-2:     #94a3b8;
-    --text-3:     #64748b;
-    --text-muted: #475569;
+    /* ---- Typography & Content Hierarchy (Deep Ink) ---- */
+    --ink:             #17221D;  /* Deep Dark Ink - Main Body & Headings */
+    --ink-light:       #2D3D35;  /* Secondary Ink */
+    --muted:           #68736D;  /* Balanced Secondary Copy */
+    --muted-light:     #8C9992;  /* Captions & Subtle Labels */
+    --white:           #FFFFFF;
 
-    /* ---- Semantic Status Colors ---- */
-    --success:     #10b981;
-    --success-dim: rgba(16, 185, 129, 0.14);
-    --danger:      #f43f5e;
-    --danger-dim:  rgba(244, 63, 94, 0.14);
-    --warning:     #fbbf24;
-    --warning-dim: rgba(251, 191, 36, 0.14);
-    --info:        #38bdf8;
-    --info-dim:    rgba(56, 189, 248, 0.14);
+    /* ---- Status Colors ---- */
+    --success:         #164A36;
+    --success-bg:      rgba(94, 159, 104, 0.15);
+    --warning:         #B45309;
+    --warning-bg:      rgba(244, 211, 94, 0.30);
+    --danger:          #DC2626;
+    --danger-bg:       rgba(242, 124, 107, 0.18);
+    --info:            #0369A1;
+    --info-bg:         rgba(184, 221, 232, 0.35);
 
-    /* ---- Radii ---- */
-    --radius-xs: 6px;
-    --radius-sm: 10px;
-    --radius-md: 16px;
-    --radius-lg: 24px;
-    --radius-xl: 32px;
-    --radius-full: 9999px;
+    /* ---- Borders & Lines ---- */
+    --border-subtle:   rgba(23, 34, 29, 0.08);
+    --border-medium:   rgba(23, 34, 29, 0.16);
+    --border-strong:   rgba(23, 34, 29, 0.28);
+    --border-forest:   rgba(22, 74, 54, 0.25);
+    --border:          var(--border-subtle);
+    --border-hover:    var(--border-medium);
+    --border-focus:    var(--tree-green);
 
-    /* ---- Shadows & Depth (Subtle & Tactile) ---- */
-    --shadow-xs:    0 1px 3px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.15);
-    --shadow-sm:    0 4px 12px rgba(0, 0, 0, 0.25);
-    --shadow-md:    0 12px 32px rgba(0, 0, 0, 0.35);
-    --shadow-lg:    0 24px 60px rgba(0, 0, 0, 0.45);
-    --shadow-hover: 0 14px 36px rgba(0, 0, 0, 0.42), 0 0 0 1px rgba(16, 185, 129, 0.15);
-    --shadow-glow:  0 8px 30px rgba(16, 185, 129, 0.22);
+    /* ---- Radii (Soft Rounded Editorial) ---- */
+    --radius-xs:       8px;
+    --radius-sm:       12px;
+    --radius-md:       18px;
+    --radius-lg:       26px;
+    --radius-xl:       36px;
+    --radius-2xl:      48px;
+    --radius-full:     9999px;
 
-    /* ---- Luxury Easing Curves & Durations ---- */
-    --ease:        cubic-bezier(0.16, 1, 0.3, 1);
+    /* ---- Shadows & Tactile Elevation ---- */
+    --shadow-xs:       0 1px 3px rgba(23, 34, 29, 0.04);
+    --shadow-sm:       0 4px 12px rgba(23, 34, 29, 0.06);
+    --shadow-md:       0 12px 28px rgba(23, 34, 29, 0.08);
+    --shadow-lg:       0 24px 50px rgba(23, 34, 29, 0.12);
+    --shadow-xl:       0 36px 80px rgba(23, 34, 29, 0.16);
+    --shadow-hover:    0 16px 36px rgba(22, 74, 54, 0.14);
+
+    /* ---- Fluid Typography Scale (Oversized Editorial) ---- */
+    --text-display:    clamp(3.2rem, 7.5vw, 6.8rem);
+    --text-h1:         clamp(2.4rem, 4.8vw, 4.2rem);
+    --text-h2:         clamp(1.8rem, 3.4vw, 2.8rem);
+    --text-h3:         clamp(1.3rem, 2.2vw, 1.9rem);
+    --text-h4:         clamp(1.1rem, 1.5vw, 1.35rem);
+    --text-body-lg:    clamp(1.05rem, 1.2vw, 1.2rem);
+    --text-body:       1rem;
+    --text-sm:         0.875rem;
+    --text-xs:         0.75rem;
+
+    /* ---- Typography Tracking & Leading ---- */
+    --tracking-tighter: -0.04em;
+    --tracking-tight:   -0.025em;
+    --tracking-normal:  -0.01em;
+    --tracking-wide:    0.04em;
+    --tracking-wider:   0.08em;
+
+    /* ---- Spacing Scale ---- */
+    --space-1:  4px;
+    --space-2:  8px;
+    --space-3:  12px;
+    --space-4:  16px;
+    --space-5:  20px;
+    --space-6:  24px;
+    --space-8:  32px;
+    --space-10: 40px;
+    --space-12: 48px;
+    --space-16: 64px;
+    --space-20: 80px;
+    --space-24: 96px;
+    --space-32: 128px;
+
+    /* ---- Layout Dimensions ---- */
+    --max-w-display: 1400px;
+    --max-w-content: 1240px;
+    --max-w-narrow:  960px;
+    --max-w-copy:    640px;
+    --nav-height:    80px;
+
+    /* ---- Easing & Animations ---- */
     --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
     --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
     --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
-
-    --dur-instant: 120ms;
     --dur-fast:    180ms;
-    --dur-base:    260ms;
-    --dur-smooth:  400ms;
-    --dur-slow:    700ms;
+    --dur-base:    280ms;
+    --dur-smooth:  450ms;
+    --dur-slow:    750ms;
 
     /* ---- Focus & Accessibility ---- */
-    --focus-ring:        0 0 0 2px #090d16, 0 0 0 4px #10b981;
-    --focus-ring-white:  0 0 0 2px #090d16, 0 0 0 4px #ffffff;
-    --focus-ring-danger: 0 0 0 2px #090d16, 0 0 0 4px #f43f5e;
-    --skip-link-bg:      #ffffff;
-    --skip-link-color:   #0f172a;
-
-    /* ---- Fluid Typography Scale ---- */
-    --fs-xs:   clamp(11px, 0.75rem + 0.2vw, 12px);
-    --fs-sm:   clamp(13px, 0.85rem + 0.2vw, 14px);
-    --fs-base: clamp(15px, 0.95rem + 0.3vw, 16.5px);
-    --fs-md:   clamp(18px, 1.15rem + 0.5vw, 21px);
-    --fs-lg:   clamp(24px, 1.50rem + 0.8vw, 30px);
-    --fs-xl:   clamp(32px, 2.00rem + 1.2vw, 42px);
-    --fs-2xl:  clamp(40px, 2.50rem + 1.8vw, 56px);
-    --fs-3xl:  clamp(48px, 3.00rem + 2.5vw, 76px);
-
-    /* ---- Layout Dimensions ---- */
-    --max-w-content: 1240px;
-    --max-w-copy:    580px;
-    --nav-height:    72px;
+    --focus-ring: 0 0 0 2px var(--cream), 0 0 0 4px var(--tree-green);
+    --skip-link-bg: var(--tree-green);
+    --skip-link-color: #FFFFFF;
 
     /* ---- Z-Index Scale ---- */
     --z-base:     1;
@@ -105,4 +136,17 @@
     --z-drawer:   1500;
     --z-modal:    2000;
     --z-toast:    9999;
+
+    /* Legacy Aliases for seamless component compatibility */
+    --accent:          var(--tree-green);
+    --accent-hover:    var(--tree-green-dark);
+    --accent-light:    var(--leaf-green);
+    --accent-dim:      var(--green-dim);
+    --accent-border:   var(--green-border);
+    --bg-deep:         var(--cream);
+    --bg-card:         var(--surface-card);
+    --bg-surface:      var(--surface-warm);
+    --text-1:          var(--ink);
+    --text-2:          var(--muted);
+    --text-3:          var(--muted-light);
 }

@@ -1,199 +1,81 @@
 /* ============================================================
    GIVING TREE — animations.js
-   Modern, high-performance animation engine:
-   - Silky scroll-reveal via IntersectionObserver
-   - Smooth numeric count-up with easing physics
-   - Sticky navbar elevation depth on scroll
-   - Tactile button press & wishlist pop feedback
-   - Dynamic AJAX refresh hooks (window.initAnimations)
+   Editorial Scroll Observer, Stat Counter & Interaction Handlers
+   Inspired by eBay Playbook
    ============================================================ */
 
-(function () {
+document.addEventListener('DOMContentLoaded', () => {
     'use strict';
 
-    /* ---- 1. Easing Physics ---- */
-    function easeOutQuart(t) {
-        return 1 - Math.pow(1 - t, 4);
+    // 1. Sticky Navbar scroll elevation
+    const navbar = document.querySelector('.navbar');
+    if (navbar) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 40) {
+                navbar.classList.add('navbar-scrolled');
+            } else {
+                navbar.classList.remove('navbar-scrolled');
+            }
+        }, { passive: true });
     }
 
-    function easeOutCubic(t) {
-        return 1 - Math.pow(1 - t, 3);
-    }
-
-    /* ---- 2. Scroll-Reveal Observer with Cascading Stagger ---- */
-    const revealObserver = new IntersectionObserver(
-        (entries) => {
+    // 2. IntersectionObserver for Scroll Reveal
+    const revealElements = document.querySelectorAll('.reveal-on-scroll');
+    if ('IntersectionObserver' in window && revealElements.length > 0) {
+        const observer = new IntersectionObserver((entries, obs) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                    revealObserver.unobserve(entry.target);
+                    entry.target.classList.add('is-revealed');
+                    obs.unobserve(entry.target);
                 }
             });
-        },
-        {
-            threshold: 0.08,
-            rootMargin: '0px 0px -40px 0px'
-        }
-    );
-
-    function scanAndObserveElements() {
-        const animElements = document.querySelectorAll('[data-animate]:not(.is-visible)');
-        animElements.forEach((el, idx) => {
-            // If parent container is a grid and child has no delay specified, add natural cascading stagger
-            const parent = el.parentElement;
-            if (parent && (parent.classList.contains('items-grid') || parent.classList.contains('preview-grid') || parent.classList.contains('action-grid') || parent.classList.contains('requests-grid'))) {
-                if (!el.hasAttribute('data-delay')) {
-                    const siblingIndex = Array.from(parent.children).indexOf(el);
-                    const staggerDelay = (siblingIndex % 8) + 1;
-                    el.setAttribute('data-delay', String(staggerDelay));
-                }
-            }
-            revealObserver.observe(el);
+        }, {
+            threshold: 0.12,
+            rootMargin: '0px 0px -50px 0px'
         });
 
-        // Observe uncounted stat targets
-        document.querySelectorAll('[data-target]:not([data-counted])').forEach(el => {
-            statObserver.observe(el);
-        });
+        revealElements.forEach(el => observer.observe(el));
+    } else {
+        revealElements.forEach(el => el.classList.add('is-revealed'));
     }
 
-    /* ---- 3. Precision Metric Count-Up Animation ---- */
-    function animateCountUp(el) {
-        const raw    = el.getAttribute('data-target') || el.textContent.replace(/[^\d.]/g, '');
-        const suffix = el.getAttribute('data-suffix') || '';
-        const target = parseFloat(raw);
-        if (isNaN(target)) return;
+    // 3. Animated Number Counters
+    const counters = document.querySelectorAll('.stat-counter');
+    if (counters.length > 0 && 'IntersectionObserver' in window) {
+        const countObserver = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counter = entry.target;
+                    const target = parseInt(counter.getAttribute('data-target') || counter.innerText.replace(/\D/g, ''), 10);
+                    if (!isNaN(target)) {
+                        animateCounter(counter, target);
+                    }
+                    obs.unobserve(counter);
+                }
+            });
+        }, { threshold: 0.3 });
 
-        const isFloat = raw.includes('.');
-        const duration  = 1600;
+        counters.forEach(c => countObserver.observe(c));
+    }
+
+    function animateCounter(el, target) {
+        const duration = 1800; // ms
         const startTime = performance.now();
+        const suffix = el.getAttribute('data-suffix') || '+';
 
-        function tick(now) {
-            const elapsed  = now - startTime;
+        function update(currentTime) {
+            const elapsed = currentTime - startTime;
             const progress = Math.min(elapsed / duration, 1);
-            const eased    = easeOutQuart(progress);
-            const current  = eased * target;
+            // Ease out cubic
+            const easeOut = 1 - Math.pow(1 - progress, 3);
+            const current = Math.floor(easeOut * target);
 
-            if (isFloat) {
-                el.textContent = current.toFixed(1) + suffix;
-            } else {
-                el.textContent = Math.floor(current).toLocaleString() + suffix;
-            }
+            el.innerText = current.toLocaleString('en-IN') + suffix;
 
             if (progress < 1) {
-                requestAnimationFrame(tick);
-            } else {
-                el.textContent = (isFloat ? target.toFixed(1) : target.toLocaleString()) + suffix;
-                el.style.animation = 'popIn 0.35s var(--ease-spring)';
+                requestAnimationFrame(update);
             }
         }
-
-        requestAnimationFrame(tick);
+        requestAnimationFrame(update);
     }
-
-    const statObserver = new IntersectionObserver(
-        (entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting && !entry.target.dataset.counted) {
-                    entry.target.dataset.counted = 'true';
-                    animateCountUp(entry.target);
-                    statObserver.unobserve(entry.target);
-                }
-            });
-        },
-        { threshold: 0.35 }
-    );
-
-    /* ---- 4. Navbar Scroll Depth Elevation ---- */
-    function handleNavbarScroll() {
-        const navbar = document.querySelector('.navbar');
-        if (!navbar) return;
-        const scrolled = window.scrollY > 20;
-        if (scrolled) {
-            navbar.classList.add('navbar-scrolled');
-        } else {
-            navbar.classList.remove('navbar-scrolled');
-        }
-    }
-    window.addEventListener('scroll', handleNavbarScroll, { passive: true });
-    handleNavbarScroll();
-
-    /* ---- 5. Tactile Wishlist Heart & Button Feedback ---- */
-    document.addEventListener('click', (e) => {
-        // Wishlist button heart pop
-        const heartBtn = e.target.closest('.btn-wishlist');
-        if (heartBtn) {
-            heartBtn.classList.remove('pop');
-            // Force reflow
-            void heartBtn.offsetWidth;
-            heartBtn.classList.add('pop');
-        }
-    });
-
-    /* ---- 6. Mobile Nav Toggle & Smooth Close ---- */
-    function initMobileNav() {
-        const toggle   = document.getElementById('mobileMenuToggle');
-        const navLinks = document.getElementById('navLinks');
-
-        if (toggle && navLinks) {
-            toggle.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const isOpen = navLinks.classList.toggle('open');
-                const svg = toggle.querySelector('svg');
-                if (svg) {
-                    svg.style.transform = isOpen ? 'rotate(90deg)' : 'rotate(0deg)';
-                }
-            });
-
-            // Close on outer click
-            document.addEventListener('click', (e) => {
-                if (!navLinks.contains(e.target) && !toggle.contains(e.target)) {
-                    if (navLinks.classList.contains('open')) {
-                        navLinks.classList.remove('open');
-                        const svg = toggle.querySelector('svg');
-                        if (svg) svg.style.transform = 'rotate(0deg)';
-                    }
-                }
-            });
-
-            // Close on nav link click
-            navLinks.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', () => {
-                    navLinks.classList.remove('open');
-                    const svg = toggle.querySelector('svg');
-                    if (svg) svg.style.transform = 'rotate(0deg)';
-                });
-            });
-        }
-    }
-
-    /* ---- 7. DOM Mutation Observer & Global API Hooks ---- */
-    const mutationObserver = new MutationObserver(() => {
-        scanAndObserveElements();
-    });
-
-    if (document.body) {
-        mutationObserver.observe(document.body, { childList: true, subtree: true });
-    }
-
-    // Expose global init / refresh functions for asynchronous AJAX views
-    window.initAnimations = function () {
-        scanAndObserveElements();
-    };
-
-    window.refreshAnimations = function () {
-        scanAndObserveElements();
-    };
-
-    // Initial setup on DOM ready
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-            initMobileNav();
-            scanAndObserveElements();
-        });
-    } else {
-        initMobileNav();
-        scanAndObserveElements();
-    }
-})();
-
+});
