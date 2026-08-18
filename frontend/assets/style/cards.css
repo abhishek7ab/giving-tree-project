@@ -1,14 +1,15 @@
 /* ============================================================
    GIVING TREE — cards.css
-   Editorial Card Component System (Inspired by eBay Playbook)
-   Rounded Visual Cards, Micro-interactions, Badges, Asymmetric Layouts
+   Editorial Dark Mode Card Component System
    ============================================================ */
 
 /* ---- Core Editorial Item Card ---- */
 .item-card,
 .pro-card {
-    background: var(--surface-card);
-    border: 1px solid var(--border-subtle);
+    background: var(--bg-card);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--border);
     border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: var(--shadow-sm);
@@ -24,8 +25,8 @@
 .item-card:hover,
 .pro-card:hover {
     transform: translateY(-6px);
-    box-shadow: var(--shadow-xl);
-    border-color: var(--border-medium);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--border-hover);
 }
 
 /* Image Container */
@@ -36,7 +37,7 @@
     aspect-ratio: 16 / 11;
     position: relative;
     overflow: hidden;
-    background-color: var(--surface-warm);
+    background-color: #070A12;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -77,17 +78,18 @@
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    background: rgba(255, 255, 255, 0.94);
-    color: var(--tree-green);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    background: rgba(15, 23, 42, 0.90);
+    color: #FFFFFF;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-.card-badge.category-books { background: var(--lilac); color: var(--tree-green); }
-.card-badge.category-clothes { background: var(--sky); color: var(--ink); }
-.card-badge.category-electronics { background: var(--warm-yellow); color: var(--tree-green); }
-.card-badge.category-home { background: var(--fresh-green); color: var(--tree-green); }
-.card-badge.condition { background: #FFFFFF; color: var(--ink); border: 1px solid var(--border-subtle); }
+.card-badge.category-books { background: rgba(139, 92, 246, 0.25); color: #C4B5FD; border-color: rgba(139, 92, 246, 0.4); }
+.card-badge.category-clothes { background: rgba(14, 165, 233, 0.25); color: #7DD3FC; border-color: rgba(14, 165, 233, 0.4); }
+.card-badge.category-electronics { background: rgba(245, 158, 11, 0.25); color: #FCD34D; border-color: rgba(245, 158, 11, 0.4); }
+.card-badge.category-home { background: rgba(16, 185, 129, 0.25); color: #6EE7B7; border-color: rgba(16, 185, 129, 0.4); }
+.card-badge.condition { background: rgba(255, 255, 255, 0.08); color: #E2E8F0; }
 
 /* Card Content Body */
 .card-body,
@@ -105,7 +107,7 @@
 .preview-card h4 {
     font-size: 1.25rem;
     font-weight: 800;
-    color: var(--tree-green);
+    color: #FFFFFF;
     letter-spacing: var(--tracking-tight);
     line-height: 1.25;
     margin: 0;
@@ -115,12 +117,12 @@
 
 .item-card-title:hover,
 .card-body h3:hover {
-    color: var(--leaf-green);
+    color: var(--accent);
 }
 
 .card-desc,
 .item-card-desc {
-    color: var(--muted);
+    color: var(--text-2);
     font-size: 0.925rem;
     line-height: 1.6;
     margin: 0;
@@ -137,9 +139,9 @@
     align-items: center;
     justify-content: space-between;
     font-size: 0.85rem;
-    color: var(--muted);
-    padding-top: 10px;
-    border-top: 1px solid var(--border-subtle);
+    color: var(--text-2);
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
     margin-top: auto;
 }
 
@@ -148,59 +150,24 @@
     align-items: center;
     gap: 5px;
     font-weight: 700;
-    color: var(--tree-green);
+    color: #FFFFFF;
 }
 
 .locality-pin i,
 .locality-pin svg {
-    color: var(--coral);
+    color: var(--accent);
 }
 
 .distance-tag {
     font-size: 0.8rem;
-    color: var(--muted-light);
-}
-
-/* Card Donor & Action Row */
-.card-donor-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-top: 4px;
-}
-
-.donor-info {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.donor-avatar {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: var(--green-dim);
-    color: var(--tree-green);
-    font-size: 0.75rem;
-    font-weight: 800;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid var(--green-border);
-}
-
-.donor-name {
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: var(--ink);
+    color: var(--text-3);
 }
 
 .btn-card-request {
     padding: 8px 18px;
     border-radius: var(--radius-full);
-    background: var(--tree-green);
-    color: #FFFFFF !important;
+    background: var(--accent);
+    color: #042F24 !important;
     font-size: 0.85rem;
     font-weight: 800;
     display: inline-flex;
@@ -212,9 +179,9 @@
 }
 
 .btn-card-request:hover {
-    background: var(--coral);
+    background: var(--leaf-green);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(242, 124, 107, 0.35);
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
 }
 
 /* ---- Dynamic Catalog Grid ---- */
@@ -224,49 +191,14 @@
     gap: 32px;
 }
 
-/* ---- Asymmetric Editorial Grid (Freshly Shared) ---- */
-.editorial-items-grid {
-    display: grid;
-    grid-template-columns: 1.4fr 1fr 1fr;
-    gap: 28px;
-}
-
-.editorial-items-grid .featured-item-card {
-    grid-row: span 2;
-}
-
-.editorial-items-grid .featured-item-card .item-card-media {
-    aspect-ratio: 16 / 12;
-}
-
-@media (max-width: 1024px) {
-    .editorial-items-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-    .editorial-items-grid .featured-item-card {
-        grid-row: auto;
-        grid-column: span 2;
-    }
-}
-
-@media (max-width: 640px) {
-    .editorial-items-grid,
-    .items-grid {
-        grid-template-columns: 1fr;
-    }
-    .editorial-items-grid .featured-item-card {
-        grid-column: auto;
-    }
-}
-
 /* ---- Floating Hero Animated Card Preview ---- */
 .hero-floating-card {
     position: absolute;
-    background: #FFFFFF;
-    border: 1px solid var(--border-medium);
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: var(--radius-md);
     padding: 12px 18px;
-    box-shadow: var(--shadow-lg);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
     display: flex;
     align-items: center;
     gap: 12px;
@@ -279,7 +211,7 @@
     width: 44px;
     height: 44px;
     border-radius: var(--radius-sm);
-    background: var(--surface-warm);
+    background: rgba(255, 255, 255, 0.05);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -291,12 +223,12 @@
     display: block;
     font-size: 0.9rem;
     font-weight: 800;
-    color: var(--tree-green);
+    color: #FFFFFF;
 }
 
 .hero-floating-card .card-text span {
     font-size: 0.75rem;
-    color: var(--muted);
+    color: var(--text-2);
     font-weight: 600;
 }
 
@@ -318,8 +250,9 @@
 }
 
 .mission-card {
-    background: #FFFFFF;
-    border: 1px solid var(--border-subtle);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    backdrop-filter: var(--glass-blur);
     border-radius: var(--radius-xl);
     padding: clamp(32px, 4vw, 48px) clamp(24px, 3vw, 36px);
     display: flex;
@@ -333,20 +266,16 @@
 
 .mission-card:hover {
     transform: translateY(-6px);
-    box-shadow: var(--shadow-xl);
-    border-color: var(--tree-green);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--accent);
 }
-
-.mission-card-1 { background-color: #FAF8F5; }
-.mission-card-2 { background-color: var(--lilac-dim); }
-.mission-card-3 { background-color: var(--warm-yellow-dim); }
 
 .mission-icon-wrap {
     width: 64px;
     height: 64px;
     border-radius: var(--radius-md);
-    background: #FFFFFF;
-    box-shadow: var(--shadow-sm);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -356,13 +285,13 @@
 .mission-card h3 {
     font-size: 1.6rem;
     font-weight: 800;
-    color: var(--tree-green);
+    color: #FFFFFF;
     margin: 0;
     letter-spacing: var(--tracking-tight);
 }
 
 .mission-card p {
-    color: var(--ink-light);
+    color: var(--text-2);
     font-size: 1rem;
     line-height: 1.7;
     margin: 0;

@@ -30,7 +30,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#164A36">
+    <meta name="theme-color" content="#090D16">
 </head>
 
 <body>
@@ -580,8 +580,8 @@ async function initPuneHomeMap() {
         scrollWheelZoom: false
     });
 
-    // High quality light/warm CartoDB map tile
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    // High quality dark CartoDB map tile
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
         subdomains: 'abcd',
         maxZoom: 19,
         attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap'
@@ -622,18 +622,18 @@ function renderPuneMapMarkers(itemsList) {
 
         const customIcon = L.divIcon({
             className: 'pune-custom-marker',
-            html: `<div style="width:34px; height:34px; background:#164A36; color:#FFFFFF; border:2px solid #FFFFFF; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 14px rgba(0,0,0,0.3); font-size:14px;"><i class="fas fa-leaf"></i></div>`,
-            iconSize: [34, 34],
-            iconAnchor: [17, 17]
+            html: `<div style="width:36px; height:36px; background:#10B981; color:#042F24; border:2px solid rgba(255,255,255,0.8); border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 16px rgba(0,0,0,0.6); font-size:15px;"><i class="fas fa-leaf"></i></div>`,
+            iconSize: [36, 36],
+            iconAnchor: [18, 18]
         });
 
         const marker = L.marker([lat, lng], { icon: customIcon }).addTo(puneMapInstance);
         marker.bindPopup(`
-            <div style="font-family:'Plus Jakarta Sans',sans-serif; padding:6px; min-width:180px;">
-                <span style="font-size:10px; font-weight:800; text-transform:uppercase; color:#164A36; background:rgba(22,74,54,0.1); padding:2px 6px; border-radius:4px;">${cat}</span>
-                <h4 style="margin:6px 0 2px; font-size:14px; font-weight:800; color:#164A36;">${title}</h4>
-                <p style="margin:0 0 8px; font-size:12px; color:#68736D;"><i class="fas fa-map-marker-alt" style="color:#F27C6B;"></i> ${loc}</p>
-                <a href="/items.html" style="display:inline-block; font-size:12px; font-weight:700; color:#164A36; text-decoration:none;">View in Catalog →</a>
+            <div style="font-family:'Plus Jakarta Sans',sans-serif; padding:8px; min-width:190px; background:#0F172A; color:#FFFFFF; border-radius:12px;">
+                <span style="font-size:10px; font-weight:800; text-transform:uppercase; color:#10B981; background:rgba(16,185,129,0.15); padding:2px 6px; border-radius:4px;">${cat}</span>
+                <h4 style="margin:6px 0 2px; font-size:14px; font-weight:800; color:#FFFFFF;">${title}</h4>
+                <p style="margin:0 0 8px; font-size:12px; color:#94A3B8;"><i class="fas fa-map-marker-alt" style="color:#10B981;"></i> ${loc}</p>
+                <a href="/items.html" style="display:inline-block; font-size:12px; font-weight:800; color:#10B981; text-decoration:none;">View in Catalog →</a>
             </div>
         `);
         puneMapMarkers.push(marker);

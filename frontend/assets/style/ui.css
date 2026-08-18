@@ -1,7 +1,6 @@
 /* ============================================================
    GIVING TREE — ui.css
-   Editorial UI Components, Modals, Forms, Chips, Status Pills
-   Inspired by eBay Playbook
+   Editorial Dark Mode UI Components, Modals, Forms, Chips, Status Pills
    ============================================================ */
 
 /* ---- Form Controls ---- */
@@ -16,7 +15,7 @@
 .form-group label {
     font-size: 0.9rem;
     font-weight: 700;
-    color: var(--tree-green);
+    color: #FFFFFF;
     letter-spacing: -0.01em;
 }
 
@@ -29,10 +28,10 @@
 .search-input {
     width: 100%;
     padding: 14px 18px;
-    background: #FFFFFF;
+    background: rgba(255, 255, 255, 0.05);
     border: 1.5px solid var(--border-medium);
     border-radius: var(--radius-sm);
-    color: var(--ink);
+    color: #FFFFFF;
     font-size: 0.95rem;
     font-family: inherit;
     transition: all var(--dur-fast) var(--ease-out);
@@ -46,15 +45,16 @@
 .input-box select:focus,
 .filter-select:focus,
 .search-input:focus {
-    border-color: var(--tree-green);
-    box-shadow: 0 0 0 3px var(--green-dim);
+    border-color: var(--accent);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 3px var(--accent-dim);
 }
 
 .form-control::placeholder,
 .form-input::placeholder,
 .input-box input::placeholder,
 .search-input::placeholder {
-    color: var(--muted-light);
+    color: var(--text-3);
 }
 
 textarea.form-control,
@@ -74,7 +74,8 @@ textarea.form-control,
 .search-pill {
     display: flex;
     align-items: center;
-    background: #FFFFFF;
+    background: var(--bg-card);
+    backdrop-filter: var(--glass-blur);
     border: 1.5px solid var(--border-medium);
     border-radius: var(--radius-full);
     padding: 8px 12px 8px 24px;
@@ -83,8 +84,8 @@ textarea.form-control,
 }
 
 .search-pill:focus-within {
-    border-color: var(--tree-green);
-    box-shadow: var(--shadow-xl), 0 0 0 3px var(--green-dim);
+    border-color: var(--accent);
+    box-shadow: var(--shadow-xl), 0 0 0 3px var(--accent-dim);
 }
 
 .search-pill input {
@@ -93,14 +94,14 @@ textarea.form-control,
     outline: none;
     background: transparent;
     font-size: 1.05rem;
-    color: var(--ink);
+    color: #FFFFFF;
     padding-right: 12px;
 }
 
 .search-pill-btn {
     padding: 12px 24px;
-    background: var(--tree-green);
-    color: #FFFFFF;
+    background: var(--accent);
+    color: #042F24;
     border: none;
     border-radius: var(--radius-full);
     font-weight: 800;
@@ -113,7 +114,7 @@ textarea.form-control,
 }
 
 .search-pill-btn:hover {
-    background: var(--tree-green-dark);
+    background: var(--leaf-green);
     transform: translateY(-1px);
 }
 
@@ -137,10 +138,10 @@ textarea.form-control,
 .locality-chip,
 .filter-chip {
     padding: 8px 18px;
-    background: #FFFFFF;
-    border: 1.5px solid var(--border-medium);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1.5px solid rgba(255, 255, 255, 0.1);
     border-radius: var(--radius-full);
-    color: var(--ink);
+    color: var(--text-2);
     font-size: 0.85rem;
     font-weight: 700;
     cursor: pointer;
@@ -155,19 +156,19 @@ textarea.form-control,
 .pune-locality-chip:hover,
 .locality-chip:hover,
 .filter-chip:hover {
-    border-color: var(--tree-green);
-    color: var(--tree-green);
-    background: var(--surface-warm);
+    border-color: var(--accent);
+    color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.09);
     transform: translateY(-1px);
 }
 
 .pune-locality-chip.active,
 .locality-chip.active,
 .filter-chip.active {
-    background: var(--tree-green);
-    color: #FFFFFF !important;
-    border-color: var(--tree-green);
-    box-shadow: 0 4px 12px rgba(22, 74, 54, 0.25);
+    background: var(--accent);
+    color: #042F24 !important;
+    border-color: var(--accent);
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
 }
 
 .pune-chip-count {
@@ -178,13 +179,13 @@ textarea.form-control,
     font-size: 0.7rem;
     font-weight: 800;
     border-radius: 99px;
-    background: var(--surface-warm);
-    color: var(--tree-green);
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-2);
 }
 
 .pune-locality-chip.active .pune-chip-count {
-    background: rgba(255, 255, 255, 0.2);
-    color: #FFFFFF;
+    background: rgba(4, 47, 36, 0.25);
+    color: #042F24;
 }
 
 /* ---- Modals & Overlays ---- */
@@ -193,9 +194,9 @@ textarea.form-control,
 .chat-overlay {
     position: fixed;
     inset: 0;
-    background: var(--bg-overlay);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(5, 8, 16, 0.85);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
     z-index: var(--z-modal);
     display: none;
     align-items: center;
@@ -213,7 +214,7 @@ textarea.form-control,
 .modal-content,
 .detail-modal,
 .chat-modal {
-    background: #FFFFFF;
+    background: #0F172A;
     border: 1px solid var(--border-medium);
     border-radius: var(--radius-xl);
     width: 100%;
@@ -223,6 +224,7 @@ textarea.form-control,
     box-shadow: var(--shadow-xl);
     position: relative;
     padding: clamp(24px, 4vw, 40px);
+    color: #FFFFFF;
 }
 
 .modal-close,
@@ -233,9 +235,9 @@ textarea.form-control,
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: var(--surface-warm);
-    border: 1px solid var(--border-medium);
-    color: var(--ink);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-2);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -266,8 +268,9 @@ textarea.form-control,
 
 .toast,
 .toast-message {
-    background: var(--tree-green);
+    background: #0F172A;
     color: #FFFFFF;
+    border: 1px solid var(--border-medium);
     padding: 14px 24px;
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-xl);
@@ -282,9 +285,11 @@ textarea.form-control,
 
 .toast.toast-error {
     background: var(--danger);
+    border-color: var(--danger);
 }
 .toast.toast-warning {
     background: var(--warning);
+    border-color: var(--warning);
 }
 
 @keyframes toastSlideIn {
@@ -305,7 +310,7 @@ textarea.form-control,
     letter-spacing: 0.04em;
 }
 
-.status-available  { background: var(--green-dim); color: var(--tree-green); border: 1px solid var(--green-border); }
-.status-requested  { background: var(--warm-yellow-dim); color: var(--warning); border: 1px solid rgba(244, 211, 94, 0.4); }
-.status-claimed    { background: var(--lilac-dim); color: var(--tree-green); border: 1px solid rgba(201, 184, 232, 0.4); }
-.status-completed  { background: var(--sky-dim); color: var(--info); border: 1px solid rgba(184, 221, 232, 0.4); }
+.status-available  { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-border); }
+.status-requested  { background: var(--warm-yellow-dim); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.4); }
+.status-claimed    { background: var(--lilac-dim); color: #C4B5FD; border: 1px solid rgba(139, 92, 246, 0.4); }
+.status-completed  { background: var(--sky-dim); color: var(--info); border: 1px solid rgba(56, 189, 248, 0.4); }

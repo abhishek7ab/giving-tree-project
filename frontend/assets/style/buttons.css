@@ -1,7 +1,6 @@
 /* ============================================================
    GIVING TREE — buttons.css
-   Editorial Button System (Inspired by eBay Playbook)
-   Deep Forest Primary, Warm Accent Variants, Tactile Elevations
+   Editorial Dark Mode Button System
    ============================================================ */
 
 .btn {
@@ -44,13 +43,11 @@
     box-shadow: none !important;
 }
 
-/* Accessible focus ring */
 .btn:focus-visible {
     outline: none;
     box-shadow: var(--focus-ring);
 }
 
-/* Arrow micro-interaction in button */
 .btn .btn-arrow {
     display: inline-flex;
     transition: transform var(--dur-fast) var(--ease-out);
@@ -94,91 +91,91 @@
 
 /* ---- Button Variants ---- */
 
-/* 1. Primary Button (Deep Forest Green) */
+/* 1. Primary Button (Emerald Green) */
 .btn-primary,
 .btn.primary,
 .primary {
-    background-color: var(--tree-green);
-    color: #FFFFFF !important;
-    border: 1px solid var(--tree-green);
-    box-shadow: 0 4px 14px rgba(22, 74, 54, 0.25);
+    background-color: var(--accent);
+    color: #042F24 !important;
+    border: 1px solid var(--accent);
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
+    font-weight: 800;
 }
 
 .btn-primary:hover,
 .btn.primary:hover,
 .primary:hover {
-    background-color: var(--tree-green-dark);
-    border-color: var(--tree-green-dark);
+    background-color: var(--leaf-green);
+    border-color: var(--leaf-green);
     transform: translateY(-2px);
-    box-shadow: 0 8px 22px rgba(22, 74, 54, 0.35);
-    color: #FFFFFF !important;
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.45);
+    color: #042F24 !important;
 }
 
-/* 2. Coral / Orange Accent CTA */
+/* 2. Coral / Rose Accent CTA */
 .btn-coral,
 .btn.coral {
     background-color: var(--coral);
     color: #FFFFFF !important;
     border: 1px solid var(--coral);
-    box-shadow: 0 4px 14px rgba(242, 124, 107, 0.3);
+    box-shadow: 0 4px 14px rgba(244, 63, 94, 0.3);
 }
 
 .btn-coral:hover,
 .btn.coral:hover {
-    background-color: #E26857;
+    background-color: #FB7185;
     transform: translateY(-2px);
-    box-shadow: 0 8px 22px rgba(242, 124, 107, 0.45);
+    box-shadow: 0 8px 22px rgba(244, 63, 94, 0.45);
 }
 
 /* 3. Warm Sunshine Yellow CTA */
 .btn-warm,
 .btn.warm {
     background-color: var(--warm-yellow);
-    color: var(--tree-green) !important;
+    color: #042F24 !important;
     border: 1px solid var(--warm-yellow);
-    box-shadow: 0 4px 14px rgba(244, 211, 94, 0.35);
+    box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
     font-weight: 800;
 }
 
 .btn-warm:hover,
 .btn.warm:hover {
-    background-color: #E6C449;
+    background-color: #FBBF24;
     transform: translateY(-2px);
-    box-shadow: 0 8px 22px rgba(244, 211, 94, 0.5);
+    box-shadow: 0 8px 22px rgba(245, 158, 11, 0.5);
 }
 
 /* 4. Secondary Outline / Inverted Pill */
 .btn-secondary,
 .btn.secondary,
 .secondary {
-    background: transparent;
-    color: var(--tree-green);
-    border: 1.5px solid var(--border-medium);
+    background: rgba(255, 255, 255, 0.05);
+    color: #FFFFFF;
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
 }
 
 .btn-secondary:hover,
 .btn.secondary:hover,
 .secondary:hover {
-    background: #FFFFFF;
-    border-color: var(--tree-green);
-    color: var(--tree-green);
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: #FFFFFF;
     transform: translateY(-2px);
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
 }
 
-/* 5. Inverted on Forest Dark Sections */
+/* 5. Inverted White Button */
 .btn-white {
     background-color: #FFFFFF;
-    color: var(--tree-green) !important;
+    color: #0F172A !important;
     border: 1px solid #FFFFFF;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
 }
 
 .btn-white:hover {
-    background-color: var(--cream);
-    color: var(--tree-green-dark) !important;
+    background-color: #F1F5F9;
     transform: translateY(-2px);
-    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
 }
 
 /* 6. Danger / Delete Button */
@@ -186,7 +183,7 @@
 .btn.danger {
     background: var(--danger-bg);
     color: var(--danger);
-    border: 1px solid rgba(220, 38, 38, 0.3);
+    border: 1px solid rgba(244, 63, 94, 0.3);
     font-weight: 700;
 }
 
@@ -196,13 +193,13 @@
     color: #FFFFFF;
     border-color: var(--danger);
     transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(220, 38, 38, 0.35);
+    box-shadow: 0 6px 18px rgba(244, 63, 94, 0.35);
 }
 
 .btn-delete-small {
     background: var(--danger-bg);
     color: var(--danger);
-    border: 1px solid rgba(220, 38, 38, 0.25);
+    border: 1px solid rgba(244, 63, 94, 0.25);
     padding: 6px 14px;
     border-radius: var(--radius-full);
     font-size: 0.8rem;
@@ -220,23 +217,23 @@
     transform: translateY(-2px);
 }
 
-/* 7. Ghost / Link Button */
+/* 7. Ghost Button */
 .btn-ghost {
     background: transparent;
-    color: var(--ink);
+    color: var(--text-2);
     border: 1px solid transparent;
 }
 
 .btn-ghost:hover {
-    background: var(--green-dim);
-    color: var(--tree-green);
+    background: rgba(255, 255, 255, 0.06);
+    color: #FFFFFF;
 }
 
 /* 8. Export Button */
 .btn-export {
-    background: #FFFFFF;
-    border: 1px solid var(--border-medium);
-    color: var(--ink);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #FFFFFF;
     padding: 8px 18px;
     border-radius: var(--radius-full);
     font-size: 0.85rem;
@@ -249,9 +246,9 @@
 }
 
 .btn-export:hover {
-    background: var(--green-dim);
-    border-color: var(--tree-green);
-    color: var(--tree-green);
+    background: var(--accent-dim);
+    border-color: var(--accent);
+    color: var(--accent);
     transform: translateY(-2px);
 }
 
@@ -260,13 +257,13 @@
 .auth-btn {
     width: 100%;
     padding: 16px;
-    background-color: var(--tree-green);
-    color: #FFFFFF;
+    background-color: var(--accent);
+    color: #042F24;
     font-weight: 800;
     font-size: 1.05rem;
     border-radius: var(--radius-full);
-    border: 1px solid var(--tree-green);
-    box-shadow: 0 4px 14px rgba(22, 74, 54, 0.25);
+    border: 1px solid var(--accent);
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
     cursor: pointer;
     transition: all var(--dur-fast) var(--ease-out);
     display: flex;
@@ -277,9 +274,9 @@
 
 .btn-submit:hover,
 .auth-btn:hover {
-    background-color: var(--tree-green-dark);
+    background-color: var(--leaf-green);
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(22, 74, 54, 0.35);
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.45);
 }
 
 /* Loading Spinner State */
