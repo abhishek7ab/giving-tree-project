@@ -13,14 +13,14 @@ html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
     tab-size: 4;
-    background-color: var(--bg-deep);
+    background-color: #090D16 !important;
 }
 
 body {
     min-height: 100vh;
     font-family: 'Plus Jakarta Sans', 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background-color: var(--bg-deep);
-    color: var(--text-1);
+    background-color: #090D16 !important;
+    color: #FFFFFF !important;
     font-size: var(--text-body);
     line-height: 1.65;
     text-rendering: optimizeLegibility;
