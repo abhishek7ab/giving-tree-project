@@ -1,14 +1,16 @@
-const jwt = require('jsonwebtoken');
-const JWT_SECRET = process.env.JWT_SECRET || 'giving_tree_default_jwt_secret_pune_2026_safe_32_chars';
+const { verifyToken } = require('../config/jwt');
 
 function isMasterAdmin(email) {
     if (!email) return false;
-    return String(email).toLowerCase().trim() === 'badaveabhishek2004@gmail.com';
+    const masterEmail = (process.env.MASTER_ADMIN_EMAIL || 'badaveabhishek2004@gmail.com').toLowerCase().trim();
+    return String(email).toLowerCase().trim() === masterEmail;
 }
+
+exports.isMasterAdmin = isMasterAdmin;
 
 exports.isLoggedIn = (req, res, next) => {
     const token = req.cookies?.token;
-    const isJson = req.headers.accept?.includes('application/json');
+    const isJson = req.headers.accept?.includes('application/json') || req.headers['content-type']?.includes('application/json');
 
     if (!token) {
         if (isJson) return res.status(401).json({ error: 'Not logged in' });
@@ -16,7 +18,7 @@ exports.isLoggedIn = (req, res, next) => {
     }
 
     try {
-        const decoded = jwt.verify(token, JWT_SECRET);
+        const decoded = verifyToken(token);
         if (decoded.role === 'admin' || isMasterAdmin(decoded.email)) {
             decoded.role = 'admin';
         }
@@ -32,7 +34,7 @@ exports.isLoggedIn = (req, res, next) => {
 
 exports.isAdmin = async (req, res, next) => {
     const token = req.cookies?.token;
-    const isJson = req.headers.accept?.includes('application/json');
+    const isJson = req.headers.accept?.includes('application/json') || req.headers['content-type']?.includes('application/json');
 
     if (!token) {
         if (isJson) return res.status(401).json({ error: 'Not logged in' });
@@ -40,22 +42,28 @@ exports.isAdmin = async (req, res, next) => {
     }
 
     try {
-        const decoded = jwt.verify(token, JWT_SECRET);
+        const decoded = verifyToken(token);
         req.user = decoded;
         req.session = req.session || {};
         req.session.user = decoded;
 
-        if (decoded.role === 'admin' || isMasterAdmin(decoded.email)) {
-            req.user.role = 'admin';
-            return next();
+        // Live database verification: enforce active, unarchived admin status
+        const db = require('../database/db');
+        const userRes = await db.query(
+            'SELECT id, name, email, role, archived_at FROM users WHERE id = $1',
+            [decoded.id]
+        );
+        const dbUser = userRes.rows[0];
+
+        if (!dbUser || dbUser.archived_at) {
+            if (isJson) return res.status(401).json({ error: 'User account is inactive or disabled.' });
+            return res.redirect('/login.html?error=accountdisabled');
         }
 
-        // Check DB in case role was updated after token creation
-        const db = require('../database/db');
-        const userRes = await db.query('SELECT role, email FROM users WHERE id = $1', [decoded.id]);
-        const dbUser = userRes.rows[0];
-        if (dbUser?.role === 'admin' || isMasterAdmin(dbUser?.email)) {
+        const isMaster = isMasterAdmin(dbUser.email);
+        if (dbUser.role === 'admin' || isMaster) {
             req.user.role = 'admin';
+            req.user.isMasterAdmin = isMaster;
             return next();
         }
 

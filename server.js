@@ -18,17 +18,22 @@ const userModel = require('./models/userModel');
 const requestController = require('./controllers/requestController');
 const db = require('./database/db');
 const initDB = require('./database/init');
-
-const JWT_SECRET = process.env.JWT_SECRET || 'giving_tree_default_jwt_secret_pune_2026_safe_32_chars';
+const requestModel = require('./models/requestModel');
+const { verifyToken } = require('./config/jwt');
 
 const logger = pino({ level: process.env.LOG_LEVEL || 'info' });
 
 const app = express();
 const server = http.createServer(app);
 app.set('trust proxy', 1);
+app.disable('x-powered-by');
 
-// ✅ Dynamic frontend URL
+// ✅ Dynamic frontend URL & Allowed Origins
 const FRONTEND_URL = process.env.FRONTEND_URL || `http://localhost:${process.env.PORT || 3000}`;
+const allowedOrigins = [FRONTEND_URL];
+if (process.env.ADDITIONAL_ORIGINS) {
+  allowedOrigins.push(...process.env.ADDITIONAL_ORIGINS.split(',').map(s => s.trim()).filter(Boolean));
+}
 
 // ✅ Security headers
 app.use(helmet({
@@ -43,19 +48,28 @@ app.use(helmet({
       imgSrc: ["'self'", "data:", "https:", "blob:", "https://*.tile.openstreetmap.org", "https://tile.openstreetmap.org", "https://*.basemaps.cartocdn.com", "https://basemaps.cartocdn.com", "https://*.unsplash.com", "https://images.unsplash.com", "https://res.cloudinary.com", "https://unpkg.com", "https://cdnjs.cloudflare.com"],
       connectSrc: ["'self'", "https://api.cloudinary.com", "https://nominatim.openstreetmap.org", "https://*.basemaps.cartocdn.com", "https://basemaps.cartocdn.com", "https://*.tile.openstreetmap.org", "https://tile.openstreetmap.org", "https://tiles.openfreemap.org", "wss:", "ws:"],
       frameAncestors: ["'none'"],
+      objectSrc: ["'none'"],
+      baseUri: ["'self'"],
+      formAction: ["'self'"],
     },
   },
   crossOriginEmbedderPolicy: false,
   crossOriginResourcePolicy: false,
+  frameguard: { action: 'deny' },
+  noSniff: true,
+  xssFilter: true,
+  referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+  hsts: process.env.NODE_ENV === 'production' ? { maxAge: 31536000, includeSubDomains: true, preload: true } : false,
 }));
 
-// ✅ CORS — must come BEFORE routes and rate limiters
-const allowedOrigins = [FRONTEND_URL];
-if (process.env.ADDITIONAL_ORIGINS) {
-  allowedOrigins.push(...process.env.ADDITIONAL_ORIGINS.split(','));
-}
+// Additional Defensive Security Headers
+app.use((req, res, next) => {
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=(self)');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  next();
+});
 
-// Always allow localhost, *.vercel.app, and configured domains
+// ✅ CORS — strictly validate origins
 app.use(cors({
   origin: (origin, callback) => {
     if (
@@ -64,11 +78,11 @@ app.use(cors({
       process.env.NODE_ENV !== 'production' ||
       origin.endsWith('.vercel.app') ||
       allowedOrigins.includes(origin) ||
-      /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)
+      /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)
     ) {
       return callback(null, true);
     }
-    return callback(null, true);
+    return callback(null, false); // Explicitly reject disallowed origin
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
@@ -83,8 +97,17 @@ const isDev = process.env.NODE_ENV !== 'production';
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: isDev ? 1000 : 100,
+  max: isDev ? 1000 : 20,
   message: { error: 'Too many authentication attempts, please try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+  validate: false,
+});
+
+const actionLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: isDev ? 2000 : 60,
+  message: { error: 'Too many actions performed, please slow down.' },
   standardHeaders: true,
   legacyHeaders: false,
   validate: false,
@@ -99,8 +122,24 @@ const apiLimiter = rateLimit({
   validate: false,
 });
 
+const adminLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: isDev ? 2000 : 100,
+  message: { error: 'Too many administrative requests, please slow down.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+  validate: false,
+});
+
 app.post('/login', authLimiter);
 app.post('/register', authLimiter);
+app.post('/api/user/change-password', authLimiter);
+app.post('/make-me-admin', authLimiter);
+app.post('/post-item', actionLimiter);
+app.post('/request-item', actionLimiter);
+app.post('/api/reviews', actionLimiter);
+app.use('/admin/', adminLimiter);
+app.use('/api/admin/', adminLimiter);
 app.use('/api/', apiLimiter);
 
 // ✅ Middlewares
@@ -125,8 +164,6 @@ app.use((req, res, next) => {
   next();
 });
 
-
-
 // ✅ Static files with no-cache on HTML for live instant updates
 const fs = require('fs');
 const frontendPath = fs.existsSync(path.join(__dirname, 'frontend'))
@@ -150,21 +187,73 @@ app.use('/', requestRoutes);
 
 const io = new Server(server, {
   cors: {
-    origin: FRONTEND_URL,
+    origin: (origin, callback) => {
+      if (
+        !origin ||
+        origin === 'null' ||
+        process.env.NODE_ENV !== 'production' ||
+        origin.endsWith('.vercel.app') ||
+        allowedOrigins.includes(origin) ||
+        /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)
+      ) {
+        return callback(null, true);
+      }
+      return callback(null, false);
+    },
     credentials: true
   }
 });
 requestController.setSocketIO(io);
 
+// Socket.io Handshake Authentication Middleware
+io.use((socket, next) => {
+  try {
+    const rawCookie = socket.handshake.headers.cookie || '';
+    const cookies = rawCookie.split(';').reduce((acc, c) => {
+      const [key, ...v] = c.trim().split('=');
+      if (key) acc[key] = decodeURIComponent(v.join('='));
+      return acc;
+    }, {});
+    const token = cookies.token || socket.handshake.auth?.token;
+    if (token) {
+      const decoded = verifyToken(token);
+      socket.user = decoded;
+    }
+  } catch (err) {
+    socket.user = null;
+  }
+  next();
+});
+
 io.on('connection', (socket) => {
   socket.on('join-user', (email) => {
     const roomEmail = String(email || '').trim().toLowerCase();
-    if (roomEmail) socket.join(`user:${roomEmail}`);
+    // Only allow user to join their own notification channel (or if admin)
+    if (socket.user && roomEmail) {
+      const authEmail = String(socket.user.email || '').trim().toLowerCase();
+      const isAdmin = socket.user.role === 'admin' || authEmail === 'badaveabhishek2004@gmail.com';
+      if (authEmail === roomEmail || isAdmin) {
+        socket.join(`user:${roomEmail}`);
+      }
+    }
   });
 
-  socket.on('join-request', (requestId) => {
+  socket.on('join-request', async (requestId) => {
     const parsed = Number(requestId);
-    if (parsed) socket.join(`request:${parsed}`);
+    if (!parsed || !socket.user) return;
+    try {
+      const requestDetails = await requestModel.getRequestWithOwnerById(parsed);
+      if (!requestDetails) return;
+      const userEmail = String(socket.user.email || '').trim().toLowerCase();
+      const isAdmin = socket.user.role === 'admin' || userEmail === 'badaveabhishek2004@gmail.com';
+      const isOwner = userEmail && userEmail === String(requestDetails.owner_email || '').trim().toLowerCase();
+      const isRequester = userEmail && userEmail === String(requestDetails.requester_email || '').trim().toLowerCase();
+      if (isAdmin || isOwner || isRequester) {
+        socket.join(`request:${parsed}`);
+      }
+    } catch (e) {
+      logger.error({ err: e }, "Socket join-request error");
+    }
   });
 });
 
@@ -175,7 +264,7 @@ app.get('/api/user', async (req, res) => {
 
     if (!token) return res.json({ loggedIn: false });
 
-    const decoded = jwt.verify(token, JWT_SECRET);
+    const decoded = verifyToken(token);
 
     let userStats = { total_shared: 0, people_helped: 0 };
     if (typeof userModel.getUserStats === 'function') {
@@ -300,7 +389,9 @@ app.use((err, req, res, next) => {
 let PORT = process.env.PORT || 3000;
 
 function startServer(port) {
-    initDB().then(() => {
+    initDB().catch(err => {
+        logger.warn({ err: err.message || err }, "Database initialization note (DB connection pending or offline)");
+    }).finally(() => {
         server.listen(port, () => {
             console.log(`\n==================================================`);
             console.log(`🚀 Giving Tree Server is Live!`);
@@ -316,8 +407,6 @@ function startServer(port) {
                 logger.error({ err }, "Server error");
             }
         });
-    }).catch(err => {
-        logger.error({ err }, "Failed to initialize DB schema");
     });
 }
 

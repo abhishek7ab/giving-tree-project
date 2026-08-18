@@ -1,8 +1,8 @@
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const { signToken, verifyToken } = require('../config/jwt');
 const userModel = require('../models/userModel');
+const auditModel = require('../models/auditModel');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'giving_tree_default_jwt_secret_pune_2026_safe_32_chars';
 const isProduction = process.env.NODE_ENV === 'production';
 
 const { ALLOWED_PUNE_LOCATIONS } = require('../middleware/validation');
@@ -112,34 +112,7 @@ exports.loginUser = async (req, res) => {
             return res.redirect("/login.html?error=usernotfound");
         }
 
-        let isMatch = await bcrypt.compare(password, user.password);
-
-        // Fallback for admin or shared account passwords across user's Gmail IDs
-        if (!isMatch) {
-            const db = require('../database/db');
-            if (email === 'badaveabhishek2004@gmail.com') {
-                if (password === 'admin123') {
-                    isMatch = true;
-                } else {
-                    const otherUsers = await db.query("SELECT password FROM users WHERE email LIKE 'badaveabhishek%'");
-                    for (const row of otherUsers.rows) {
-                        if (row.password && await bcrypt.compare(password, row.password)) {
-                            isMatch = true;
-                            // Synchronize password so future logins match directly
-                            const newHash = await bcrypt.hash(password, 10);
-                            await db.query("UPDATE users SET password = $1 WHERE email = 'badaveabhishek2004@gmail.com'", [newHash]);
-                            break;
-                        }
-                    }
-                }
-            } else if (email.startsWith('badaveabhishek')) {
-                // Check against admin password
-                const adminUser = await db.query("SELECT password FROM users WHERE email = 'badaveabhishek2004@gmail.com'");
-                if (adminUser.rows[0]?.password && await bcrypt.compare(password, adminUser.rows[0].password)) {
-                    isMatch = true;
-                }
-            }
-        }
+        const isMatch = await bcrypt.compare(password, user.password);
 
         if (!isMatch) {
             if (isJson) return res.status(400).json({ error: 'wrongpassword', message: 'Your password or Gmail is incorrect. Please log in with correct credentials.' });
@@ -149,10 +122,8 @@ exports.loginUser = async (req, res) => {
         const userRole = user.role || 'user';
         const redirectUrl = (userRole === 'admin' || user.email === 'badaveabhishek2004@gmail.com') ? '/admin.html' : '/index.html';
 
-        const token = jwt.sign(
-            { id: user.id, role: userRole, name: user.name, email: user.email, city: user.city || 'Kothrud, Pune' },
-            JWT_SECRET,
-            { expiresIn: '7d' }
+        const token = signToken(
+            { id: user.id, role: userRole, name: user.name, email: user.email, city: user.city || 'Kothrud, Pune' }
         );
 
         res.cookie("token", token, {
@@ -193,10 +164,8 @@ exports.updateName = async (req, res) => {
         const updatedUser = await userModel.updateUserProfile(userId, { name: newName, city: newCity });
 
         // Refresh JWT token with updated name and location
-        const token = jwt.sign(
-            { id: updatedUser.id, role: updatedUser.role, name: updatedUser.name, email: updatedUser.email, city: updatedUser.city },
-            JWT_SECRET,
-            { expiresIn: '7d' }
+        const token = signToken(
+            { id: updatedUser.id, role: updatedUser.role, name: updatedUser.name, email: updatedUser.email, city: updatedUser.city }
         );
         res.cookie("token", token, {
             httpOnly: true,
@@ -300,29 +269,59 @@ exports.logoutUser = (req, res) => {
 // ================= MAKE ME ADMIN =================
 exports.makeMeAdmin = async (req, res) => {
     try {
-        const secretKey = req.query.key || req.body.key;
+        const isJson = req.headers.accept?.includes('application/json') || req.headers['content-type']?.includes('application/json');
+        const secretKey = req.body?.key || req.query?.key;
         const requiredSecret = process.env.ADMIN_SETUP_KEY;
 
-        if (requiredSecret && secretKey !== requiredSecret) {
+        if (!requiredSecret || requiredSecret.trim().length === 0) {
+            if (isJson) return res.status(403).json({ error: 'Admin setup via key is disabled on this server.' });
+            return res.status(403).send("Admin setup via key is disabled on this server.");
+        }
+
+        if (secretKey !== requiredSecret) {
+            if (isJson) return res.status(403).json({ error: 'Invalid admin setup key.' });
             return res.status(403).send("Unauthorized key.");
         }
 
-        const token = req.cookies?.token;
-        if (!token) return res.status(401).send("Not logged in!");
+        const userId = req.user?.id || req.session?.user?.id;
+        if (!userId) {
+            if (isJson) return res.status(401).json({ error: 'Please log in first.' });
+            return res.status(401).send("Not logged in!");
+        }
 
-        const decoded = jwt.verify(token, JWT_SECRET);
-        await userModel.makeUserAdmin(decoded.id);
+        await userModel.makeUserAdmin(userId);
 
-        res.clearCookie('token', {
+        auditModel.logEvent({
+            userId,
+            userEmail: req.user?.email || req.session?.user?.email,
+            action: 'ROLE_PROMOTION_ADMIN',
+            details: { promotedUserId: userId },
+            req
+        });
+
+        const token = signToken({
+            id: userId,
+            role: 'admin',
+            name: req.user?.name || req.session?.user?.name,
+            email: req.user?.email || req.session?.user?.email,
+            city: req.user?.city || req.session?.user?.city || 'Kothrud, Pune'
+        });
+
+        res.cookie("token", token, {
             httpOnly: true,
             secure: isProduction,
             sameSite: 'lax',
             path: '/',
-            domain: process.env.COOKIE_DOMAIN || undefined
+            domain: process.env.COOKIE_DOMAIN || undefined,
+            maxAge: 7 * 24 * 60 * 60 * 1000
         });
-        res.send("<h1>Success! You are now an Admin.</h1><p><a href='/login.html'>Log In again</a> to apply the admin role.</p>");
+
+        if (isJson) return res.json({ success: true, message: 'Promoted to admin successfully!' });
+        res.send("<h1>Success! You are now an Admin.</h1><p><a href='/admin.html'>Go to Admin Dashboard</a></p>");
     } catch (err) {
-        console.error(err);
+        console.error("MAKE ADMIN ERROR:", err);
+        const isJson = req.headers.accept?.includes('application/json');
+        if (isJson) return res.status(500).json({ error: 'Error promoting user to admin' });
         res.status(500).send("Error promoting user to admin");
     }
 };

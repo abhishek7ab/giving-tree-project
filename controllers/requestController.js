@@ -12,7 +12,8 @@ exports.setSocketIO = (socketServer) => {
 
 // ================= 1. REQUEST AN ITEM =================
 exports.requestItem = async (req, res) => {
-    if (!req.session.user) return res.status(401).send('Please log in first.');
+    const user = req.user || req.session?.user;
+    if (!user) return res.status(401).send('Please log in first.');
 
     try {
         const item_id = req.body.item_id;
@@ -24,8 +25,8 @@ exports.requestItem = async (req, res) => {
         const createdRequest = await requestModel.createRequest(
             item_id,
             {
-                id: req.session.user.id,
-                email: req.session.user.email
+                id: user.id,
+                email: user.email
             },
             requester_location,
             requester_latitude,
@@ -39,7 +40,7 @@ exports.requestItem = async (req, res) => {
                 userEmail: details.owner_email,
                 type: 'new_request',
                 title: 'New item request',
-                body: `${req.session.user.email} requested one of your items.`,
+                body: `${user.email} requested one of your items.`,
                 requestId: createdRequest.id
             });
             if (io) {
@@ -315,7 +316,7 @@ exports.markAllNotificationsRead = async (req, res) => {
 // ================= REVIEWS & FEEDBACK =================
 exports.createReview = async (req, res) => {
     try {
-        const user = req.session.user;
+        const user = req.user || req.session?.user;
         if (!user) return res.status(401).json({ error: 'Not logged in' });
 
         const requestId = Number(req.body.request_id);

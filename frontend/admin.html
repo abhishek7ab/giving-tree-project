@@ -786,6 +786,35 @@
                 </table>
             </div>
         </div>
+
+        <!-- SECURITY AUDIT LOGS -->
+        <div class="admin-section">
+            <div class="section-header">
+                <h3><i class="fas fa-shield-halved" style="color: var(--admin-accent);"></i> Security Audit Logs</h3>
+                <div class="section-controls">
+                    <span style="font-size:12px; color:var(--text-muted);"><i class="fas fa-clock"></i> Live administrative activity log</span>
+                    <button class="btn-export" onclick="loadAdminData()"><i class="fas fa-rotate"></i> Refresh</button>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Admin / User</th>
+                            <th>Action</th>
+                            <th>Details</th>
+                            <th>Client IP</th>
+                        </tr>
+                    </thead>
+                    <tbody id="auditList">
+                        <tr>
+                            <td colspan="5" style="text-align: center; color: var(--text-muted);">Loading audit logs...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -1189,6 +1218,38 @@
             }
         });
 
+        function renderAuditLogs(logs) {
+            const tbody = document.getElementById('auditList');
+            if (!tbody) return;
+            if (!logs || logs.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:30px; color:var(--text-muted);"><i class="fas fa-shield-check" style="font-size:24px; margin-bottom:8px; display:block; color:#334155;"></i>No audit events recorded yet.</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = logs.map(log => {
+                const date = log.created_at ? new Date(log.created_at).toLocaleString() : 'Just now';
+                const safeEmail = escapeHtml(log.user_email || 'System / Anonymous');
+                const action = escapeHtml(log.action || 'EVENT');
+                const details = escapeHtml(typeof log.details === 'object' ? JSON.stringify(log.details) : (log.details || '-'));
+                const ip = escapeHtml(log.ip_address || '127.0.0.1');
+
+                let badgeStyle = 'background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3);';
+                if (action.includes('DELETE')) {
+                    badgeStyle = 'background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3);';
+                } else if (action.includes('ACCESS') || action.includes('VIEW')) {
+                    badgeStyle = 'background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3);';
+                }
+
+                return `
+                <tr>
+                    <td style="color:var(--text-muted); font-size:12px;"><i class="far fa-clock" style="margin-right:4px;"></i> ${date}</td>
+                    <td><strong style="color:var(--text-main); font-size:13px;">${safeEmail}</strong></td>
+                    <td><span style="display:inline-block; padding:3px 8px; border-radius:6px; font-size:11px; font-weight:700; font-family:monospace; ${badgeStyle}">${action}</span></td>
+                    <td style="color:var(--text-muted); font-size:12px; max-width:250px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${details}">${details}</td>
+                    <td style="color:var(--text-muted); font-size:12px; font-family:monospace;">${ip}</td>
+                </tr>`;
+            }).join('');
+        }
+
         // Fetch Data
         async function loadAdminData() {
             try {
@@ -1213,10 +1274,13 @@
 
                 renderUsers(allUsers);
                 renderItems(allItems);
+                renderAuditLogs(data.recentAuditLogs || []);
             } catch (err) {
                 console.error("Failed to load admin data", err);
                 document.getElementById('userList').innerHTML = `<tr><td colspan="5" style="text-align: center; padding:30px; color: #ef4444;"><i class="fas fa-exclamation-triangle" style="font-size:24px; margin-bottom:8px; display:block;"></i>Failed to load member data. <a href="javascript:loadAdminData()" style="color:var(--admin-accent); font-weight:600; text-decoration:underline;">Retry</a></td></tr>`;
                 document.getElementById('itemList').innerHTML = `<tr><td colspan="5" style="text-align: center; padding:30px; color: #ef4444;"><i class="fas fa-exclamation-triangle" style="font-size:24px; margin-bottom:8px; display:block;"></i>Failed to load inventory data. <a href="javascript:loadAdminData()" style="color:var(--admin-accent); font-weight:600; text-decoration:underline;">Retry</a></td></tr>`;
+                const auditList = document.getElementById('auditList');
+                if (auditList) auditList.innerHTML = `<tr><td colspan="5" style="text-align: center; padding:30px; color: #ef4444;">Failed to load audit logs.</td></tr>`;
             }
         }
 

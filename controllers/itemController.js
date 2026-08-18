@@ -3,19 +3,36 @@ const path = require('path');
 const { uploadToCloudinary } = require('../config/cloudinary');
 const itemModel = require('../models/itemModel');
 const userModel = require('../models/userModel');
+const auditModel = require('../models/auditModel');
 const db = require('../database/db');
-const jwt = require('jsonwebtoken');
-const JWT_SECRET = process.env.JWT_SECRET || 'giving_tree_default_jwt_secret_pune_2026_safe_32_chars';
+const { verifyToken } = require('../config/jwt');
+const { isMasterAdmin } = require('../middleware/authMiddleware');
 
 // Helper: extract user from JWT cookie
 function getUserFromReq(req) {
     try {
         const token = req.cookies?.token;
         if (!token) return null;
-        return jwt.verify(token, JWT_SECRET);
+        return verifyToken(token);
     } catch (e) {
         return null;
     }
+}
+
+// Magic bytes validation for uploaded image buffers (JPEG, PNG, WebP, GIF)
+function isValidImageBuffer(buffer) {
+    if (!buffer || buffer.length < 4) return false;
+    // JPEG: FF D8 FF
+    if (buffer[0] === 0xFF && buffer[1] === 0xD8 && buffer[2] === 0xFF) return true;
+    // PNG: 89 50 4E 47
+    if (buffer[0] === 0x89 && buffer[1] === 0x50 && buffer[2] === 0x4E && buffer[3] === 0x47) return true;
+    // WebP: RIFF ... WEBP
+    if (buffer.length >= 12 &&
+        buffer[0] === 0x52 && buffer[1] === 0x49 && buffer[2] === 0x46 && buffer[3] === 0x46 &&
+        buffer[8] === 0x57 && buffer[9] === 0x45 && buffer[10] === 0x42 && buffer[11] === 0x50) return true;
+    // GIF: GIF8
+    if (buffer[0] === 0x47 && buffer[1] === 0x49 && buffer[2] === 0x46 && buffer[3] === 0x38) return true;
+    return false;
 }
 
 // ================= 1. BROWSE CATALOG =================
@@ -74,10 +91,20 @@ exports.getAdminData = async (req, res) => {
     try {
         const items = await itemModel.getAllItems('', 'All', 'All', true);
         const users = await userModel.getAllUsers();
+        const recentAuditLogs = await auditModel.getRecentAuditLogs(20);
+
+        // Record audit event for administrative dashboard access
+        auditModel.logEvent({
+            userId: req.user?.id,
+            userEmail: req.user?.email,
+            action: 'ADMIN_DASHBOARD_ACCESS',
+            req
+        });
 
         res.json({
             items,
             users,
+            recentAuditLogs,
             stats: {
                 totalItems: items.length,
                 totalUsers: users.length
@@ -120,6 +147,13 @@ exports.postItem = async (req, res) => {
                 return res.status(400).json({ error: 'Item image is required.' });
             }
             return res.status(400).send("File missing");
+        }
+
+        if (!isValidImageBuffer(req.file.buffer)) {
+            if (req.headers.accept?.includes('application/json')) {
+                return res.status(400).json({ error: 'Uploaded file is not a valid image format.' });
+            }
+            return res.status(400).send("Uploaded file is not a valid image format.");
         }
 
         let image = '';
@@ -302,7 +336,7 @@ exports.deleteItem = async (req, res) => {
     try {
         const { id } = req.body;
         const user = getUserFromReq(req);
-        const isJson = req.headers.accept?.includes('application/json');
+        const isJson = req.headers.accept?.includes('application/json') || req.headers['content-type']?.includes('application/json');
 
         if (!user) {
             if (isJson) return res.status(401).json({ error: 'Not logged in' });
@@ -311,6 +345,13 @@ exports.deleteItem = async (req, res) => {
 
         if (user.role === 'admin') {
             await itemModel.deleteItemByAdmin(id);
+            auditModel.logEvent({
+                userId: user.id,
+                userEmail: user.email,
+                action: 'ADMIN_DELETE_ITEM',
+                details: { itemId: id },
+                req
+            });
         } else {
             await itemModel.deleteItem(id, user.id);
         }
@@ -337,7 +378,7 @@ exports.deleteUser = async (req, res) => {
         const { id } = req.body;
         const targetUserId = Number(id);
         const currentUser = getUserFromReq(req);
-        const isJson = req.headers.accept?.includes('application/json');
+        const isJson = req.headers.accept?.includes('application/json') || req.headers['content-type']?.includes('application/json');
 
         if (!currentUser) {
             if (isJson) return res.status(401).json({ error: 'Not logged in' });
@@ -348,11 +389,33 @@ exports.deleteUser = async (req, res) => {
             return res.status(400).send("Invalid user id");
         }
 
+        // Lockout Prevention: An admin cannot delete their own active account through the admin dashboard
+        if (Number(currentUser.id) === targetUserId) {
+            if (isJson) return res.status(400).json({ error: 'You cannot delete your own admin account.' });
+            return res.status(400).send("You cannot delete your own admin account.");
+        }
+
+        // Master Admin Protection: Master Admin cannot be deleted by secondary admins
+        const targetUserRes = await db.query('SELECT id, email, role FROM users WHERE id = $1', [targetUserId]);
+        const targetUser = targetUserRes.rows[0];
+        if (targetUser && isMasterAdmin(targetUser.email)) {
+            if (isJson) return res.status(403).json({ error: 'Master Admin account cannot be deleted.' });
+            return res.status(403).send("Master Admin account cannot be deleted.");
+        }
+
         const deletedCount = await userModel.deleteUserById(targetUserId);
         if (!deletedCount) {
             if (isJson) return res.status(400).json({ error: 'Admin users cannot be deleted.' });
             return res.status(400).send("Admin users cannot be deleted.");
         }
+
+        auditModel.logEvent({
+            userId: currentUser.id,
+            userEmail: currentUser.email,
+            action: 'ADMIN_DELETE_USER',
+            details: { targetUserId, targetEmail: targetUser?.email },
+            req
+        });
 
         if (isJson) return res.json({ success: true, message: 'User deleted successfully' });
         return res.redirect('/admin/dashboard');
@@ -362,6 +425,18 @@ exports.deleteUser = async (req, res) => {
             return res.status(500).json({ error: 'Error deleting user' });
         }
         return res.status(500).send("Error deleting user");
+    }
+};
+
+// ================= AUDIT LOGS =================
+exports.getAuditLogs = async (req, res) => {
+    try {
+        const limit = parseInt(req.query.limit, 10) || 50;
+        const logs = await auditModel.getRecentAuditLogs(limit);
+        res.json({ logs });
+    } catch (err) {
+        console.error("GET AUDIT LOGS ERROR:", err);
+        res.status(500).json({ error: "Failed to load audit logs" });
     }
 };
 
@@ -376,26 +451,5 @@ exports.getRecentItems = async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: "DB Error" });
-    }
-};
-
-// ================= REQUEST =================
-exports.requestItem = async (req, res) => {
-    try {
-        const { item_id } = req.body;
-
-        const user = getUserFromReq(req);
-        if (!user) return res.status(401).send("Not logged in");
-
-        await db.query(
-            "INSERT INTO requests (item_id, user_id, status) VALUES ($1,$2,'pending')",
-            [item_id, user.id]
-        );
-
-        res.json({ success: true });
-
-    } catch (err) {
-        console.error(err);
-        res.status(500).send("Request failed");
     }
 };

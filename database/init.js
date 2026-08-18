@@ -124,6 +124,20 @@ async function initDB() {
             )
         `);
 
+        // Security Audit Logs
+        await db.query(`
+            CREATE TABLE IF NOT EXISTS audit_logs (
+                id SERIAL PRIMARY KEY,
+                user_id INTEGER,
+                user_email VARCHAR(255),
+                action VARCHAR(100) NOT NULL,
+                details TEXT,
+                ip_address VARCHAR(45),
+                user_agent TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
         // Database Indexes for Fast Query Performance
         await db.query("CREATE INDEX IF NOT EXISTS idx_items_status_category ON items(status, category)");
         await db.query("CREATE INDEX IF NOT EXISTS idx_items_user_id ON items(user_id)");
@@ -134,6 +148,8 @@ async function initDB() {
         await db.query("CREATE INDEX IF NOT EXISTS idx_reviews_request ON reviews(request_id)");
         await db.query("CREATE INDEX IF NOT EXISTS idx_saved_items_user ON saved_items(user_id)");
         await db.query("CREATE UNIQUE INDEX IF NOT EXISTS idx_users_unique_name ON users (LOWER(TRIM(name))) WHERE archived_at IS NULL");
+        await db.query("CREATE INDEX IF NOT EXISTS idx_audit_logs_action ON audit_logs(action, created_at DESC)");
+        await db.query("CREATE INDEX IF NOT EXISTS idx_audit_logs_user ON audit_logs(user_email, created_at DESC)");
 
         // Full-text search setup
         await db.query(`

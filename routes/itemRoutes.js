@@ -3,15 +3,17 @@ const router = express.Router();
 
 const itemController = require('../controllers/itemController');
 const { isLoggedIn, isAdmin } = require('../middleware/authMiddleware');
-const { validate, postItemSchema, editItemSchema, getItemsQuerySchema, adminDeleteSchema } = require('../middleware/validation');
+const { validate, postItemSchema, editItemSchema, getItemsQuerySchema, adminDeleteSchema, updateItemStatusSchema } = require('../middleware/validation');
+
+const ALLOWED_IMAGE_MIMES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
 
 const multer = require('multer');
 const upload = multer({ 
   storage: multer.memoryStorage(),
-  limits: { fileSize: 5 * 1024 * 1024 },
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB max
   fileFilter: (req, file, cb) => {
-    if (file.mimetype.startsWith('image/')) cb(null, true);
-    else cb(new Error('Only image files are allowed'), false);
+    if (ALLOWED_IMAGE_MIMES.includes(file.mimetype)) cb(null, true);
+    else cb(new Error('Only safe image files (JPEG, PNG, WebP, GIF) are allowed.'), false);
   }
 });
 
@@ -26,10 +28,11 @@ router.get('/api/items/data', validate(getItemsQuerySchema), itemController.getI
 router.get('/api/items/recent', itemController.getRecentItems);
 router.get('/api/items/:id', itemController.getItemDetail);
 router.put('/api/items/:id', isLoggedIn, validate(editItemSchema), itemController.updateItem);
-router.patch('/api/items/:id/status', isLoggedIn, itemController.updateItemStatus);
+router.patch('/api/items/:id/status', isLoggedIn, validate(updateItemStatusSchema), itemController.updateItemStatus);
 
 router.get('/api/my-items/data', isLoggedIn, itemController.getMyItemsData);
 router.get('/api/admin/data', isLoggedIn, isAdmin, itemController.getAdminData);
+router.get('/api/admin/audit-logs', isLoggedIn, isAdmin, itemController.getAuditLogs);
 
 // Wishlist / Saved Items
 router.post('/api/items/:id/save', isLoggedIn, itemController.saveItem);
@@ -40,7 +43,7 @@ router.get('/api/user-saved-ids', itemController.getUserSavedIds);
 // Actions
 router.post('/post-item', isLoggedIn, upload.single('image'), validate(postItemSchema), itemController.postItem);
 router.post('/delete-item', isLoggedIn, validate(adminDeleteSchema), itemController.deleteItem);
-router.post('/admin/delete-item', isLoggedIn, validate(adminDeleteSchema), itemController.deleteItem);
+router.post('/admin/delete-item', isLoggedIn, isAdmin, validate(adminDeleteSchema), itemController.deleteItem);
 router.post('/admin/delete-user', isLoggedIn, isAdmin, validate(adminDeleteSchema), itemController.deleteUser);
 
 router.get('/delete-item', (req, res) => res.redirect('/my-items.html'));

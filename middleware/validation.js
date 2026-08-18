@@ -142,6 +142,21 @@ const adminDeleteSchema = z.object({
   }),
 });
 
+const adminSetupSchema = z.object({
+  body: z.object({
+    key: z.string({ required_error: 'Admin setup key is required.' }).min(1, 'Admin key is required.'),
+  }),
+});
+
+const updateItemStatusSchema = z.object({
+  params: z.object({
+    id: z.coerce.number().int().positive(),
+  }),
+  body: z.object({
+    status: z.enum(['available', 'reserved', 'completed']),
+  }),
+});
+
 function validate(schema) {
   return (req, res, next) => {
     try {
@@ -195,4 +210,6 @@ module.exports = {
   sendMessageSchema,
   getItemsQuerySchema,
   adminDeleteSchema,
+  adminSetupSchema,
+  updateItemStatusSchema,
 };

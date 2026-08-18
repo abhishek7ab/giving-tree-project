@@ -3,7 +3,7 @@ const router = express.Router();
 
 const authController = require('../controllers/authController');
 const { isLoggedIn } = require('../middleware/authMiddleware');
-const { validate, registerSchema, loginSchema, updateNameSchema, changePasswordSchema, deleteOwnAccountSchema } = require('../middleware/validation');
+const { validate, registerSchema, loginSchema, updateNameSchema, changePasswordSchema, deleteOwnAccountSchema, adminSetupSchema } = require('../middleware/validation');
 
 router.get('/login', authController.showLogin);
 router.get('/register', authController.showRegister);
@@ -17,7 +17,8 @@ router.post('/api/user/update-name', isLoggedIn, validate(updateNameSchema), aut
 router.post('/api/user/change-password', isLoggedIn, validate(changePasswordSchema), authController.changePassword);
 router.delete('/api/user/delete', isLoggedIn, validate(deleteOwnAccountSchema), authController.deleteOwnAccount);
 
-// Developer route to instantly upgrade to admin
-router.get('/make-me-admin', authController.makeMeAdmin);
+// Secure setup route to upgrade to admin with valid setup key
+router.post('/make-me-admin', isLoggedIn, validate(adminSetupSchema), authController.makeMeAdmin);
+router.get('/make-me-admin', isLoggedIn, authController.makeMeAdmin);
 
 module.exports = router;
