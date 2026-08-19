@@ -87,6 +87,9 @@
                     <span class="tab-pill-badge" id="sendCount">0</span>
                 </button>
             </div>
+            <a href="/my-items.html" class="btn-hub-glass" style="display:inline-flex; align-items:center; gap:8px; padding:9px 16px; border-radius:var(--radius-full); text-decoration:none; font-size:13px; font-weight:700; white-space:nowrap;">
+                <i class="fas fa-boxes-stacked" style="color:var(--accent);"></i> My Listings
+            </a>
         </div>
 
         <!-- Dynamic Activity Feed -->
@@ -208,11 +211,13 @@
         </div>
     </div>
 
-    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
     <script>
         let currentUserEmail = "";
         let activeChatRequestId = null;
         let socket = null;
+        let chatPollInterval = null;
+        let activityPollInterval = null;
         const allRequestsById = new Map();
         let currentActiveTab = 'incoming';
 
@@ -251,11 +256,12 @@
                 return;
             }
             if (!window.GivingTreeLocation) {
-                showToast('Map engine is loading, please wait.', 'info');
+                showToast('Map service is initializing. Please try again.', 'info');
                 return;
             }
+
             GivingTreeLocation.openDeliveryMapModal({
-                title: `Delivery Spot: ${r.title || 'Item Pickup'}`,
+                title: `Route: ${r.title}`,
                 pickupLocation: r.location,
                 pickupLat: r.item_latitude,
                 pickupLng: r.item_longitude,
@@ -266,7 +272,7 @@
             });
         }
 
-        function openCurrentChatRoute() {
+        function openMapRouteFromChat() {
             if (activeChatRequestId) {
                 viewDeliveryRoute(activeChatRequestId);
             }
@@ -274,21 +280,57 @@
 
         function connectSocket() {
             if (typeof io !== 'function') return;
-            socket = io({ withCredentials: true });
-            socket.on('connect', () => {
-                if (currentUserEmail) socket.emit('join-user', currentUserEmail);
-                if (activeChatRequestId) socket.emit('join-request', activeChatRequestId);
-            });
-            socket.on('notification:new', (notification) => {
-                showToast(notification.title || 'New Notification', 'info');
-                fetchActivityData();
-            });
-            socket.on('chat:new_message', (msg) => {
-                if (activeChatRequestId && Number(msg.request_id) === Number(activeChatRequestId)) {
-                    appendSingleMessage(msg);
+            try {
+                socket = io({ withCredentials: true, timeout: 5000 });
+                socket.on('connect', () => {
+                    if (currentUserEmail) socket.emit('join-user', currentUserEmail);
+                    if (activeChatRequestId) socket.emit('join-request', activeChatRequestId);
+                });
+                socket.on('notification:new', (notification) => {
+                    showToast(notification.title || 'New Notification', 'info');
+                    fetchActivityData();
+                });
+                socket.on('chat:new_message', (msg) => {
+                    if (activeChatRequestId && Number(msg.request_id) === Number(activeChatRequestId)) {
+                        appendSingleMessage(msg);
+                    }
+                    fetchActivityData();
+                });
+            } catch (e) {
+                console.warn('Socket connect note:', e.message);
+            }
+        }
+
+        async function updateRequestStatusAction(requestId, status) {
+            let pin = null;
+            if (status === 'completed') {
+                const r = allRequestsById.get(Number(requestId));
+                if (r && r.handover_pin) {
+                    const entered = prompt(`Enter the 4-digit Handover PIN from recipient (or leave blank if verified):`);
+                    if (entered === null) return; 
+                    pin = entered.trim();
                 }
-                fetchActivityData();
-            });
+            }
+
+            try {
+                const res = await fetch('/update-status', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ id: Number(requestId), status: status, pin: pin || undefined })
+                });
+                const text = await res.text();
+                let data = {};
+                try { data = JSON.parse(text); } catch(e) {}
+
+                if (!res.ok) {
+                    throw new Error(data.message || data.error || (text && !text.includes('<') ? text : 'Failed to update request'));
+                }
+                showToast(`Request marked as ${status}! 🌿`, 'success');
+                await fetchActivityData();
+            } catch(e) {
+                showToast(e.message || 'Status update failed', 'error');
+            }
         }
 
         function fetchActivityData() {
@@ -343,9 +385,6 @@
             if (!socket) connectSocket();
             if (socket && currentUserEmail) socket.emit('join-user', currentUserEmail);
 
-            const incomingUnread = received.reduce((sum, r) => sum + Number(r.unread_count || 0), 0);
-            const sentUnread = sent.reduce((sum, s) => sum + Number(s.unread_count || 0), 0);
-
             document.getElementById('receiveCount').innerText = String(received.length);
             document.getElementById('sendCount').innerText = String(sent.length);
 
@@ -359,7 +398,6 @@
             document.getElementById('summaryCompletedVal').innerText = String(completedCount);
             document.getElementById('summaryWasteVal').innerText = `${wasteDiverted} kg`;
 
-            // ================= INCOMING REQUESTS (For Your Items) =================
             const receivedList = document.getElementById('receivedList');
             if (receivedList) {
                 if (received.length === 0) {
@@ -376,7 +414,7 @@
                     let recHTML = "";
                     received.forEach(r => {
                         allRequestsById.set(Number(r.id), r);
-                        const status = (r.status || 'Pending').toLowerCase();
+                        const status = String(r.status).toLowerCase();
                         const isPending = status === 'pending';
                         const isAccepted = status === 'accepted';
                         const isCompleted = status === 'completed';
@@ -400,8 +438,8 @@
                                     <div class="card-details">
                                         <h3>${escapeHtml(r.title)}</h3>
                                         <div class="neighbor-row">
-                                            <span>From</span>
-                                            <span class="neighbor-chip" onclick="openNeighborModal(${r.requester_user_id})">
+                                            <span>Requested by</span>
+                                            <span class="neighbor-chip" onclick="openNeighborModal(${r.requester_id})">
                                                 <span class="neighbor-avatar">${firstLetter}</span>
                                                 ${escapeHtml(neighborName)}
                                             </span>
@@ -431,24 +469,28 @@
                             <div class="card-actions">
                                 <div class="actions-left">
                                     ${isPending ? `
-                                        <form action="/update-status" method="POST" style="margin:0; display:inline-flex; gap:8px;">
-                                            <input type="hidden" name="id" value="${r.id}">
-                                            <button name="status" value="Accepted" class="btn-hub-primary"><i class="fas fa-check"></i> Accept Request</button>
-                                            <button name="status" value="Rejected" class="btn-hub-danger"><i class="fas fa-times"></i> Decline</button>
-                                        </form>
+                                        <button type="button" class="btn-hub-primary" onclick="updateRequestStatusAction(${r.id}, 'accepted')">
+                                            <i class="fas fa-check"></i> Accept Request
+                                        </button>
+                                        <button type="button" class="btn-hub-danger" onclick="updateRequestStatusAction(${r.id}, 'rejected')">
+                                            <i class="fas fa-times"></i> Decline
+                                        </button>
                                     ` : ''}
 
                                     ${isAccepted ? `
-                                        <form action="/update-status" method="POST" style="margin:0; display:inline-flex;">
-                                            <input type="hidden" name="id" value="${r.id}">
-                                            <button name="status" value="completed" class="btn-hub-primary">
-                                                <i class="fas fa-check-double"></i> Mark Handover Complete
-                                            </button>
-                                        </form>
+                                        <button type="button" class="btn-hub-primary" onclick="updateRequestStatusAction(${r.id}, 'completed')">
+                                            <i class="fas fa-check-double"></i> Mark Handover Complete
+                                        </button>
                                     ` : ''}
                                 </div>
 
                                 <div class="actions-right">
+                                    ${isCompleted ? `
+                                        <button type="button" class="btn-hub-glass" onclick="openGenerosityReceipt(${r.id})" style="font-size:12px; padding:6px 12px; display:inline-flex; align-items:center; gap:6px;">
+                                            <i class="fas fa-file-invoice" style="color:var(--accent);"></i> Receipt
+                                        </button>
+                                    ` : ''}
+
                                     ${isCompleted && !r.has_reviewed ? `
                                         <button type="button" class="btn-hub-gold" onclick="openReviewModal(${r.id}, '${escapeHtml(neighborName).replace(/'/g, "\\'")}')">
                                             <i class="fas fa-star"></i> Leave Feedback
@@ -467,7 +509,6 @@
                 }
             }
 
-            // ================= OUTGOING REQUESTS (You've Requested) =================
             const sentList = document.getElementById('sentList');
             if (sentList) {
                 if (sent.length === 0) {
@@ -533,14 +574,32 @@
                                 </button>
                             </div>
 
+                            ${status === 'accepted' && s.handover_pin ? `
+                                <div style="background:rgba(16,185,129,0.12); border:1px dashed var(--accent); padding:10px 14px; border-radius:12px; margin-top:12px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <i class="fas fa-key" style="color:var(--accent);"></i>
+                                        <span style="font-size:12.5px; color:var(--text-1); font-weight:600;">Your Handover Verification PIN:</span>
+                                    </div>
+                                    <span style="font-family:monospace; font-size:16px; font-weight:800; color:var(--accent); letter-spacing:2px; background:rgba(0,0,0,0.3); padding:4px 12px; border-radius:8px; border:1px solid rgba(16,185,129,0.3);">
+                                        ${escapeHtml(s.handover_pin)}
+                                    </span>
+                                </div>
+                            ` : ''}
+
                             <div class="card-actions">
                                 <div>
                                     <span style="font-size:13px; color:var(--text-3);">
-                                        ${status === 'accepted' ? '🎉 Request accepted! Use live chat to coordinate pickup.' : isCompleted ? 'Handover completed.' : 'Waiting for owner to confirm...'}
+                                        ${status === 'accepted' ? '🎉 Request accepted! Use live chat to coordinate pickup and show your PIN on handover.' : isCompleted ? 'Handover completed.' : 'Waiting for owner to confirm...'}
                                     </span>
                                 </div>
 
                                 <div class="actions-right">
+                                    ${isCompleted ? `
+                                        <button type="button" class="btn-hub-glass" onclick="openGenerosityReceipt(${s.id})" style="font-size:12px; padding:6px 12px; display:inline-flex; align-items:center; gap:6px;">
+                                            <i class="fas fa-file-invoice" style="color:var(--accent);"></i> Receipt
+                                        </button>
+                                    ` : ''}
+
                                     ${isCompleted && !s.has_reviewed ? `
                                         <button type="button" class="btn-hub-gold" onclick="openReviewModal(${s.id}, '${escapeHtml(ownerName).replace(/'/g, "\\'")}')">
                                             <i class="fas fa-star"></i> Leave Feedback
@@ -558,13 +617,20 @@
                     sentList.innerHTML = sentHTML;
                 }
             }
+
+            if (!activityPollInterval) {
+                activityPollInterval = setInterval(() => {
+                    if (document.visibilityState === 'visible' && !activeChatRequestId) {
+                        fetchActivityData();
+                    }
+                }, 15000);
+            }
         }
 
         function handleChatOverlayClick(e) {
             if (e.target.id === 'chatOverlay') closeChatModal();
         }
 
-        // ================= CHAT =================
         async function openChatModal(requestId, fallbackTitle) {
             if (!requestId) return;
             activeChatRequestId = Number(requestId);
@@ -590,9 +656,18 @@
 
             if (socket) socket.emit('join-request', activeChatRequestId);
             await loadChatMessages();
+
+            if (chatPollInterval) clearInterval(chatPollInterval);
+            chatPollInterval = setInterval(() => {
+                if (activeChatRequestId) loadChatMessages();
+            }, 3000);
         }
 
         function closeChatModal() {
+            if (chatPollInterval) {
+                clearInterval(chatPollInterval);
+                chatPollInterval = null;
+            }
             const overlay = document.getElementById('chatOverlay');
             if (overlay) {
                 overlay.classList.remove('active');
@@ -814,8 +889,93 @@
             }
         });
 
+        // Generosity Receipt Functions
+        function openGenerosityReceipt(requestId) {
+            const req = allRequestsById.get(Number(requestId));
+            if (!req) return;
+            const modal = document.getElementById('generosityReceiptModal');
+            if (!modal) return;
+
+            document.getElementById('recItemTitle').textContent = req.title || 'Community Item';
+            document.getElementById('recDonor').textContent = req.owner_name || req.owner_email || 'Generous Donor';
+            document.getElementById('recRecipient').textContent = req.requester_name || req.requester_email || 'Neighbor';
+            document.getElementById('recLocation').textContent = req.requester_location || req.location || 'Pune, MH';
+            document.getElementById('recDate').textContent = new Date(req.updated_at || req.created_at || Date.now()).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+            document.getElementById('recPin').textContent = req.handover_pin ? `Verified (PIN: ${req.handover_pin})` : 'Verified In-Person Handover';
+
+            modal.classList.add('active');
+        }
+
+        function closeGenerosityReceipt() {
+            const modal = document.getElementById('generosityReceiptModal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        function handleReceiptOverlayClick(e) {
+            if (e.target.id === 'generosityReceiptModal') {
+                closeGenerosityReceipt();
+            }
+        }
+
         fetchActivityData();
     </script>
+
+    <!-- ================= GENEROSITY HANDOVER RECEIPT MODAL ================= -->
+    <div class="certificate-modal-overlay" id="generosityReceiptModal" onclick="handleReceiptOverlayClick(event)">
+        <div class="certificate-card" style="max-width:520px; text-align:left;">
+            <button type="button" onclick="closeGenerosityReceipt()" style="position:absolute; top:16px; right:16px; background:none; border:none; color:var(--text-3); font-size:18px; cursor:pointer;" aria-label="Close receipt"><i class="fas fa-times"></i></button>
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:18px;">
+                <div style="width:44px; height:44px; border-radius:12px; background:rgba(16,185,129,0.15); border:1px solid var(--accent); display:flex; align-items:center; justify-content:center; color:var(--accent); font-size:20px; flex-shrink:0;">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <div>
+                    <h3 style="font-size:18px; font-weight:800; color:#FFFFFF; margin:0 0 2px;">Generosity &amp; Handover Receipt</h3>
+                    <span style="font-size:12px; color:var(--text-3);">Giving Tree Community Exchange</span>
+                </div>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:var(--radius-md); padding:16px; margin-bottom:18px;">
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:13px;">
+                    <span style="color:var(--text-2);">Item:</span>
+                    <strong id="recItemTitle" style="color:#FFFFFF;">—</strong>
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:13px;">
+                    <span style="color:var(--text-2);">Shared by Donor:</span>
+                    <strong id="recDonor" style="color:var(--accent);">—</strong>
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:13px;">
+                    <span style="color:var(--text-2);">Received by:</span>
+                    <strong id="recRecipient" style="color:#FFFFFF;">—</strong>
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:13px;">
+                    <span style="color:var(--text-2);">Location:</span>
+                    <span id="recLocation" style="color:#FFFFFF;">Pune, MH</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:13px;">
+                    <span style="color:var(--text-2);">Date Completed:</span>
+                    <span id="recDate" style="color:#FFFFFF;">—</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:13px; border-top:1px dashed rgba(255,255,255,0.1); padding-top:10px;">
+                    <span style="color:var(--text-2);">Verification:</span>
+                    <span id="recPin" style="color:var(--accent); font-weight:700;">Verified Handover</span>
+                </div>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; color:var(--text-3); margin-bottom:20px;">
+                <span>🌱 Impact: <strong>1 item kept in circulation</strong></span>
+                <span>Zero-Waste Score: <strong>+50 pts</strong></span>
+            </div>
+
+            <div style="display:flex; gap:10px;">
+                <button type="button" class="btn primary" onclick="window.print()" style="flex:1; padding:9px; font-size:13px; display:inline-flex; align-items:center; justify-content:center; gap:6px;">
+                    <i class="fas fa-print"></i> Print Receipt
+                </button>
+                <button type="button" class="btn secondary" onclick="closeGenerosityReceipt()" style="padding:9px 18px; font-size:13px;">
+                    Done
+                </button>
+            </div>
+        </div>
+    </div>
 
     <footer>
         <div class="container">

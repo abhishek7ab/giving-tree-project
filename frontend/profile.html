@@ -210,6 +210,20 @@
         <!-- RIGHT: Sidebar -->
         <div class="profile-sidebar">
 
+            <!-- Donor Impact Certificate Card -->
+            <div class="sidebar-stat-card" data-animate style="border-color:rgba(16,185,129,0.3); background:rgba(16,185,129,0.04);">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                    <span style="font-size:18px;">🎗️</span>
+                    <h4 style="margin:0; color:var(--accent);">Donor Impact Seal</h4>
+                </div>
+                <p style="font-size:12.5px; color:var(--text-2); margin:0 0 14px; line-height:1.5;">
+                    Your items shared prevent landfill waste and build trust in our Pune community.
+                </p>
+                <button type="button" class="btn primary" onclick="openImpactCertificate()" style="width:100%; font-size:13px; font-weight:800; padding:10px; display:inline-flex; align-items:center; justify-content:center; gap:8px;">
+                    <i class="fas fa-award"></i> View Giving Certificate
+                </button>
+            </div>
+
             <!-- Member info -->
             <div class="sidebar-stat-card" data-animate>
                 <h4>Account Info</h4>
@@ -546,9 +560,83 @@ document.getElementById('deleteAccountBtn').addEventListener('click', async func
         showToast('Network error. Please try again.', 'error');
     }
 });
+
+// ---- Impact Certificate Functions ----
+function openImpactCertificate() {
+    const modal = document.getElementById('impactCertModal');
+    if (!modal) return;
+
+    const userName = document.getElementById('certUserName');
+    const userHub = document.getElementById('certUserHub');
+    const givenCount = document.getElementById('certGivenCount');
+    const co2Saved = document.getElementById('certCo2Saved');
+    const karmaScore = document.getElementById('certKarmaScore');
+
+    if (userName) userName.textContent = currentProfile.name || 'Giving Neighbor';
+    if (userHub) userHub.textContent = currentProfile.city || 'Pune, Maharashtra';
+    if (givenCount) givenCount.textContent = currentProfile.itemsGiven || '0';
+    if (co2Saved) co2Saved.textContent = `${(currentProfile.itemsGiven || 0) * 12} kg`;
+    if (karmaScore) karmaScore.textContent = currentProfile.karma || '0';
+
+    modal.classList.add('active');
+}
+
+function closeImpactCertificate() {
+    const modal = document.getElementById('impactCertModal');
+    if (modal) modal.classList.remove('active');
+}
+
+function handleCertOverlayClick(e) {
+    if (e.target.id === 'impactCertModal') {
+        closeImpactCertificate();
+    }
+}
 </script>
 
-<script src="/socket.io/socket.io.js"></script>
+<!-- ================= DONOR IMPACT CERTIFICATE MODAL ================= -->
+<div class="certificate-modal-overlay" id="impactCertModal" onclick="handleCertOverlayClick(event)">
+    <div class="certificate-card">
+        <button type="button" onclick="closeImpactCertificate()" style="position:absolute; top:16px; right:16px; background:none; border:none; color:var(--text-3); font-size:18px; cursor:pointer;" aria-label="Close certificate"><i class="fas fa-times"></i></button>
+        <div class="cert-seal">
+            <i class="fas fa-tree"></i>
+        </div>
+        <h3 class="cert-title">Giving Tree Community</h3>
+        <div class="cert-subtitle">Verified Generosity &amp; Zero-Waste Seal</div>
+        <p style="font-size:13px; color:var(--text-2); margin:0 0 14px;">This honors the active neighborhood sharing contribution of:</p>
+        <div class="cert-recipient-name" id="certUserName">Abhishek Badave</div>
+        
+        <div class="cert-stats-grid">
+            <div>
+                <div class="cert-stat-num" id="certGivenCount">0</div>
+                <div class="cert-stat-lbl">Items Shared</div>
+            </div>
+            <div>
+                <div class="cert-stat-num" id="certCo2Saved">0 kg</div>
+                <div class="cert-stat-lbl">CO₂ Offset</div>
+            </div>
+            <div>
+                <div class="cert-stat-num" id="certKarmaScore">0</div>
+                <div class="cert-stat-lbl">Karma Score</div>
+            </div>
+        </div>
+
+        <div class="cert-footer-row">
+            <span>Verified Local Hub: <strong id="certUserHub" style="color:#fff;">Pune, MH</strong></span>
+            <span>Community Status: <strong style="color:var(--accent);">Active Donor</strong></span>
+        </div>
+
+        <div class="cert-actions">
+            <button type="button" class="btn primary" onclick="window.print()" style="flex:1; padding:10px; font-size:13px; display:inline-flex; align-items:center; justify-content:center; gap:6px;">
+                <i class="fas fa-print"></i> Print / Save PDF
+            </button>
+            <button type="button" class="btn secondary" onclick="closeImpactCertificate()" style="padding:10px 18px; font-size:13px;">
+                Close
+            </button>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
 <script src="/assets/js/utils.js"></script>
 <script src="/assets/js/navbar-auth.js"></script>
 <script src="/assets/js/notifications.js"></script>

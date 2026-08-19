@@ -100,6 +100,26 @@
                 </div>
             </div>
 
+            <!-- Donation Drive & Charity Cause Pledge Selector -->
+            <div class="input-group" style="background:rgba(16,185,129,0.06); border:1px solid rgba(16,185,129,0.25); border-radius:var(--radius-md); padding:16px; margin-bottom:18px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                    <label style="margin-bottom:0; color:var(--accent); font-weight:800; font-size:13.5px; display:inline-flex; align-items:center; gap:6px;">
+                        <i class="fas fa-hand-holding-heart"></i> Pledge to a Community Cause / NGO Drive (Optional)
+                    </label>
+                    <span style="font-size:11px; color:var(--text-3); font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Charity Impact</span>
+                </div>
+                <p style="font-size:12.5px; color:var(--text-2); margin:0 0 10px; line-height:1.5;">
+                    Tagging your donation highlights it for verified local student libraries, winter warmth shelters, and community relief drives.
+                </p>
+                <select id="causePledgeSelect" style="width:100%; padding:11px 14px; background:rgba(15,23,42,0.85); border:1px solid rgba(255,255,255,0.12); border-radius:var(--radius-sm); color:var(--text-1); font-size:13.5px; outline:none; font-family:inherit; cursor:pointer;">
+                    <option value="">General Neighborhood Donation (Free for all neighbors)</option>
+                    <option value="Student Education & Tech Drive">🎓 Student Education &amp; Tech Drive (Vidya Jyoti Foundation)</option>
+                    <option value="Children's Library & Study Books">📚 Children's Library &amp; Study Books (Door Step School)</option>
+                    <option value="Winter Warmth & Shelter Blankets">🧥 Winter Warmth &amp; Shelter Blankets (Snehalaya Pune)</option>
+                    <option value="Animal Shelter Towels & Bowls">🐾 Animal Shelter Towels &amp; Bowls (ResQ Pet Sanctuary)</option>
+                </select>
+            </div>
+
             <div class="input-group">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
                     <label style="margin-bottom:0;">Pickup Neighborhood / Locality (Pune)</label>
@@ -325,6 +345,12 @@ async function handlePostSubmit(e) {
 
     const formData = new FormData(form);
 
+    const causeVal = document.getElementById('causePledgeSelect')?.value;
+    if (causeVal) {
+        const origDesc = formData.get('description') || '';
+        formData.set('description', `[🎗️ Cause: ${causeVal}] ${origDesc}`);
+    }
+
     // Transparent Client-Side Image Compression (converts 4MB photos to ~200KB)
     const rawFile = imageInput.files[0];
     if (rawFile && typeof compressImageFile === 'function') {
@@ -420,6 +446,30 @@ window.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
+
+    // Auto-fill cause or category if coming from a Donation Drive pledge link
+    const urlParams = new URLSearchParams(window.location.search);
+    const catParam = urlParams.get('category');
+    const causeParam = urlParams.get('cause');
+
+    if (catParam) {
+        const catSelect = document.getElementById('itemCategory');
+        if (catSelect) {
+            catSelect.value = catParam;
+            const prevCat = document.getElementById('prevCat');
+            if (prevCat) prevCat.innerText = catParam;
+        }
+    }
+
+    if (causeParam) {
+        const causeSelect = document.getElementById('causePledgeSelect');
+        if (causeSelect) {
+            if (causeParam === 'tech') causeSelect.value = "Student Education & Tech Drive";
+            else if (causeParam === 'books') causeSelect.value = "Children's Library & Study Books";
+            else if (causeParam === 'clothing') causeSelect.value = "Winter Warmth & Shelter Blankets";
+            else if (causeParam === 'animals') causeSelect.value = "Animal Shelter Towels & Bowls";
+        }
+    }
 });
 </script>
 
@@ -455,7 +505,7 @@ window.addEventListener('DOMContentLoaded', () => {
     </div>
 </footer>
 
-<script src="/socket.io/socket.io.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
 <script src="/assets/js/utils.js"></script>
 <script src="/assets/js/location-picker.js"></script>
 <script src="/assets/js/navbar-auth.js"></script>

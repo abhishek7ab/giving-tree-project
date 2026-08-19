@@ -82,25 +82,34 @@
 
 .card-badge,
 .card-category-badge {
-    padding: 4px 12px;
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 4;
+    padding: 4px 11px;
     border-radius: var(--radius-full);
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
-    background: rgba(15, 23, 42, 0.90);
-    color: #FFFFFF;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    letter-spacing: 0.05em;
+    background: rgba(9, 13, 22, 0.88);
+    color: var(--accent);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    max-width: calc(100% - 64px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    pointer-events: none;
 }
 
 .card-status-pill {
     position: absolute;
     bottom: 12px;
     left: 12px;
-    z-index: 2;
+    z-index: 4;
     padding: 4px 10px;
     border-radius: 20px;
     font-size: 11px;
@@ -179,6 +188,13 @@
 
 .card-poster:hover {
     color: #FFFFFF;
+}
+
+.card-poster .card-poster-time {
+    margin-left: auto;
+    font-size: 11.5px;
+    color: var(--text-3);
+    font-weight: 500;
 }
 
 .card-badge.category-books { background: rgba(139, 92, 246, 0.25); color: #C4B5FD; border-color: rgba(139, 92, 246, 0.4); }
@@ -278,6 +294,146 @@
     background: var(--leaf-green);
     transform: translateY(-1px);
     box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+}
+
+/* Card Bottom Actions Row */
+.card-actions-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+    width: 100%;
+}
+
+.btn-inspect {
+    flex: 1;
+    padding: 9px 12px;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-1);
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all var(--dur-fast) var(--ease-out);
+}
+
+.btn-inspect:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.22);
+    color: #FFFFFF;
+    transform: translateY(-1px);
+}
+
+.btn-req-primary {
+    flex: 1.2;
+    padding: 9px 14px;
+    border-radius: var(--radius-sm);
+    background: var(--accent);
+    border: 1px solid var(--accent);
+    color: #042F24 !important;
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all var(--dur-fast) var(--ease-out);
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);
+}
+
+.btn-req-primary:hover:not(:disabled) {
+    background: var(--leaf-green);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
+}
+
+.btn-req-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-3) !important;
+    box-shadow: none;
+    transform: none;
+}
+
+/* My Items Control Grid & Action Buttons */
+.card-control-grid {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    width: 100%;
+}
+
+.btn-ctrl {
+    flex: 1;
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-1);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all var(--dur-fast) var(--ease-out);
+}
+
+.btn-ctrl:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.22);
+    color: #FFFFFF;
+    transform: translateY(-1px);
+}
+
+.btn-ctrl-status {
+    background: rgba(16, 185, 129, 0.12);
+    border-color: rgba(16, 185, 129, 0.28);
+    color: var(--accent);
+}
+
+.btn-ctrl-status:hover {
+    background: rgba(16, 185, 129, 0.22);
+    border-color: var(--accent);
+    color: #FFFFFF;
+}
+
+.btn-delete {
+    width: 100%;
+    margin-top: 8px;
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    background: rgba(244, 63, 94, 0.08);
+    border: 1px solid rgba(244, 63, 94, 0.2);
+    color: var(--danger);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all var(--dur-fast) var(--ease-out);
+}
+
+.btn-delete:hover {
+    background: rgba(244, 63, 94, 0.18);
+    border-color: var(--danger);
+    color: #FFFFFF;
+    transform: translateY(-1px);
 }
 
 /* ---- Dynamic Catalog Grid ---- */
@@ -398,3 +554,301 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* ============================================================
+   COMMUNITY DONATION DRIVES & CHARITY SYSTEM
+   ============================================================ */
+
+.donation-drives-section {
+    padding: 80px 0;
+    position: relative;
+    border-top: 1px solid var(--border);
+}
+
+.donation-drives-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.donation-drives-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 24px;
+}
+
+.drive-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: transform var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+    position: relative;
+    overflow: hidden;
+}
+
+.drive-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(16, 185, 129, 0.4);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55), 0 0 20px rgba(16, 185, 129, 0.1);
+}
+
+.drive-badge-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.drive-cause-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: rgba(16, 185, 129, 0.12);
+    color: var(--accent);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.drive-urgent-chip {
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 12px;
+    background: rgba(244, 63, 94, 0.12);
+    color: var(--danger);
+    border: 1px solid rgba(244, 63, 94, 0.25);
+}
+
+.drive-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    margin: 0;
+    line-height: 1.35;
+}
+
+.drive-ngo {
+    font-size: 12.5px;
+    color: var(--text-2);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.drive-desc {
+    font-size: 13px;
+    color: var(--text-2);
+    line-height: 1.6;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.drive-needed-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.drive-item-tag {
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text-1);
+}
+
+.drive-progress-wrapper {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.drive-progress-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11.5px;
+    color: var(--text-3);
+    font-weight: 600;
+}
+
+.drive-progress-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.drive-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #10B981, #34D399);
+    border-radius: 6px;
+    transition: width 1s ease-in-out;
+}
+
+.btn-pledge-drive {
+    width: 100%;
+    padding: 10px;
+    font-size: 13px;
+    font-weight: 800;
+    border-radius: var(--radius-sm);
+    background: var(--accent);
+    color: #042F24;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+    transition: all var(--dur-fast) var(--ease-out);
+}
+
+.btn-pledge-drive:hover {
+    background: var(--leaf-green);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+}
+
+/* ============================================================
+   DIGITAL DONOR IMPACT CERTIFICATE & RECEIPT MODAL
+   ============================================================ */
+
+.certificate-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(4, 7, 13, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2500;
+    padding: 20px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.25s ease;
+}
+
+.certificate-modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.certificate-card {
+    background: #090D16;
+    border: 2px solid rgba(16, 185, 129, 0.4);
+    border-radius: var(--radius-xl);
+    padding: 40px;
+    max-width: 580px;
+    width: 100%;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(16, 185, 129, 0.15);
+    position: relative;
+    text-align: center;
+    color: #FFFFFF;
+}
+
+.cert-seal {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: rgba(16, 185, 129, 0.15);
+    border: 2px solid var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    font-size: 32px;
+    color: var(--accent);
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+}
+
+.cert-title {
+    font-size: 24px;
+    font-weight: 800;
+    color: #FFFFFF;
+    margin: 0 0 6px;
+    letter-spacing: -0.02em;
+}
+
+.cert-subtitle {
+    font-size: 13px;
+    color: var(--text-2);
+    margin: 0 0 24px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.cert-recipient-name {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--accent);
+    border-bottom: 2px dashed rgba(16, 185, 129, 0.4);
+    padding-bottom: 8px;
+    margin-bottom: 18px;
+    display: inline-block;
+}
+
+.cert-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-bottom: 24px;
+}
+
+.cert-stat-num {
+    font-size: 20px;
+    font-weight: 800;
+    color: #FFFFFF;
+}
+
+.cert-stat-lbl {
+    font-size: 11px;
+    color: var(--text-3);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-top: 4px;
+}
+
+.cert-footer-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+    font-size: 11.5px;
+    color: var(--text-3);
+}
+
+.cert-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 24px;
+}
+

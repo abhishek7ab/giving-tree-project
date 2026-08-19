@@ -47,10 +47,10 @@ exports.isAdmin = async (req, res, next) => {
         req.session = req.session || {};
         req.session.user = decoded;
 
-        // Live database verification: enforce active, unarchived admin status
+        // Live database verification: enforce active, unarchived admin status & valid token version
         const db = require('../database/db');
         const userRes = await db.query(
-            'SELECT id, name, email, role, archived_at FROM users WHERE id = $1',
+            'SELECT id, name, email, role, archived_at, token_version FROM users WHERE id = $1',
             [decoded.id]
         );
         const dbUser = userRes.rows[0];
@@ -58,6 +58,12 @@ exports.isAdmin = async (req, res, next) => {
         if (!dbUser || dbUser.archived_at) {
             if (isJson) return res.status(401).json({ error: 'User account is inactive or disabled.' });
             return res.redirect('/login.html?error=accountdisabled');
+        }
+
+        // Token version revocation check
+        if (decoded.tokenVersion && dbUser.token_version && Number(decoded.tokenVersion) !== Number(dbUser.token_version)) {
+            if (isJson) return res.status(401).json({ error: 'Session expired. Please log in again.' });
+            return res.redirect('/login.html?error=sessionexpired');
         }
 
         const isMaster = isMasterAdmin(dbUser.email);

@@ -49,6 +49,9 @@ async function initDB() {
         await db.query("ALTER TABLE users ADD COLUMN IF NOT EXISTS verified BOOLEAN DEFAULT FALSE");
         await db.query("ALTER TABLE users ADD COLUMN IF NOT EXISTS latitude DOUBLE PRECISION");
         await db.query("ALTER TABLE users ADD COLUMN IF NOT EXISTS longitude DOUBLE PRECISION");
+        await db.query("ALTER TABLE users ADD COLUMN IF NOT EXISTS token_version INTEGER DEFAULT 1");
+        await db.query("ALTER TABLE users ADD COLUMN IF NOT EXISTS failed_login_attempts INTEGER DEFAULT 0");
+        await db.query("ALTER TABLE users ADD COLUMN IF NOT EXISTS locked_until TIMESTAMP NULL");
         await db.query("ALTER TABLE users ADD COLUMN IF NOT EXISTS archived_at TIMESTAMP");
         await db.query("ALTER TABLE users ADD COLUMN IF NOT EXISTS created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP");
         await db.query("ALTER TABLE items ALTER COLUMN image TYPE TEXT");

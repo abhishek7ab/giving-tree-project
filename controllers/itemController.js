@@ -35,6 +35,26 @@ function isValidImageBuffer(buffer) {
     return false;
 }
 
+// Privacy coordinate fuzzing for public catalog (protects donors' exact home address while keeping neighborhood locality accurate)
+function fuzzCoordinate(coord) {
+    if (coord === null || coord === undefined || isNaN(coord)) return coord;
+    // Snap to 3 decimal places (~110m precision)
+    return Math.round(Number(coord) * 1000) / 1000;
+}
+
+function sanitizeItemForPublic(item, viewerUserId = null, isAdmin = false) {
+    if (!item) return item;
+    const isOwner = viewerUserId && Number(item.user_id) === Number(viewerUserId);
+    if (isOwner || isAdmin) {
+        return item; // Retain exact coordinates for item owner and admins
+    }
+    return {
+        ...item,
+        latitude: fuzzCoordinate(item.latitude),
+        longitude: fuzzCoordinate(item.longitude)
+    };
+}
+
 // ================= 1. BROWSE CATALOG =================
 exports.getItems = (req, res) => {
     return res.redirect(`/items.html`);
@@ -48,11 +68,17 @@ exports.getItemsData = async (req, res) => {
         const page = parseInt(req.query.page, 10) || null;
         const limit = parseInt(req.query.limit, 10) || null;
 
+        const user = getUserFromReq(req);
+        const isAdmin = user?.role === 'admin' || isMasterAdmin(user?.email);
+
         const items = await itemModel.getAllItems(searchTerm, category, condition, true, page, limit);
         const totalCount = await itemModel.getItemsCount(searchTerm, category, condition, true);
 
+        // Apply privacy coordinate fuzzing for non-owners/public viewers
+        const sanitizedItems = items.map(i => sanitizeItemForPublic(i, user?.id, isAdmin));
+
         res.json({
-            items,
+            items: sanitizedItems,
             totalCount,
             page: page || 1,
             totalPages: limit ? Math.ceil(totalCount / limit) : 1
@@ -158,33 +184,37 @@ exports.postItem = async (req, res) => {
 
         let image = '';
         
-        // 1. Save locally to /assets/uploads/ for 100% reliable rendering
-        try {
-            const uploadsDir = path.join(__dirname, '../frontend/assets/uploads');
-            if (!fs.existsSync(uploadsDir)) {
-                fs.mkdirSync(uploadsDir, { recursive: true });
-            }
-            const ext = req.file.mimetype === 'image/png' ? '.png' : req.file.mimetype === 'image/webp' ? '.webp' : '.jpg';
-            const filename = `item-${Date.now()}-${Math.round(Math.random() * 1E9)}${ext}`;
-            const localFilePath = path.join(uploadsDir, filename);
-            fs.writeFileSync(localFilePath, req.file.buffer);
-            image = `/assets/uploads/${filename}`;
-        } catch (localErr) {
-            console.error("Local file save error:", localErr);
-        }
-
-        // 2. Also upload to Cloudinary as cloud backup
+        // 1. Try Cloudinary first (ensures permanent URLs on Vercel / serverless deployments)
         try {
             const result = await uploadToCloudinary(req.file.buffer);
-            if (!image) {
+            if (result && result.secure_url) {
                 image = result.secure_url;
             }
         } catch (cldErr) {
-            console.error("Cloudinary upload fallback error:", cldErr);
+            console.warn("Cloudinary upload fallback note:", cldErr.message);
         }
 
+        // 2. Local filesystem storage fallback (for local development or persistent hosting)
         if (!image) {
-            image = '/assets/uploads/tv.jpg';
+            try {
+                const uploadsDir = path.join(__dirname, '../frontend/assets/uploads');
+                if (!fs.existsSync(uploadsDir)) {
+                    fs.mkdirSync(uploadsDir, { recursive: true });
+                }
+                const ext = req.file.mimetype === 'image/png' ? '.png' : req.file.mimetype === 'image/webp' ? '.webp' : '.jpg';
+                const filename = `item-${Date.now()}-${Math.round(Math.random() * 1E9)}${ext}`;
+                const localFilePath = path.join(uploadsDir, filename);
+                fs.writeFileSync(localFilePath, req.file.buffer);
+                image = `/assets/uploads/${filename}`;
+            } catch (localErr) {
+                console.warn("Local file save note:", localErr.message);
+            }
+        }
+
+        // 3. Base64 Data URI fallback if both cloud and local disk writes are unavailable
+        if (!image && req.file && req.file.buffer) {
+            const mime = req.file.mimetype || 'image/jpeg';
+            image = `data:${mime};base64,${req.file.buffer.toString('base64')}`;
         }
 
         const user = getUserFromReq(req);
@@ -443,10 +473,14 @@ exports.getAuditLogs = async (req, res) => {
 // ================= RECENT =================
 exports.getRecentItems = async (req, res) => {
     try {
+        const user = getUserFromReq(req);
+        const isAdmin = user?.role === 'admin' || isMasterAdmin(user?.email);
+
         const result = await db.query(
-            "SELECT * FROM items WHERE status='available' AND archived_at IS NULL ORDER BY id DESC LIMIT 3"
+            "SELECT id, title, description, location, image, user_id, status, category, condition, pickup_availability, weight_category, latitude, longitude, created_at FROM items WHERE status='available' AND archived_at IS NULL ORDER BY id DESC LIMIT 3"
         );
-        res.json(result.rows);
+        const sanitized = result.rows.map(i => sanitizeItemForPublic(i, user?.id, isAdmin));
+        res.json(sanitized);
 
     } catch (err) {
         console.error(err);

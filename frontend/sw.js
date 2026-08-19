@@ -1,6 +1,6 @@
-const CACHE_NAME = 'giving-tree-v19';
-const STATIC_CACHE = 'giving-tree-static-v19';
-const API_CACHE = 'giving-tree-api-v19';
+const CACHE_NAME = 'giving-tree-v23';
+const STATIC_CACHE = 'giving-tree-static-v23';
+const API_CACHE = 'giving-tree-api-v23';
 
 const STATIC_ASSETS = [
   '/',
@@ -29,8 +29,7 @@ const STATIC_ASSETS = [
   '/assets/js/location-picker.js',
   '/assets/js/navbar-auth.js',
   '/assets/js/notifications.js',
-  '/assets/js/animations.js',
-  '/socket.io/socket.io.js',
+  '/assets/js/animations.js'
 ];
 
 const API_ROUTES = [
@@ -41,8 +40,15 @@ const API_ROUTES = [
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(STATIC_CACHE).then((cache) => {
-      return cache.addAll(STATIC_ASSETS);
+    caches.open(STATIC_CACHE).then(async (cache) => {
+      // Add assets safely, catching individual failures so service worker always succeeds
+      for (const asset of STATIC_ASSETS) {
+        try {
+          await cache.add(asset);
+        } catch (e) {
+          console.warn('SW cache add skipped:', asset, e.message);
+        }
+      }
     }).then(() => self.skipWaiting())
   );
 });

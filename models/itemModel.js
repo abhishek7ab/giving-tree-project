@@ -42,7 +42,15 @@ exports.getAllItems = async (search, category, condition, includeUnavailable = f
     if (!includeUnavailable) sql += " AND items.status = 'available'";
 
     if (hasSearch) {
-        sql += ` AND items.search_vector @@ plainto_tsquery('english', $1)`;
+        sql += ` AND (
+            (items.search_vector IS NOT NULL AND items.search_vector @@ plainto_tsquery('english', $1))
+            OR items.title ILIKE $${i}
+            OR items.description ILIKE $${i}
+            OR items.location ILIKE $${i}
+            OR items.category ILIKE $${i}
+        )`;
+        params.push(`%${search.trim()}%`);
+        i += 1;
     }
 
     if (category && category !== 'All') {
@@ -84,9 +92,16 @@ exports.getItemsCount = async (search, category, condition, includeUnavailable =
     if (!includeUnavailable) sql += " AND items.status = 'available'";
 
     if (search && search.trim()) {
-        sql += ` AND items.search_vector @@ plainto_tsquery('english', $${i})`;
-        params.push(search.trim());
-        i += 1;
+        const searchTerm = search.trim();
+        sql += ` AND (
+            (items.search_vector IS NOT NULL AND items.search_vector @@ plainto_tsquery('english', $${i}))
+            OR items.title ILIKE $${i + 1}
+            OR items.description ILIKE $${i + 1}
+            OR items.location ILIKE $${i + 1}
+            OR items.category ILIKE $${i + 1}
+        )`;
+        params.push(searchTerm, `%${searchTerm}%`);
+        i += 2;
     }
 
     if (category && category !== 'All') {

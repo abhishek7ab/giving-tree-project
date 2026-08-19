@@ -22,8 +22,6 @@
     <link rel="stylesheet" href="/assets/style/pages.css">
     <link rel="stylesheet" href="/assets/vendor/leaflet/leaflet.css">
     <script src="/assets/vendor/leaflet/leaflet.js"></script>
-    <script src="/assets/js/utils.js"></script>
-    <script src="/assets/js/location-picker.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
@@ -180,6 +178,21 @@
             </div>
         </div>
     </div>
+
+    <!-- Community Donation Drives Spotlight Banner -->
+    <div class="catalog-donation-banner" style="background:rgba(16,185,129,0.06); border:1px solid rgba(16,185,129,0.22); border-radius:var(--radius-md); padding:14px 20px; margin-bottom:24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+        <div style="display:flex; align-items:center; gap:12px;">
+            <span style="width:38px; height:38px; border-radius:50%; background:rgba(16,185,129,0.14); color:var(--accent); display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0;">🎗️</span>
+            <div>
+                <strong style="color:#FFFFFF; font-size:13.5px; display:block;">Active Pune NGO Donation Drives &amp; Student Needs</strong>
+                <span style="color:var(--text-2); font-size:12px;">Support local student libraries, animal rescues, and winter warmth initiatives.</span>
+            </div>
+        </div>
+        <a href="/index.html#communityDrivesSection" style="font-size:12.5px; font-weight:800; color:var(--accent); text-decoration:none; display:inline-flex; align-items:center; gap:6px; background:rgba(16,185,129,0.12); padding:6px 14px; border-radius:var(--radius-full); border:1px solid rgba(16,185,129,0.25);">
+            View 4 Active Drives <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
+
     <div class="items-grid" id="itemsGrid"></div>
 
 
@@ -779,9 +792,14 @@
                     statusBadge = `<span class="card-status-pill status-completed"><i class="fas fa-check-circle"></i> Handed Over</span>`;
                 }
 
-                const imgTag = hasImg
-                    ? `<img src="${rawImg}" alt="${safeTitle}" loading="lazy" onerror="this.src='/assets/story-img.png';">`
-                    : `<img src="/assets/story-img.png" alt="${safeTitle}">`;
+                let causeBadge = '';
+                const descStr = String(i.description || '');
+                const causeMatch = descStr.match(/\[🎗️ (?:Cause|Pledged for): ([^\]]+)\]/);
+                let cleanDesc = descStr;
+                if (causeMatch) {
+                    causeBadge = `<div style="display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:700; color:var(--accent); background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.25); border-radius:4px; padding:2px 7px; margin-bottom:6px;"><i class="fas fa-hand-holding-heart"></i> ${escapeHtml(causeMatch[1])}</div>`;
+                    cleanDesc = descStr.replace(causeMatch[0], '').trim();
+                }
 
                 html += `
                 <div class="pro-card in-view">
@@ -798,8 +816,9 @@
                         </button>
                     </div>
                     <div class="card-body">
+                        ${causeBadge}
                         <h3 onclick="openItemDetail(${i.id})">${safeTitle}</h3>
-                        <p class="card-desc">${escapeHtml(i.description || 'Generously shared by a neighbor.')}</p>
+                        <p class="card-desc">${escapeHtml(cleanDesc || 'Generously shared by a neighbor.')}</p>
 
                         <div class="card-meta-line">
                             <span style="cursor:pointer;" onclick="event.stopPropagation(); viewItemOnMap(${i.id})" title="Click to view pickup spot on map"><i class="fas fa-map-marker-alt" style="color:var(--accent);"></i> ${escapeHtml(i.location || 'Local')}</span>
@@ -857,9 +876,13 @@
                 const res = await fetch('/api/stats');
                 const stats = await res.json();
 
-                animateCounter('headerTotalItems', stats.totalItems || 0);
-                animateCounter('headerTotalMembers', stats.totalMembers || 0);
-                animateCounter('headerTotalShared', stats.totalShared || 0);
+                const totalItems = stats.totalItems ?? stats.items_shared ?? 0;
+                const totalMembers = stats.totalMembers ?? stats.members ?? 0;
+                const totalShared = stats.totalShared ?? stats.completed ?? 0;
+
+                animateCounter('headerTotalItems', totalItems);
+                animateCounter('headerTotalMembers', totalMembers);
+                animateCounter('headerTotalShared', totalShared);
             } catch(e) {
                 console.error('Failed to load stats:', e);
             }
@@ -1140,7 +1163,7 @@
 
             fetch(`/request-item`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json", "Accept": "application/json" },
                 credentials: "include",
                 body: JSON.stringify({
                     item_id: pendingItemId,
@@ -1151,9 +1174,18 @@
                 })
             })
                 .then(async (res) => {
+                    const text = await res.text();
+                    let data = {};
+                    try { data = JSON.parse(text); } catch(e) {}
+
                     if (!res.ok) {
-                        const msg = await res.text();
-                        throw new Error(msg || "Request failed");
+                        if (res.status === 401 || data.error === 'Not logged in') {
+                            showToast('Please log in to request this item.', 'warning');
+                            setTimeout(() => { window.location.href = '/login.html?redirect=/items.html'; }, 1500);
+                            return;
+                        }
+                        const errMsg = data.message || data.error || (text && !text.includes('<') ? text : 'Request failed');
+                        throw new Error(errMsg);
                     }
                     closeModal();
                     btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Request';
@@ -1165,7 +1197,6 @@
                     showToast(msg, 'error');
                     btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Request';
                     btn.disabled = false;
-                    closeModal();
                 });
         }
 
@@ -1280,7 +1311,7 @@
         </div>
     </footer>
 
-    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
     <script src="/assets/js/utils.js"></script>
     <script src="/assets/js/location-picker.js"></script>
     <script src="/assets/js/navbar-auth.js"></script>

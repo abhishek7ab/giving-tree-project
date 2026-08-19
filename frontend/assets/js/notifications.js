@@ -31,16 +31,31 @@
                 initNotificationBell();
                 fetchNotifications();
 
-                // Connect Socket.io for Live Notifications
+                // Connect Socket.io for Live Notifications if available
+                let socketConnected = false;
                 if (typeof io !== 'undefined') {
-                    const socket = io();
-                    socket.emit('join-user', userEmail);
+                    try {
+                        const socket = io({ withCredentials: true, timeout: 5000 });
+                        socket.on('connect', () => {
+                            socketConnected = true;
+                            socket.emit('join-user', userEmail);
+                        });
 
-                    socket.on('notification:new', (notif) => {
-                        fetchNotifications();
-                        showNotificationToast(notif);
-                    });
+                        socket.on('notification:new', (notif) => {
+                            fetchNotifications();
+                            showNotificationToast(notif);
+                        });
+                    } catch (errSocket) {
+                        console.warn('Socket connection note:', errSocket.message);
+                    }
                 }
+
+                // Resilient Polling Fallback (ensures live notifications on Vercel / serverless)
+                setInterval(() => {
+                    if (document.visibilityState === 'visible') {
+                        fetchNotifications(true);
+                    }
+                }, 15000);
             }
         } catch (e) {
             console.warn('Session check note:', e);

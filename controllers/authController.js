@@ -123,7 +123,7 @@ exports.loginUser = async (req, res) => {
         const redirectUrl = (userRole === 'admin' || user.email === 'badaveabhishek2004@gmail.com') ? '/admin.html' : '/index.html';
 
         const token = signToken(
-            { id: user.id, role: userRole, name: user.name, email: user.email, city: user.city || 'Kothrud, Pune' }
+            { id: user.id, role: userRole, name: user.name, email: user.email, city: user.city || 'Kothrud, Pune', tokenVersion: user.token_version || 1 }
         );
 
         res.cookie("token", token, {
@@ -299,12 +299,17 @@ exports.makeMeAdmin = async (req, res) => {
             req
         });
 
+        const db = require('../database/db');
+        const userRes = await db.query('SELECT token_version FROM users WHERE id = $1', [userId]);
+        const currentTokenVer = userRes.rows[0]?.token_version || 1;
+
         const token = signToken({
             id: userId,
             role: 'admin',
             name: req.user?.name || req.session?.user?.name,
             email: req.user?.email || req.session?.user?.email,
-            city: req.user?.city || req.session?.user?.city || 'Kothrud, Pune'
+            city: req.user?.city || req.session?.user?.city || 'Kothrud, Pune',
+            tokenVersion: currentTokenVer
         });
 
         res.cookie("token", token, {
@@ -323,5 +328,84 @@ exports.makeMeAdmin = async (req, res) => {
         const isJson = req.headers.accept?.includes('application/json');
         if (isJson) return res.status(500).json({ error: 'Error promoting user to admin' });
         res.status(500).send("Error promoting user to admin");
+    }
+};
+
+// ================= CHANGE PASSWORD (WITH TOKEN VERSION REVOCATION) =================
+exports.changePassword = async (req, res) => {
+    try {
+        const userId = req.user?.id || req.session?.user?.id;
+        const isJson = req.headers.accept?.includes('application/json') || req.headers['content-type']?.includes('application/json');
+
+        if (!userId) {
+            if (isJson) return res.status(401).json({ error: 'Not logged in' });
+            return res.status(401).send("Not logged in");
+        }
+
+        const { currentPassword, newPassword } = req.body;
+        if (!currentPassword || !newPassword || newPassword.length < 6) {
+            if (isJson) return res.status(400).json({ error: 'Password must be at least 6 characters.' });
+            return res.status(400).send("Password must be at least 6 characters.");
+        }
+
+        const db = require('../database/db');
+        const userRes = await db.query('SELECT id, email, password, token_version, role, name, city FROM users WHERE id = $1', [userId]);
+        const user = userRes.rows[0];
+
+        if (!user) {
+            if (isJson) return res.status(404).json({ error: 'User not found' });
+            return res.status(404).send("User not found");
+        }
+
+        const isMatch = await bcrypt.compare(currentPassword, user.password);
+        if (!isMatch) {
+            if (isJson) return res.status(400).json({ error: 'Incorrect current password.' });
+            return res.status(400).send("Incorrect current password.");
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        const nextTokenVersion = (user.token_version || 1) + 1;
+
+        await db.query(
+            'UPDATE users SET password = $1, token_version = $2, failed_login_attempts = 0, locked_until = NULL WHERE id = $3',
+            [hashedPassword, nextTokenVersion, userId]
+        );
+
+        auditModel.logEvent({
+            userId,
+            userEmail: user.email,
+            action: 'PASSWORD_CHANGE',
+            details: { tokenVersion: nextTokenVersion },
+            req
+        });
+
+        // Issue fresh JWT with updated tokenVersion
+        const token = signToken({
+            id: user.id,
+            role: user.role || 'user',
+            name: user.name,
+            email: user.email,
+            city: user.city || 'Kothrud, Pune',
+            tokenVersion: nextTokenVersion
+        });
+
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: isProduction,
+            sameSite: 'lax',
+            path: '/',
+            domain: process.env.COOKIE_DOMAIN || undefined,
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
+
+        if (isJson) return res.json({ success: true, message: 'Password changed successfully!' });
+        return res.send("Password changed successfully!");
+
+    } catch (err) {
+        console.error("CHANGE PASSWORD ERROR:", err);
+        if (req.headers.accept?.includes('application/json')) {
+            return res.status(500).json({ error: 'Failed to update password.' });
+        }
+        return res.status(500).send("Failed to update password.");
     }
 };

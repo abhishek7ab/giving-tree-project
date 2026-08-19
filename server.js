@@ -321,14 +321,21 @@ app.get('/api/stats', async (req, res) => {
     const itemsResult = await db.query("SELECT COUNT(*) AS count FROM items WHERE archived_at IS NULL");
     const usersResult = await db.query("SELECT COUNT(*) AS count FROM users WHERE archived_at IS NULL");
     const completedResult = await db.query("SELECT COUNT(*) AS count FROM requests WHERE LOWER(status) = 'completed'");
+    const itemsShared = parseInt(itemsResult.rows[0]?.count) || 0;
+    const members = parseInt(usersResult.rows[0]?.count) || 0;
+    const completed = parseInt(completedResult.rows[0]?.count) || 0;
     res.json({
-      items_shared: parseInt(itemsResult.rows[0].count) || 0,
-      members: parseInt(usersResult.rows[0].count) || 0,
-      completed: parseInt(completedResult.rows[0].count) || 0
+      items_shared: itemsShared,
+      members: members,
+      completed: completed,
+      totalItems: itemsShared,
+      totalMembers: members,
+      totalShared: itemsShared,
+      totalCompleted: completed
     });
   } catch (err) {
     console.error("STATS API ERROR:", err.message);
-    res.json({ items_shared: 0, members: 0, completed: 0 });
+    res.json({ items_shared: 0, members: 0, completed: 0, totalItems: 0, totalMembers: 0, totalShared: 0, totalCompleted: 0 });
   }
 });
 
@@ -411,8 +418,21 @@ function startServer(port) {
     });
 }
 
+let dbInitPromise = null;
+function ensureDBInit() {
+    if (!dbInitPromise) {
+        dbInitPromise = initDB().catch(err => {
+            logger.warn({ err: err.message || err }, "Database initialization note (DB connection pending or offline)");
+        });
+    }
+    return dbInitPromise;
+}
+
 if (require.main === module) {
     startServer(PORT);
+} else {
+    // Non-blocking initialization on serverless startup
+    ensureDBInit();
 }
 
 module.exports = app;

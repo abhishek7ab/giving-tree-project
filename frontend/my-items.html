@@ -49,26 +49,48 @@
         </div>
     </div>
 
-    <header class="my-header">
-        <div class="container">
-            <h1 style="color:white; font-size: 38px; font-weight: 800; margin-bottom: 8px;">My Community Contributions</h1>
-            <p style="color:var(--text-2); font-size:16px;">Manage your shared listings, edit availability, and track saved items.</p>
+    <main class="main-wrapper my-items-wrapper">
+        <div class="hub-hero">
+            <div class="hub-tag">
+                <i class="fas fa-boxes-stacked" style="font-size:10px;"></i> My Community Inventory
+            </div>
+            <h1 class="hub-hero-title">My Community <span>Contributions</span></h1>
+            <p class="hub-hero-subtitle">Manage your shared listings, edit pickup locations, toggle availability, and track your saved wishlist.</p>
+
+            <div class="quick-metrics-row">
+                <div class="metric-pill highlight">
+                    <i class="fas fa-box-open"></i> <strong id="summarySharedCount">0</strong> Shared Items
+                </div>
+                <div class="metric-pill">
+                    <i class="fas fa-heart"></i> <strong id="summaryWishlistCount">0</strong> In Wishlist
+                </div>
+                <div class="metric-pill">
+                    <i class="fas fa-hand-holding-heart"></i> <strong id="summaryGivenCount">0</strong> Given Away
+                </div>
+            </div>
         </div>
-    </header>
 
-    <!-- Tab Switcher -->
-    <div class="tab-switcher">
-        <button class="tab-btn active" id="tabMyShared" onclick="switchTab('shared')">
-            <i class="fas fa-box-open"></i> My Shared Listings (<span id="sharedCountBadge">0</span>)
-        </button>
-        <button class="tab-btn" id="tabWishlist" onclick="switchTab('wishlist')">
-            <i class="fas fa-heart"></i> Saved Wishlist (<span id="wishlistCountBadge">0</span>)
-        </button>
-    </div>
+        <!-- Segmented Tab Navigation -->
+        <div class="tab-nav-container">
+            <div class="tab-nav-group">
+                <button type="button" class="tab-btn active" id="tabMyShared" onclick="switchTab('shared')">
+                    <i class="fas fa-box-open"></i> My Shared Listings
+                    <span class="tab-pill-badge" id="sharedCountBadge">0</span>
+                </button>
+                <button type="button" class="tab-btn" id="tabWishlist" onclick="switchTab('wishlist')">
+                    <i class="fas fa-heart"></i> Saved Wishlist
+                    <span class="tab-pill-badge" id="wishlistCountBadge">0</span>
+                </button>
+            </div>
+            <a href="/post-item.html" class="btn-hub-primary" style="display:inline-flex; align-items:center; gap:8px; padding:9px 20px; border-radius:var(--radius-full); text-decoration:none; font-size:13px; font-weight:800; white-space:nowrap;">
+                <i class="fas fa-plus"></i> Share New Item
+            </a>
+        </div>
 
-    <div class="items-grid" id="myItemsList">
-        <!-- Injected here -->
-    </div>
+        <div class="items-grid" id="myItemsList">
+            <!-- Injected here -->
+        </div>
+    </main>
 
     <!-- ================= INLINE EDIT ITEM MODAL ================= -->
     <div class="detail-modal-overlay" id="editItemModal" onclick="handleEditOverlayClick(event)">
@@ -196,6 +218,16 @@
                 savedItems = dataSaved.items || [];
                 document.getElementById('wishlistCountBadge').textContent = savedItems.length;
 
+                // Update summary metrics
+                const givenCount = sharedItems.filter(x => x.status === 'given' || x.status === 'completed').length;
+                const summaryShared = document.getElementById('summarySharedCount');
+                const summaryWishlist = document.getElementById('summaryWishlistCount');
+                const summaryGiven = document.getElementById('summaryGivenCount');
+
+                if (summaryShared) summaryShared.textContent = sharedItems.length;
+                if (summaryWishlist) summaryWishlist.textContent = savedItems.length;
+                if (summaryGiven) summaryGiven.textContent = givenCount;
+
                 renderItems();
             } catch(e) {
                 console.error("Data fetch error:", e);
@@ -208,13 +240,13 @@
             if (currentTab === 'shared') {
                 if (!sharedItems.length) {
                     grid.innerHTML = `
-                        <div class="empty-state">
-                            <div style="width:72px; height:72px; background:var(--accent-dim); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; font-size:28px; color:var(--accent);">
+                        <div class="hub-empty-state" style="grid-column: 1 / -1;">
+                            <div class="hub-empty-icon">
                                 <i class="fas fa-box-open"></i>
                             </div>
-                            <h3 style="color:var(--text-1); font-size:20px; margin-bottom:8px;">You haven't shared any items yet</h3>
-                            <p style="color:var(--text-2); font-size:14px; margin-bottom:20px;">Give your unused treasures a second life and connect with neighbors.</p>
-                            <a href="/post-item.html" class="btn primary" style="display:inline-flex;">
+                            <h3>You haven't shared any items yet</h3>
+                            <p>Give your unused treasures a second life, divert landfill waste, and connect with neighbors across Pune.</p>
+                            <a href="/post-item.html" class="btn-hub-primary" style="display:inline-flex; padding:10px 24px; border-radius:50px; text-decoration:none; font-size:13.5px;">
                                 <i class="fas fa-plus"></i> Share an Item Now
                             </a>
                         </div>`;
@@ -232,14 +264,14 @@
                     const isCompleted = i.status === 'given' || i.status === 'completed';
 
                     return `
-                    <div class="item-card" data-animate="fade-up">
-                        <div class="img-box" style="position:relative; width:100%; height:200px; overflow:hidden; background:var(--bg-surface);">
+                    <div class="item-card in-view">
+                        <div class="img-box" style="position:relative; width:100%; aspect-ratio:16/11; overflow:hidden; background:var(--bg-surface);">
                             ${imgTag}
                             <div class="img-placeholder-fallback">
                                 <i class="fas fa-box-open" style="font-size:36px; opacity:0.5;"></i>
                                 <span style="font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; opacity:0.6;">My Shared Item</span>
                             </div>
-                            <span class="card-status-badge ${isReserved ? 'reserved' : isCompleted ? 'completed' : 'available'}" style="position:absolute; top:14px; left:14px; z-index:5;">
+                            <span class="card-status-badge ${isReserved ? 'reserved' : isCompleted ? 'completed' : 'available'}" style="position:absolute; top:12px; left:12px; z-index:4;">
                                 ${isReserved ? 'Reserved' : isCompleted ? 'Given Away' : 'Available'}
                             </span>
                         </div>
@@ -250,8 +282,8 @@
                                 <span> · ${escapeHtml(i.category || 'General')}</span>
                             </div>
 
-                            <p style="font-size:13px; color:var(--text-2); line-height:1.5; margin:0 0 14px; display:-webkit-box; -webkit-line-clamp:2; line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">
-                                ${escapeHtml(i.description || '')}
+                            <p style="font-size:13px; color:var(--text-2); line-height:1.5; margin:0 0 12px; display:-webkit-box; -webkit-line-clamp:2; line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; min-height:2.6em;">
+                                ${escapeHtml(i.description || 'Shared with the Pune community.')}
                             </p>
 
                             <div class="card-control-grid">
@@ -273,13 +305,13 @@
                 // Wishlist Tab
                 if (!savedItems.length) {
                     grid.innerHTML = `
-                        <div class="empty-state">
-                            <div style="width:72px; height:72px; background:rgba(244,63,94,0.12); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; font-size:28px; color:#f43f5e;">
+                        <div class="hub-empty-state" style="grid-column: 1 / -1;">
+                            <div class="hub-empty-icon" style="background:rgba(244,63,94,0.12); color:var(--danger); border-color:rgba(244,63,94,0.3);">
                                 <i class="fas fa-heart"></i>
                             </div>
-                            <h3 style="color:var(--text-1); font-size:20px; margin-bottom:8px;">Your Wishlist is Empty</h3>
-                            <p style="color:var(--text-2); font-size:14px; margin-bottom:20px;">Explore the community catalog and tap the heart icon on items you'd like to save.</p>
-                            <a href="/items.html" class="btn primary" style="display:inline-flex;">
+                            <h3>Your Wishlist is Empty</h3>
+                            <p>Explore the community catalog and tap the heart icon on items you'd like to save.</p>
+                            <a href="/items.html" class="btn-hub-primary" style="display:inline-flex; padding:10px 24px; border-radius:50px; text-decoration:none; font-size:13.5px;">
                                 <i class="fas fa-search"></i> Browse Community Items
                             </a>
                         </div>`;
@@ -295,8 +327,8 @@
                     const safeTitle = escapeHtml(i.title);
 
                     return `
-                    <div class="item-card" data-animate="fade-up">
-                        <div class="img-box" style="position:relative; width:100%; height:200px; overflow:hidden; background:var(--bg-surface);">
+                    <div class="item-card in-view">
+                        <div class="img-box" style="position:relative; width:100%; aspect-ratio:16/11; overflow:hidden; background:var(--bg-surface);">
                             ${imgTag}
                             <div class="img-placeholder-fallback">
                                 <i class="fas fa-box-open" style="font-size:36px; opacity:0.5;"></i>
@@ -312,11 +344,11 @@
                                 <i class="fas fa-map-marker-alt" style="color:var(--accent);"></i> ${escapeHtml(i.location || 'Local')}
                                 <span> · Posted by ${escapeHtml(i.donor_name || 'Neighbor')}</span>
                             </div>
-                            <p style="font-size:13px; color:var(--text-2); line-height:1.5; margin:0 0 16px; display:-webkit-box; -webkit-line-clamp:2; line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">
-                                ${escapeHtml(i.description || '')}
+                            <p style="font-size:13px; color:var(--text-2); line-height:1.5; margin:0 0 14px; display:-webkit-box; -webkit-line-clamp:2; line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; min-height:2.6em;">
+                                ${escapeHtml(i.description || 'Saved from community catalog.')}
                             </p>
-                            <a href="/items.html" class="btn primary" style="width:100%; text-align:center; padding:10px; font-size:13px;">
-                                <i class="fas fa-hand-holding-heart"></i> View in Catalog
+                            <a href="/items.html?id=${i.id}" class="btn-hub-primary" style="width:100%; text-align:center; padding:9px 12px; font-size:13px; border-radius:var(--radius-sm); text-decoration:none; display:inline-flex; align-items:center; justify-content:center; gap:6px;">
+                                <i class="fas fa-eye"></i> View Item in Catalog
                             </a>
                         </div>
                     </div>`;
