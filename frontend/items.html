@@ -53,58 +53,79 @@
         </div>
     </div>
 
-    <header class="items-header">
-        <h1>Community Donations Catalog</h1>
-        <p>Explore 100% free donations shared by generous neighbors across Pune</p>
-        <div class="header-stats-row">
-            <div class="header-stat-item">
-                <div class="header-stat-val" id="headerTotalItems">0</div>
-                <div class="header-stat-lbl">Donations Available</div>
-            </div>
-            <div class="header-stat-item">
-                <div class="header-stat-val" id="headerTotalMembers">0</div>
-                <div class="header-stat-lbl">Verified Donors</div>
-            </div>
-            <div class="header-stat-item">
-                <div class="header-stat-val" id="headerTotalShared">0</div>
-                <div class="header-stat-lbl">Items Donated</div>
-            </div>
-        </div>
+    <header class="items-header" style="text-align:center; padding: 28px 20px 8px;">
+        <span class="eyebrow-pill" style="display:inline-flex; align-items:center; gap:6px; margin-bottom:10px;">
+            🌿 Pune Community Catalog
+        </span>
+        <h1 style="font-size:clamp(1.8rem, 3.4vw, 2.6rem); font-weight:800; margin:0 0 8px; color:#FFFFFF;">Community Donations</h1>
+        <p style="color:var(--text-2); font-size:14px; margin:0 auto; max-width:500px;">Explore free items shared by caring neighbors across Pune.</p>
     </header>
 
-    <div class="search-pill">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
-            <select id="categoryFilter" onchange="loadItems()" aria-label="Filter by category">
-                <option value="All">All Categories</option>
-                <option>Furniture</option><option>Electronics</option><option>Appliances</option><option>Books</option><option>Clothing</option>
-                <option>Kitchen &amp; Dining</option><option>Baby &amp; Kids</option><option>Sports &amp; Outdoors</option><option>Home &amp; Garden</option><option>Pet Supplies</option><option>Office &amp; Study</option><option>Other</option>
-            </select>
-        </label>
+    <!-- Unified Luxury Search & Filter Toolbar -->
+    <div class="catalog-search-wrapper">
+        <div class="unified-search-pill">
+            <div class="search-input-wrap">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <input type="text" id="searchInput" placeholder="Search furniture, electronics, books, clothing..." oninput="debounceSearch()">
+            </div>
+            
+            <div class="filter-pill-divider"></div>
 
-        <label class="filter-control">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            <select id="conditionFilter" onchange="loadItems()" aria-label="Filter by condition">
-                <option value="All">Any Condition</option>
-                <option>New</option><option>Like new</option><option>Good</option><option>Fair</option><option>For repair</option>
-            </select>
-        </label>
+            <div class="select-pill-wrap">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
+                <select id="categoryFilter" onchange="loadItems()" aria-label="Filter by category">
+                    <option value="All">All Categories</option>
+                    <option value="Furniture">Furniture</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Appliances">Appliances</option>
+                    <option value="Books">Books</option>
+                    <option value="Clothing">Clothing</option>
+                    <option value="Kitchen & Dining">Kitchen &amp; Dining</option>
+                    <option value="Baby & Kids">Baby &amp; Kids</option>
+                    <option value="Sports & Outdoors">Sports &amp; Outdoors</option>
+                    <option value="Home & Garden">Home &amp; Garden</option>
+                    <option value="Pet Supplies">Pet Supplies</option>
+                    <option value="Office & Study">Office &amp; Study</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
 
-        <label class="filter-control">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="14" y1="12" y2="12"/><line x1="4" x2="8" y1="18" y2="18"/></svg>
-            <select id="sortFilter" onchange="loadItems()" aria-label="Sort catalog">
-                <option value="newest">Newest Added</option>
-                <option value="oldest">Oldest First</option>
-                <option value="title">Title (A-Z)</option>
-            </select>
-        </label>
+            <div class="filter-pill-divider"></div>
 
-        <button type="button" class="filter-reset" onclick="resetFilters()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg> Clear filters</button>
+            <div class="select-pill-wrap">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                <select id="conditionFilter" onchange="loadItems()" aria-label="Filter by condition">
+                    <option value="All">Any Condition</option>
+                    <option value="New">New</option>
+                    <option value="Like new">Like New</option>
+                    <option value="Good">Good</option>
+                    <option value="Fair">Fair</option>
+                    <option value="For repair">For Repair</option>
+                </select>
+            </div>
+
+            <div class="filter-pill-divider"></div>
+
+            <div class="select-pill-wrap">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="14" y1="12" y2="12"/><line x1="4" x2="8" y1="18" y2="18"/></svg>
+                <select id="sortFilter" onchange="loadItems()" aria-label="Sort catalog">
+                    <option value="newest">Newest Added</option>
+                    <option value="oldest">Oldest First</option>
+                    <option value="title">Title (A-Z)</option>
+                </select>
+            </div>
+
+            <button type="button" class="btn-search-go" onclick="loadItems()" title="Search catalog">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            </button>
+        </div>
     </div>
 
-    <div class="results-count-bar">
+    <!-- Quick Location Chips & View Switcher Toolbar -->
+    <div class="results-count-bar" style="margin-top:8px;">
         <div style="display:flex; align-items:center; gap:10px;">
-            <span id="resultsCount">Showing available treasures</span>
-            <span class="results-count-badge" id="resultsBadge">All Available</span>
+            <span id="resultsCount">Donations in Pune</span>
+            <span class="results-count-badge" id="resultsBadge">Loading...</span>
         </div>
 
         <div class="catalog-view-actions">
@@ -127,14 +148,14 @@
                 </button>
                 <button type="button" class="view-btn" id="viewBtnMap" onclick="switchCatalogView('map')" title="Interactive Map View">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" x2="9" y1="3" y2="18"/><line x1="15" x2="15" y1="6" y2="21"/></svg>
-                    <span>Map View</span>
+                    <span>Map</span>
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Pune Locality Luxury Quick-Jump Bar -->
-    <div class="pune-catalog-bar" role="region" aria-label="Filter by Pune neighborhood">
+    <!-- Pune Locality Quick-Jump Bar -->
+    <div class="pune-catalog-bar" role="region" aria-label="Filter by Pune neighborhood" style="margin-top:6px;">
         <div class="pune-bar-label">
             <span class="pune-pulse-dot"></span>
             <i class="fas fa-location-dot"></i>
@@ -736,17 +757,26 @@
             }
         }
 
+        let searchDebounceTimer = null;
+        function debounceSearch() {
+            clearTimeout(searchDebounceTimer);
+            searchDebounceTimer = setTimeout(() => {
+                const q = document.getElementById('searchInput')?.value || '';
+                loadItems(q);
+            }, 250);
+        }
+
         function renderItemCards(items) {
             const grid = document.getElementById("itemsGrid");
             if (!items.length) {
                 grid.innerHTML = `
                     <div style="text-align:center; color:var(--text-2); padding:80px 20px; grid-column: 1 / -1;">
-                        <div style="width:80px; height:80px; background:var(--accent-dim); border:1px solid rgba(16,185,129,0.3); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 24px; font-size:32px; color:var(--accent);">
+                        <div style="width:72px; height:72px; background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.25); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; font-size:28px; color:var(--accent);">
                             <i class="fas fa-search"></i>
                         </div>
-                        <h3 style="color:var(--text-1); font-size:24px; margin-bottom:12px; font-weight:800;">No items match your criteria</h3>
-                        <p style="font-size:15px; max-width:440px; margin:0 auto 28px; line-height:1.6;">Try adjusting your distance radius or search filters.</p>
-                        <button class="btn secondary" onclick="resetFilters()" style="padding:14px 28px; font-size:15px;">
+                        <h3 style="color:var(--text-1); font-size:22px; margin-bottom:10px; font-weight:800;">No items found</h3>
+                        <p style="font-size:14px; max-width:400px; margin:0 auto 24px; line-height:1.6; color:var(--text-3);">Try searching with different keywords or choosing All Categories.</p>
+                        <button class="btn secondary" onclick="resetFilters()" style="padding:10px 22px; font-size:13.5px;">
                             <i class="fas fa-redo"></i> Reset All Filters
                         </button>
                     </div>`;
@@ -757,6 +787,7 @@
             items.forEach(i => {
                 const rawImg = String(i.image || '').trim();
                 const hasImg = rawImg !== '' && !rawImg.includes('dummyimage.com');
+                const imgTag = hasImg ? `<img src="${rawImg}" alt="${escapeHtml(i.title)}" class="card-img" onerror="this.remove();">` : '';
                 const isOwnItem = currentUserId !== null && Number(i.user_id) === Number(currentUserId);
                 const isSaved = currentUserSavedIds.has(Number(i.id));
                 const safeTitle = escapeHtml(i.title);
@@ -783,18 +814,20 @@
                     cleanDesc = descStr.replace(causeMatch[0], '').trim();
                 }
 
+                const donorInit = escapeHtml((i.donor_name || 'N').charAt(0).toUpperCase());
+
                 html += `
                 <div class="pro-card in-view">
                     <div class="img-box" onclick="openItemDetail(${i.id})">
                         ${imgTag}
                         ${statusBadge}
                         <div class="img-placeholder-fallback">
-                            <i class="fas fa-box-open" style="font-size:40px; opacity:0.5;"></i>
-                            <span style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; opacity:0.7; margin-top:8px;">Community Item</span>
+                            <i class="fas fa-box-open" style="font-size:38px; opacity:0.4;"></i>
+                            <span style="font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; opacity:0.7; margin-top:6px;">Community Donation</span>
                         </div>
                         <span class="card-category-badge">${escapeHtml(i.category || 'Item')}</span>
                         <button class="btn-wishlist ${isSaved ? 'active' : ''}" onclick="toggleWishlist(event, ${i.id})" title="${isSaved ? 'Remove from Saved' : 'Save to Wishlist'}">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="${isSaved ? '#f43f5e' : 'none'}" stroke="currentColor" stroke-width="2.2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="${isSaved ? '#f43f5e' : 'none'}" stroke="currentColor" stroke-width="2.2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
                         </button>
                     </div>
                     <div class="card-body">
@@ -803,15 +836,18 @@
                         <p class="card-desc">${escapeHtml(cleanDesc || 'Generously shared by a neighbor.')}</p>
 
                         <div class="card-meta-line">
-                            <span style="cursor:pointer;" onclick="event.stopPropagation(); viewItemOnMap(${i.id})" title="Click to view pickup spot on map"><i class="fas fa-map-marker-alt" style="color:var(--accent);"></i> ${escapeHtml(i.location || 'Local')}</span>
+                            <span style="cursor:pointer;" onclick="event.stopPropagation(); viewItemOnMap(${i.id})" title="Click to view pickup spot on map"><i class="fas fa-map-marker-alt" style="color:var(--accent);"></i> ${escapeHtml(i.location || 'Pune')}</span>
                             ${distBadge}
                             <span><i class="fas fa-tag"></i> ${escapeHtml(i.condition || 'Good')}</span>
                         </div>
 
-                        <div class="card-poster" onclick="openNeighborModal(${i.user_id})">
-                            <i class="fas fa-user-circle" style="font-size:18px; color:var(--accent);"></i>
-                            <span>${escapeHtml(i.donor_name || 'Neighbor')}</span>
-                            <span class="card-poster-time">${timeAgo(i.created_at)}</span>
+                        <!-- Donor Recognition Info Badge -->
+                        <div class="card-donor-badge" onclick="openNeighborModal(${i.user_id})" title="View donor's community profile">
+                            <div class="donor-avatar-circle">${donorInit}</div>
+                            <div class="donor-info-col">
+                                <span class="donor-name-text">Donated by ${escapeHtml(i.donor_name || 'Generous Neighbor')}</span>
+                                <span class="donor-sub-text"><i class="fas fa-clock"></i> ${timeAgo(i.created_at)}</span>
+                            </div>
                         </div>
 
                         <div class="card-actions-row">
