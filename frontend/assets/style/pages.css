@@ -64,21 +64,21 @@
 }
 
 .hero-content {
-    max-width: 1080px;
+    max-width: 800px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 24px;
+    gap: 16px;
 }
 
 .hero-headline {
-    font-size: var(--text-display);
-    font-weight: 900;
-    line-height: 0.94;
-    letter-spacing: var(--tracking-tighter);
+    font-size: clamp(2.2rem, 4.4vw, 3.6rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: var(--tracking-tight);
     color: #FFFFFF;
-    text-transform: uppercase;
+    text-transform: capitalize;
     margin: 0;
 }
 
@@ -87,10 +87,10 @@
 }
 
 .hero-subhead {
-    font-size: clamp(1.15rem, 1.8vw, 1.5rem);
-    line-height: 1.6;
+    font-size: clamp(0.98rem, 1.25vw, 1.15rem);
+    line-height: 1.55;
     color: var(--text-2);
-    max-width: 720px;
+    max-width: 520px;
     margin: 0 auto;
 }
 
