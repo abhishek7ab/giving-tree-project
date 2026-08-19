@@ -37,8 +37,8 @@ describe('Comprehensive End-to-End System Audit', () => {
         it('index.html contains donation terminology and no third-party NGO names', async () => {
             const res = await request(app).get('/index.html');
             expect(res.status).toBe(200);
-            expect(res.text).toContain('Donate What You Have');
-            expect(res.text).toContain('Browse Free Donations');
+            expect(res.text).toContain('Donate.<br>');
+            expect(res.text).toContain('Browse Donations');
             expect(res.text).toContain('Donate an Item');
             expect(res.text).toContain('Active Pune Donation Drives');
             expect(res.text).not.toContain('Vidya Jyoti Foundation');
