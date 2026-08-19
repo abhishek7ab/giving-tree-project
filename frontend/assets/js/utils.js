@@ -77,6 +77,11 @@ function handleNewsletterSubmit(e) {
         showToast('Please enter a valid email address.', 'warning');
         return false;
     }
+    showToast("Thanks for subscribing! We'll keep you updated. 🌿", 'success');
+    if (input) input.value = '';
+    return false;
+}
+
 // ---- Client-Side Image Compression Pipeline ----
 async function compressImageFile(file, { maxWidth = 1280, maxHeight = 1280, quality = 0.82 } = {}) {
     if (!file || !file.type.startsWith('image/')) return file;
