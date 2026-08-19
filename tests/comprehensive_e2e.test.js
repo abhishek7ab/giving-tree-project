@@ -33,27 +33,26 @@ describe('Comprehensive End-to-End System Audit', () => {
         });
     });
 
-    describe('2. Donation Terminology and Removal of NGO references', () => {
-        it('index.html contains donation terminology and no third-party NGO names', async () => {
+    describe('2. Clean Donation Experience and Streamlined Layout', () => {
+        it('index.html contains concise donation terminology and no drives section', async () => {
             const res = await request(app).get('/index.html');
             expect(res.status).toBe(200);
             expect(res.text).toContain('Donate.<br>');
             expect(res.text).toContain('Browse Donations');
             expect(res.text).toContain('Donate an Item');
-            expect(res.text).toContain('Active Pune Donation Drives');
+            expect(res.text).not.toContain('Active Pune Donation Drives');
             expect(res.text).not.toContain('Vidya Jyoti Foundation');
             expect(res.text).not.toContain('Door Step School Pune');
             expect(res.text).not.toContain('Snehalaya Pune Outreach');
             expect(res.text).not.toContain('ResQ Pet Sanctuary');
         });
 
-        it('post-item.html contains donation fields and clean cause selector', async () => {
+        it('post-item.html contains streamlined donation fields', async () => {
             const res = await request(app).get('/post-item.html');
             expect(res.status).toBe(200);
             expect(res.text).toContain('Donate to');
             expect(res.text).toContain('What item are you donating?');
             expect(res.text).toContain('Donation Category');
-            expect(res.text).toContain('Tag This Donation to a Community Cause');
             expect(res.text).not.toContain('Vidya Jyoti');
             expect(res.text).not.toContain('Door Step School');
         });
