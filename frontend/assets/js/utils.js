@@ -67,6 +67,12 @@ function escapeHtml(value) {
     return div.innerHTML;
 }
 
+if (typeof window !== 'undefined') {
+    window.showToast = showToast;
+    window.timeAgo = timeAgo;
+    window.escapeHtml = escapeHtml;
+}
+
 // ---- Newsletter Form Handler ----
 function handleNewsletterSubmit(e) {
     if (e && e.preventDefault) e.preventDefault();
