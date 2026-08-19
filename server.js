@@ -143,6 +143,10 @@ app.use('/api/admin/', adminLimiter);
 app.use('/api/', apiLimiter);
 
 // ✅ Middlewares
+const { deepSanitize } = require('./middleware/sanitize');
+const { csrfProtection } = require('./middleware/csrfProtection');
+const errorHandler = require('./middleware/errorHandler');
+
 app.use((req, res, next) => {
   if (req.url.startsWith('/api/index.js')) {
     req.url = req.url.slice('/api/index.js'.length) || '/';
@@ -151,9 +155,12 @@ app.use((req, res, next) => {
   }
   next();
 });
+
 app.use(cookieParser());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '100kb' }));
+app.use(express.urlencoded({ extended: true, limit: '100kb' }));
+app.use(deepSanitize);
+app.use(csrfProtection);
 
 // ✅ Request logging
 app.use((req, res, next) => {
@@ -185,6 +192,9 @@ app.use('/uploads', express.static(path.join(frontendPath, 'assets', 'uploads'))
 app.use('/', authRoutes);
 app.use('/', itemRoutes);
 app.use('/', requestRoutes);
+
+// ✅ Global Defensive Error Handler
+app.use(errorHandler);
 
 const io = new Server(server, {
   cors: {

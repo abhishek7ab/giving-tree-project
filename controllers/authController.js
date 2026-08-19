@@ -99,6 +99,8 @@ exports.register = async (req, res) => {
 };
 
 // ================= LOGIN =================
+const DUMMY_HASH = '$2b$10$e8w3JqVn8nN1M9Lw7P6Qqe.yPjB0Z5vLqB3uF5yH6yP9yP9yP9yP9';
+
 exports.loginUser = async (req, res) => {
     try {
         const { password } = req.body;
@@ -108,15 +110,46 @@ exports.loginUser = async (req, res) => {
         const user = await userModel.findUserByEmail(email);
 
         if (!user) {
+            // Timing attack equalization: execute constant-time bcrypt compare
+            await bcrypt.compare(password || '', DUMMY_HASH).catch(() => {});
             if (isJson) return res.status(400).json({ error: 'usernotfound', message: 'Your password or Gmail is incorrect. Please log in with correct credentials.' });
             return res.redirect("/login.html?error=usernotfound");
+        }
+
+        // Check if account is temporarily locked due to brute force attempts
+        if (user.locked_until && new Date(user.locked_until) > new Date()) {
+            const remainingMins = Math.ceil((new Date(user.locked_until).getTime() - Date.now()) / (60 * 1000));
+            const lockMsg = `Account temporarily locked due to multiple failed attempts. Please try again in ${remainingMins} minute(s).`;
+            if (isJson) return res.status(429).json({ error: 'account_locked', message: lockMsg });
+            return res.redirect(`/login.html?error=account_locked`);
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
 
         if (!isMatch) {
+            // Increment failed login attempts
+            const db = require('../database/db');
+            const attempts = (user.failed_login_attempts || 0) + 1;
+            let lockedUntil = null;
+            if (attempts >= 5) {
+                lockedUntil = new Date(Date.now() + 15 * 60 * 1000); // Lock for 15 minutes
+            }
+            await db.query(
+                'UPDATE users SET failed_login_attempts = $1, locked_until = $2 WHERE id = $3',
+                [attempts, lockedUntil, user.id]
+            ).catch(err => console.error("Failed attempts update error:", err));
+
             if (isJson) return res.status(400).json({ error: 'wrongpassword', message: 'Your password or Gmail is incorrect. Please log in with correct credentials.' });
             return res.redirect("/login.html?error=wrongpassword");
+        }
+
+        // On successful authentication, reset failed attempts & lockout
+        if ((user.failed_login_attempts && user.failed_login_attempts > 0) || user.locked_until) {
+            const db = require('../database/db');
+            await db.query(
+                'UPDATE users SET failed_login_attempts = 0, locked_until = NULL WHERE id = $1',
+                [user.id]
+            ).catch(err => console.error("Reset attempts error:", err));
         }
 
         const userRole = user.role || 'user';

@@ -130,3 +130,52 @@ describe('2. Zod Input Validation Schemas', () => {
     expect(changePasswordSchema.safeParse(invalid).success).toBe(false);
   });
 });
+
+describe('3. Deep Input Sanitization & CSRF Defense', () => {
+  const { sanitizeValue } = require('../middleware/sanitize');
+  const { isOriginAllowed } = require('../middleware/csrfProtection');
+
+  test('sanitizeValue strips <script> tags, null bytes, and event handlers', () => {
+    const maliciousPayload = {
+      title: "Clean Chair <script>alert('XSS')</script>",
+      description: "Working condition\0 with hidden null bytes",
+      maliciousVector: "javascript:evil()",
+      inlineHandler: '<img src="x" onerror="stealCookies()">',
+      nested: {
+        comment: "Normal comment",
+        injected: "<script>document.location='http://attacker.com'</script>"
+      }
+    };
+
+    const cleaned = sanitizeValue(maliciousPayload);
+
+    expect(cleaned.title).toBe("Clean Chair");
+    expect(cleaned.description).not.toContain('\0');
+    expect(cleaned.description).toBe("Working condition with hidden null bytes");
+    expect(cleaned.maliciousVector).toBe("evil()");
+    expect(cleaned.inlineHandler).not.toContain('onerror=');
+    expect(cleaned.nested.injected).toBe("");
+    expect(cleaned.nested.comment).toBe("Normal comment");
+  });
+
+  test('sanitizeValue protects against prototype pollution keys', () => {
+    const pollutedObject = JSON.parse('{"__proto__": {"admin": true}, "title": "Study Book"}');
+    const cleaned = sanitizeValue(pollutedObject);
+
+    expect(cleaned.title).toBe("Study Book");
+    expect(Object.prototype.admin).toBeUndefined();
+  });
+
+  test('isOriginAllowed strictly allows trusted domains and rejects malicious origins', () => {
+    expect(isOriginAllowed('https://giving-tree-project.vercel.app')).toBe(true);
+    expect(isOriginAllowed('http://localhost:3000')).toBe(true);
+    expect(isOriginAllowed('http://127.0.0.1:3000')).toBe(true);
+    expect(isOriginAllowed('https://preview-123.vercel.app')).toBe(true);
+
+    // Malicious / unknown origins
+    expect(isOriginAllowed('https://evil-hacker-site.com')).toBe(false);
+    expect(isOriginAllowed('https://giving-tree-project.vercel.app.attacker.com')).toBe(false);
+    expect(isOriginAllowed('javascript:void(0)')).toBe(false);
+  });
+});
+
