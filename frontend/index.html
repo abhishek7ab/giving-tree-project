@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Giving Tree | Small Acts. Big Connections.</title>
-    <meta name="description" content="Giving Tree is an editorial community-sharing platform where neighbors in Pune give away unused items for free. Small acts. Big connections.">
-    <meta name="keywords" content="Giving Tree, Pune community sharing, free items Pune, Kothrud, Baner, Hinjawadi, zero waste, circular economy">
+    <meta name="description"
+        content="Giving Tree is an editorial community-sharing platform where neighbors in Pune give away unused items for free. Small acts. Big connections.">
+    <meta name="keywords"
+        content="Giving Tree, Pune community sharing, free items Pune, Kothrud, Baner, Hinjawadi, zero waste, circular economy">
     <meta property="og:title" content="Giving Tree | Small Acts. Big Connections.">
-    <meta property="og:description" content="Give what you no longer need. Find what someone nearby can use. Build a community where things get a second life.">
+    <meta property="og:description"
+        content="Give what you no longer need. Find what someone nearby can use. Build a community where things get a second life.">
     <meta property="og:image" content="/assets/story-img.png">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
@@ -27,451 +31,527 @@
     <link rel="stylesheet" href="/assets/vendor/leaflet/leaflet.css">
     <script src="/assets/vendor/leaflet/leaflet.js"></script>
     <script src="/assets/js/location-picker.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#090D16">
 </head>
 
 <body>
-<a href="#main-content" class="skip-link">Skip to main content</a>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
-<!-- ================= STICKY EDITORIAL NAVBAR ================= -->
-<header class="navbar">
-    <a href="/index.html" class="logo" aria-label="Giving Tree Homepage">
-        <div class="logo-icon-wrap">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.4 19 2c1 2 2 4.1 2 7 0 6-4.5 11-10 11z"/>
-                <path d="M11 20v-6"/>
-            </svg>
-        </div>
-        <span class="logo-text">Giving<span> Tree</span></span>
-    </a>
-
-    <div style="display: flex; align-items: center; gap: 12px; height: 100%;">
-        <nav class="nav-links" id="navLinks">
-            <a href="/index.html" class="nav-link active">
-                <svg class="nav-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                Home
-            </a>
-            <a href="/items.html" class="nav-link">
-                <svg class="nav-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                Browse Items
-            </a>
-            <a href="/post-item.html" class="nav-link nav-cta">
-                <svg class="nav-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
-                Donate Item
-            </a>
-        </nav>
-
-        <a href="/requests.html" class="nav-notif-bell" title="Activity & Notifications" aria-label="Activity Notifications">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-                <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-            </svg>
-            <span class="nav-notif-badge" id="navNotifBadge"></span>
+    <!-- ================= STICKY EDITORIAL NAVBAR ================= -->
+    <header class="navbar">
+        <a href="/index.html" class="logo" aria-label="Giving Tree Homepage">
+            <div class="logo-icon-wrap">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.4 19 2c1 2 2 4.1 2 7 0 6-4.5 11-10 11z" />
+                    <path d="M11 20v-6" />
+                </svg>
+            </div>
+            <span class="logo-text">Giving<span> Tree</span></span>
         </a>
 
-        <button class="nav-mobile-toggle" id="mobileMenuToggle" aria-label="Toggle navigation menu">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/>
-            </svg>
-        </button>
-    </div>
-</header>
-
-<main id="main-content">
-
-<!-- ================= 1. EDITORIAL HERO SECTION (Screen 1 Viewport) ================= -->
-<section class="hero-editorial">
-    <div class="container">
-        <div class="hero-content" id="welcomeGreeting">
-            <span class="eyebrow-pill" id="heroTag">
-                🌿 Pune Community Donations
-            </span>
-
-            <h1 class="hero-headline">
-                Donate.<br>
-                <span>Share.</span>
-            </h1>
-
-            <p class="hero-subhead">
-                Give unused items a second life with neighbors nearby.
-            </p>
-
-            <div class="hero-cta-group">
-                <a href="/items.html" class="btn btn-primary btn-lg">
-                    Browse Donations <span class="btn-arrow">→</span>
+        <div style="display: flex; align-items: center; gap: 12px; height: 100%;">
+            <nav class="nav-links" id="navLinks">
+                <a href="/index.html" class="nav-link active">
+                    <svg class="nav-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.2">
+                        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                        <polyline points="9 22 9 12 15 12 15 22" />
+                    </svg>
+                    Home
                 </a>
-                <a href="/post-item.html" class="btn btn-secondary btn-lg">
-                    Donate an Item
+                <a href="/items.html" class="nav-link">
+                    <svg class="nav-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.2">
+                        <circle cx="11" cy="11" r="8" />
+                        <path d="m21 21-4.3-4.3" />
+                    </svg>
+                    Browse Items
                 </a>
-            </div>
-        </div>
+                <a href="/post-item.html" class="nav-link nav-cta">
+                    <svg class="nav-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.4">
+                        <path
+                            d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                    </svg>
+                    Donate Item
+                </a>
+            </nav>
 
-        <!-- Dynamic User Actions (Populated via navbar-auth or direct login) -->
-        <div id="mainActions" style="display:none;"></div>
-    </div>
-</section>
-
-<!-- ================= 2. FRESHLY SHARED (COMMUNITY PRODUCTS YOU CAN TAKE) ================= -->
-<section class="section">
-    <div class="container">
-        <div style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:20px; margin-bottom:36px;" class="reveal-on-scroll">
-            <div>
-                <span class="eyebrow-pill">
-                    ⚡ Available Treasures
-                </span>
-                <h2 class="section-headline" style="margin:0;">Fresh Community Items</h2>
-                <p class="editorial-lead" style="margin:6px 0 0;">Free treasures looking for a second life in Pune — request what you need today!</p>
-            </div>
-            <a href="/items.html" class="btn btn-secondary">
-                View Full Catalog <span class="btn-arrow">→</span>
+            <a href="/requests.html" class="nav-notif-bell" title="Activity & Notifications"
+                aria-label="Activity Notifications">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                </svg>
+                <span class="nav-notif-badge" id="navNotifBadge"></span>
             </a>
-        </div>
 
-        <!-- Dynamic Items Grid populated via API -->
-        <div class="items-grid" id="recentItemsGrid">
-            <div style="text-align:center; width:100%; color:var(--muted); padding:40px; grid-column:1/-1;">
-                <i class="fas fa-spinner fa-spin fa-2x"></i>
-                <p style="margin-top:12px;">Loading available treasures...</p>
-            </div>
+            <button class="nav-mobile-toggle" id="mobileMenuToggle" aria-label="Toggle navigation menu">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="4" x2="20" y1="12" y2="12" />
+                    <line x1="4" x2="20" y1="6" y2="6" />
+                    <line x1="4" x2="20" y1="18" y2="18" />
+                </svg>
+            </button>
         </div>
-    </div>
-</section>
+    </header>
 
-<!-- ================= 3. SPOTLIGHT SECTION (SECOND STORY IMAGE) ================= -->
-<section class="section" style="padding-top:0;">
-    <div class="container">
-        <div class="hero-visual-container reveal-on-scroll" style="margin:0 auto;">
-            <div class="hero-art-box">
-                <div class="hero-art-left">
-                    <span class="eyebrow-pill">
-                        ✨ Pune Neighbor Spotlight
+    <main id="main-content">
+
+        <!-- ================= 1. EDITORIAL HERO SECTION (Screen 1 Viewport) ================= -->
+        <section class="hero-editorial">
+            <div class="container">
+                <div class="hero-content" id="welcomeGreeting">
+                    <span class="eyebrow-pill" id="heroTag">
+                        🌿 Pune Community Donations
                     </span>
-                    <h2 class="hero-art-title">
-                        Everything shared stays in the circle.
-                    </h2>
-                    <p style="color:var(--muted); font-size:1.05rem; line-height:1.65;">
-                        From college textbooks in FC Road to baby cradles in Hinjawadi, neighbors are sharing useful items for free without money.
+
+                    <h1 class="hero-headline">
+                        Donate.<br>
+                        <span>Share.</span>
+                    </h1>
+
+                    <p class="hero-subhead">
+                        Give unused items a second life with neighbors nearby.
                     </p>
-                    <div style="display:flex; gap:12px; margin-top:8px;">
-                        <a href="/items.html" class="btn btn-primary btn-sm">
-                            Browse by Locality
+
+                    <div class="hero-cta-group">
+                        <a href="/items.html" class="btn btn-primary btn-lg">
+                            Browse Donations <span class="btn-arrow">→</span>
+                        </a>
+                        <a href="/post-item.html" class="btn btn-secondary btn-lg">
+                            Donate an Item
                         </a>
                     </div>
                 </div>
-                <div class="hero-art-right">
-                    <img src="/assets/story-img.png" alt="Pune neighbors sharing items">
+
+                <!-- Dynamic User Actions (Populated via navbar-auth or direct login) -->
+                <div id="mainActions" style="display:none;"></div>
+            </div>
+
+            <!-- Scroll Down Indicator -->
+            <a href="#recent-items" class="hero-scroll-indicator" aria-label="Scroll to items">
+                <div class="hero-scroll-chevron">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
                 </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ================= 4. BIG EDITORIAL STATEMENT ================= -->
-<section class="statement-section">
-    <div class="container">
-        <div class="reveal-on-scroll">
-            <h2 class="statement-headline">
-                What you don't need<br>
-                could mean <span>everything</span><br>
-                to someone nearby.
-            </h2>
-            <p class="statement-body">
-                Giving Tree connects neighbors who have something to share with people who can give it a second life. A simple act of giving builds trust, cuts landfill waste, and turns strangers into real community.
-            </p>
-        </div>
-    </div>
-</section>
-
-<!-- ================= 5. HOW IT WORKS VISUAL STORYTELLING ================= -->
-<section class="section section-alt">
-    <div class="container">
-        <div class="reveal-on-scroll" style="text-align: left; max-width: 680px;">
-            <span class="eyebrow-pill">Simple 3-Step Flow</span>
-            <h2 class="section-headline">How Giving Tree Works</h2>
-            <p class="editorial-lead">No bidding, no hassle, no money. Just neighbors helping neighbors.</p>
-        </div>
-
-        <div class="how-it-works-grid">
-            <div class="step-card reveal-on-scroll delay-100">
-                <div class="step-number">01</div>
-                <h3>Discover</h3>
-                <p>Browse things people around you in Pune are ready to give away. Filter by category, condition, and neighborhood distance.</p>
-            </div>
-
-            <div class="step-card reveal-on-scroll delay-200">
-                <div class="step-number">02</div>
-                <h3>Request</h3>
-                <p>Ask for something you need with a polite message. The donor gets notified instantly with zero friction.</p>
-            </div>
-
-            <div class="step-card reveal-on-scroll delay-300">
-                <div class="step-number">03</div>
-                <h3>Connect</h3>
-                <p>Arrange a safe, verified local pickup in your neighborhood and give the item a happy second life.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ================= 5. LIVE COMMUNITY & PUNE MAP ================= -->
-<section class="section section-white" id="puneMapSection">
-    <div class="container">
-        <div class="reveal-on-scroll" style="text-align:left; max-width:720px;">
-            <span class="eyebrow-pill" style="background:var(--coral-dim); color:var(--coral); border-color:var(--coral);">
-                📍 Local Neighborhood Network
-            </span>
-            <h2 class="section-headline">Your neighborhood is already sharing.</h2>
-            <p class="editorial-lead">Explore free items and pickup hubs in real time across Pune, Maharashtra.</p>
-        </div>
-
-        <div class="map-editorial-wrapper reveal-on-scroll delay-100">
-            <!-- Pune Locality Filter Chips -->
-            <div class="pune-chips-scroll" style="margin-bottom:20px;">
-                <button type="button" class="pune-locality-chip active" onclick="filterPuneLocality('all', 18.5204, 73.8567, 12, this)">
-                    🌐 All Pune
-                </button>
-                <button type="button" class="pune-locality-chip" onclick="filterPuneLocality('Kothrud', 18.5074, 73.8077, 14, this)">
-                    📍 Kothrud
-                </button>
-                <button type="button" class="pune-locality-chip" onclick="filterPuneLocality('Baner', 18.5590, 73.7868, 14, this)">
-                    📍 Baner
-                </button>
-                <button type="button" class="pune-locality-chip" onclick="filterPuneLocality('FC Road', 18.5284, 73.8417, 15, this)">
-                    📍 FC Road
-                </button>
-                <button type="button" class="pune-locality-chip" onclick="filterPuneLocality('Hinjawadi', 18.5913, 73.7389, 14, this)">
-                    📍 Hinjawadi
-                </button>
-                <button type="button" class="pune-locality-chip" onclick="filterPuneLocality('Viman Nagar', 18.5679, 73.9143, 14, this)">
-                    📍 Viman Nagar
-                </button>
-                <button type="button" class="pune-locality-chip" onclick="filterPuneLocality('Koregaon Park', 18.5362, 73.8940, 14, this)">
-                    📍 Koregaon Park
-                </button>
-                <button type="button" class="pune-locality-chip" onclick="filterPuneLocality('Hadapsar', 18.5089, 73.9259, 14, this)">
-                    📍 Hadapsar
-                </button>
-                <button type="button" class="pune-locality-chip" onclick="filterPuneLocality('Katraj', 18.4575, 73.8677, 14, this)">
-                    📍 Katraj
-                </button>
-                <button type="button" class="pune-locality-chip" id="btnPuneGPSLocate" onclick="locateUserOnPuneMap()" style="background:var(--tree-green); color:#FFFFFF;">
-                    <i class="fas fa-crosshairs"></i> Locate Near Me
-                </button>
-            </div>
-
-            <!-- Map Shell -->
-            <div id="puneHomeMap" class="map-container"></div>
-
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-top:20px; font-size:0.9rem; color:var(--muted);">
-                <span><i class="fas fa-info-circle" style="color:var(--tree-green); margin-right:6px;"></i> Click any marker to view photos and arrange a pickup.</span>
-                <span id="puneMapCountBadge" style="font-weight:800; color:var(--tree-green);">4 Live Items in Pune</span>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ================= 6. COMMUNITY IMPACT ================= -->
-<section class="section">
-    <div class="container">
-        <div class="reveal-on-scroll" style="text-align:left;">
-            <span class="eyebrow-pill">Community Metrics</span>
-            <h2 class="section-headline">Verified Local Impact</h2>
-            <p class="editorial-lead">Real live numbers powered by caring neighbors sharing in Pune.</p>
-        </div>
-
-        <div class="impact-grid">
-            <div class="impact-card impact-card-1 reveal-on-scroll delay-100">
-                <div class="impact-number stat-counter" id="statItems" data-target="0">0</div>
-                <h3 class="impact-label">Available Treasures</h3>
-                <p class="impact-sub">Useful items currently active and ready for local pickup.</p>
-            </div>
-
-            <div class="impact-card impact-card-2 reveal-on-scroll delay-200">
-                <div class="impact-number stat-counter" id="statMembers" data-target="0">0</div>
-                <h3 class="impact-label">Active Givers</h3>
-                <p class="impact-sub">Registered community members sharing across Pune localities.</p>
-            </div>
-
-            <div class="impact-card impact-card-3 reveal-on-scroll delay-300">
-                <div class="impact-number stat-counter" id="statCompleted" data-target="0">0</div>
-                <h3 class="impact-label">Handovers Completed</h3>
-                <p class="impact-sub">Successful neighbor-to-neighbor exchanges with 100% free transfer.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ================= 7. MISSION SECTION ("MORE THAN FREE STUFF") ================= -->
-<section class="section section-alt">
-    <div class="container">
-        <div class="reveal-on-scroll" style="text-align: left; max-width: 680px;">
-            <span class="eyebrow-pill">Our Core Philosophy</span>
-            <h2 class="section-headline">More than free stuff.</h2>
-            <p class="editorial-lead">
-                It's about giving things another life — and giving neighbors a reason to connect safely.
-            </p>
-        </div>
-
-        <div class="mission-grid">
-            <div class="mission-card mission-card-1 reveal-on-scroll delay-100">
-                <div class="mission-icon-wrap">♻️</div>
-                <h3>Second Life</h3>
-                <p>Unused textbooks, electronics, and household goods find new utility instead of gathering dust.</p>
-            </div>
-
-            <div class="mission-card mission-card-2 reveal-on-scroll delay-200">
-                <div class="mission-icon-wrap">🌱</div>
-                <h3>Zero Waste</h3>
-                <p>Sharing keeps durable items in circular circulation, preventing waste and reducing landfill footprint.</p>
-            </div>
-
-            <div class="mission-card mission-card-3 reveal-on-scroll delay-300">
-                <div class="mission-icon-wrap">🤝</div>
-                <h3>Connected Neighborhoods</h3>
-                <p>Meeting a neighbor for a safe pickup at a main gate or local cafe builds real community trust.</p>
-            </div>
-        </div>
-    </div>
-</section>
+            </a>
+        </section>
 
 
-
-<!-- ================= 8. MAJOR GIVE AN ITEM CTA ================= -->
-<section class="section">
-    <div class="container">
-        <div style="display:grid; grid-template-columns:1.15fr 0.85fr; gap:40px; align-items:center;" class="reveal-on-scroll">
-            <div>
-                <span class="eyebrow-pill">
-                    🌿 Ready to Give?
-                </span>
-                <h2 style="font-size:clamp(2.2rem, 4.5vw, 3.8rem); font-weight:900; line-height:1.1; margin:16px 0 20px; color:#FFFFFF; letter-spacing:-0.8px;">
-                    Have something you don't need anymore?<br>
-                    <span style="color:var(--accent);">Someone nearby might.</span>
-                </h2>
-                <p style="font-size:1.1rem; line-height:1.7; color:var(--text-2); max-width:560px; margin-bottom:32px;">
-                    Snap a photo, choose your locality, and post in under 60 seconds. Clear your home space and help a neighbor today.
-                </p>
-                <div style="display:flex; gap:14px; flex-wrap:wrap;">
-                    <a href="/post-item.html" class="btn btn-primary btn-lg">
-                        <i class="fas fa-plus-circle"></i> Give an Item Now <span class="btn-arrow">→</span>
-                    </a>
-                    <a href="/items.html" class="btn btn-secondary btn-lg">
-                        Browse Catalog
-                    </a>
-                </div>
-            </div>
-            
-            <div style="background:rgba(15,23,42,0.85); border:1px solid rgba(255,255,255,0.12); border-radius:var(--radius-xl); padding:36px 32px; backdrop-filter:blur(16px); box-shadow:0 20px 50px rgba(0,0,0,0.5);">
-                <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;">
-                    <div style="width:46px; height:46px; border-radius:12px; background:var(--accent-dim); color:var(--accent); display:flex; align-items:center; justify-content:center; font-size:22px; border:1px solid rgba(16,185,129,0.3);">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
+        <!-- ================= 2. FRESHLY SHARED (COMMUNITY PRODUCTS YOU CAN TAKE) ================= -->
+        <section class="section" id="recent-items">
+            <div class="container">
+                <div style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:20px; margin-bottom:36px;"
+                    class="reveal-on-scroll">
                     <div>
-                        <h3 style="font-size:18px; font-weight:800; color:#FFFFFF; margin:0 0 2px;">Community Trust Guarantees</h3>
-                        <span style="font-size:12px; color:var(--accent); font-weight:700;">100% Free · Verified Local Handovers</span>
+                        <span class="eyebrow-pill">
+                            ⚡ Available Treasures
+                        </span>
+                        <h2 class="section-headline" style="margin:0;">Fresh Community Items</h2>
+                        <p class="editorial-lead" style="margin:6px 0 0;">Free treasures looking for a second life in
+                            Pune — request what you need today!</p>
+                    </div>
+                    <a href="/items.html" class="btn btn-secondary">
+                        View Full Catalog <span class="btn-arrow">→</span>
+                    </a>
+                </div>
+
+                <!-- Dynamic Items Grid populated via API -->
+                <div class="items-grid" id="recentItemsGrid">
+                    <div style="text-align:center; width:100%; color:var(--muted); padding:40px; grid-column:1/-1;">
+                        <i class="fas fa-spinner fa-spin fa-2x"></i>
+                        <p style="margin-top:12px;">Loading available treasures...</p>
                     </div>
                 </div>
-                
-                <div style="display:flex; flex-direction:column; gap:14px; text-align:left;">
-                    <div style="display:flex; align-items:flex-start; gap:12px; font-size:13.5px; color:var(--text-2);">
-                        <i class="fas fa-check-circle" style="color:var(--accent); margin-top:3px; font-size:15px;"></i>
-                        <span><strong style="color:#FFFFFF;">Zero Fees &amp; No Ads:</strong> 100% free with no commissions, hidden charges, or sponsored listings.</span>
+            </div>
+        </section>
+
+        <!-- ================= 3. SPOTLIGHT SECTION (SECOND STORY IMAGE) ================= -->
+        <section class="section" style="padding-top:0;">
+            <div class="container">
+                <div class="hero-visual-container reveal-on-scroll" style="margin:0 auto;">
+                    <div class="hero-art-box">
+                        <div class="hero-art-left">
+                            <span class="eyebrow-pill">
+                                ✨ Pune Neighbor Spotlight
+                            </span>
+                            <h2 class="hero-art-title">
+                                Everything shared stays in the circle.
+                            </h2>
+                            <p style="color:var(--muted); font-size:1.05rem; line-height:1.65;">
+                                From college textbooks in FC Road to baby cradles in Hinjawadi, neighbors are sharing
+                                useful items for free without money.
+                            </p>
+                            <div style="display:flex; gap:12px; margin-top:8px;">
+                                <a href="/items.html" class="btn btn-primary btn-sm">
+                                    Browse by Locality
+                                </a>
+                            </div>
+                        </div>
+                        <div class="hero-art-right">
+                            <img src="/assets/story-img.png" alt="Pune neighbors sharing items">
+                        </div>
                     </div>
-                    <div style="display:flex; align-items:flex-start; gap:12px; font-size:13.5px; color:var(--text-2);">
-                        <i class="fas fa-check-circle" style="color:var(--accent); margin-top:3px; font-size:15px;"></i>
-                        <span><strong style="color:#FFFFFF;">Live Coordination Chat:</strong> In-app neighbor messaging to arrange pickup timings &amp; spots safely.</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 4. BIG EDITORIAL STATEMENT ================= -->
+        <section class="statement-section">
+            <div class="container">
+                <div class="reveal-on-scroll">
+                    <h2 class="statement-headline">
+                        What you don't need<br>
+                        could mean <span>everything</span><br>
+                        to someone nearby.
+                    </h2>
+                    <p class="statement-body">
+                        Giving Tree connects neighbors who have something to share with people who can give it a second
+                        life. A simple act of giving builds trust, cuts landfill waste, and turns strangers into real
+                        community.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 5. HOW IT WORKS VISUAL STORYTELLING ================= -->
+        <section class="section section-alt">
+            <div class="container">
+                <div class="reveal-on-scroll" style="text-align: left; max-width: 680px;">
+                    <span class="eyebrow-pill">Simple 3-Step Flow</span>
+                    <h2 class="section-headline">How Giving Tree Works</h2>
+                    <p class="editorial-lead">No bidding, no hassle, no money. Just neighbors helping neighbors.</p>
+                </div>
+
+                <div class="how-it-works-grid">
+                    <div class="step-card reveal-on-scroll delay-100">
+                        <div class="step-number">01</div>
+                        <h3>Discover</h3>
+                        <p>Browse things people around you in Pune are ready to give away. Filter by category,
+                            condition, and neighborhood distance.</p>
                     </div>
-                    <div style="display:flex; align-items:flex-start; gap:12px; font-size:13.5px; color:var(--text-2);">
-                        <i class="fas fa-check-circle" style="color:var(--accent); margin-top:3px; font-size:15px;"></i>
-                        <span><strong style="color:#FFFFFF;">Verified Feedback Ratings:</strong> Build neighbor trust with community ratings on every handover.</span>
+
+                    <div class="step-card reveal-on-scroll delay-200">
+                        <div class="step-number">02</div>
+                        <h3>Request</h3>
+                        <p>Ask for something you need with a polite message. The donor gets notified instantly with zero
+                            friction.</p>
                     </div>
+
+                    <div class="step-card reveal-on-scroll delay-300">
+                        <div class="step-number">03</div>
+                        <h3>Connect</h3>
+                        <p>Arrange a safe, verified local pickup in your neighborhood and give the item a happy second
+                            life.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 5. LIVE COMMUNITY & PUNE MAP ================= -->
+        <section class="section section-white" id="puneMapSection">
+            <div class="container">
+                <div class="reveal-on-scroll" style="text-align:left; max-width:720px;">
+                    <span class="eyebrow-pill"
+                        style="background:var(--coral-dim); color:var(--coral); border-color:var(--coral);">
+                        📍 Local Neighborhood Network
+                    </span>
+                    <h2 class="section-headline">Your neighborhood is already sharing.</h2>
+                    <p class="editorial-lead">Explore free items and pickup hubs in real time across Pune, Maharashtra.
+                    </p>
+                </div>
+
+                <div class="map-editorial-wrapper reveal-on-scroll delay-100">
+                    <!-- Pune Locality Filter Chips -->
+                    <div class="pune-chips-scroll" style="margin-bottom:20px;">
+                        <button type="button" class="pune-locality-chip active"
+                            onclick="filterPuneLocality('all', 18.5204, 73.8567, 12, this)">
+                            🌐 All Pune
+                        </button>
+                        <button type="button" class="pune-locality-chip"
+                            onclick="filterPuneLocality('Kothrud', 18.5074, 73.8077, 14, this)">
+                            📍 Kothrud
+                        </button>
+                        <button type="button" class="pune-locality-chip"
+                            onclick="filterPuneLocality('Baner', 18.5590, 73.7868, 14, this)">
+                            📍 Baner
+                        </button>
+                        <button type="button" class="pune-locality-chip"
+                            onclick="filterPuneLocality('FC Road', 18.5284, 73.8417, 15, this)">
+                            📍 FC Road
+                        </button>
+                        <button type="button" class="pune-locality-chip"
+                            onclick="filterPuneLocality('Hinjawadi', 18.5913, 73.7389, 14, this)">
+                            📍 Hinjawadi
+                        </button>
+                        <button type="button" class="pune-locality-chip"
+                            onclick="filterPuneLocality('Viman Nagar', 18.5679, 73.9143, 14, this)">
+                            📍 Viman Nagar
+                        </button>
+                        <button type="button" class="pune-locality-chip"
+                            onclick="filterPuneLocality('Koregaon Park', 18.5362, 73.8940, 14, this)">
+                            📍 Koregaon Park
+                        </button>
+                        <button type="button" class="pune-locality-chip"
+                            onclick="filterPuneLocality('Hadapsar', 18.5089, 73.9259, 14, this)">
+                            📍 Hadapsar
+                        </button>
+                        <button type="button" class="pune-locality-chip"
+                            onclick="filterPuneLocality('Katraj', 18.4575, 73.8677, 14, this)">
+                            📍 Katraj
+                        </button>
+                        <button type="button" class="pune-locality-chip" id="btnPuneGPSLocate"
+                            onclick="locateUserOnPuneMap()" style="background:var(--tree-green); color:#FFFFFF;">
+                            <i class="fas fa-crosshairs"></i> Locate Near Me
+                        </button>
+                    </div>
+
+                    <!-- Map Shell -->
+                    <div id="puneHomeMap" class="map-container"></div>
+
+                    <div
+                        style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-top:20px; font-size:0.9rem; color:var(--muted);">
+                        <span><i class="fas fa-info-circle" style="color:var(--tree-green); margin-right:6px;"></i>
+                            Click any marker to view photos and arrange a pickup.</span>
+                        <span id="puneMapCountBadge" style="font-weight:800; color:var(--tree-green);">4 Live Items in
+                            Pune</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 6. COMMUNITY IMPACT ================= -->
+        <section class="section">
+            <div class="container">
+                <div class="reveal-on-scroll" style="text-align:left;">
+                    <span class="eyebrow-pill">Community Metrics</span>
+                    <h2 class="section-headline">Verified Local Impact</h2>
+                    <p class="editorial-lead">Real live numbers powered by caring neighbors sharing in Pune.</p>
+                </div>
+
+                <div class="impact-grid">
+                    <div class="impact-card impact-card-1 reveal-on-scroll delay-100">
+                        <div class="impact-number stat-counter" id="statItems" data-target="0">0</div>
+                        <h3 class="impact-label">Available Treasures</h3>
+                        <p class="impact-sub">Useful items currently active and ready for local pickup.</p>
+                    </div>
+
+                    <div class="impact-card impact-card-2 reveal-on-scroll delay-200">
+                        <div class="impact-number stat-counter" id="statMembers" data-target="0">0</div>
+                        <h3 class="impact-label">Active Givers</h3>
+                        <p class="impact-sub">Registered community members sharing across Pune localities.</p>
+                    </div>
+
+                    <div class="impact-card impact-card-3 reveal-on-scroll delay-300">
+                        <div class="impact-number stat-counter" id="statCompleted" data-target="0">0</div>
+                        <h3 class="impact-label">Handovers Completed</h3>
+                        <p class="impact-sub">Successful neighbor-to-neighbor exchanges with 100% free transfer.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 7. MISSION SECTION ("MORE THAN FREE STUFF") ================= -->
+        <section class="section section-alt">
+            <div class="container">
+                <div class="reveal-on-scroll" style="text-align: left; max-width: 680px;">
+                    <span class="eyebrow-pill">Our Core Philosophy</span>
+                    <h2 class="section-headline">More than free stuff.</h2>
+                    <p class="editorial-lead">
+                        It's about giving things another life — and giving neighbors a reason to connect safely.
+                    </p>
+                </div>
+
+                <div class="mission-grid">
+                    <div class="mission-card mission-card-1 reveal-on-scroll delay-100">
+                        <div class="mission-icon-wrap">♻️</div>
+                        <h3>Second Life</h3>
+                        <p>Unused textbooks, electronics, and household goods find new utility instead of gathering
+                            dust.</p>
+                    </div>
+
+                    <div class="mission-card mission-card-2 reveal-on-scroll delay-200">
+                        <div class="mission-icon-wrap">🌱</div>
+                        <h3>Zero Waste</h3>
+                        <p>Sharing keeps durable items in circular circulation, preventing waste and reducing landfill
+                            footprint.</p>
+                    </div>
+
+                    <div class="mission-card mission-card-3 reveal-on-scroll delay-300">
+                        <div class="mission-icon-wrap">🤝</div>
+                        <h3>Connected Neighborhoods</h3>
+                        <p>Meeting a neighbor for a safe pickup at a main gate or local cafe builds real community
+                            trust.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- ================= 8. MAJOR GIVE AN ITEM CTA ================= -->
+        <section class="section">
+            <div class="container">
+                <div style="display:grid; grid-template-columns:1.15fr 0.85fr; gap:40px; align-items:center;"
+                    class="reveal-on-scroll">
+                    <div>
+                        <span class="eyebrow-pill">
+                            🌿 Ready to Give?
+                        </span>
+                        <h2
+                            style="font-size:clamp(2.2rem, 4.5vw, 3.8rem); font-weight:900; line-height:1.1; margin:16px 0 20px; color:#FFFFFF; letter-spacing:-0.8px;">
+                            Have something you don't need anymore?<br>
+                            <span style="color:var(--accent);">Someone nearby might.</span>
+                        </h2>
+                        <p
+                            style="font-size:1.1rem; line-height:1.7; color:var(--text-2); max-width:560px; margin-bottom:32px;">
+                            Snap a photo, choose your locality, and post in under 60 seconds. Clear your home space and
+                            help a neighbor today.
+                        </p>
+                        <div style="display:flex; gap:14px; flex-wrap:wrap;">
+                            <a href="/post-item.html" class="btn btn-primary btn-lg">
+                                <i class="fas fa-plus-circle"></i> Give an Item Now <span class="btn-arrow">→</span>
+                            </a>
+                            <a href="/items.html" class="btn btn-secondary btn-lg">
+                                Browse Catalog
+                            </a>
+                        </div>
+                    </div>
+
+                    <div
+                        style="background:rgba(15,23,42,0.85); border:1px solid rgba(255,255,255,0.12); border-radius:var(--radius-xl); padding:36px 32px; backdrop-filter:blur(16px); box-shadow:0 20px 50px rgba(0,0,0,0.5);">
+                        <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;">
+                            <div
+                                style="width:46px; height:46px; border-radius:12px; background:var(--accent-dim); color:var(--accent); display:flex; align-items:center; justify-content:center; font-size:22px; border:1px solid rgba(16,185,129,0.3);">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div>
+                                <h3 style="font-size:18px; font-weight:800; color:#FFFFFF; margin:0 0 2px;">Community
+                                    Trust Guarantees</h3>
+                                <span style="font-size:12px; color:var(--accent); font-weight:700;">100% Free · Verified
+                                    Local Handovers</span>
+                            </div>
+                        </div>
+
+                        <div style="display:flex; flex-direction:column; gap:14px; text-align:left;">
+                            <div
+                                style="display:flex; align-items:flex-start; gap:12px; font-size:13.5px; color:var(--text-2);">
+                                <i class="fas fa-check-circle"
+                                    style="color:var(--accent); margin-top:3px; font-size:15px;"></i>
+                                <span><strong style="color:#FFFFFF;">Zero Fees &amp; No Ads:</strong> 100% free with no
+                                    commissions, hidden charges, or sponsored listings.</span>
+                            </div>
+                            <div
+                                style="display:flex; align-items:flex-start; gap:12px; font-size:13.5px; color:var(--text-2);">
+                                <i class="fas fa-check-circle"
+                                    style="color:var(--accent); margin-top:3px; font-size:15px;"></i>
+                                <span><strong style="color:#FFFFFF;">Live Coordination Chat:</strong> In-app neighbor
+                                    messaging to arrange pickup timings &amp; spots safely.</span>
+                            </div>
+                            <div
+                                style="display:flex; align-items:flex-start; gap:12px; font-size:13.5px; color:var(--text-2);">
+                                <i class="fas fa-check-circle"
+                                    style="color:var(--accent); margin-top:3px; font-size:15px;"></i>
+                                <span><strong style="color:#FFFFFF;">Verified Feedback Ratings:</strong> Build neighbor
+                                    trust with community ratings on every handover.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= 9. EDITORIAL FOOTER ================= -->
+    <footer>
+        <div class="container">
+            <!-- Giant Closing Statement -->
+            <div class="footer-closing-statement reveal-on-scroll">
+                <h2>Small acts.<br>Big connections.</h2>
+                <p>Giving Tree is a free community platform dedicated to building neighborly trust, zero-waste sharing,
+                    and human connection in Pune, India.</p>
+            </div>
+
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-brand-logo">
+                        <i class="fas fa-leaf"></i> Giving Tree
+                    </div>
+                    <p>A circular sharing network connecting neighbors across Pune localities through generosity and
+                        sustainability.</p>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="/index.html">Home</a></li>
+                        <li><a href="/items.html">Browse Catalog</a></li>
+                        <li><a href="/post-item.html">Give an Item</a></li>
+                        <li><a href="/requests.html">Activity Hub</a></li>
+                        <li><a href="/my-items.html">My Dashboard</a></li>
+                        <li id="footerAdminLink" style="display:none;"><a href="/admin.html" style="color:var(--accent); font-weight:700;"><i class="fas fa-shield-alt" style="margin-right:6px; font-size:11px;"></i>Admin Dashboard</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Pune Hubs</h4>
+                    <ul>
+                        <li><a href="/items.html?location=Kothrud">Kothrud Network</a></li>
+                        <li><a href="/items.html?location=Baner">Baner & Balewadi</a></li>
+                        <li><a href="/items.html?location=FC+Road">FC Road & Shivajinagar</a></li>
+                        <li><a href="/items.html?location=Hinjawadi">Hinjawadi IT Park</a></li>
+                        <li><a href="/items.html?location=Viman+Nagar">Viman Nagar</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <div class="footer-newsletter-card">
+                        <h4>Stay in the loop</h4>
+                        <p>Get notified when fresh items are shared in your Pune neighborhood.</p>
+                        <form class="footer-newsletter-form"
+                            onsubmit="event.preventDefault(); alert('Subscribed to neighborhood updates!');">
+                            <input type="email" placeholder="Your email address" required
+                                aria-label="Your email address">
+                            <button type="submit" class="footer-newsletter-btn">Join</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 Giving Tree Platform. Open community initiative.</p>
+                <div class="footer-bottom-links">
+                    <a href="#safety">Community Guidelines</a>
+                    <a href="#privacy">Privacy</a>
+                    <a href="#terms">Terms</a>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </footer>
 
-</main>
+    <!-- ================= CLIENT SCRIPTS ================= -->
+    <script>
+        const BACKEND_URL = '';
 
-<!-- ================= 9. EDITORIAL FOOTER ================= -->
-<footer>
-    <div class="container">
-        <!-- Giant Closing Statement -->
-        <div class="footer-closing-statement reveal-on-scroll">
-            <h2>Small acts.<br>Big connections.</h2>
-            <p>Giving Tree is a free community platform dedicated to building neighborly trust, zero-waste sharing, and human connection in Pune, India.</p>
-        </div>
+        // --- 1. FETCH RECENT ITEMS FOR PREVIEW GRID ---
+        fetch(`${BACKEND_URL}/api/items/recent`)
+            .then(res => res.json())
+            .then(items => {
+                const grid = document.getElementById('recentItemsGrid');
+                if (!grid) return;
 
-        <div class="footer-grid">
-            <div class="footer-brand">
-                <div class="footer-brand-logo">
-                    <i class="fas fa-leaf"></i> Giving Tree
-                </div>
-                <p>A circular sharing network connecting neighbors across Pune localities through generosity and sustainability.</p>
-            </div>
-
-            <div class="footer-col">
-                <h4>Navigation</h4>
-                <ul>
-                    <li><a href="/index.html">Home</a></li>
-                    <li><a href="/items.html">Browse Catalog</a></li>
-                    <li><a href="/post-item.html">Give an Item</a></li>
-                    <li><a href="/requests.html">Activity Hub</a></li>
-                    <li><a href="/my-items.html">My Dashboard</a></li>
-                    <li><a href="/admin.html" style="color:var(--accent); font-weight:700;"><i class="fas fa-shield-alt" style="margin-right:6px; font-size:11px;"></i>Admin Dashboard</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-col">
-                <h4>Pune Hubs</h4>
-                <ul>
-                    <li><a href="/items.html?location=Kothrud">Kothrud Network</a></li>
-                    <li><a href="/items.html?location=Baner">Baner & Balewadi</a></li>
-                    <li><a href="/items.html?location=FC+Road">FC Road & Shivajinagar</a></li>
-                    <li><a href="/items.html?location=Hinjawadi">Hinjawadi IT Park</a></li>
-                    <li><a href="/items.html?location=Viman+Nagar">Viman Nagar</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-col">
-                <div class="footer-newsletter-card">
-                    <h4>Stay in the loop</h4>
-                    <p>Get notified when fresh items are shared in your Pune neighborhood.</p>
-                    <form class="footer-newsletter-form" onsubmit="event.preventDefault(); alert('Subscribed to neighborhood updates!');">
-                        <input type="email" placeholder="Your email address" required aria-label="Your email address">
-                        <button type="submit" class="footer-newsletter-btn">Join</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <div class="footer-bottom">
-            <p>© 2026 Giving Tree Platform. Open community initiative.</p>
-            <div class="footer-bottom-links">
-                <a href="#safety">Community Guidelines</a>
-                <a href="#privacy">Privacy</a>
-                <a href="#terms">Terms</a>
-            </div>
-        </div>
-    </div>
-</footer>
-
-<!-- ================= CLIENT SCRIPTS ================= -->
-<script>
-const BACKEND_URL = '';
-
-// --- 1. FETCH RECENT ITEMS FOR PREVIEW GRID ---
-fetch(`${BACKEND_URL}/api/items/recent`)
-.then(res => res.json())
-.then(items => {
-    const grid = document.getElementById('recentItemsGrid');
-    if (!grid) return;
-
-    if (!items || items.length === 0) {
-        grid.innerHTML = `
+                if (!items || items.length === 0) {
+                    grid.innerHTML = `
             <div style="text-align:center; width:100%; padding:40px 20px; grid-column:1/-1;">
                 <div style="width:72px; height:72px; background:var(--green-dim); border:1px solid var(--green-border); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; font-size:28px; color:var(--tree-green);">
                     <i class="fas fa-seedling"></i>
@@ -482,26 +562,26 @@ fetch(`${BACKEND_URL}/api/items/recent`)
                     <i class="fas fa-plus"></i> Share the First Item
                 </a>
             </div>`;
-        return;
-    }
+                    return;
+                }
 
-    let html = "";
-    items.forEach(item => {
-        const rawImg = String(item.image || '').trim();
-        const hasImg = rawImg !== '' && !rawImg.includes('dummyimage.com');
-        const safeTitle = String(item.title || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        const safeLocation = String(item.location || 'Pune').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        const safeCategory = String(item.category || 'Item').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        const safeCondition = String(item.condition || 'Good').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                let html = "";
+                items.forEach(item => {
+                    const rawImg = String(item.image || '').trim();
+                    const hasImg = rawImg !== '' && !rawImg.includes('dummyimage.com');
+                    const safeTitle = String(item.title || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const safeLocation = String(item.location || 'Pune').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const safeCategory = String(item.category || 'Item').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const safeCondition = String(item.condition || 'Good').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
-        const imgHtml = hasImg 
-            ? `<img src="${rawImg}" alt="${safeTitle}" onerror="this.src='/assets/story-img.png';">` 
-            : `<div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; color:var(--muted-light); gap:8px;">
+                    const imgHtml = hasImg
+                        ? `<img src="${rawImg}" alt="${safeTitle}" onerror="this.src='/assets/story-img.png';">`
+                        : `<div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; color:var(--muted-light); gap:8px;">
                  <i class="fas fa-box-open fa-2x"></i>
                  <span style="font-size:11px; font-weight:800; text-transform:uppercase;">Giving Tree Item</span>
                </div>`;
 
-        html += `
+                    html += `
         <div class="item-card is-revealed">
             <div class="item-card-media" onclick="window.location.href='/items.html?id=${item.id}'" style="cursor:pointer;">
                 ${imgHtml}
@@ -520,126 +600,125 @@ fetch(`${BACKEND_URL}/api/items/recent`)
                 </div>
             </div>
         </div>`;
-    });
-    grid.innerHTML = html;
-    if (window.refreshScrollObserver) window.refreshScrollObserver();
-}).catch(err => {
-    const grid = document.getElementById('recentItemsGrid');
-    if (grid) grid.innerHTML = `<p style="color:var(--muted); text-align:center; width:100%; grid-column:1/-1;">Could not load items. <a href="/items.html" style="color:var(--tree-green); font-weight:700;">Browse full catalog →</a></p>`;
-});
+                });
+                grid.innerHTML = html;
+                if (window.refreshScrollObserver) window.refreshScrollObserver();
+            }).catch(err => {
+                const grid = document.getElementById('recentItemsGrid');
+                if (grid) grid.innerHTML = `<p style="color:var(--muted); text-align:center; width:100%; grid-column:1/-1;">Could not load items. <a href="/items.html" style="color:var(--tree-green); font-weight:700;">Browse full catalog →</a></p>`;
+            });
 
-// --- 2. FETCH PUBLIC COMMUNITY STATS ---
-fetch(`${BACKEND_URL}/api/stats`)
-.then(res => res.json())
-.then(stats => {
-    const elItems = document.getElementById('statItems');
-    const elMembers = document.getElementById('statMembers');
-    const elCompleted = document.getElementById('statCompleted');
-    const elHeroTag = document.getElementById('heroTag');
+        // --- 2. FETCH PUBLIC COMMUNITY STATS ---
+        fetch(`${BACKEND_URL}/api/stats`)
+            .then(res => res.json())
+            .then(stats => {
+                const elItems = document.getElementById('statItems');
+                const elMembers = document.getElementById('statMembers');
+                const elCompleted = document.getElementById('statCompleted');
+                const elHeroTag = document.getElementById('heroTag');
 
-    const itemsCount = Number(stats.items_shared || 0);
-    const membersCount = Number(stats.members || 0);
-    const completedCount = Number(stats.completed || 0);
+                const itemsCount = Number(stats.items_shared || 0);
+                const membersCount = Number(stats.members || 0);
+                const completedCount = Number(stats.completed || 0);
 
-    if (elItems) {
-        elItems.setAttribute('data-target', itemsCount);
-        elItems.textContent = itemsCount.toLocaleString('en-IN');
-    }
-    if (elMembers) {
-        elMembers.setAttribute('data-target', membersCount);
-        elMembers.textContent = membersCount.toLocaleString('en-IN');
-    }
-    if (elCompleted) {
-        elCompleted.setAttribute('data-target', completedCount);
-        elCompleted.textContent = completedCount.toLocaleString('en-IN');
-    }
-    if (elHeroTag && membersCount > 0) {
-        elHeroTag.innerHTML = `🌿 Join ${membersCount}+ neighbors sharing in Pune`;
-    }
-}).catch(err => console.warn('Stats fetch note:', err));
+                if (elItems) {
+                    elItems.setAttribute('data-target', itemsCount);
+                    elItems.textContent = itemsCount.toLocaleString('en-IN');
+                }
+                if (elMembers) {
+                    elMembers.setAttribute('data-target', membersCount);
+                    elMembers.textContent = membersCount.toLocaleString('en-IN');
+                }
+                if (elCompleted) {
+                    elCompleted.setAttribute('data-target', completedCount);
+                    elCompleted.textContent = completedCount.toLocaleString('en-IN');
+                }
+                if (elHeroTag && membersCount > 0) {
+                    elHeroTag.innerHTML = `🌿 Join ${membersCount}+ neighbors sharing in Pune`;
+                }
+            }).catch(err => console.warn('Stats fetch note:', err));
 
-// --- 3. PUNE INTERACTIVE LEAFLET MAP ---
-let puneMapInstance = null;
-let puneMapMarkers = [];
-let puneAllItems = [];
+        // --- 3. PUNE INTERACTIVE LEAFLET MAP ---
+        let puneMapInstance = null;
+        let puneMapMarkers = [];
+        let puneAllItems = [];
 
-async function ensureLeafletLoaded() {
-    if (typeof L !== 'undefined') return true;
-    for (let i = 0; i < 30; i++) {
-        await new Promise(r => setTimeout(r, 100));
-        if (typeof L !== 'undefined') return true;
-    }
-    return false;
-}
+        async function ensureLeafletLoaded() {
+            if (typeof L !== 'undefined') return true;
+            for (let i = 0; i < 30; i++) {
+                await new Promise(r => setTimeout(r, 100));
+                if (typeof L !== 'undefined') return true;
+            }
+            return false;
+        }
 
-async function initPuneHomeMap() {
-    const mapEl = document.getElementById('puneHomeMap');
-    if (!mapEl) return;
+        async function initPuneHomeMap() {
+            const mapEl = document.getElementById('puneHomeMap');
+            if (!mapEl) return;
 
-    const isReady = await ensureLeafletLoaded();
-    if (!isReady || typeof L === 'undefined') return;
+            const isReady = await ensureLeafletLoaded();
+            if (!isReady || typeof L === 'undefined') return;
 
-    if (puneMapInstance) {
-        try { puneMapInstance.remove(); } catch(e) {}
-        puneMapInstance = null;
-    }
+            if (puneMapInstance) {
+                try { puneMapInstance.remove(); } catch (e) { }
+                puneMapInstance = null;
+            }
 
-    const defaultCenter = [18.5204, 73.8567]; // Pune
-    puneMapInstance = L.map('puneHomeMap', {
-        center: defaultCenter,
-        zoom: 12,
-        scrollWheelZoom: false
-    });
+            const defaultCenter = [18.5204, 73.8567]; // Pune
+            puneMapInstance = L.map('puneHomeMap', {
+                center: defaultCenter,
+                zoom: 12,
+                scrollWheelZoom: false
+            });
 
-    // High quality dark CartoDB map tile
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        subdomains: 'abcd',
-        maxZoom: 19,
-        attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap'
-    }).addTo(puneMapInstance);
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                subdomains: 'abcd',
+                maxZoom: 19,
+                attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap'
+            }).addTo(puneMapInstance);
 
-    fetch(`${BACKEND_URL}/api/items/data`)
-        .then(res => res.json())
-        .then(data => {
-            puneAllItems = Array.isArray(data) ? data : (data.items || []);
-            const countBadge = document.getElementById('puneMapCountBadge');
-            if (countBadge) countBadge.textContent = `${puneAllItems.length} Live Items in Pune`;
-            renderPuneMapMarkers(puneAllItems);
-        })
-        .catch(err => console.warn('Map items fetch note:', err));
-}
+            fetch(`${BACKEND_URL}/api/items/data`)
+                .then(res => res.json())
+                .then(data => {
+                    puneAllItems = Array.isArray(data) ? data : (data.items || []);
+                    const countBadge = document.getElementById('puneMapCountBadge');
+                    if (countBadge) countBadge.textContent = `${puneAllItems.length} Live Items in Pune`;
+                    renderPuneMapMarkers(puneAllItems);
+                })
+                .catch(err => console.warn('Map items fetch note:', err));
+        }
 
-function renderPuneMapMarkers(itemsList) {
-    if (!puneMapInstance || typeof L === 'undefined') return;
+        function renderPuneMapMarkers(itemsList) {
+            if (!puneMapInstance || typeof L === 'undefined') return;
 
-    puneMapMarkers.forEach(m => puneMapInstance.removeLayer(m));
-    puneMapMarkers = [];
+            puneMapMarkers.forEach(m => puneMapInstance.removeLayer(m));
+            puneMapMarkers = [];
 
-    const defaultLocs = [
-        { title: 'Engineering Textbooks', loc: 'Kothrud', lat: 18.5074, lng: 73.8077, cat: 'Books' },
-        { title: 'Wooden Study Table', loc: 'Baner', lat: 18.5590, lng: 73.7868, cat: 'Furniture' },
-        { title: 'Acoustic Guitar', loc: 'FC Road', lat: 18.5284, lng: 73.8417, cat: 'Music' },
-        { title: 'LED Monitor 24"', loc: 'Hinjawadi', lat: 18.5913, lng: 73.7389, cat: 'Electronics' }
-    ];
+            const defaultLocs = [
+                { title: 'Engineering Textbooks', loc: 'Kothrud', lat: 18.5074, lng: 73.8077, cat: 'Books' },
+                { title: 'Wooden Study Table', loc: 'Baner', lat: 18.5590, lng: 73.7868, cat: 'Furniture' },
+                { title: 'Acoustic Guitar', loc: 'FC Road', lat: 18.5284, lng: 73.8417, cat: 'Music' },
+                { title: 'LED Monitor 24"', loc: 'Hinjawadi', lat: 18.5913, lng: 73.7389, cat: 'Electronics' }
+            ];
 
-    const displayList = itemsList && itemsList.length > 0 ? itemsList : defaultLocs;
+            const displayList = itemsList && itemsList.length > 0 ? itemsList : defaultLocs;
 
-    displayList.forEach(item => {
-        const lat = item.latitude || (item.lat || 18.5204);
-        const lng = item.longitude || (item.lng || 73.8567);
-        const title = item.title || 'Community Item';
-        const loc = item.location || 'Pune';
-        const cat = item.category || 'General';
+            displayList.forEach(item => {
+                const lat = item.latitude || (item.lat || 18.5204);
+                const lng = item.longitude || (item.lng || 73.8567);
+                const title = item.title || 'Community Item';
+                const loc = item.location || 'Pune';
+                const cat = item.category || 'General';
 
-        const customIcon = L.divIcon({
-            className: 'pune-custom-marker',
-            html: `<div style="width:36px; height:36px; background:#10B981; color:#042F24; border:2px solid rgba(255,255,255,0.8); border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 16px rgba(0,0,0,0.6); font-size:15px;"><i class="fas fa-leaf"></i></div>`,
-            iconSize: [36, 36],
-            iconAnchor: [18, 18]
-        });
+                const customIcon = L.divIcon({
+                    className: 'pune-custom-marker',
+                    html: `<div style="width:36px; height:36px; background:#10B981; color:#042F24; border:2px solid rgba(255,255,255,0.8); border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 16px rgba(0,0,0,0.6); font-size:15px;"><i class="fas fa-leaf"></i></div>`,
+                    iconSize: [36, 36],
+                    iconAnchor: [18, 18]
+                });
 
-        const marker = L.marker([lat, lng], { icon: customIcon }).addTo(puneMapInstance);
-        marker.bindPopup(`
+                const marker = L.marker([lat, lng], { icon: customIcon }).addTo(puneMapInstance);
+                marker.bindPopup(`
             <div style="font-family:'Plus Jakarta Sans',sans-serif; padding:8px; min-width:190px; background:#0F172A; color:#FFFFFF; border-radius:12px;">
                 <span style="font-size:10px; font-weight:800; text-transform:uppercase; color:#10B981; background:rgba(16,185,129,0.15); padding:2px 6px; border-radius:4px;">${cat}</span>
                 <h4 style="margin:6px 0 2px; font-size:14px; font-weight:800; color:#FFFFFF;">${title}</h4>
@@ -647,55 +726,56 @@ function renderPuneMapMarkers(itemsList) {
                 <a href="/items.html" style="display:inline-block; font-size:12px; font-weight:800; color:#10B981; text-decoration:none;">View in Catalog →</a>
             </div>
         `);
-        puneMapMarkers.push(marker);
-    });
-}
+                puneMapMarkers.push(marker);
+            });
+        }
 
-function filterPuneLocality(locName, lat, lng, zoomLevel, btnEl) {
-    document.querySelectorAll('.pune-locality-chip').forEach(b => b.classList.remove('active'));
-    if (btnEl) btnEl.classList.add('active');
+        function filterPuneLocality(locName, lat, lng, zoomLevel, btnEl) {
+            document.querySelectorAll('.pune-locality-chip').forEach(b => b.classList.remove('active'));
+            if (btnEl) btnEl.classList.add('active');
 
-    if (puneMapInstance) {
-        puneMapInstance.flyTo([lat, lng], zoomLevel, { duration: 1 });
-    }
-}
-
-function locateNearMe() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            (pos) => {
-                const userLat = pos.coords.latitude;
-                const userLng = pos.coords.longitude;
-                if (puneMapInstance) {
-                    puneMapInstance.flyTo([userLat, userLng], 14, { duration: 1.5 });
-                    const userMarker = L.marker([userLat, userLng], {
-                        icon: L.divIcon({
-                            className: 'user-pulse-marker',
-                            html: '<div style="width:20px; height:20px; background:#38BDF8; border:3px solid #fff; border-radius:50%; box-shadow:0 0 12px #38BDF8;"></div>',
-                            iconSize: [20, 20],
-                            iconAnchor: [10, 10]
-                        })
-                    }).addTo(puneMapInstance).bindPopup('<strong>📍 You are here</strong>').openPopup();
-                }
-            },
-            () => {
-                alert('Please allow location permissions in your browser to discover items nearby.');
+            if (puneMapInstance) {
+                puneMapInstance.flyTo([lat, lng], zoomLevel, { duration: 1 });
             }
-        );
-    }
-}
+        }
 
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initPuneHomeMap);
-} else {
-    initPuneHomeMap();
-}
-</script>
+        function locateNearMe() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => {
+                        const userLat = pos.coords.latitude;
+                        const userLng = pos.coords.longitude;
+                        if (puneMapInstance) {
+                            puneMapInstance.flyTo([userLat, userLng], 14, { duration: 1.5 });
+                            const userMarker = L.marker([userLat, userLng], {
+                                icon: L.divIcon({
+                                    className: 'user-pulse-marker',
+                                    html: '<div style="width:20px; height:20px; background:#38BDF8; border:3px solid #fff; border-radius:50%; box-shadow:0 0 12px #38BDF8;"></div>',
+                                    iconSize: [20, 20],
+                                    iconAnchor: [10, 10]
+                                })
+                            }).addTo(puneMapInstance).bindPopup('<strong>📍 You are here</strong>').openPopup();
+                        }
+                    },
+                    () => {
+                        alert('Please allow location permissions in your browser to discover items nearby.');
+                    }
+                );
+            }
+        }
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
-<script src="/assets/js/utils.js"></script>
-<script src="/assets/js/navbar-auth.js"></script>
-<script src="/assets/js/notifications.js"></script>
-<script src="/assets/js/animations.js"></script>
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initPuneHomeMap);
+        } else {
+            initPuneHomeMap();
+        }
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
+    <script src="/assets/js/utils.js"></script>
+    <script src="/assets/js/navbar-auth.js"></script>
+    <script src="/assets/js/notifications.js"></script>
+    <script src="/assets/js/animations.js"></script>
 </body>
+
 </html>

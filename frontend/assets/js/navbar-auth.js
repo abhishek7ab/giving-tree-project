@@ -94,6 +94,10 @@
                         </div>
                     </div>
                 `;
+                if (isAdmin) {
+                    const footerAdmin = document.getElementById('footerAdminLink');
+                    if (footerAdmin) footerAdmin.style.display = 'list-item';
+                }
             } else {
                 nav.innerHTML = `
                     <a href="/items.html" ${getLinkClass('/items.html')}>${svgIcons.search} Browse</a>
@@ -108,6 +112,18 @@
         .catch(() => {
             // Keep default fallback
         });
+
+    // Mobile menu toggle handler
+    document.addEventListener('DOMContentLoaded', () => {
+        const mobileToggle = document.getElementById('mobileMenuToggle');
+        const navLinks = document.getElementById('navLinks');
+        if (mobileToggle && navLinks) {
+            mobileToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                navLinks.classList.toggle('mobile-open');
+            });
+        }
+    });
 
     window.toggleUserDropdown = function (e) {
         if (e) {
@@ -127,6 +143,10 @@
             container.classList.remove('open');
             if (menu) menu.classList.remove('show');
         }
+        const navLinks = document.getElementById('navLinks');
+        if (navLinks && navLinks.classList.contains('mobile-open') && !e.target.closest('.navbar')) {
+            navLinks.classList.remove('mobile-open');
+        }
     });
 
     document.addEventListener('keydown', function (e) {
@@ -135,6 +155,8 @@
             const menu = document.getElementById('userDropdownMenu');
             if (container) container.classList.remove('open');
             if (menu) menu.classList.remove('show');
+            const navLinks = document.getElementById('navLinks');
+            if (navLinks) navLinks.classList.remove('mobile-open');
         }
     });
 })();

@@ -195,6 +195,13 @@ h1, h2, h3, h4, h5, h6 {
     background-color: var(--bg-deep);
 }
 
+/* Alternating section for visual rhythm between identical dark sections */
+.section-alt {
+    background-color: var(--section-alt-bg) !important;
+    border-top: 1px solid var(--border-subtle);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
 .section-warm,
 .section-surface,
 .section-white,
@@ -264,4 +271,37 @@ h1, h2, h3, h4, h5, h6 {
     line-height: 1.6;
     max-width: var(--max-w-copy);
     margin: 0;
+}
+
+/* ---- Scroll Reveal — Initial Hidden State ---- */
+/* Without this, .reveal-on-scroll elements show instantly with no animation */
+.reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+        opacity    var(--dur-smooth) var(--ease-out),
+        transform  var(--dur-smooth) var(--ease-out);
+}
+
+.reveal-on-scroll.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.reveal-on-scroll.delay-100 { transition-delay: 100ms; }
+.reveal-on-scroll.delay-200 { transition-delay: 200ms; }
+.reveal-on-scroll.delay-300 { transition-delay: 300ms; }
+.reveal-on-scroll.delay-400 { transition-delay: 400ms; }
+
+/* ---- Mobile Hero CTA Stacking ---- */
+@media (max-width: 480px) {
+    .hero-cta-group {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+    .hero-cta-group .btn {
+        width: 100%;
+        justify-content: center;
+    }
 }

@@ -204,10 +204,22 @@
             box-shadow: 0 0 10px var(--admin-accent-glow);
             animation: navScan 5s ease-in-out infinite;
         }
+
         @keyframes navScan {
-            0%   { left: 0; opacity: 1; }
-            50%  { left: calc(100% - 70px); opacity: 0.5; }
-            100% { left: 0; opacity: 1; }
+            0% {
+                left: 0;
+                opacity: 1;
+            }
+
+            50% {
+                left: calc(100% - 70px);
+                opacity: 0.5;
+            }
+
+            100% {
+                left: 0;
+                opacity: 1;
+            }
         }
 
         /* --- HEADER --- */
@@ -265,9 +277,21 @@
             border-color: rgba(255, 255, 255, 0.1);
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
         }
-        .stat-card.items-card:hover  { border-color: rgba(56,189,248,0.35); box-shadow: 0 15px 35px rgba(0,0,0,0.3), 0 0 20px rgba(56,189,248,0.08); }
-        .stat-card.users-card:hover  { border-color: rgba(52,211,153,0.35); box-shadow: 0 15px 35px rgba(0,0,0,0.3), 0 0 20px rgba(52,211,153,0.08); }
-        .stat-card.health-card:hover { border-color: rgba(251,191,36,0.35);  box-shadow: 0 15px 35px rgba(0,0,0,0.3), 0 0 20px rgba(251,191,36,0.08); }
+
+        .stat-card.items-card:hover {
+            border-color: rgba(56, 189, 248, 0.35);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3), 0 0 20px rgba(56, 189, 248, 0.08);
+        }
+
+        .stat-card.users-card:hover {
+            border-color: rgba(52, 211, 153, 0.35);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3), 0 0 20px rgba(52, 211, 153, 0.08);
+        }
+
+        .stat-card.health-card:hover {
+            border-color: rgba(251, 191, 36, 0.35);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3), 0 0 20px rgba(251, 191, 36, 0.08);
+        }
 
         .stat-icon {
             width: 56px;
@@ -536,139 +560,13 @@
         .confirm-overlay.active {
             display: flex !important;
             visibility: visible !important;
-            opacity: 1 !important;
+
         }
 
-        .confirm-modal {
-            width: 100%;
-            max-width: 430px;
-            background: #1e293b;
-            border: 1px solid rgba(251, 113, 133, 0.38);
-            border-radius: 20px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45), 0 0 32px rgba(225, 29, 72, 0.18);
-            padding: 28px;
-        }
-
-        .warning-icon {
-            width: 52px;
-            height: 52px;
-            margin-bottom: 16px;
-            border-radius: 50%;
-            display: grid;
-            place-items: center;
-            background: rgba(225, 29, 72, 0.16);
-            border: 1px solid rgba(251, 113, 133, 0.45);
-            color: #fb7185;
-            font-size: 23px;
-        }
-
-        .confirm-modal h4 {
-            margin: 0 0 10px;
-            font-size: 20px;
-            color: #f8fafc;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .confirm-modal p {
-            margin: 0 0 22px;
-            color: #94a3b8;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .confirm-note {
-            margin: -8px 0 22px;
-            padding: 10px 12px;
-            border-left: 3px solid #fb7185;
-            border-radius: 6px;
-            background: rgba(225, 29, 72, 0.09);
-            color: #fecdd3;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .confirm-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-        }
-
-        .btn-modal {
-            border: none;
-            padding: 10px 16px;
-            border-radius: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            font-family: 'Poppins', sans-serif;
-            transition: 0.25s;
-        }
-
-        .btn-cancel {
-            background: rgba(148, 163, 184, 0.15);
-            color: #cbd5e1;
-            border: 1px solid rgba(148, 163, 184, 0.2);
-        }
-
-        .btn-cancel:hover {
-            background: rgba(148, 163, 184, 0.25);
-        }
-
-        .btn-danger {
-            background: rgba(225, 29, 72, 0.15);
-            color: #fb7185;
-            border: 1px solid rgba(225, 29, 72, 0.3);
-        }
-
-        .btn-danger:hover {
-            background: #e11d48;
-            color: #fff;
-        }
-
-        /* Export Button */
-        .btn-export {
-            background: rgba(26,188,156,0.08);
-            color: var(--admin-accent);
-            border: 1px solid rgba(26,188,156,0.2);
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            font-family: 'Poppins', sans-serif;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: 0.25s;
-        }
-        .btn-export:hover {
-            background: rgba(26,188,156,0.15);
-            border-color: rgba(26,188,156,0.4);
-            box-shadow: 0 0 12px var(--admin-accent-glow);
-        }
-        .section-controls { display: flex; align-items: center; gap: 12px; }
-        .live-time { font-size: 15px; color: var(--admin-accent); font-weight: 500; margin-left: 14px; font-variant-numeric: tabular-nums; }
-        .badge-available { background: rgba(52,211,153,0.12); color: #34d399; border: 1px solid rgba(52,211,153,0.25); }
-        .btn-delete-small * {
-            pointer-events: none !important;
-        }
-
-        .confirm-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(4, 7, 14, 0.85);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-            padding: 20px;
-        }
         .confirm-overlay.active {
             display: flex !important;
         }
+
         .confirm-modal {
             background: #0f172a;
             border: 1px solid rgba(239, 68, 68, 0.35);
@@ -679,8 +577,20 @@
             text-align: center;
             box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
         }
-        .warning-icon { font-size: 38px; color: #ef4444; margin-bottom: 14px; }
-        .confirm-modal h4 { font-size: 20px; font-weight: 800; color: #FFFFFF; margin: 0 0 10px; }
+
+        .warning-icon {
+            font-size: 38px;
+            color: #ef4444;
+            margin-bottom: 14px;
+        }
+
+        .confirm-modal h4 {
+            font-size: 20px;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin: 0 0 10px;
+        }
+
         .confirm-note {
             background: rgba(239, 68, 68, 0.1);
             border: 1px solid rgba(239, 68, 68, 0.25);
@@ -690,7 +600,13 @@
             color: #fca5a5;
             margin-bottom: 24px;
         }
-        .confirm-actions { display: flex; gap: 12px; justify-content: center; }
+
+        .confirm-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
         .btn-modal {
             padding: 12px 24px;
             border-radius: 100px;
@@ -701,15 +617,18 @@
             transition: all 0.2s ease;
             border: none;
         }
+
         .btn-modal.btn-cancel {
             background: rgba(255, 255, 255, 0.08);
             color: #94a3b8;
             border: 1px solid rgba(255, 255, 255, 0.12);
         }
+
         .btn-modal.btn-danger {
             background: #ef4444;
             color: #FFFFFF;
         }
+
         .btn-modal.btn-danger:hover {
             background: #dc2626;
             transform: translateY(-1px);
@@ -724,8 +643,10 @@
             aria-describedby="confirmMessage">
             <div class="warning-icon" aria-hidden="true"><i class="fas fa-triangle-exclamation"></i></div>
             <h4 id="confirmTitle">Confirm action</h4>
-            <div id="confirmMessage" style="color: #cbd5e1; font-size: 14px; margin-bottom: 20px;">Are you sure you want to continue?</div>
-            <div class="confirm-note"><i class="fas fa-circle-exclamation"></i> ⚠️ WARNING: This action is permanent and cannot be undone.</div>
+            <div id="confirmMessage" style="color: #cbd5e1; font-size: 14px; margin-bottom: 20px;">Are you sure you want
+                to continue?</div>
+            <div class="confirm-note"><i class="fas fa-circle-exclamation"></i> ⚠️ WARNING: This action is permanent and
+                cannot be undone.</div>
             <div class="confirm-actions">
                 <button type="button" class="btn-modal btn-cancel" id="cancelDeleteButton"
                     onclick="closeDeleteModal()">Cancel</button>
@@ -775,148 +696,117 @@
             </div>
             <div class="stat-card health-card">
                 <div class="stat-icon icon-health"><i class="fas fa-server"></i></div>
+            <div class="stat-card health-card">
+                <div class="stat-icon icon-health"><i class="fas fa-server"></i></div>
                 <div class="stat-info">
-                    <span>System Status</span>
-                    <h2 style="color: #34d399;">Online</h2>
+                    <span>Platform Health</span>
+                    <h2 style="color: #34d399;">Live</h2>
                 </div>
             </div>
         </div>
 
-        <!-- USERS -->
-        <div class="admin-section">
-            <div class="section-header">
-                <h3><i class="fas fa-user-group"></i> Member Management</h3>
-                <div class="section-controls">
-                    <div class="search-box">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="userSearch" placeholder="Search members by name or email...">
-                    </div>
-                    <button class="btn-export" onclick="exportCSV('users')"><i class="fas fa-download"></i> Export</button>
-                </div>
-            </div>
-            <div class="table-responsive">
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>User Details</th>
-                            <th>Email Address</th>
-                            <th>Phone</th>
-                            <th>Role</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="userList">
-                        <tr>
-                            <td colspan="5" style="text-align: center; color: var(--text-muted);">Loading members...
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+        <!-- MEMBERS TABLE -->
+        <div class="section-header">
+            <h3><i class="fas fa-users" style="color:var(--admin-accent); margin-right:10px;"></i>Community Members</h3>
+            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                <input type="text" id="userSearch" placeholder="🔍 Search members..." class="search-input">
+                <button type="button" class="btn-export" onclick="exportCSV('users')"><i class="fas fa-download"></i> Export CSV</button>
             </div>
         </div>
-
-        <!-- ITEMS -->
-        <div class="admin-section">
-            <div class="section-header">
-                <h3><i class="fas fa-box-open"></i> Community Inventory</h3>
-                <div class="section-controls">
-                    <div class="search-box">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="itemSearch" placeholder="Search items by title or location...">
-                    </div>
-                    <button class="btn-export" onclick="exportCSV('items')"><i class="fas fa-download"></i> Export</button>
-                </div>
-            </div>
-            <div class="table-responsive">
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>Ref ID</th>
-                            <th>Item Details</th>
-                            <th>Location</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="itemList">
-                        <tr>
-                            <td colspan="5" style="text-align: center; color: var(--text-muted);">Loading inventory...
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <div class="table-wrap">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Member</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Role</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="userList">
+                    <tr><td colspan="5" style="text-align:center; padding:40px; color:var(--text-muted);"><i class="fas fa-spinner fa-spin" style="font-size:24px; display:block; margin-bottom:10px;"></i>Loading members...</td></tr>
+                </tbody>
+            </table>
         </div>
 
-        <!-- SECURITY AUDIT LOGS -->
-        <div class="admin-section">
-            <div class="section-header">
-                <h3><i class="fas fa-shield-halved" style="color: var(--admin-accent);"></i> Security Audit Logs</h3>
-                <div class="section-controls">
-                    <span style="font-size:12px; color:var(--text-muted);"><i class="fas fa-clock"></i> Live administrative activity log</span>
-                    <button class="btn-export" onclick="loadAdminData()"><i class="fas fa-rotate"></i> Refresh</button>
-                </div>
+        <!-- INVENTORY TABLE -->
+        <div class="section-header" style="margin-top:40px;">
+            <h3><i class="fas fa-boxes-stacked" style="color:var(--admin-accent); margin-right:10px;"></i>Community Inventory</h3>
+            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                <input type="text" id="itemSearch" placeholder="🔍 Search items..." class="search-input">
+                <button type="button" class="btn-export" onclick="exportCSV('items')"><i class="fas fa-download"></i> Export CSV</button>
             </div>
-            <div class="table-responsive">
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>Timestamp</th>
-                            <th>Admin / User</th>
-                            <th>Action</th>
-                            <th>Details</th>
-                            <th>Client IP</th>
-                        </tr>
-                    </thead>
-                    <tbody id="auditList">
-                        <tr>
-                            <td colspan="5" style="text-align: center; color: var(--text-muted);">Loading audit logs...</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        </div>
+        <div class="table-wrap">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Ref #</th>
+                        <th>Item Title</th>
+                        <th>Location</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="itemList">
+                    <tr><td colspan="5" style="text-align:center; padding:40px; color:var(--text-muted);"><i class="fas fa-spinner fa-spin" style="font-size:24px; display:block; margin-bottom:10px;"></i>Loading inventory...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- AUDIT LOGS TABLE -->
+        <div class="section-header" style="margin-top:40px;">
+            <h3><i class="fas fa-shield-halved" style="color:var(--admin-accent); margin-right:10px;"></i>Recent Audit Log</h3>
+        </div>
+        <div class="table-wrap">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>User</th>
+                        <th>Action</th>
+                        <th>Details</th>
+                        <th>IP Address</th>
+                    </tr>
+                </thead>
+                <tbody id="auditList">
+                    <tr><td colspan="5" style="text-align:center; padding:30px; color:var(--text-muted);"><i class="fas fa-spinner fa-spin" style="font-size:18px; display:block; margin-bottom:8px;"></i>Loading audit logs...</td></tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
     <script>
-        const BACKEND_URL = "";
+        const BACKEND_URL = '';
         let allUsers = [];
         let allItems = [];
-        let pendingDeleteForm = null;
-        let pendingDeleteTrigger = null;
-
-        function escapeHtml(value) {
-            return String(value ?? '').replace(/[&<>'"]/g, character => ({
-                '&': '&amp;',
-                '<': '&lt;',
-                '>': '&gt;',
-                "'": '&#39;',
-                '"': '&quot;'
-            }[character]));
-        }
-
         let pendingDelete = { type: null, id: null, name: '' };
 
-        function showToast(message, type = 'success') {
+        function escapeHtml(str) {
+            if (str == null) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function showToast(message, type) {
             const existing = document.getElementById('adminToast');
             if (existing) existing.remove();
 
             const toast = document.createElement('div');
             toast.id = 'adminToast';
-            toast.style.position = 'fixed';
-            toast.style.bottom = '24px';
-            toast.style.right = '24px';
-            toast.style.padding = '12px 20px';
-            toast.style.borderRadius = '10px';
-            toast.style.fontSize = '13.5px';
-            toast.style.fontWeight = '600';
-            toast.style.display = 'flex';
-            toast.style.alignItems = 'center';
-            toast.style.gap = '10px';
-            toast.style.zIndex = '9999';
-            toast.style.boxShadow = '0 10px 25px rgba(0,0,0,0.4)';
-            toast.style.transition = 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
-
+            toast.style.cssText = `
+                position:fixed; bottom:24px; right:24px; padding:12px 20px;
+                border-radius:10px; font-size:13.5px; font-weight:600;
+                display:flex; align-items:center; gap:10px; z-index:9999;
+                box-shadow:0 10px 25px rgba(0,0,0,0.4);
+                transition:all 0.3s cubic-bezier(0.16,1,0.3,1);
+                max-width:380px; word-break:break-word;
+            `;
             if (type === 'success') {
                 toast.style.background = '#10b981';
                 toast.style.color = '#ffffff';
@@ -926,39 +816,12 @@
                 toast.style.color = '#ffffff';
                 toast.innerHTML = `<i class="fas fa-exclamation-circle"></i> <span>${escapeHtml(message)}</span>`;
             }
-
             document.body.appendChild(toast);
             setTimeout(() => {
                 toast.style.opacity = '0';
                 toast.style.transform = 'translateY(10px)';
                 setTimeout(() => toast.remove(), 300);
             }, 3500);
-        }
-
-        function promptRemoveUserBtn(event, btn) {
-            if (event) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-            const button = btn || (event ? event.currentTarget || event.target.closest('button') : null);
-            if (!button) return;
-            const userId = button.dataset.userId || button.getAttribute('data-user-id');
-            const userName = button.dataset.userName || button.getAttribute('data-user-name') || 'Member';
-            const userEmail = button.dataset.userEmail || button.getAttribute('data-user-email') || '';
-            promptRemoveUser(userId, userName, userEmail);
-        }
-
-        function promptRemoveItemBtn(event, btn) {
-            if (event) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-            const button = btn || (event ? event.currentTarget || event.target.closest('button') : null);
-            if (!button) return;
-            const itemId = button.dataset.itemId || button.getAttribute('data-item-id');
-            const itemTitle = button.dataset.itemTitle || button.getAttribute('data-item-title') || 'Item';
-            const itemLocation = button.dataset.itemLocation || button.getAttribute('data-item-location') || 'Local';
-            promptRemoveItem(itemId, itemTitle, itemLocation);
         }
 
         function promptRemoveUser(userId, userName, userEmail) {
@@ -983,7 +846,6 @@
             }
 
             pendingDelete = { type: 'user', id: id, name: String(userName || 'Member'), email: String(userEmail || '') };
-            console.log('pendingDelete set to:', pendingDelete);
 
             const titleEl = document.getElementById('confirmTitle');
             const msgEl = document.getElementById('confirmMessage');
@@ -1005,10 +867,12 @@
             if (msgEl) msgEl.innerHTML = `
                 <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:12px; padding:14px; margin-bottom:16px; text-align:left;">
                     <div style="font-size:15px; font-weight:700; color:#fff; margin-bottom:4px;">
-                        <i class="fas fa-user" style="color:var(--admin-accent); margin-right:6px;"></i> ${escapeHtml(userName || 'Member')}
+                        <i class="fas fa-user" style="color:var(--admin-accent); margin-right:6px;"></i>
+                        ${escapeHtml(userName || 'Member')}
                     </div>
                     <div style="font-size:13.5px; color:#94a3b8;">
-                        <i class="fas fa-envelope" style="color:var(--admin-accent); margin-right:6px;"></i> ${escapeHtml(userEmail || '')}
+                        <i class="fas fa-envelope" style="color:var(--admin-accent); margin-right:6px;"></i>
+                        ${escapeHtml(userEmail || '')}
                     </div>
                 </div>
                 <p style="margin:0 0 16px; color:#cbd5e1; font-size:13.5px; line-height:1.5;">
@@ -1051,7 +915,6 @@
             }
 
             pendingDelete = { type: 'item', id: id, name: String(itemTitle || 'Item'), location: String(itemLocation || 'Local') };
-            console.log('pendingDelete set to:', pendingDelete);
 
             const titleEl = document.getElementById('confirmTitle');
             const msgEl = document.getElementById('confirmMessage');
@@ -1073,11 +936,13 @@
             if (msgEl) msgEl.innerHTML = `
                 <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:12px; padding:14px; margin-bottom:16px; text-align:left;">
                     <div style="font-size:15px; font-weight:700; color:#fff; margin-bottom:4px;">
-                        <i class="fas fa-box-open" style="color:#38bdf8; margin-right:6px;"></i> ${escapeHtml(itemTitle || 'Item')}
+                        <i class="fas fa-box-open" style="color:#38bdf8; margin-right:6px;"></i>
+                        ${escapeHtml(itemTitle || 'Item')}
                         <span style="font-size:12px; color:#94a3b8; font-weight:500; margin-left:6px;">(Ref #${id})</span>
                     </div>
                     <div style="font-size:13.5px; color:#94a3b8;">
-                        <i class="fas fa-map-marker-alt" style="color:var(--admin-accent); margin-right:6px;"></i> ${escapeHtml(itemLocation || 'Local')}
+                        <i class="fas fa-map-marker-alt" style="color:var(--admin-accent); margin-right:6px;"></i>
+                        ${escapeHtml(itemLocation || 'Local')}
                     </div>
                 </div>
                 <p style="margin:0 0 16px; color:#cbd5e1; font-size:13.5px; line-height:1.5;">
@@ -1118,20 +983,15 @@
         let isDeleteInProgress = false;
 
         async function confirmDelete() {
-            if (isDeleteInProgress) {
-                console.log('Delete already in progress, skipping duplicate call.');
-                return;
-            }
+            if (isDeleteInProgress) return;
 
             const confirmBtn = document.getElementById('confirmDeleteButton');
-            let id = Number(pendingDelete?.id || confirmBtn?.dataset?.targetId);
-            let type = pendingDelete?.type || confirmBtn?.dataset?.targetType || 'user';
-            let name = pendingDelete?.name || confirmBtn?.dataset?.targetName || 'Member';
-            let email = pendingDelete?.email || confirmBtn?.dataset?.targetEmail || '';
+            const id = Number(pendingDelete && pendingDelete.id ? pendingDelete.id : (confirmBtn && confirmBtn.dataset ? confirmBtn.dataset.targetId : null));
+            const type = (pendingDelete && pendingDelete.type) || (confirmBtn && confirmBtn.dataset && confirmBtn.dataset.targetType) || 'user';
+            const name = (pendingDelete && pendingDelete.name) || (confirmBtn && confirmBtn.dataset && confirmBtn.dataset.targetName) || 'Member';
+            const email = (pendingDelete && pendingDelete.email) || (confirmBtn && confirmBtn.dataset && confirmBtn.dataset.targetEmail) || '';
 
-            console.log('confirmDelete triggered with target:', { id, type, name, email });
             if (!id || isNaN(id)) {
-                console.warn('Cannot delete: no target ID found');
                 showToast('Please select a member or item to remove.', 'error');
                 return;
             }
@@ -1148,19 +1008,12 @@
             try {
                 const res = await fetch(actionUrl, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                     credentials: 'include',
-                    body: JSON.stringify({
-                        id: Number(id),
-                        confirmDelete: 'yes'
-                    })
+                    body: JSON.stringify({ id: Number(id), confirmDelete: 'yes' })
                 });
 
                 const data = await res.json().catch(() => ({}));
-                console.log('Delete response:', res.status, data);
 
                 if (!res.ok) {
                     throw new Error(data.error || data.details || 'Failed to remove.');
@@ -1181,8 +1034,9 @@
 
         function renderUsers(users) {
             const tbody = document.getElementById('userList');
+            if (!tbody) return;
             if (users.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:40px; color:var(--text-muted);"><i class="fas fa-users-slash" style="font-size:32px; margin-bottom:12px; display:block; color:#334155;"></i>No members match your search.</td></tr>`;
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:40px; color:var(--text-muted);"><i class="fas fa-users-slash" style="font-size:32px; margin-bottom:12px; display:block; color:#334155;"></i>No members match your search.</td></tr>';
                 return;
             }
             tbody.innerHTML = users.map(u => {
@@ -1191,8 +1045,7 @@
                 const safeName = escapeHtml(u.name || 'this member');
                 const safeEmail = escapeHtml(u.email || '');
                 const safeCity = escapeHtml(u.city || '');
-                return `
-                <tr>
+                return `<tr>
                     <td>
                         <div class="user-info">
                             <div class="avatar">${initials}</div>
@@ -1206,11 +1059,10 @@
                     <td><span style="color:var(--text-muted)">${u.phone || '-'}</span></td>
                     <td><span class="badge-pill ${u.role === 'admin' ? 'badge-admin' : 'badge-user'}">${u.role}</span></td>
                     <td>
-                        ${canDelete ? `
-                        <button type="button" class="btn-delete-small" data-action="remove-user" data-user-id="${u.id}" data-user-name="${safeName}" data-user-email="${safeEmail}" onclick="promptRemoveUser(${u.id}, '${safeName.replace(/'/g, "\\'")}', '${safeEmail.replace(/'/g, "\\'")}')">
-                            <i class="fas fa-user-xmark"></i> Remove
-                        </button>
-                        ` : `<span style="color:var(--text-muted); font-size:12px; font-weight:600;"><i class="fas fa-shield-alt" style="color:var(--admin-accent);"></i> Protected (Admin)</span>`}
+                        ${canDelete
+                            ? `<button type="button" class="btn-delete-small" data-action="remove-user" data-user-id="${u.id}" data-user-name="${safeName}" data-user-email="${safeEmail}"><i class="fas fa-user-xmark"></i> Remove</button>`
+                            : `<span style="color:var(--text-muted); font-size:12px; font-weight:600;"><i class="fas fa-shield-alt" style="color:var(--admin-accent);"></i> Protected (Admin)</span>`
+                        }
                     </td>
                 </tr>`;
             }).join('');
@@ -1218,8 +1070,9 @@
 
         function renderItems(items) {
             const tbody = document.getElementById('itemList');
+            if (!tbody) return;
             if (items.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:40px; color:var(--text-muted);"><i class="fas fa-box-open" style="font-size:32px; margin-bottom:12px; display:block; color:#334155;"></i>No items match your search.</td></tr>`;
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:40px; color:var(--text-muted);"><i class="fas fa-box-open" style="font-size:32px; margin-bottom:12px; display:block; color:#334155;"></i>No items match your search.</td></tr>';
                 return;
             }
             tbody.innerHTML = items.map(i => {
@@ -1227,14 +1080,13 @@
                 const statusClass = status === 'claimed' ? 'badge-claimed' : 'badge-available';
                 const safeTitle = escapeHtml(i.title || 'this item');
                 const safeLoc = escapeHtml(i.location || 'Local');
-                return `
-                <tr>
+                return `<tr>
                     <td><code style="background:rgba(0,0,0,0.2); padding:4px 8px; border-radius:6px; font-size:12px; color:var(--text-muted)">#${i.id}</code></td>
                     <td><strong style="color:var(--text-main)">${safeTitle}</strong></td>
                     <td><i class="fas fa-map-marker-alt" style="color:var(--admin-accent); font-size:12px; margin-right:5px;"></i> <span style="color:var(--text-muted)">${safeLoc}</span></td>
                     <td><span class="badge-pill ${statusClass}">${status}</span></td>
                     <td>
-                        <button type="button" class="btn-delete-small" data-action="delete-item" data-item-id="${i.id}" data-item-title="${safeTitle}" data-item-location="${safeLoc}" onclick="promptRemoveItem(${i.id}, '${safeTitle.replace(/'/g, "\\'")}', '${safeLoc.replace(/'/g, "\\'")}')">
+                        <button type="button" class="btn-delete-small" data-action="delete-item" data-item-id="${i.id}" data-item-title="${safeTitle}" data-item-location="${safeLoc}">
                             <i class="fas fa-trash-alt"></i> Delete
                         </button>
                     </td>
@@ -1283,7 +1135,7 @@
             const tbody = document.getElementById('auditList');
             if (!tbody) return;
             if (!logs || logs.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:30px; color:var(--text-muted);"><i class="fas fa-shield-check" style="font-size:24px; margin-bottom:8px; display:block; color:#334155;"></i>No audit events recorded yet.</td></tr>`;
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:30px; color:var(--text-muted);"><i class="fas fa-shield-check" style="font-size:24px; margin-bottom:8px; display:block; color:#334155;"></i>No audit events recorded yet.</td></tr>';
                 return;
             }
             tbody.innerHTML = logs.map(log => {
@@ -1293,15 +1145,14 @@
                 const details = escapeHtml(typeof log.details === 'object' ? JSON.stringify(log.details) : (log.details || '-'));
                 const ip = escapeHtml(log.ip_address || '127.0.0.1');
 
-                let badgeStyle = 'background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3);';
+                let badgeStyle = 'background:rgba(16,185,129,0.15); color:#34d399; border:1px solid rgba(16,185,129,0.3);';
                 if (action.includes('DELETE')) {
-                    badgeStyle = 'background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3);';
+                    badgeStyle = 'background:rgba(239,68,68,0.15); color:#f87171; border:1px solid rgba(239,68,68,0.3);';
                 } else if (action.includes('ACCESS') || action.includes('VIEW')) {
-                    badgeStyle = 'background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3);';
+                    badgeStyle = 'background:rgba(59,130,246,0.15); color:#60a5fa; border:1px solid rgba(59,130,246,0.3);';
                 }
 
-                return `
-                <tr>
+                return `<tr>
                     <td style="color:var(--text-muted); font-size:12px;"><i class="far fa-clock" style="margin-right:4px;"></i> ${date}</td>
                     <td><strong style="color:var(--text-main); font-size:13px;">${safeEmail}</strong></td>
                     <td><span style="display:inline-block; padding:3px 8px; border-radius:6px; font-size:11px; font-weight:700; font-family:monospace; ${badgeStyle}">${action}</span></td>
@@ -1311,10 +1162,9 @@
             }).join('');
         }
 
-        // Fetch Data
         async function loadAdminData() {
             try {
-                const res = await fetch(`${BACKEND_URL}/api/admin/data`, { credentials: "include" });
+                const res = await fetch(`${BACKEND_URL}/api/admin/data`, { credentials: 'include' });
                 if (!res.ok) {
                     if (res.status === 401 || res.status === 403) {
                         window.location.href = '/login.html?error=adminonly';
@@ -1330,29 +1180,31 @@
 
                 const countItemsEl = document.getElementById('countItems');
                 const countUsersEl = document.getElementById('countUsers');
-                if (countItemsEl) countItemsEl.innerText = data.stats?.totalItems ?? allItems.length;
-                if (countUsersEl) countUsersEl.innerText = data.stats?.totalUsers ?? allUsers.length;
+                if (countItemsEl) countItemsEl.innerText = (data.stats && data.stats.totalItems != null) ? data.stats.totalItems : allItems.length;
+                if (countUsersEl) countUsersEl.innerText = (data.stats && data.stats.totalUsers != null) ? data.stats.totalUsers : allUsers.length;
 
                 renderUsers(allUsers);
                 renderItems(allItems);
                 renderAuditLogs(data.recentAuditLogs || []);
             } catch (err) {
-                console.error("Failed to load admin data", err);
-                document.getElementById('userList').innerHTML = `<tr><td colspan="5" style="text-align: center; padding:30px; color: #ef4444;"><i class="fas fa-exclamation-triangle" style="font-size:24px; margin-bottom:8px; display:block;"></i>Failed to load member data. <a href="javascript:loadAdminData()" style="color:var(--admin-accent); font-weight:600; text-decoration:underline;">Retry</a></td></tr>`;
-                document.getElementById('itemList').innerHTML = `<tr><td colspan="5" style="text-align: center; padding:30px; color: #ef4444;"><i class="fas fa-exclamation-triangle" style="font-size:24px; margin-bottom:8px; display:block;"></i>Failed to load inventory data. <a href="javascript:loadAdminData()" style="color:var(--admin-accent); font-weight:600; text-decoration:underline;">Retry</a></td></tr>`;
-                const auditList = document.getElementById('auditList');
-                if (auditList) auditList.innerHTML = `<tr><td colspan="5" style="text-align: center; padding:30px; color: #ef4444;">Failed to load audit logs.</td></tr>`;
+                console.error('Failed to load admin data', err);
+                const userListEl = document.getElementById('userList');
+                const itemListEl = document.getElementById('itemList');
+                const auditListEl = document.getElementById('auditList');
+                if (userListEl) userListEl.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:30px; color:#ef4444;"><i class="fas fa-exclamation-triangle" style="font-size:24px; margin-bottom:8px; display:block;"></i>Failed to load member data. <a href="#" onclick="loadAdminData();return false;" style="color:var(--admin-accent); font-weight:600; text-decoration:underline;">Retry</a></td></tr>';
+                if (itemListEl) itemListEl.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:30px; color:#ef4444;"><i class="fas fa-exclamation-triangle" style="font-size:24px; margin-bottom:8px; display:block;"></i>Failed to load inventory data. <a href="#" onclick="loadAdminData();return false;" style="color:var(--admin-accent); font-weight:600; text-decoration:underline;">Retry</a></td></tr>';
+                if (auditListEl) auditListEl.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:30px; color:#ef4444;">Failed to load audit logs.</td></tr>';
             }
         }
 
         loadAdminData();
 
-        // Search Handlers
+        // Search handlers
         document.getElementById('userSearch').addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
             const filtered = allUsers.filter(u =>
-                u.name.toLowerCase().includes(term) ||
-                u.email.toLowerCase().includes(term)
+                (u.name || '').toLowerCase().includes(term) ||
+                (u.email || '').toLowerCase().includes(term)
             );
             renderUsers(filtered);
         });
@@ -1360,8 +1212,8 @@
         document.getElementById('itemSearch').addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
             const filtered = allItems.filter(i =>
-                i.title.toLowerCase().includes(term) ||
-                i.location.toLowerCase().includes(term)
+                (i.title || '').toLowerCase().includes(term) ||
+                (i.location || '').toLowerCase().includes(term)
             );
             renderItems(filtered);
         });
@@ -1384,7 +1236,7 @@
                 rows = allItems.map(i => [i.id, i.title, i.location, i.status || 'available']);
                 filename = 'inventory_export.csv';
             }
-            const csv = [headers, ...rows].map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+            const csv = [headers, ...rows].map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n');
             const blob = new Blob([csv], { type: 'text/csv' });
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);

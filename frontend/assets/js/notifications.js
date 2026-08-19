@@ -16,8 +16,21 @@
         const toggleBtn = document.getElementById('mobileMenuToggle');
         const navLinks = document.getElementById('navLinks');
         if (toggleBtn && navLinks) {
-            toggleBtn.addEventListener('click', () => {
+            toggleBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
                 navLinks.classList.toggle('active');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (navLinks.classList.contains('active') && !navLinks.contains(e.target) && e.target !== toggleBtn) {
+                    navLinks.classList.remove('active');
+                }
+            });
+
+            navLinks.addEventListener('click', (e) => {
+                if (e.target.tagName === 'A' || e.target.closest('a')) {
+                    navLinks.classList.remove('active');
+                }
             });
         }
 

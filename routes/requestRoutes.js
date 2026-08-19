@@ -27,4 +27,4 @@ router.get('/api/users/:id/reviews', requestController.getUserReviews);
 router.post('/request-item', isLoggedIn, validate(requestItemSchema), requestController.requestItem);
 router.post('/update-status', isLoggedIn, validate(updateStatusSchema), requestController.updateRequestStatus);
 
-module.exports = router;
+module.exports = router;

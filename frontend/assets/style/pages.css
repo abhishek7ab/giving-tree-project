@@ -73,12 +73,12 @@
 }
 
 .hero-headline {
-    font-size: clamp(2.2rem, 4.4vw, 3.6rem);
-    font-weight: 800;
-    line-height: 1.1;
-    letter-spacing: var(--tracking-tight);
+    font-size: clamp(3.2rem, 6.5vw, 5.2rem);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: var(--tracking-tighter);
     color: #FFFFFF;
-    text-transform: capitalize;
+    text-transform: uppercase;
     margin: 0;
 }
 
@@ -87,11 +87,52 @@
 }
 
 .hero-subhead {
-    font-size: clamp(0.98rem, 1.25vw, 1.15rem);
-    line-height: 1.55;
+    font-size: clamp(1rem, 1.4vw, 1.2rem);
+    line-height: 1.6;
     color: var(--text-2);
-    max-width: 520px;
+    max-width: 540px;
     margin: 0 auto;
+}
+
+/* ---- Hero Scroll Chevron ---- */
+.hero-scroll-indicator {
+    position: absolute;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-3);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    z-index: 4;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color var(--dur-fast) var(--ease-out);
+}
+
+.hero-scroll-indicator:hover {
+    color: var(--accent);
+}
+
+.hero-scroll-chevron {
+    width: 28px;
+    height: 28px;
+    border: 1.5px solid currentColor;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: scrollBounce 2s ease-in-out infinite;
+}
+
+@keyframes scrollBounce {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(6px); }
 }
 
 .hero-cta-group {
@@ -214,24 +255,32 @@
 }
 
 .step-card:hover {
-    transform: translateY(-6px);
+    transform: translateY(-4px);
     box-shadow: var(--shadow-hover);
-    border-color: var(--accent);
+    border-color: var(--accent-border);
 }
 
 .step-number {
-    font-size: 3.5rem;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
     font-weight: 900;
-    line-height: 1;
     letter-spacing: var(--tracking-tighter);
+    flex-shrink: 0;
+    border: 2px solid currentColor;
+    background: rgba(16, 185, 129, 0.08);
 }
 
-.step-card:nth-child(1) .step-number { color: var(--accent); }
-.step-card:nth-child(2) .step-number { color: var(--coral); }
-.step-card:nth-child(3) .step-number { color: var(--leaf-green); }
+.step-card:nth-child(1) .step-number { color: var(--accent); border-color: rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.08); }
+.step-card:nth-child(2) .step-number { color: var(--coral); border-color: rgba(244, 63, 94, 0.4); background: rgba(244, 63, 94, 0.08); }
+.step-card:nth-child(3) .step-number { color: var(--leaf-green); border-color: rgba(52, 211, 153, 0.4); background: rgba(52, 211, 153, 0.08); }
 
 .step-card h3 {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     font-weight: 800;
     color: #FFFFFF;
     margin: 0;

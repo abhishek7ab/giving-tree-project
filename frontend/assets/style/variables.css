@@ -59,8 +59,12 @@
     --warning-bg:      rgba(245, 158, 11, 0.15);
     --danger:          #F43F5E;
     --danger-bg:       rgba(244, 63, 94, 0.15);
+    --danger-dim:      rgba(244, 63, 94, 0.15); /* alias for --danger-bg */
     --info:            #38BDF8;
     --info-bg:         rgba(56, 189, 248, 0.15);
+
+    /* ---- Section Alternation ---- */
+    --section-alt-bg:  #0B1121; /* Slightly elevated surface for visual rhythm */
 
     /* ---- Borders & Dividers ---- */
     --border:          rgba(255, 255, 255, 0.08);

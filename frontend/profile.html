@@ -25,7 +25,7 @@
 <a href="#main-content" class="skip-link">Skip to main content</a>
 
 <!-- NAVBAR -->
-<div class="navbar">
+<header class="navbar">
     <a href="/index.html" class="logo">
         <div class="logo-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.4 19 2c1 2 2 4.1 2 7 0 6-4.5 11-10 11z"/><path d="M11 20v-6"/></svg></div>
         <span class="logo-text">Giving<span> Tree</span></span>
@@ -44,7 +44,7 @@
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
         </button>
     </div>
-</div>
+</header>
 
 <!-- PROFILE HEADER -->
 <header class="profile-header" id="profileHeader">
@@ -170,6 +170,23 @@
                         </button>
                     </div>
                 </form>
+            </div>
+
+            <!-- Notes of Gratitude Wall Card -->
+            <div class="profile-form-card" data-animate style="border-color:rgba(16,185,129,0.25);">
+                <div class="profile-card-top" style="margin-bottom:14px;">
+                    <div>
+                        <h3 style="margin:0 0 2px;"><i class="fas fa-envelope-open-text" style="color:var(--accent);"></i> Notes of Gratitude</h3>
+                        <span style="font-size:12px; color:var(--text-3);">Heartfelt words left by neighbors who received your shared items</span>
+                    </div>
+                    <span id="gratitudeCountBadge" style="font-size:12px; font-weight:700; color:var(--accent); background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); padding:4px 10px; border-radius:20px;">0 Notes</span>
+                </div>
+                <div id="gratitudeWallList" style="display:flex; flex-direction:column; gap:12px;">
+                    <div style="text-align:center; padding:24px 12px; color:var(--text-3); font-size:13px;">
+                        <i class="fas fa-seedling" style="font-size:24px; color:var(--accent); margin-bottom:8px; display:block;"></i>
+                        No gratitude notes yet. When neighbors receive items from you, their thank-you notes will bloom here!
+                    </div>
+                </div>
             </div>
 
             <!-- Change password -->
@@ -358,8 +375,70 @@ fetch('/api/user', { credentials: 'include' })
     } else {
         document.getElementById('memberSince').textContent = '2026';
     }
+
+    // Load gratitude notes / reviews
+    if (data.id) {
+        loadGratitudeWall(data.id);
+    }
 })
 .catch(() => { window.location.href = '/login.html'; });
+
+function loadGratitudeWall(userId) {
+    const listEl = document.getElementById('gratitudeWallList');
+    const countBadge = document.getElementById('gratitudeCountBadge');
+    if (!listEl) return;
+
+    fetch(`/api/users/${userId}/reviews`)
+        .then(res => res.json())
+        .then(resData => {
+            const reviews = resData.reviews || [];
+            if (countBadge) countBadge.textContent = `${reviews.length} ${reviews.length === 1 ? 'Note' : 'Notes'}`;
+
+            if (reviews.length === 0) {
+                listEl.innerHTML = `
+                    <div style="text-align:center; padding:24px 12px; color:var(--text-3); font-size:13px;">
+                        <i class="fas fa-seedling" style="font-size:24px; color:var(--accent); margin-bottom:8px; display:block;"></i>
+                        No gratitude notes yet. When neighbors receive items from you, their thank-you notes will bloom here!
+                    </div>`;
+                return;
+            }
+
+            let html = '';
+            reviews.forEach(rev => {
+                const rName = rev.reviewer_name || 'Neighbor';
+                const rLetter = rName.charAt(0).toUpperCase();
+                const rCity = rev.reviewer_city ? ` • 📍 ${escapeHtml(rev.reviewer_city)}` : '';
+                const rDate = new Date(rev.created_at || Date.now()).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' });
+                const rRating = Number(rev.rating || 5);
+                const starsHtml = '★'.repeat(rRating) + '☆'.repeat(5 - rRating);
+                const commentText = rev.comment ? escapeHtml(rev.comment) : 'Thank you so much for your generosity!';
+
+                html += `
+                    <div class="gratitude-wall-card">
+                        <div class="gratitude-card-header">
+                            <div class="gratitude-sender-badge">
+                                <div class="gratitude-sender-avatar">${rLetter}</div>
+                                <div>
+                                    <strong style="color:var(--text-1); font-size:13px;">${escapeHtml(rName)}</strong>
+                                    <span style="color:var(--text-3); font-size:11px;">${rCity}</span>
+                                </div>
+                            </div>
+                            <div style="text-align:right;">
+                                <div style="color:#f59e0b; font-size:12px; letter-spacing:1px;">${starsHtml}</div>
+                                <span style="font-size:10.5px; color:var(--text-3);">${rDate}</span>
+                            </div>
+                        </div>
+                        <div class="gratitude-text">
+                            “${commentText}”
+                        </div>
+                    </div>`;
+            });
+            listEl.innerHTML = html;
+        })
+        .catch(err => {
+            console.error("Error loading gratitude wall:", err);
+        });
+}
 
 let currentProfile = { name: '', city: '', email: '' };
 

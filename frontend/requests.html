@@ -27,7 +27,7 @@
 <body>
 
     <!-- NAVBAR -->
-    <div class="navbar">
+    <header class="navbar">
         <a href="/index.html" class="logo">
             <div class="logo-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.4 19 2c1 2 2 4.1 2 7 0 6-4.5 11-10 11z"/><path d="M11 20v-6"/></svg></div>
             <span class="logo-text">Giving<span> Tree</span></span>
@@ -48,7 +48,7 @@
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
             </button>
         </div>
-    </div>
+    </header>
 
     <!-- MAIN WRAPPER -->
     <main class="main-wrapper">
@@ -142,21 +142,21 @@
 
     <!-- ================= POST-HANDOVER REVIEW MODAL ================= -->
     <div class="detail-modal-overlay" id="reviewModal" onclick="handleReviewOverlayClick(event)">
-        <div class="edit-modal-card">
+        <div class="edit-modal-card" style="max-width:480px;">
             <button class="detail-modal-close" onclick="closeReviewModal()"><i class="fas fa-times"></i></button>
-            <div style="text-align:center; margin-bottom:20px;">
-                <div style="width:52px; height:52px; border-radius:50%; background:rgba(245,158,11,0.15); color:#f59e0b; display:flex; align-items:center; justify-content:center; font-size:22px; margin:0 auto 12px; border:1px solid rgba(245,158,11,0.3);">
-                    <i class="fas fa-star"></i>
+            <div style="text-align:center; margin-bottom:18px;">
+                <div style="width:52px; height:52px; border-radius:50%; background:rgba(16,185,129,0.15); color:var(--accent); display:flex; align-items:center; justify-content:center; font-size:22px; margin:0 auto 12px; border:1px solid rgba(16,185,129,0.3);">
+                    <i class="fas fa-heart"></i>
                 </div>
-                <h3 style="font-size:19px; font-weight:800; color:#ffffff; margin-bottom:4px;">Rate Handover with <span id="revieweeNameSpan">Neighbor</span></h3>
-                <p style="font-size:13px; color:var(--text-2); margin:0;">Leave verified community feedback to build neighbor trust.</p>
+                <h3 style="font-size:19px; font-weight:800; color:#ffffff; margin-bottom:4px;">Say Thanks to <span id="revieweeNameSpan">Neighbor</span> 🌿</h3>
+                <p style="font-size:13px; color:var(--text-2); margin:0;">Leave a warm note of gratitude to celebrate neighborly kindness.</p>
             </div>
 
             <form id="reviewForm" onsubmit="submitReview(event)">
                 <input type="hidden" id="reviewRequestId">
                 <input type="hidden" id="reviewRatingVal" value="5">
 
-                <div class="edit-group" style="text-align:center;">
+                <div class="edit-group" style="text-align:center; margin-bottom:14px;">
                     <div style="display:flex; justify-content:center; gap:8px; font-size:26px; color:#f59e0b; cursor:pointer;" id="starPicker">
                         <i class="fas fa-star" onclick="setStarRating(1)"></i>
                         <i class="fas fa-star" onclick="setStarRating(2)"></i>
@@ -166,15 +166,25 @@
                     </div>
                 </div>
 
-                <div class="edit-group" style="margin-top:16px;">
-                    <label>Short Note (Optional)</label>
+                <div class="edit-group">
+                    <label style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                        <span>Note of Appreciation</span>
+                        <span style="font-size:11px; color:var(--accent);">Tap a quick note:</span>
+                    </label>
+                    <div class="gratitude-chips-wrap">
+                        <button type="button" class="gratitude-chip" onclick="applyGratitudeChip('✨ You made my week! Thank you so much.')">✨ Made my week!</button>
+                        <button type="button" class="gratitude-chip" onclick="applyGratitudeChip('🌱 Thank you for keeping it green and sharing with care!')">🌱 Zero-waste hero</button>
+                        <button type="button" class="gratitude-chip" onclick="applyGratitudeChip('📚 In great condition and will be put to great use!')">📚 In great condition</button>
+                        <button type="button" class="gratitude-chip" onclick="applyGratitudeChip('🙏 So kind, punctual, and generous. Truly grateful!')">🙏 Kind &amp; generous</button>
+                        <button type="button" class="gratitude-chip" onclick="applyGratitudeChip('🤝 Wonderful neighbor! Giving Tree is amazing.')">🤝 Great neighbor</button>
+                    </div>
                     <textarea id="reviewComment" rows="3" placeholder="e.g. Prompt, friendly, and item was in great condition!" maxlength="500"></textarea>
                 </div>
 
                 <div style="display:flex; gap:10px; margin-top:20px;">
                     <button type="button" class="btn secondary" onclick="closeReviewModal()" style="flex:1;">Cancel</button>
                     <button type="submit" class="btn primary" id="submitReviewBtn" style="flex:2;">
-                        <i class="fas fa-heart"></i> Submit Feedback
+                        <i class="fas fa-heart"></i> Send Appreciation
                     </button>
                 </div>
             </form>
@@ -486,6 +496,9 @@
 
                                 <div class="actions-right">
                                     ${isCompleted ? `
+                                        <button type="button" class="btn-hub-glass" onclick="openGratitudePostcard(${r.id})" style="font-size:12px; padding:6px 12px; display:inline-flex; align-items:center; gap:6px; border-color:rgba(16,185,129,0.3); color:var(--accent-light);">
+                                            <i class="fas fa-envelope-open-text" style="color:var(--accent);"></i> Postcard
+                                        </button>
                                         <button type="button" class="btn-hub-glass" onclick="openGenerosityReceipt(${r.id})" style="font-size:12px; padding:6px 12px; display:inline-flex; align-items:center; gap:6px;">
                                             <i class="fas fa-file-invoice" style="color:var(--accent);"></i> Receipt
                                         </button>
@@ -493,7 +506,7 @@
 
                                     ${isCompleted && !r.has_reviewed ? `
                                         <button type="button" class="btn-hub-gold" onclick="openReviewModal(${r.id}, '${escapeHtml(neighborName).replace(/'/g, "\\'")}')">
-                                            <i class="fas fa-star"></i> Leave Feedback
+                                            <i class="fas fa-heart"></i> Say Thanks
                                         </button>
                                     ` : ''}
 
@@ -595,6 +608,9 @@
 
                                 <div class="actions-right">
                                     ${isCompleted ? `
+                                        <button type="button" class="btn-hub-glass" onclick="openGratitudePostcard(${s.id})" style="font-size:12px; padding:6px 12px; display:inline-flex; align-items:center; gap:6px; border-color:rgba(16,185,129,0.3); color:var(--accent-light);">
+                                            <i class="fas fa-envelope-open-text" style="color:var(--accent);"></i> Postcard
+                                        </button>
                                         <button type="button" class="btn-hub-glass" onclick="openGenerosityReceipt(${s.id})" style="font-size:12px; padding:6px 12px; display:inline-flex; align-items:center; gap:6px;">
                                             <i class="fas fa-file-invoice" style="color:var(--accent);"></i> Receipt
                                         </button>
@@ -602,7 +618,7 @@
 
                                     ${isCompleted && !s.has_reviewed ? `
                                         <button type="button" class="btn-hub-gold" onclick="openReviewModal(${s.id}, '${escapeHtml(ownerName).replace(/'/g, "\\'")}')">
-                                            <i class="fas fa-star"></i> Leave Feedback
+                                            <i class="fas fa-heart"></i> Say Thanks
                                         </button>
                                     ` : ''}
 
@@ -889,6 +905,79 @@
             }
         });
 
+        function applyGratitudeChip(text) {
+            const commentEl = document.getElementById('reviewComment');
+            if (commentEl) {
+                commentEl.value = text;
+                commentEl.focus();
+            }
+        }
+
+        // Gratitude Postcard Functions
+        let currentPostcardData = null;
+
+        function openGratitudePostcard(requestId) {
+            const req = allRequestsById.get(Number(requestId));
+            if (!req) return;
+            const modal = document.getElementById('gratitudePostcardModal');
+            if (!modal) return;
+
+            const itemTitle = req.title || 'Community Item';
+            const donorName = req.owner_name || req.owner_email || 'Generous Donor';
+            const recipientName = req.requester_name || req.requester_email || 'Neighbor';
+            const dateStr = new Date(req.updated_at || req.created_at || Date.now()).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+
+            document.getElementById('postItemTitle').textContent = itemTitle;
+            document.getElementById('postDonorName').textContent = donorName;
+            document.getElementById('postRecipientName').textContent = recipientName;
+            document.getElementById('postDate').textContent = dateStr;
+
+            const quoteEl = document.getElementById('postQuote');
+            if (req.review_comment) {
+                quoteEl.textContent = `"${req.review_comment}"`;
+            } else {
+                quoteEl.textContent = `"Thank you so much for this wonderful contribution to our neighborhood! Your generosity brought a big smile today."`;
+            }
+
+            currentPostcardData = {
+                itemTitle,
+                donorName,
+                recipientName,
+                dateStr,
+                quote: quoteEl.textContent
+            };
+
+            modal.classList.add('active');
+        }
+
+        function closeGratitudePostcard() {
+            const modal = document.getElementById('gratitudePostcardModal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        function handlePostcardOverlayClick(e) {
+            if (e.target.id === 'gratitudePostcardModal') {
+                closeGratitudePostcard();
+            }
+        }
+
+        function sharePostcardWhatsApp() {
+            if (!currentPostcardData) return;
+            const msg = `🌿 *Giving Tree Kindness Postcard* 🌿\n\n${currentPostcardData.quote}\n\n🎁 *Item Shared:* ${currentPostcardData.itemTitle}\n👤 *Shared by:* ${currentPostcardData.donorName}\n❤️ *Received with gratitude by:* ${currentPostcardData.recipientName}\n🌱 *Impact:* Kept in circulation, saving landfill waste in Pune!`;
+            const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
+            window.open(waUrl, '_blank');
+        }
+
+        function copyPostcardText() {
+            if (!currentPostcardData) return;
+            const textToCopy = `🌿 Giving Tree Kindness Postcard 🌿\n\n${currentPostcardData.quote}\n\n— ${currentPostcardData.itemTitle} shared by ${currentPostcardData.donorName} with ${currentPostcardData.recipientName} in Pune.`;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                showToast('Kindness postcard note copied to clipboard! 📋', 'success');
+            }).catch(() => {
+                showToast('Could not copy note.', 'error');
+            });
+        }
+
         // Generosity Receipt Functions
         function openGenerosityReceipt(requestId) {
             const req = allRequestsById.get(Number(requestId));
@@ -919,6 +1008,80 @@
 
         fetchActivityData();
     </script>
+
+    <!-- ================= KINDNESS POSTCARD MODAL ================= -->
+    <div class="certificate-modal-overlay" id="gratitudePostcardModal" onclick="handlePostcardOverlayClick(event)">
+        <div class="certificate-card" style="max-width:520px; text-align:left;">
+            <button type="button" onclick="closeGratitudePostcard()" style="position:absolute; top:16px; right:16px; background:none; border:none; color:var(--text-3); font-size:18px; cursor:pointer;" aria-label="Close postcard"><i class="fas fa-times"></i></button>
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:18px;">
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <div style="width:44px; height:44px; border-radius:12px; background:rgba(16,185,129,0.15); border:1px solid var(--accent); display:flex; align-items:center; justify-content:center; color:var(--accent); font-size:20px; flex-shrink:0;">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <div>
+                        <h3 style="font-size:18px; font-weight:800; color:#FFFFFF; margin:0 0 2px;">Kindness Postcard 🌿</h3>
+                        <span style="font-size:12px; color:var(--text-3);">Giving Tree Generosity Moment</span>
+                    </div>
+                </div>
+                <div class="kindness-stamp">
+                    <i class="fas fa-award"></i> Verified Gift
+                </div>
+            </div>
+
+            <div class="kindness-postcard">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <span style="font-size:12px; color:var(--accent); font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">
+                        <i class="fas fa-gift"></i> <span id="postItemTitle">Item Shared</span>
+                    </span>
+                    <span style="font-size:12px; color:var(--text-3);" id="postDate">—</span>
+                </div>
+
+                <div class="kindness-quote-box" id="postQuote">
+                    "Thank you so much for this wonderful contribution to our neighborhood! Your generosity brought a big smile today."
+                </div>
+
+                <div class="kindness-neighbor-meta">
+                    <div>
+                        <span style="color:var(--text-3); font-size:11px; display:block;">Shared by:</span>
+                        <strong id="postDonorName" style="color:var(--accent); font-size:13px;">—</strong>
+                    </div>
+                    <div style="text-align:right;">
+                        <span style="color:var(--text-3); font-size:11px; display:block;">Received by:</span>
+                        <strong id="postRecipientName" style="color:#FFFFFF; font-size:13px;">—</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:var(--radius-md); padding:12px 16px; margin-bottom:18px;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <i class="fas fa-recycle" style="color:var(--accent); font-size:16px;"></i>
+                    <div>
+                        <div style="font-size:11px; color:var(--text-3);">Eco Impact</div>
+                        <strong style="font-size:13px; color:#FFFFFF;">~4.5 kg Diverted</strong>
+                    </div>
+                </div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <i class="fas fa-heart" style="color:#fbbf24; font-size:16px;"></i>
+                    <div>
+                        <div style="font-size:11px; color:var(--text-3);">Community Karma</div>
+                        <strong style="font-size:13px; color:#FFFFFF;">+50 Points</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="kindness-actions-bar">
+                <button type="button" class="btn primary" onclick="sharePostcardWhatsApp()" style="flex:1; padding:10px; font-size:13px; display:inline-flex; align-items:center; justify-content:center; gap:8px; background:#25D366; border-color:#25D366; color:#FFFFFF;">
+                    <i class="fab fa-whatsapp" style="font-size:16px;"></i> WhatsApp Share
+                </button>
+                <button type="button" class="btn secondary" onclick="copyPostcardText()" style="padding:10px 16px; font-size:13px; display:inline-flex; align-items:center; gap:6px;">
+                    <i class="fas fa-copy"></i> Copy Note
+                </button>
+                <button type="button" class="btn secondary" onclick="closeGratitudePostcard()" style="padding:10px 14px; font-size:13px;">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- ================= GENEROSITY HANDOVER RECEIPT MODAL ================= -->
     <div class="certificate-modal-overlay" id="generosityReceiptModal" onclick="handleReceiptOverlayClick(event)">

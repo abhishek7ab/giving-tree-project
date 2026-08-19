@@ -434,6 +434,45 @@
     .nav-links {
         display: none;
     }
+    .nav-links.mobile-open {
+        display: flex !important;
+        position: absolute;
+        top: calc(100% + 12px);
+        left: 0;
+        right: 0;
+        background: rgba(10, 15, 29, 0.98);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: var(--radius-xl);
+        padding: 16px;
+        flex-direction: column;
+        gap: 8px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+        animation: fadeInDropdown var(--dur-fast) var(--ease-out);
+        z-index: var(--z-dropdown);
+    }
+    .nav-links.mobile-open .nav-link {
+        width: 100%;
+        justify-content: flex-start;
+        padding: 12px 18px;
+    }
+    .nav-links.mobile-open .auth-btns-group {
+        width: 100%;
+        flex-direction: column;
+        gap: 8px;
+    }
+    .nav-links.mobile-open .auth-btns-group .nav-link {
+        width: 100%;
+        justify-content: center;
+    }
+    .nav-links.mobile-open .user-dropdown-container {
+        width: 100%;
+    }
+    .nav-links.mobile-open .user-pill-btn {
+        width: 100%;
+        justify-content: space-between;
+    }
     .nav-mobile-toggle {
         display: flex;
     }
