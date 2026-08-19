@@ -37,8 +37,8 @@
             <nav class="nav-links" id="navLinks">
                 <a href="/index.html" class="nav-link"><svg class="nav-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Home</a>
                 <a href="/items.html" class="nav-link"><svg class="nav-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg> Browse Items</a>
-                <a href="/post-item.html" class="nav-link nav-cta"><svg class="nav-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg> Give Item</a>
-                <a href="/requests.html" class="nav-link active"><svg class="nav-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg> Requests</a>
+                <a href="/post-item.html" class="nav-link nav-cta"><svg class="nav-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg> Donate Item</a>
+                <a href="/requests.html" class="nav-link active"><svg class="nav-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg> Activity</a>
             </nav>
             <a href="/requests.html" class="nav-notif-bell" title="Notifications">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
@@ -54,10 +54,10 @@
     <main class="main-wrapper">
         <div class="hub-hero">
             <div class="hub-tag">
-                <i class="fas fa-bolt" style="font-size:10px;"></i> Real-time Activity Hub
+                <i class="fas fa-hand-holding-heart" style="font-size:10px;"></i> Donation Activity Hub
             </div>
-            <h1 class="hub-hero-title">Activity &amp; <span>Coordination</span></h1>
-            <p class="hub-hero-subtitle">Coordinate safe local pickups, live chat with neighbors, and track completed community handovers.</p>
+            <h1 class="hub-hero-title">Donation Activity &amp; <span>Coordination</span></h1>
+            <p class="hub-hero-subtitle">Coordinate safe local donation pickups, live chat with neighbors, and track completed community handovers.</p>
 
             <div class="quick-metrics-row">
                 <div class="metric-pill highlight">
@@ -79,16 +79,16 @@
         <div class="tab-nav-container">
             <div class="tab-nav-group">
                 <button type="button" class="tab-btn active" id="tabBtnIncoming" onclick="switchHubTab('incoming')">
-                    <i class="fas fa-inbox"></i> Requests For Your Items
+                    <i class="fas fa-inbox"></i> Requests For Your Donations
                     <span class="tab-pill-badge" id="receiveCount">0</span>
                 </button>
                 <button type="button" class="tab-btn" id="tabBtnOutgoing" onclick="switchHubTab('outgoing')">
-                    <i class="fas fa-paper-plane"></i> You've Requested
+                    <i class="fas fa-paper-plane"></i> Donations You've Requested
                     <span class="tab-pill-badge" id="sendCount">0</span>
                 </button>
             </div>
             <a href="/my-items.html" class="btn-hub-glass" style="display:inline-flex; align-items:center; gap:8px; padding:9px 16px; border-radius:var(--radius-full); text-decoration:none; font-size:13px; font-weight:700; white-space:nowrap;">
-                <i class="fas fa-boxes-stacked" style="color:var(--accent);"></i> My Listings
+                <i class="fas fa-hand-holding-heart" style="color:var(--accent);"></i> My Donations
             </a>
         </div>
 

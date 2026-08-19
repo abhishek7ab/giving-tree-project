@@ -53,7 +53,7 @@
                 nav.innerHTML = `
                     <a href="/items.html" ${getLinkClass('/items.html')}>${svgIcons.search} Browse</a>
                     <a href="/requests.html" ${getLinkClass('/requests.html')}>${svgIcons.requests} Activity</a>
-                    <a href="/post-item.html" ${getLinkClass('/post-item.html', 'nav-cta')}>${svgIcons.give} Give Item</a>
+                    <a href="/post-item.html" ${getLinkClass('/post-item.html', 'nav-cta')}>${svgIcons.give} Donate Item</a>
                     ${isAdmin ? `
                     <a href="/admin.html" ${getLinkClass('/admin.html', 'nav-admin-badge-link')} style="color:#60a5fa; font-weight:800; display:inline-flex; align-items:center; gap:6px;">
                         <svg class="nav-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Admin
@@ -74,13 +74,13 @@
                             </div>
                             <div class="user-dropdown-divider"></div>
                             <a href="/profile.html" class="user-dropdown-item">
-                                ${svgIcons.user} <span>My Profile</span>
+                                ${svgIcons.user} <span>Donor Profile</span>
                             </a>
                             <a href="/my-items.html" class="user-dropdown-item">
-                                ${svgIcons.myItems} <span>My Listed Items</span>
+                                ${svgIcons.myItems} <span>My Donations</span>
                             </a>
                             <a href="/requests.html" class="user-dropdown-item">
-                                ${svgIcons.requests} <span>Requests &amp; Coordination</span>
+                                ${svgIcons.requests} <span>Donation Requests</span>
                             </a>
                             ${isAdmin ? `
                             <a href="/admin.html" class="user-dropdown-item admin-item" style="color:#60a5fa; font-weight:700;">
@@ -97,7 +97,7 @@
             } else {
                 nav.innerHTML = `
                     <a href="/items.html" ${getLinkClass('/items.html')}>${svgIcons.search} Browse</a>
-                    <a href="/post-item.html" ${getLinkClass('/post-item.html', 'nav-cta')}>${svgIcons.give} Give Item</a>
+                    <a href="/post-item.html" ${getLinkClass('/post-item.html', 'nav-cta')}>${svgIcons.give} Donate Item</a>
                     <div class="auth-btns-group">
                         <a href="/login.html" class="nav-link nav-login auth-login-link">${svgIcons.login} Log In</a>
                         <a href="/register.html" class="nav-link nav-cta auth-join-link">${svgIcons.join} Join</a>
