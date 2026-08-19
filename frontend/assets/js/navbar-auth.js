@@ -54,6 +54,11 @@
                     <a href="/items.html" ${getLinkClass('/items.html')}>${svgIcons.search} Browse</a>
                     <a href="/requests.html" ${getLinkClass('/requests.html')}>${svgIcons.requests} Activity</a>
                     <a href="/post-item.html" ${getLinkClass('/post-item.html', 'nav-cta')}>${svgIcons.give} Give Item</a>
+                    ${isAdmin ? `
+                    <a href="/admin.html" ${getLinkClass('/admin.html', 'nav-admin-badge-link')} style="color:#60a5fa; font-weight:800; display:inline-flex; align-items:center; gap:6px;">
+                        <svg class="nav-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Admin
+                    </a>
+                    ` : ''}
 
                     <div class="user-dropdown-container" id="userDropdownContainer">
                         <button type="button" class="user-pill-btn" id="userMenuBtn" aria-expanded="false" aria-haspopup="true" onclick="toggleUserDropdown(event)">
@@ -75,10 +80,10 @@
                                 ${svgIcons.myItems} <span>My Listed Items</span>
                             </a>
                             <a href="/requests.html" class="user-dropdown-item">
-                                ${svgIcons.requests} <span>Requests & Coordination</span>
+                                ${svgIcons.requests} <span>Requests &amp; Coordination</span>
                             </a>
                             ${isAdmin ? `
-                            <a href="/admin/dashboard" class="user-dropdown-item admin-item">
+                            <a href="/admin.html" class="user-dropdown-item admin-item" style="color:#60a5fa; font-weight:700;">
                                 ${svgIcons.admin} <span>Admin Dashboard</span>
                             </a>
                             ` : ''}
@@ -94,8 +99,8 @@
                     <a href="/items.html" ${getLinkClass('/items.html')}>${svgIcons.search} Browse</a>
                     <a href="/post-item.html" ${getLinkClass('/post-item.html', 'nav-cta')}>${svgIcons.give} Give Item</a>
                     <div class="auth-btns-group">
-                        <a href="/login.html" class="nav-link auth-login-link">${svgIcons.login} Log In</a>
-                        <a href="/register.html" class="nav-link auth-join-link">${svgIcons.join} Join</a>
+                        <a href="/login.html" class="nav-link nav-login auth-login-link">${svgIcons.login} Log In</a>
+                        <a href="/register.html" class="nav-link nav-cta auth-join-link">${svgIcons.join} Join</a>
                     </div>
                 `;
             }
@@ -105,24 +110,31 @@
         });
 
     window.toggleUserDropdown = function (e) {
-        if (e) e.stopPropagation();
-        const container = document.getElementById('userDropdownContainer');
-        if (container) {
-            container.classList.toggle('open');
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
         }
+        const container = document.getElementById('userDropdownContainer');
+        const menu = document.getElementById('userDropdownMenu');
+        if (container) container.classList.toggle('open');
+        if (menu) menu.classList.toggle('show');
     };
 
     document.addEventListener('click', function (e) {
         const container = document.getElementById('userDropdownContainer');
+        const menu = document.getElementById('userDropdownMenu');
         if (container && !container.contains(e.target)) {
             container.classList.remove('open');
+            if (menu) menu.classList.remove('show');
         }
     });
 
     document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') {
             const container = document.getElementById('userDropdownContainer');
+            const menu = document.getElementById('userDropdownMenu');
             if (container) container.classList.remove('open');
+            if (menu) menu.classList.remove('show');
         }
     });
 })();

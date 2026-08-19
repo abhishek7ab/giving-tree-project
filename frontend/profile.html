@@ -61,8 +61,8 @@
 
 <main id="main-content" class="profile-body">
 
-    <!-- IMPACT STRIP -->
-    <div class="impact-strip">
+    <!-- ENVIRONMENTAL IMPACT & COMMUNITY KARMA STRIP -->
+    <div class="impact-strip" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:14px; margin-bottom:32px;">
         <div class="impact-tile">
             <div class="impact-tile-num" id="pStatShared">—</div>
             <div class="impact-tile-label">Items Shared</div>
@@ -74,6 +74,14 @@
         <div class="impact-tile">
             <div class="impact-tile-num" id="pStatReceived">—</div>
             <div class="impact-tile-label">Items Received</div>
+        </div>
+        <div class="impact-tile" style="background:rgba(16,185,129,0.08); border-color:rgba(16,185,129,0.25);">
+            <div class="impact-tile-num" id="pStatCo2" style="color:var(--accent);">—</div>
+            <div class="impact-tile-label">🌿 CO₂ Offset (kg)</div>
+        </div>
+        <div class="impact-tile" style="background:rgba(245,158,11,0.08); border-color:rgba(245,158,11,0.25);">
+            <div class="impact-tile-num" id="pStatKarma" style="color:#fbbf24;">—</div>
+            <div class="impact-tile-label">⭐ Karma Points</div>
         </div>
     </div>
 
@@ -303,18 +311,28 @@ fetch('/api/user', { credentials: 'include' })
     const firstLetter = name.charAt(0).toUpperCase();
     document.getElementById('profileAvatar').innerHTML = `<span style="font-size:36px; font-weight:800; color:var(--accent);">${firstLetter}</span>`;
 
-    // Badges
+    // Dynamic Ecological & Community Badges
+    const sharedCount = Number(stats.total_shared || 0);
+    const helpedCount = Number(stats.people_helped || 0);
+    const receivedCount = Number(stats.items_received || 0);
+
+    const co2Kg = ((sharedCount * 4.5) + (receivedCount * 2.8)).toFixed(1);
+    const karmaPts = (sharedCount * 50) + (helpedCount * 30) + (receivedCount * 10);
+
     const badges = [];
-    if (isAdmin) badges.push(`<span class="profile-badge" style="background:rgba(244,63,94,0.1); color:var(--danger); border-color:rgba(244,63,94,0.25);"><i class="fas fa-shield-alt"></i> Admin</span>`);
-    if ((stats.total_shared || 0) >= 5)  badges.push(`<span class="profile-badge"><i class="fas fa-star"></i> Active Donor</span>`);
-    if ((stats.people_helped || 0) >= 3) badges.push(`<span class="profile-badge"><i class="fas fa-heart"></i> Community Helper</span>`);
-    badges.push(`<span class="profile-badge"><i class="fas fa-leaf"></i> Member</span>`);
+    if (isAdmin) badges.push(`<span class="profile-badge" style="background:rgba(244,63,94,0.1); color:var(--danger); border-color:rgba(244,63,94,0.25);"><i class="fas fa-shield-halved"></i> Master Admin</span>`);
+    if (sharedCount >= 5) badges.push(`<span class="profile-badge" style="background:rgba(245,158,11,0.12); color:#fbbf24; border-color:rgba(245,158,11,0.3);"><i class="fas fa-star"></i> Community Pillar</span>`);
+    if (helpedCount >= 3) badges.push(`<span class="profile-badge"><i class="fas fa-heart"></i> Verified Neighbor</span>`);
+    if (sharedCount >= 1) badges.push(`<span class="profile-badge"><i class="fas fa-seedling"></i> Active Giver</span>`);
+    badges.push(`<span class="profile-badge"><i class="fas fa-leaf"></i> Zero-Waste Member</span>`);
     document.getElementById('profileBadges').innerHTML = badges.join('');
 
     // Impact stats
-    document.getElementById('pStatShared').textContent   = stats.total_shared   || 0;
-    document.getElementById('pStatHelped').textContent   = stats.people_helped  || 0;
-    document.getElementById('pStatReceived').textContent = stats.items_received || 0;
+    document.getElementById('pStatShared').textContent   = sharedCount;
+    document.getElementById('pStatHelped').textContent   = helpedCount;
+    document.getElementById('pStatReceived').textContent = receivedCount;
+    if (document.getElementById('pStatCo2')) document.getElementById('pStatCo2').textContent = co2Kg;
+    if (document.getElementById('pStatKarma')) document.getElementById('pStatKarma').textContent = karmaPts.toLocaleString('en-IN');
 
     // Update display & form fields
     updateProfileViews(name, city, email);

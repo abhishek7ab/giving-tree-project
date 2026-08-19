@@ -1,4 +1,5 @@
 const requestModel = require('../models/requestModel');
+const itemModel = require('../models/itemModel');
 const reviewModel = require('../models/reviewModel');
 const userModel = require('../models/userModel');
 const mailer = require('../utils/mailer');
@@ -146,7 +147,37 @@ exports.updateRequestStatus = async (req, res) => {
             return res.status(400).send('Only an accepted request can be marked complete.');
         }
 
+        // 4-Digit Handover Safety PIN Verification
+        if (mappedStatus === 'completed' && requestDetails.handover_pin) {
+            const inputPin = req.body.pin || req.body.handover_pin;
+            if (inputPin && String(inputPin).trim() !== String(requestDetails.handover_pin).trim()) {
+                if (isJson) return res.status(400).json({ error: 'Incorrect 4-digit Handover PIN. Please ask the recipient for the verification code shown on their screen.' });
+                return res.status(400).send('Incorrect 4-digit Handover PIN.');
+            }
+        }
+
         await requestModel.updateStatus(id, mappedStatus);
+
+        // Generate Handover PIN on Acceptance
+        if (mappedStatus === 'accepted') {
+            const pin = Math.floor(1000 + Math.random() * 9000).toString();
+            await requestModel.setHandoverPin(id, pin);
+        }
+
+        // Synchronize Item Lifecycle State
+        if (requestDetails.item_id) {
+            try {
+                if (mappedStatus === 'accepted') {
+                    await itemModel.setItemStatus(requestDetails.item_id, 'reserved');
+                } else if (mappedStatus === 'completed') {
+                    await itemModel.setItemStatus(requestDetails.item_id, 'completed');
+                } else if (mappedStatus === 'cancelled' || mappedStatus === 'rejected') {
+                    await itemModel.setItemStatus(requestDetails.item_id, 'available');
+                }
+            } catch (errSync) {
+                console.warn('Item status sync note:', errSync);
+            }
+        }
 
         const notifyEmail = isOwner ? requestDetails.requester_email : requestDetails.owner_email;
         if (notifyEmail) {

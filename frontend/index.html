@@ -82,7 +82,7 @@
 
 <main id="main-content">
 
-<!-- ================= 1. EDITORIAL HERO SECTION ================= -->
+<!-- ================= 1. EDITORIAL HERO SECTION (Screen 1 Viewport) ================= -->
 <section class="hero-editorial">
     <div class="container">
         <div class="hero-content" id="welcomeGreeting">
@@ -96,7 +96,7 @@
             </h1>
 
             <p class="hero-subhead">
-                Give what you no longer need. Find what someone nearby can use.
+                Give what you no longer need. Find what someone nearby can use.<br>
                 Build a community where things get a second life.
             </p>
 
@@ -112,46 +112,49 @@
 
         <!-- Dynamic User Actions (Populated via navbar-auth or direct login) -->
         <div id="mainActions" style="display:none;"></div>
+    </div>
+</section>
 
-        <!-- Asymmetric Hero Visual Art Piece with Floating Micro-Cards -->
-        <div class="hero-visual-container reveal-on-scroll">
-            <!-- Floating Preview Card 1 -->
-            <div class="hero-floating-card hero-card-1">
-                <div class="card-emoji-box">📚</div>
-                <div class="card-text">
-                    <strong>Engineering Books</strong>
-                    <span>Free · Kothrud</span>
-                </div>
+<!-- ================= 2. FRESHLY SHARED (COMMUNITY PRODUCTS YOU CAN TAKE) ================= -->
+<section class="section">
+    <div class="container">
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:20px; margin-bottom:36px;" class="reveal-on-scroll">
+            <div>
+                <span class="eyebrow-pill">
+                    ⚡ Available Treasures
+                </span>
+                <h2 class="section-headline" style="margin:0;">Fresh Community Items</h2>
+                <p class="editorial-lead" style="margin:6px 0 0;">Free treasures looking for a second life in Pune — request what you need today!</p>
             </div>
+            <a href="/items.html" class="btn btn-secondary">
+                View Full Catalog <span class="btn-arrow">→</span>
+            </a>
+        </div>
 
-            <!-- Floating Preview Card 2 -->
-            <div class="hero-floating-card hero-card-2">
-                <div class="card-emoji-box">🧥</div>
-                <div class="card-text">
-                    <strong>Winter Jacket</strong>
-                    <span>Free · Baner</span>
-                </div>
+        <!-- Dynamic Items Grid populated via API -->
+        <div class="items-grid" id="recentItemsGrid">
+            <div style="text-align:center; width:100%; color:var(--muted); padding:40px; grid-column:1/-1;">
+                <i class="fas fa-spinner fa-spin fa-2x"></i>
+                <p style="margin-top:12px;">Loading available treasures...</p>
             </div>
+        </div>
+    </div>
+</section>
 
-            <!-- Floating Preview Card 3 -->
-            <div class="hero-floating-card hero-card-3">
-                <div class="card-emoji-box">🎮</div>
-                <div class="card-text">
-                    <strong>Game Controller</strong>
-                    <span>Free · Viman Nagar</span>
-                </div>
-            </div>
-
+<!-- ================= 3. SPOTLIGHT SECTION (SECOND STORY IMAGE) ================= -->
+<section class="section" style="padding-top:0;">
+    <div class="container">
+        <div class="hero-visual-container reveal-on-scroll" style="margin:0 auto;">
             <div class="hero-art-box">
                 <div class="hero-art-left">
-                    <span class="eyebrow-pill" style="background:var(--warm-yellow-dim); color:var(--tree-green); border-color:var(--warm-yellow);">
+                    <span class="eyebrow-pill">
                         ✨ Pune Neighbor Spotlight
                     </span>
                     <h2 class="hero-art-title">
                         Everything shared stays in the circle.
                     </h2>
                     <p style="color:var(--muted); font-size:1.05rem; line-height:1.65;">
-                        From college textbooks in FC Road to baby cradles in Hinjawadi, neighbors are sharing over 1,200+ useful items without money.
+                        From college textbooks in FC Road to baby cradles in Hinjawadi, neighbors are sharing useful items for free without money.
                     </p>
                     <div style="display:flex; gap:12px; margin-top:8px;">
                         <a href="/items.html" class="btn btn-primary btn-sm">
@@ -167,7 +170,7 @@
     </div>
 </section>
 
-<!-- ================= 2. BIG EDITORIAL STATEMENT ================= -->
+<!-- ================= 4. BIG EDITORIAL STATEMENT ================= -->
 <section class="statement-section">
     <div class="container">
         <div class="reveal-on-scroll">
@@ -183,8 +186,8 @@
     </div>
 </section>
 
-<!-- ================= 3. HOW IT WORKS VISUAL STORYTELLING ================= -->
-<section class="section section-white">
+<!-- ================= 5. HOW IT WORKS VISUAL STORYTELLING ================= -->
+<section class="section section-alt">
     <div class="container">
         <div class="reveal-on-scroll" style="text-align: left; max-width: 680px;">
             <span class="eyebrow-pill">Simple 3-Step Flow</span>
@@ -209,32 +212,6 @@
                 <div class="step-number">03</div>
                 <h3>Connect</h3>
                 <p>Arrange a safe, verified local pickup in your neighborhood and give the item a happy second life.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ================= 4. FRESHLY SHARED (DYNAMIC ITEMS FEED) ================= -->
-<section class="section section-warm">
-    <div class="container">
-        <div style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:20px; margin-bottom:36px;" class="reveal-on-scroll">
-            <div>
-                <span class="eyebrow-pill" style="background:var(--lilac-dim); color:var(--tree-green); border-color:var(--lilac);">
-                    ⚡ Freshly Shared
-                </span>
-                <h2 class="section-headline" style="margin:0;">New to the Tree</h2>
-                <p class="editorial-lead" style="margin:6px 0 0;">New things looking for a loving second home.</p>
-            </div>
-            <a href="/items.html" class="btn btn-secondary">
-                View Full Catalog <span class="btn-arrow">→</span>
-            </a>
-        </div>
-
-        <!-- Dynamic Items Grid populated via API -->
-        <div class="items-grid" id="recentItemsGrid">
-            <div style="text-align:center; width:100%; color:var(--muted); padding:40px;">
-                <i class="fas fa-spinner fa-spin fa-2x"></i>
-                <p style="margin-top:12px;">Loading fresh treasures...</p>
             </div>
         </div>
     </div>
@@ -298,44 +275,44 @@
 </section>
 
 <!-- ================= 6. COMMUNITY IMPACT ================= -->
-<section class="section section-warm">
+<section class="section">
     <div class="container">
         <div class="reveal-on-scroll" style="text-align:left;">
             <span class="eyebrow-pill">Community Metrics</span>
-            <h2 class="section-headline">Our Tangible Impact</h2>
-            <p class="editorial-lead">Real numbers powered by generous neighbors sharing every day.</p>
+            <h2 class="section-headline">Verified Local Impact</h2>
+            <p class="editorial-lead">Real live numbers powered by caring neighbors sharing in Pune.</p>
         </div>
 
         <div class="impact-grid">
             <div class="impact-card impact-card-1 reveal-on-scroll delay-100">
-                <div class="impact-number stat-counter" id="statItems" data-target="1240" data-suffix="+">1,240+</div>
-                <h3 class="impact-label">Items Shared</h3>
-                <p class="impact-sub">Useful items kept out of waste bins and put into loving homes.</p>
+                <div class="impact-number stat-counter" id="statItems" data-target="0">0</div>
+                <h3 class="impact-label">Available Treasures</h3>
+                <p class="impact-sub">Useful items currently active and ready for local pickup.</p>
             </div>
 
             <div class="impact-card impact-card-2 reveal-on-scroll delay-200">
-                <div class="impact-number stat-counter" id="statMembers" data-target="680" data-suffix="+">680+</div>
-                <h3 class="impact-label">Neighbors Connected</h3>
-                <p class="impact-sub">Active verified community members across Pune localities.</p>
+                <div class="impact-number stat-counter" id="statMembers" data-target="0">0</div>
+                <h3 class="impact-label">Active Givers</h3>
+                <p class="impact-sub">Registered community members sharing across Pune localities.</p>
             </div>
 
             <div class="impact-card impact-card-3 reveal-on-scroll delay-300">
-                <div class="impact-number stat-counter" id="statCompleted" data-target="920" data-suffix="+">920+</div>
-                <h3 class="impact-label">Second Lives Given</h3>
-                <p class="impact-sub">Successful handovers completed with zero monetary transaction.</p>
+                <div class="impact-number stat-counter" id="statCompleted" data-target="0">0</div>
+                <h3 class="impact-label">Handovers Completed</h3>
+                <p class="impact-sub">Successful neighbor-to-neighbor exchanges with 100% free transfer.</p>
             </div>
         </div>
     </div>
 </section>
 
 <!-- ================= 7. MISSION SECTION ("MORE THAN FREE STUFF") ================= -->
-<section class="section section-white">
+<section class="section section-alt">
     <div class="container">
-        <div class="reveal-on-scroll" style="text-align:left; max-width:760px;">
+        <div class="reveal-on-scroll" style="text-align: left; max-width: 680px;">
             <span class="eyebrow-pill">Our Core Philosophy</span>
             <h2 class="section-headline">More than free stuff.</h2>
             <p class="editorial-lead">
-                It's about giving things another life — and giving people another reason to connect.
+                It's about giving things another life — and giving neighbors a reason to connect safely.
             </p>
         </div>
 
@@ -348,42 +325,69 @@
 
             <div class="mission-card mission-card-2 reveal-on-scroll delay-200">
                 <div class="mission-icon-wrap">🌱</div>
-                <h3>Less Waste</h3>
-                <p>Sharing keeps durable items in circulation, preventing unnecessary consumption and reducing landfill impact.</p>
+                <h3>Zero Waste</h3>
+                <p>Sharing keeps durable items in circular circulation, preventing waste and reducing landfill footprint.</p>
             </div>
 
             <div class="mission-card mission-card-3 reveal-on-scroll delay-300">
                 <div class="mission-icon-wrap">🤝</div>
-                <h3>Real Community</h3>
-                <p>Meeting a neighbor for a 2-minute pickup turns an anonymous locality into a safe, connected village.</p>
+                <h3>Connected Neighborhoods</h3>
+                <p>Meeting a neighbor for a safe pickup at a main gate or local cafe builds real community trust.</p>
             </div>
         </div>
     </div>
 </section>
 
 <!-- ================= 8. MAJOR GIVE AN ITEM CTA ================= -->
-<section class="section section-forest">
+<section class="section">
     <div class="container">
-        <div style="display:grid; grid-template-columns:1.2fr 0.8fr; gap:40px; align-items:center;" class="reveal-on-scroll">
+        <div style="display:grid; grid-template-columns:1.15fr 0.85fr; gap:40px; align-items:center;" class="reveal-on-scroll">
             <div>
-                <span class="eyebrow-pill" style="background:rgba(255,255,255,0.15); color:#FFFFFF; border-color:rgba(255,255,255,0.3);">
+                <span class="eyebrow-pill">
                     🌿 Ready to Give?
                 </span>
-                <h2 style="font-size:clamp(2.4rem, 5vw, 4.2rem); font-weight:900; line-height:1.05; margin:16px 0 20px; color:#FFFFFF;">
+                <h2 style="font-size:clamp(2.2rem, 4.5vw, 3.8rem); font-weight:900; line-height:1.1; margin:16px 0 20px; color:#FFFFFF; letter-spacing:-0.8px;">
                     Have something you don't need anymore?<br>
-                    Someone nearby might.
+                    <span style="color:var(--accent);">Someone nearby might.</span>
                 </h2>
-                <p style="font-size:1.15rem; line-height:1.7; color:rgba(255,255,255,0.85); max-width:560px; margin-bottom:32px;">
-                    It takes less than 60 seconds to snap a photo and list an item. Clear your space, make a neighbor smile.
+                <p style="font-size:1.1rem; line-height:1.7; color:var(--text-2); max-width:560px; margin-bottom:32px;">
+                    Snap a photo, choose your locality, and post in under 60 seconds. Clear your home space and help a neighbor today.
                 </p>
-                <a href="/post-item.html" class="btn btn-warm btn-lg">
-                    Give an Item Now <span class="btn-arrow">→</span>
-                </a>
+                <div style="display:flex; gap:14px; flex-wrap:wrap;">
+                    <a href="/post-item.html" class="btn btn-primary btn-lg">
+                        <i class="fas fa-plus-circle"></i> Give an Item Now <span class="btn-arrow">→</span>
+                    </a>
+                    <a href="/items.html" class="btn btn-secondary btn-lg">
+                        Browse Catalog
+                    </a>
+                </div>
             </div>
-            <div style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); border-radius:var(--radius-xl); padding:40px; text-align:center;">
-                <div style="font-size:54px; margin-bottom:16px;">📦</div>
-                <h3 style="font-size:1.4rem; font-weight:800; color:#FFFFFF; margin-bottom:8px;">Zero Fees. 100% Free.</h3>
-                <p style="color:rgba(255,255,255,0.8); font-size:0.95rem; line-height:1.6;">No advertisements, no delivery charges, no commissions. Just neighbor-to-neighbor generosity.</p>
+            
+            <div style="background:rgba(15,23,42,0.85); border:1px solid rgba(255,255,255,0.12); border-radius:var(--radius-xl); padding:36px 32px; backdrop-filter:blur(16px); box-shadow:0 20px 50px rgba(0,0,0,0.5);">
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;">
+                    <div style="width:46px; height:46px; border-radius:12px; background:var(--accent-dim); color:var(--accent); display:flex; align-items:center; justify-content:center; font-size:22px; border:1px solid rgba(16,185,129,0.3);">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div>
+                        <h3 style="font-size:18px; font-weight:800; color:#FFFFFF; margin:0 0 2px;">Community Trust Guarantees</h3>
+                        <span style="font-size:12px; color:var(--accent); font-weight:700;">100% Free · Verified Local Handovers</span>
+                    </div>
+                </div>
+                
+                <div style="display:flex; flex-direction:column; gap:14px; text-align:left;">
+                    <div style="display:flex; align-items:flex-start; gap:12px; font-size:13.5px; color:var(--text-2);">
+                        <i class="fas fa-check-circle" style="color:var(--accent); margin-top:3px; font-size:15px;"></i>
+                        <span><strong style="color:#FFFFFF;">Zero Fees &amp; No Ads:</strong> 100% free with no commissions, hidden charges, or sponsored listings.</span>
+                    </div>
+                    <div style="display:flex; align-items:flex-start; gap:12px; font-size:13.5px; color:var(--text-2);">
+                        <i class="fas fa-check-circle" style="color:var(--accent); margin-top:3px; font-size:15px;"></i>
+                        <span><strong style="color:#FFFFFF;">Live Coordination Chat:</strong> In-app neighbor messaging to arrange pickup timings &amp; spots safely.</span>
+                    </div>
+                    <div style="display:flex; align-items:flex-start; gap:12px; font-size:13.5px; color:var(--text-2);">
+                        <i class="fas fa-check-circle" style="color:var(--accent); margin-top:3px; font-size:15px;"></i>
+                        <span><strong style="color:#FFFFFF;">Verified Feedback Ratings:</strong> Build neighbor trust with community ratings on every handover.</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -416,6 +420,7 @@
                     <li><a href="/post-item.html">Give an Item</a></li>
                     <li><a href="/requests.html">Activity Hub</a></li>
                     <li><a href="/my-items.html">My Dashboard</a></li>
+                    <li><a href="/admin.html" style="color:var(--accent); font-weight:700;"><i class="fas fa-shield-alt" style="margin-right:6px; font-size:11px;"></i>Admin Dashboard</a></li>
                 </ul>
             </div>
 
@@ -496,8 +501,8 @@ fetch(`${BACKEND_URL}/api/items/recent`)
                </div>`;
 
         html += `
-        <div class="item-card reveal-on-scroll">
-            <div class="item-card-media">
+        <div class="item-card is-revealed">
+            <div class="item-card-media" onclick="window.location.href='/items.html?id=${item.id}'" style="cursor:pointer;">
                 ${imgHtml}
                 <div class="card-badge-container">
                     <span class="card-badge">${safeCategory}</span>
@@ -505,17 +510,18 @@ fetch(`${BACKEND_URL}/api/items/recent`)
                 </div>
             </div>
             <div class="item-card-content">
-                <h3 class="item-card-title" onclick="window.location.href='/items.html?id=${item.id}'">${safeTitle}</h3>
-                <div class="card-meta-line">
-                    <span class="locality-pin"><i class="fas fa-map-marker-alt"></i> ${safeLocation}</span>
+                <h3 class="item-card-title" onclick="window.location.href='/items.html?id=${item.id}'" style="cursor:pointer;">${safeTitle}</h3>
+                <div class="card-meta-line" style="margin-top:10px;">
+                    <span class="locality-pin"><i class="fas fa-map-marker-alt" style="color:var(--accent);"></i> ${safeLocation}</span>
                     <a href="/items.html?id=${item.id}" class="btn-card-request">
-                        Request <span class="btn-arrow">→</span>
+                        Request Free <span class="btn-arrow">→</span>
                     </a>
                 </div>
             </div>
         </div>`;
     });
     grid.innerHTML = html;
+    if (window.refreshScrollObserver) window.refreshScrollObserver();
 }).catch(err => {
     const grid = document.getElementById('recentItemsGrid');
     if (grid) grid.innerHTML = `<p style="color:var(--muted); text-align:center; width:100%; grid-column:1/-1;">Could not load items. <a href="/items.html" style="color:var(--tree-green); font-weight:700;">Browse full catalog →</a></p>`;
@@ -530,20 +536,24 @@ fetch(`${BACKEND_URL}/api/stats`)
     const elCompleted = document.getElementById('statCompleted');
     const elHeroTag = document.getElementById('heroTag');
 
-    if (elItems && stats.items_shared) {
-        elItems.setAttribute('data-target', stats.items_shared);
-        elItems.textContent = stats.items_shared.toLocaleString('en-IN') + '+';
+    const itemsCount = Number(stats.items_shared || 0);
+    const membersCount = Number(stats.members || 0);
+    const completedCount = Number(stats.completed || 0);
+
+    if (elItems) {
+        elItems.setAttribute('data-target', itemsCount);
+        elItems.textContent = itemsCount.toLocaleString('en-IN');
     }
-    if (elMembers && stats.members) {
-        elMembers.setAttribute('data-target', stats.members);
-        elMembers.textContent = stats.members.toLocaleString('en-IN') + '+';
+    if (elMembers) {
+        elMembers.setAttribute('data-target', membersCount);
+        elMembers.textContent = membersCount.toLocaleString('en-IN');
     }
-    if (elCompleted && stats.completed) {
-        elCompleted.setAttribute('data-target', stats.completed);
-        elCompleted.textContent = stats.completed.toLocaleString('en-IN') + '+';
+    if (elCompleted) {
+        elCompleted.setAttribute('data-target', completedCount);
+        elCompleted.textContent = completedCount.toLocaleString('en-IN');
     }
-    if (elHeroTag && stats.members > 0) {
-        elHeroTag.innerHTML = `🌿 Join ${stats.members}+ neighbors sharing in Pune`;
+    if (elHeroTag && membersCount > 0) {
+        elHeroTag.innerHTML = `🌿 Join ${membersCount}+ neighbors sharing in Pune`;
     }
 }).catch(err => console.warn('Stats fetch note:', err));
 

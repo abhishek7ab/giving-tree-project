@@ -145,23 +145,25 @@
     box-shadow: 0 8px 22px rgba(245, 158, 11, 0.5);
 }
 
-/* 4. Secondary Outline / Inverted Pill */
+/* Improvement #8 — Secondary button: better glass contrast on dark hero */
 .btn-secondary,
 .btn.secondary,
 .secondary {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.06);
     color: #FFFFFF;
-    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    border: 1.5px solid rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .btn-secondary:hover,
 .btn.secondary:hover,
 .secondary:hover {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.13);
+    border-color: rgba(255, 255, 255, 0.55);
     color: #FFFFFF;
     transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
 }
 
 /* 5. Inverted White Button */

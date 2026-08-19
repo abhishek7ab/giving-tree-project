@@ -3,11 +3,12 @@
    Editorial Dark Mode Footer Layout (Inspired by eBay Playbook)
    ============================================================ */
 
+/* Improvement #7 — Clear 'end of page' separation */
 footer {
-    background-color: var(--bg-surface);
+    background-color: #0B1121;
     color: var(--text-1);
     padding: clamp(70px, 9vw, 120px) 0 40px;
-    border-top: 1px solid var(--border);
+    border-top: 1px solid var(--border-medium);
     position: relative;
     overflow: hidden;
 }

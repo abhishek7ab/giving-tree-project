@@ -196,6 +196,19 @@ exports.updateItemStatus = async (id, userId, status) => {
     return result.rows[0];
 };
 
+exports.setItemStatus = async (id, status) => {
+    await ensureItemSchema();
+    const isReserved = status === 'reserved';
+    const sql = `
+        UPDATE items
+        SET status = $1, is_reserved = $2
+        WHERE id = $3 AND archived_at IS NULL
+        RETURNING *;
+    `;
+    const result = await db.query(sql, [status, isReserved, id]);
+    return result.rows[0];
+};
+
 exports.saveItem = async (userId, itemId) => {
     await ensureItemSchema();
     const sql = `

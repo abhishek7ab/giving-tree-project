@@ -8,14 +8,16 @@
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     max-width: var(--max-w-display);
-    margin: 16px auto 0;
+    margin: 0 auto;
     padding: 0 clamp(16px, 3vw, 32px);
     height: var(--nav-height);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: sticky;
+    position: fixed;
     top: 16px;
+    left: 16px;
+    right: 16px;
     z-index: var(--z-sticky);
     border-radius: var(--radius-full);
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -116,6 +118,20 @@
     background: var(--leaf-green);
     transform: translateY(-1px);
     box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45);
+}
+
+/* Improvement #7 — Log In is secondary, Join is primary CTA */
+.nav-link.nav-login {
+    color: var(--text-2);
+    background: transparent;
+    font-weight: 600;
+    opacity: 0.85;
+}
+
+.nav-link.nav-login:hover {
+    color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.06);
+    opacity: 1;
 }
 
 .nav-svg {
@@ -303,8 +319,9 @@
     animation: fadeInDropdown var(--dur-fast) var(--ease-out);
 }
 
+.user-dropdown-container.open .user-dropdown-menu,
 .user-dropdown-menu.show {
-    display: flex;
+    display: flex !important;
 }
 
 @keyframes fadeInDropdown {

@@ -20,24 +20,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 2. IntersectionObserver for Scroll Reveal
-    const revealElements = document.querySelectorAll('.reveal-on-scroll');
-    if ('IntersectionObserver' in window && revealElements.length > 0) {
-        const observer = new IntersectionObserver((entries, obs) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-revealed');
-                    obs.unobserve(entry.target);
-                }
-            });
-        }, {
-            threshold: 0.12,
-            rootMargin: '0px 0px -50px 0px'
-        });
+    let scrollObserver = null;
+    window.refreshScrollObserver = function() {
+        const revealElements = document.querySelectorAll('.reveal-on-scroll:not(.is-revealed)');
+        if ('IntersectionObserver' in window && revealElements.length > 0) {
+            if (!scrollObserver) {
+                scrollObserver = new IntersectionObserver((entries, obs) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-revealed');
+                            obs.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    threshold: 0.08,
+                    rootMargin: '0px 0px -30px 0px'
+                });
+            }
+            revealElements.forEach(el => scrollObserver.observe(el));
+        } else {
+            revealElements.forEach(el => el.classList.add('is-revealed'));
+        }
+    };
 
-        revealElements.forEach(el => observer.observe(el));
-    } else {
-        revealElements.forEach(el => el.classList.add('is-revealed'));
-    }
+    window.refreshScrollObserver();
 
     // 3. Animated Number Counters
     const counters = document.querySelectorAll('.stat-counter');

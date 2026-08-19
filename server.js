@@ -172,13 +172,14 @@ const frontendPath = fs.existsSync(path.join(__dirname, 'frontend'))
 
 app.use(express.static(frontendPath, {
   setHeaders: (res, filePath) => {
-    if (filePath.endsWith('.html')) {
+    if (filePath.endsWith('.html') || filePath.endsWith('.css') || filePath.endsWith('.js')) {
       res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
       res.setHeader('Pragma', 'no-cache');
       res.setHeader('Expires', '0');
     }
   }
 }));
+app.use('/uploads', express.static(path.join(frontendPath, 'assets', 'uploads')));
 
 // ✅ Routes
 app.use('/', authRoutes);

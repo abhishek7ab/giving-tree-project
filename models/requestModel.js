@@ -8,6 +8,7 @@ async function ensureRequestSchema() {
     await db.query("ALTER TABLE requests ADD COLUMN IF NOT EXISTS requester_latitude DOUBLE PRECISION");
     await db.query("ALTER TABLE requests ADD COLUMN IF NOT EXISTS requester_longitude DOUBLE PRECISION");
     await db.query("ALTER TABLE requests ADD COLUMN IF NOT EXISTS delivery_instructions TEXT");
+    await db.query("ALTER TABLE requests ADD COLUMN IF NOT EXISTS handover_pin VARCHAR(10)");
     await db.query("ALTER TABLE requests ADD COLUMN IF NOT EXISTS archived_at TIMESTAMP");
     await db.query("ALTER TABLE items ADD COLUMN IF NOT EXISTS latitude DOUBLE PRECISION");
     await db.query("ALTER TABLE items ADD COLUMN IF NOT EXISTS longitude DOUBLE PRECISION");
@@ -123,6 +124,7 @@ exports.getRequests = async () => {
             requests.id,
             requests.item_id,
             requests.status,
+            requests.handover_pin,
             requests.requester_email,
             requests.requester_location,
             requests.requester_latitude,
@@ -158,6 +160,7 @@ exports.getRequestsForOwner = async (ownerEmail) => {
             requests.id,
             requests.item_id,
             requests.status,
+            requests.handover_pin,
             requests.requester_email,
             requests.requester_location,
             requests.requester_latitude,
@@ -209,6 +212,7 @@ exports.getRequestsByRequester = async (email) => {
             requests.id,
             requests.item_id,
             requests.status,
+            requests.handover_pin,
             requests.requester_location,
             requests.requester_latitude,
             requests.requester_longitude,
@@ -249,6 +253,13 @@ exports.getRequestsByRequester = async (email) => {
     return result.rows;
 };
 
+exports.setHandoverPin = async (id, pin) => {
+    await ensureRequestSchema();
+    const sql = `UPDATE requests SET handover_pin = $1 WHERE id = $2 RETURNING *`;
+    const result = await db.query(sql, [pin, id]);
+    return result.rows[0];
+};
+
 exports.getRequestWithOwnerById = async (requestId) => {
     await ensureRequestSchema();
     const sql = `
@@ -256,6 +267,7 @@ exports.getRequestWithOwnerById = async (requestId) => {
             requests.id,
             requests.item_id,
             requests.status,
+            requests.handover_pin,
             requests.requester_email,
             requests.requester_location,
             requests.requester_latitude,

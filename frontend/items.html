@@ -148,38 +148,40 @@
             <i class="fas fa-location-dot"></i>
             <span>Pune Hubs</span>
         </div>
-        <div class="pune-chips-scroll" id="puneChipsScroll">
-            <button type="button" class="pune-locality-chip active" data-locality="all" onclick="filterCatalogPuneLocality('all', this)">
-                <i class="fas fa-globe-asia" style="font-size:11px;"></i> All Pune <span class="pune-chip-count" id="count-all">0</span>
-            </button>
-            <button type="button" class="pune-locality-chip" data-locality="Kothrud" onclick="filterCatalogPuneLocality('Kothrud', this)">
-                Kothrud <span class="pune-chip-count" id="count-kothrud">0</span>
-            </button>
-            <button type="button" class="pune-locality-chip" data-locality="Katraj" onclick="filterCatalogPuneLocality('Katraj', this)">
-                Katraj <span class="pune-chip-count" id="count-katraj">0</span>
-            </button>
-            <button type="button" class="pune-locality-chip" data-locality="Hadapsar" onclick="filterCatalogPuneLocality('Hadapsar', this)">
-                Hadapsar <span class="pune-chip-count" id="count-hadapsar">0</span>
-            </button>
-            <button type="button" class="pune-locality-chip" data-locality="Baner" onclick="filterCatalogPuneLocality('Baner', this)">
-                Baner <span class="pune-chip-count" id="count-baner">0</span>
-            </button>
-            <button type="button" class="pune-locality-chip" data-locality="FC Road" onclick="filterCatalogPuneLocality('FC Road', this)">
-                FC Road <span class="pune-chip-count" id="count-fcroad">0</span>
-            </button>
-            <button type="button" class="pune-locality-chip" data-locality="Hinjawadi" onclick="filterCatalogPuneLocality('Hinjawadi', this)">
-                Hinjawadi <span class="pune-chip-count" id="count-hinjawadi">0</span>
-            </button>
-            <button type="button" class="pune-locality-chip" data-locality="Viman Nagar" onclick="filterCatalogPuneLocality('Viman Nagar', this)">
-                Viman Nagar <span class="pune-chip-count" id="count-vimannagar">0</span>
-            </button>
-            <button type="button" class="pune-locality-chip" data-locality="Koregaon Park" onclick="filterCatalogPuneLocality('Koregaon Park', this)">
-                Koregaon Park <span class="pune-chip-count" id="count-koregaonpark">0</span>
-            </button>
+        <div class="pune-chips-scroll-wrapper">
+            <div class="pune-chips-scroll" id="puneChipsScroll">
+                <button type="button" class="pune-locality-chip active" data-locality="all" onclick="filterCatalogPuneLocality('all', this)">
+                    <i class="fas fa-globe-asia" style="font-size:11px;"></i> All Pune <span class="pune-chip-count" id="count-all">0</span>
+                </button>
+                <button type="button" class="pune-locality-chip" data-locality="Kothrud" onclick="filterCatalogPuneLocality('Kothrud', this)">
+                    Kothrud <span class="pune-chip-count" id="count-kothrud">0</span>
+                </button>
+                <button type="button" class="pune-locality-chip" data-locality="Katraj" onclick="filterCatalogPuneLocality('Katraj', this)">
+                    Katraj <span class="pune-chip-count" id="count-katraj">0</span>
+                </button>
+                <button type="button" class="pune-locality-chip" data-locality="Hadapsar" onclick="filterCatalogPuneLocality('Hadapsar', this)">
+                    Hadapsar <span class="pune-chip-count" id="count-hadapsar">0</span>
+                </button>
+                <button type="button" class="pune-locality-chip" data-locality="Baner" onclick="filterCatalogPuneLocality('Baner', this)">
+                    Baner <span class="pune-chip-count" id="count-baner">0</span>
+                </button>
+                <button type="button" class="pune-locality-chip" data-locality="FC Road" onclick="filterCatalogPuneLocality('FC Road', this)">
+                    FC Road <span class="pune-chip-count" id="count-fcroad">0</span>
+                </button>
+                <button type="button" class="pune-locality-chip" data-locality="Hinjawadi" onclick="filterCatalogPuneLocality('Hinjawadi', this)">
+                    Hinjawadi <span class="pune-chip-count" id="count-hinjawadi">0</span>
+                </button>
+                <button type="button" class="pune-locality-chip" data-locality="Viman Nagar" onclick="filterCatalogPuneLocality('Viman Nagar', this)">
+                    Viman Nagar <span class="pune-chip-count" id="count-vimannagar">0</span>
+                </button>
+                <button type="button" class="pune-locality-chip" data-locality="Koregaon Park" onclick="filterCatalogPuneLocality('Koregaon Park', this)">
+                    Koregaon Park <span class="pune-chip-count" id="count-koregaonpark">0</span>
+                </button>
+            </div>
         </div>
     </div>
-
     <div class="items-grid" id="itemsGrid"></div>
+
 
     <!-- Interactive Full Catalog Map View -->
     <div class="catalog-map-wrapper" id="catalogMapWrapper" style="display:none;">
@@ -719,14 +721,22 @@
                     distBadge = `<span class="coords-pill-badge" style="color:var(--accent); font-weight:700;"><i class="fas fa-route"></i> ${GivingTreeLocation.formatDistance(distKm)}</span>`;
                 }
 
+                let statusBadge = '';
+                if (i.status === 'reserved' || i.is_reserved) {
+                    statusBadge = `<span class="card-status-pill status-reserved"><i class="fas fa-clock"></i> Reserved</span>`;
+                } else if (i.status === 'completed') {
+                    statusBadge = `<span class="card-status-pill status-completed"><i class="fas fa-check-circle"></i> Handed Over</span>`;
+                }
+
                 const imgTag = hasImg
-                    ? `<img src="${rawImg}" alt="${safeTitle}" loading="lazy" onerror="this.remove();">`
-                    : '';
+                    ? `<img src="${rawImg}" alt="${safeTitle}" loading="lazy" onerror="this.src='/assets/story-img.png';">`
+                    : `<img src="/assets/story-img.png" alt="${safeTitle}">`;
 
                 html += `
                 <div class="pro-card in-view">
                     <div class="img-box" onclick="openItemDetail(${i.id})">
                         ${imgTag}
+                        ${statusBadge}
                         <div class="img-placeholder-fallback">
                             <i class="fas fa-box-open" style="font-size:40px; opacity:0.5;"></i>
                             <span style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; opacity:0.7; margin-top:8px;">Community Item</span>
@@ -1219,6 +1229,7 @@
         </div>
     </footer>
 
+    <script src="/socket.io/socket.io.js"></script>
     <script src="/assets/js/utils.js"></script>
     <script src="/assets/js/location-picker.js"></script>
     <script src="/assets/js/navbar-auth.js"></script>
