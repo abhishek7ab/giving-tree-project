@@ -2512,7 +2512,12 @@
         display: none;
     }
     .auth-card {
-        padding: 36px 24px;
+        padding: 36px 28px;
+    }
+    /* Collapse 2-col form rows on tablet/mobile */
+    .auth-card .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
     }
 }
 
