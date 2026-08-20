@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 const { signToken, verifyToken } = require('../config/jwt');
 const userModel = require('../models/userModel');
 const auditModel = require('../models/auditModel');
@@ -38,7 +39,7 @@ exports.register = async (req, res) => {
         }
 
         if (!ALLOWED_PUNE_LOCATIONS.includes(rawCity)) {
-            if (isJson) return res.status(400).json({ error: 'locationinvalid', message: 'Location must be one of the 8 supported Pune neighborhood locations.' });
+            if (isJson) return res.status(400).json({ error: 'locationinvalid', message: 'Location must be one of the supported Pune neighborhood locations.' });
             return res.redirect("/register.html?error=locationinvalid");
         }
 
@@ -191,7 +192,7 @@ exports.updateName = async (req, res) => {
         if (newName !== undefined && !newName) return res.status(400).json({ error: 'Please enter a valid name' });
 
         if (newCity !== undefined && newCity && !ALLOWED_PUNE_LOCATIONS.includes(newCity)) {
-            return res.status(400).json({ error: 'Location must be one of the 8 supported Pune neighborhood locations.' });
+            return res.status(400).json({ error: 'Location must be one of the supported Pune neighborhood locations.' });
         }
 
         const updatedUser = await userModel.updateUserProfile(userId, { name: newName, city: newCity });
@@ -221,39 +222,6 @@ exports.updateName = async (req, res) => {
             return res.status(400).json({ error: 'nameexists', message: 'This username/name is already taken. Please choose another.' });
         }
         return res.status(500).json({ error: err.message || 'Failed to update profile' });
-    }
-};
-
-// ================= CHANGE PASSWORD =================
-exports.changePassword = async (req, res) => {
-    try {
-        const userId = req.user?.id || req.session?.user?.id;
-        const { currentPassword, newPassword } = req.body;
-        if (!userId) return res.status(401).json({ error: 'Not logged in' });
-        if (!currentPassword || !newPassword) {
-            return res.status(400).json({ error: 'Please fill in all password fields.' });
-        }
-        if (newPassword.length < 6) {
-            return res.status(400).json({ error: 'New password must be at least 6 characters.' });
-        }
-
-        const db = require('../database/db');
-        const userRes = await db.query('SELECT id, password FROM users WHERE id = $1', [userId]);
-        const user = userRes.rows[0];
-        if (!user) return res.status(404).json({ error: 'User not found' });
-
-        const isMatch = await bcrypt.compare(currentPassword, user.password);
-        if (!isMatch) {
-            return res.status(400).json({ error: 'Incorrect current password.' });
-        }
-
-        const hashedPassword = await bcrypt.hash(newPassword, 10);
-        await db.query('UPDATE users SET password = $1 WHERE id = $2', [hashedPassword, userId]);
-
-        return res.json({ success: true, message: 'Password changed successfully!' });
-    } catch (err) {
-        console.error("CHANGE PASSWORD ERROR:", err);
-        return res.status(500).json({ error: 'Failed to change password' });
     }
 };
 
@@ -303,7 +271,7 @@ exports.logoutUser = (req, res) => {
 exports.makeMeAdmin = async (req, res) => {
     try {
         const isJson = req.headers.accept?.includes('application/json') || req.headers['content-type']?.includes('application/json');
-        const secretKey = req.body?.key || req.query?.key;
+        const secretKey = req.body?.key;
         const requiredSecret = process.env.ADMIN_SETUP_KEY;
 
         if (!requiredSecret || requiredSecret.trim().length === 0) {
@@ -311,7 +279,10 @@ exports.makeMeAdmin = async (req, res) => {
             return res.status(403).send("Admin setup via key is disabled on this server.");
         }
 
-        if (secretKey !== requiredSecret) {
+        // Constant-time key verification to eliminate timing attack vectors
+        const keyBuf = Buffer.from(String(secretKey || ''));
+        const reqBuf = Buffer.from(String(requiredSecret));
+        if (keyBuf.length !== reqBuf.length || !crypto.timingSafeEqual(keyBuf, reqBuf)) {
             if (isJson) return res.status(403).json({ error: 'Invalid admin setup key.' });
             return res.status(403).send("Unauthorized key.");
         }

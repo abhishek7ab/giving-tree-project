@@ -223,6 +223,12 @@ async function initDB() {
             UPDATE items SET latitude = 18.5362, longitude = 73.8940, location = 'Koregaon Park, Pune'
             WHERE (location ILIKE '%koregaon%') AND (latitude IS NULL OR longitude IS NULL);
 
+            UPDATE items SET latitude = 18.5987, longitude = 73.7660, location = 'Wakad, Pune'
+            WHERE (location ILIKE '%wakad%') AND (latitude IS NULL OR longitude IS NULL);
+
+            UPDATE items SET latitude = 18.5602, longitude = 73.8031, location = 'Aundh, Pune'
+            WHERE (location ILIKE '%aundh%') AND (latitude IS NULL OR longitude IS NULL);
+
             UPDATE users SET city = 'Kothrud, Pune', latitude = 18.5074, longitude = 73.8077
             WHERE (city IS NULL OR city = '') AND archived_at IS NULL;
         `);

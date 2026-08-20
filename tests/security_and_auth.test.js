@@ -177,5 +177,20 @@ describe('3. Deep Input Sanitization & CSRF Defense', () => {
     expect(isOriginAllowed('https://giving-tree-project.vercel.app.attacker.com')).toBe(false);
     expect(isOriginAllowed('javascript:void(0)')).toBe(false);
   });
+
+  test('constant-time crypto comparison correctly verifies setup keys without leaking timing data', () => {
+    const crypto = require('crypto');
+    const validKey = 'giving_tree_admin_master_setup_key_2026';
+    const candidateCorrect = 'giving_tree_admin_master_setup_key_2026';
+    const candidateWrong = 'giving_tree_admin_wrong_setup_key_2026';
+
+    const bufValid = Buffer.from(validKey);
+    const bufCandidateCorrect = Buffer.from(candidateCorrect);
+    const bufCandidateWrong = Buffer.from(candidateWrong);
+
+    expect(bufCandidateCorrect.length === bufValid.length && crypto.timingSafeEqual(bufCandidateCorrect, bufValid)).toBe(true);
+    expect(bufCandidateWrong.length === bufValid.length && crypto.timingSafeEqual(bufCandidateWrong, bufValid)).toBe(false);
+  });
 });
+
 

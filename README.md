@@ -74,7 +74,7 @@ Instead of letting them gather dust or throwing them in landfills, **Giving Tree
 
 ## 📍 Pune Neighborhood Hubs
 
-Giving Tree is mapped to 8 major community clusters across Pune:
+Giving Tree is mapped to 10 major community clusters across Pune:
 
 | Locality | Key Landmarks | Latitude | Longitude |
 |---|---|---|---|
@@ -86,6 +86,8 @@ Giving Tree is mapped to 8 major community clusters across Pune:
 | **Koregaon Park**| North Main Road / Osho Garden | `18.5362` | `73.8940` |
 | **Hadapsar** | Magarpatta City / Amanora Town | `18.5089` | `73.9259` |
 | **Katraj** | Bharati Vidyapeeth / Katraj Lake | `18.4575` | `73.8677` |
+| **Wakad** | Dutta Mandir / Bhumkar Chowk | `18.5987` | `73.7660` |
+| **Aundh** | Westend Mall / Bremen Chowk | `18.5602` | `73.8031` |
 
 ---
 

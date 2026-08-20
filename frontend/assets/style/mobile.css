@@ -593,38 +593,42 @@
    ============================================================ */
 @media (max-width: 768px) {
     .auth-wrapper {
-        grid-template-columns: 1fr !important;
         min-height: 100svh !important;
+        padding: calc(56px + 16px) 12px 32px !important;
+        display: flex !important;
+        align-items: flex-start !important;
     }
 
-    /* Hide decorative brand panel on mobile */
+    .auth-container {
+        grid-template-columns: 1fr !important;
+        border-radius: 20px !important;
+        width: 100% !important;
+        max-width: 480px !important;
+        margin: 0 auto !important;
+    }
+
+    /* Hide decorative brand panel on mobile for focused login */
     .auth-brand {
         display: none !important;
     }
 
     .auth-card {
+        padding: 28px 20px 32px !important;
         max-width: 100% !important;
-        border-radius: 0 !important;
-        min-height: 100svh !important;
-        padding: calc(56px + 24px) 20px 40px !important;
-    }
-
-    .auth-card-inner {
-        max-width: 420px !important;
-        margin: 0 auto !important;
     }
 
     .auth-title {
         font-size: clamp(1.6rem, 6vw, 2rem) !important;
     }
 
-    .auth-input {
-        min-height: 48px !important;
-        font-size: 16px !important;
+    .auth-card .input-icon-wrapper input,
+    .auth-card select {
+        height: 48px !important;
+        font-size: 16px !important; /* Prevents auto-zoom on iOS */
     }
 
-    .auth-submit-btn {
-        min-height: 48px !important;
+    .auth-card .auth-btn {
+        height: 48px !important;
         font-size: 15px !important;
     }
 }

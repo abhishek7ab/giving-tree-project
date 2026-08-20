@@ -23,13 +23,26 @@ function showToast(message, type = 'success') {
     if (isInfo)    iconClass = 'fa-circle-info';
 
     toast.className = `toast${isError ? ' error' : isWarning ? ' warning' : isInfo ? ' info' : ''}`;
-    toast.innerHTML = `
-        <i class="fas ${iconClass}"></i>
-        <span style="font-weight:600;">${message}</span>
-        <button onclick="this.parentElement.classList.remove('show'); setTimeout(()=>this.parentElement.remove(),500)"
-            style="background:none;border:none;color:inherit;opacity:0.5;cursor:pointer;font-size:16px;padding:0;margin-left:auto;line-height:1;"
-            aria-label="Dismiss notification">✕</button>
-    `;
+    
+    const iconEl = document.createElement('i');
+    iconEl.className = `fas ${iconClass}`;
+    
+    const textSpan = document.createElement('span');
+    textSpan.style.fontWeight = '600';
+    textSpan.textContent = String(message || '');
+
+    const closeBtn = document.createElement('button');
+    closeBtn.style.cssText = 'background:none;border:none;color:inherit;opacity:0.5;cursor:pointer;font-size:16px;padding:0;margin-left:auto;line-height:1;';
+    closeBtn.setAttribute('aria-label', 'Dismiss notification');
+    closeBtn.textContent = '✕';
+    closeBtn.onclick = function () {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 500);
+    };
+
+    toast.appendChild(iconEl);
+    toast.appendChild(textSpan);
+    toast.appendChild(closeBtn);
     container.appendChild(toast);
     // Force reflow before adding 'show' to trigger transition
     void toast.offsetWidth;

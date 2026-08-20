@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -111,9 +111,9 @@
                     </button>
                 </div>
 
-                <!-- 8 Curated Pune Hubs Selector Dropdown -->
+                <!-- 10 Curated Pune Hubs Selector Dropdown -->
                 <select id="puneLocalitySelect" class="pune-hub-select" onchange="handlePuneHubSelect(this.value)" required>
-                    <option value="">Choose from 8 Pune Neighborhood Hubs</option>
+                    <option value="">Choose from 10 Pune Neighborhood Hubs</option>
                     <option value="Kothrud, Pune">📍 Kothrud, Pune (Near MIT / Vanaz)</option>
                     <option value="Baner, Pune">📍 Baner, Pune (High Street / Balewadi)</option>
                     <option value="FC Road, Pune">📍 FC Road, Pune (Shivaji Nagar / Deccan)</option>
@@ -122,9 +122,11 @@
                     <option value="Koregaon Park, Pune">📍 Koregaon Park, Pune (North Main Rd)</option>
                     <option value="Hadapsar, Pune">📍 Hadapsar, Pune (Magarpatta / Amanora)</option>
                     <option value="Katraj, Pune">📍 Katraj, Pune (Katraj Zoo / Bharati Vidyapeeth)</option>
+                    <option value="Wakad, Pune">📍 Wakad, Pune (Dutta Mandir / Bhumkar Chowk)</option>
+                    <option value="Aundh, Pune">📍 Aundh, Pune (Westend Mall / Bremen Chowk)</option>
                 </select>
 
-                <!-- Quick-Pick Chips for the 8 Pune Hubs -->
+                <!-- Quick-Pick Chips for the 10 Pune Hubs -->
                 <div class="pune-quick-chips" style="display:flex; gap:6px; flex-wrap:wrap; margin:10px 0 12px;">
                     <button type="button" class="post-loc-chip" onclick="handlePuneHubSelect('Kothrud, Pune')">Kothrud</button>
                     <button type="button" class="post-loc-chip" onclick="handlePuneHubSelect('Baner, Pune')">Baner</button>
@@ -134,6 +136,8 @@
                     <button type="button" class="post-loc-chip" onclick="handlePuneHubSelect('Koregaon Park, Pune')">Koregaon Park</button>
                     <button type="button" class="post-loc-chip" onclick="handlePuneHubSelect('Hadapsar, Pune')">Hadapsar</button>
                     <button type="button" class="post-loc-chip" onclick="handlePuneHubSelect('Katraj, Pune')">Katraj</button>
+                    <button type="button" class="post-loc-chip" onclick="handlePuneHubSelect('Wakad, Pune')">Wakad</button>
+                    <button type="button" class="post-loc-chip" onclick="handlePuneHubSelect('Aundh, Pune')">Aundh</button>
                 </div>
 
                 <!-- Toggle Button to Open/Close Map -->

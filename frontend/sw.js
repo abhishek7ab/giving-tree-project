@@ -1,6 +1,6 @@
-const CACHE_NAME = 'giving-tree-v30';
-const STATIC_CACHE = 'giving-tree-static-v30';
-const API_CACHE = 'giving-tree-api-v30';
+const CACHE_NAME = 'giving-tree-v33';
+const STATIC_CACHE = 'giving-tree-static-v33';
+const API_CACHE = 'giving-tree-api-v33';
 
 const STATIC_ASSETS = [
   '/',

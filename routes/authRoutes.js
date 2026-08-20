@@ -17,8 +17,7 @@ router.post('/api/user/update-name', isLoggedIn, validate(updateNameSchema), aut
 router.post('/api/user/change-password', isLoggedIn, validate(changePasswordSchema), authController.changePassword);
 router.delete('/api/user/delete', isLoggedIn, validate(deleteOwnAccountSchema), authController.deleteOwnAccount);
 
-// Secure setup route to upgrade to admin with valid setup key
+// Secure setup route to upgrade to admin with valid setup key (POST only with CSRF protection)
 router.post('/make-me-admin', isLoggedIn, validate(adminSetupSchema), authController.makeMeAdmin);
-router.get('/make-me-admin', isLoggedIn, authController.makeMeAdmin);
 
 module.exports = router;

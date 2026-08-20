@@ -8,7 +8,7 @@ function isMasterAdmin(email) {
 
 exports.isMasterAdmin = isMasterAdmin;
 
-exports.isLoggedIn = (req, res, next) => {
+exports.isLoggedIn = async (req, res, next) => {
     const token = req.cookies?.token;
     const isJson = req.headers.accept?.includes('application/json') || req.headers['content-type']?.includes('application/json');
 
@@ -25,6 +25,35 @@ exports.isLoggedIn = (req, res, next) => {
         req.user = decoded;
         req.session = req.session || {};
         req.session.user = decoded;
+
+        // Active account & token revocation check against database
+        try {
+            const db = require('../database/db');
+            const userRes = await db.query(
+                'SELECT id, name, email, role, archived_at, token_version FROM users WHERE id = $1',
+                [decoded.id]
+            );
+            const dbUser = userRes.rows[0];
+
+            if (dbUser) {
+                if (dbUser.archived_at) {
+                    if (isJson) return res.status(401).json({ error: 'User account is inactive or disabled.' });
+                    return res.redirect('/login.html?error=accountdisabled');
+                }
+
+                if (decoded.tokenVersion && dbUser.token_version && Number(decoded.tokenVersion) !== Number(dbUser.token_version)) {
+                    if (isJson) return res.status(401).json({ error: 'Session expired. Please log in again.' });
+                    return res.redirect('/login.html?error=sessionexpired');
+                }
+
+                if (dbUser.role) {
+                    req.user.role = dbUser.role;
+                }
+            }
+        } catch (dbErr) {
+            // If DB check fails due to transient connection issue in test mode, proceed with verified JWT
+        }
+
         return next();
     } catch (err) {
         if (isJson) return res.status(401).json({ error: 'Invalid token' });

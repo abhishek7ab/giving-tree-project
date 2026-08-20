@@ -8,7 +8,9 @@ const ALLOWED_PUNE_LOCATIONS = [
   'Viman Nagar, Pune',
   'Koregaon Park, Pune',
   'Hadapsar, Pune',
-  'Katraj, Pune'
+  'Katraj, Pune',
+  'Wakad, Pune',
+  'Aundh, Pune'
 ];
 
 const registerSchema = z.object({
@@ -20,7 +22,7 @@ const registerSchema = z.object({
     city: z.string({ required_error: 'Location is compulsory. Please select your neighborhood.' })
       .trim()
       .refine(val => ALLOWED_PUNE_LOCATIONS.includes(val), {
-        message: 'Location must be one of the 8 supported Pune localities.',
+        message: 'Location must be one of the supported Pune localities.',
       }),
     email: z.string().email('Please enter a valid email address.').toLowerCase().trim(),
     password: z.string().min(6, 'Password must be at least 6 characters').max(128),
@@ -96,7 +98,7 @@ const updateNameSchema = z.object({
   body: z.object({
     name: z.string().min(2, 'Name must be at least 2 characters').max(100).trim().optional(),
     city: z.string().trim().refine(val => !val || ALLOWED_PUNE_LOCATIONS.includes(val), {
-      message: 'Location must be one of the 8 supported Pune localities.',
+      message: 'Location must be one of the supported Pune localities.',
     }).optional(),
   }).passthrough().refine(data => (data.name !== undefined && data.name !== '') || (data.city !== undefined && data.city !== ''), {
     message: 'Please provide a valid name or location to update.',

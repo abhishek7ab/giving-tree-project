@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -190,6 +190,12 @@
                 </button>
                 <button type="button" class="pune-locality-chip" data-locality="Koregaon Park" onclick="filterCatalogPuneLocality('Koregaon Park', this)">
                     Koregaon Park <span class="pune-chip-count" id="count-koregaonpark">0</span>
+                </button>
+                <button type="button" class="pune-locality-chip" data-locality="Wakad" onclick="filterCatalogPuneLocality('Wakad', this)">
+                    Wakad <span class="pune-chip-count" id="count-wakad">0</span>
+                </button>
+                <button type="button" class="pune-locality-chip" data-locality="Aundh" onclick="filterCatalogPuneLocality('Aundh', this)">
+                    Aundh <span class="pune-chip-count" id="count-aundh">0</span>
                 </button>
             </div>
         </div>
@@ -536,6 +542,8 @@
                         'hinj': [18.5913, 73.7389],
                         'viman': [18.5679, 73.9143],
                         'koregaon': [18.5362, 73.8940],
+                        'wakad': [18.5987, 73.7660],
+                        'aundh': [18.5602, 73.8031],
                         'pune': [18.5204, 73.8567]
                     };
                     for (const [k, coords] of Object.entries(PUNE_MAP)) {
@@ -750,9 +758,11 @@
                 if (loc.includes('hinj')) counts.hinjawadi = (counts.hinjawadi || 0) + 1;
                 if (loc.includes('viman')) counts.vimannagar = (counts.vimannagar || 0) + 1;
                 if (loc.includes('koregaon')) counts.koregaonpark = (counts.koregaonpark || 0) + 1;
+                if (loc.includes('wakad')) counts.wakad = (counts.wakad || 0) + 1;
+                if (loc.includes('aundh')) counts.aundh = (counts.aundh || 0) + 1;
             });
 
-            for (const key of ['all', 'kothrud', 'katraj', 'hadapsar', 'baner', 'fcroad', 'hinjawadi', 'vimannagar', 'koregaonpark']) {
+            for (const key of ['all', 'kothrud', 'katraj', 'hadapsar', 'baner', 'fcroad', 'hinjawadi', 'vimannagar', 'koregaonpark', 'wakad', 'aundh']) {
                 const el = document.getElementById(`count-${key}`);
                 if (el) el.textContent = counts[key] || 0;
             }

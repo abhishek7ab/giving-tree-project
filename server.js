@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const path = require('path');
 const cors = require('cors');
 const helmet = require('helmet');
+const hpp = require('hpp');
 const rateLimit = require('express-rate-limit');
 const { Server } = require('socket.io');
 const pino = require('pino');
@@ -55,6 +56,7 @@ app.use(helmet({
   },
   crossOriginEmbedderPolicy: false,
   crossOriginResourcePolicy: false,
+  crossOriginOpenerPolicy: { policy: 'same-origin' },
   frameguard: { action: 'deny' },
   noSniff: true,
   xssFilter: true,
@@ -159,6 +161,7 @@ app.use((req, res, next) => {
 app.use(cookieParser());
 app.use(express.json({ limit: '100kb' }));
 app.use(express.urlencoded({ extended: true, limit: '100kb' }));
+app.use(hpp());
 app.use(deepSanitize);
 app.use(csrfProtection);
 
@@ -396,11 +399,14 @@ app.use((err, req, res, next) => {
   logger.error({ err: err.message || err, stack: err.stack }, 'Application error handler caught');
   if (res.headersSent) return next(err);
 
+  const isProduction = process.env.NODE_ENV === 'production';
   const isJson = req.headers.accept?.includes('application/json') || req.headers['content-type']?.includes('application/json');
+  const safeMessage = isProduction ? 'An unexpected error occurred. Please try again later.' : (err.message || 'Internal Server Error');
+
   if (isJson) {
-    return res.status(500).json({ error: 'servererror', message: err.message || 'Internal Server Error' });
+    return res.status(500).json({ error: 'servererror', message: safeMessage });
   }
-  return res.status(500).send(err.message || 'Internal Server Error');
+  return res.status(500).send(safeMessage);
 });
 
 // ✅ Start server (only when executed directly, e.g. local dev; skipped on Vercel/tests)

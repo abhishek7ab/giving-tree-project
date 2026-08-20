@@ -9,7 +9,9 @@ const PUNE_LOCALITY_COORDS = {
     'Viman Nagar, Pune': { lat: 18.5679, lng: 73.9143 },
     'Koregaon Park, Pune': { lat: 18.5362, lng: 73.8940 },
     'Hadapsar, Pune': { lat: 18.5089, lng: 73.9259 },
-    'Katraj, Pune': { lat: 18.4575, lng: 73.8677 }
+    'Katraj, Pune': { lat: 18.4575, lng: 73.8677 },
+    'Wakad, Pune': { lat: 18.5987, lng: 73.7660 },
+    'Aundh, Pune': { lat: 18.5602, lng: 73.8031 }
 };
 
 let userColumnsChecked = false;

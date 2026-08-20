@@ -10,7 +10,7 @@
     // Default Fallback Coordinates (Pune, Maharashtra, India community center)
     const DEFAULT_COORDS = { lat: 18.5204, lng: 73.8567 };
 
-    // Strictly Curated 8 Pune Neighborhood Hubs
+    // Strictly Curated 10 Pune Neighborhood Hubs
     const PUNE_LOCALITIES = [
         { name: 'Kothrud, Pune', shortName: 'Kothrud', lat: 18.5074, lng: 73.8077, landmark: 'Near MIT / Vanaz' },
         { name: 'Baner, Pune', shortName: 'Baner', lat: 18.5590, lng: 73.7868, landmark: 'High Street / Pan Card Club Rd' },
@@ -19,7 +19,9 @@
         { name: 'Viman Nagar, Pune', shortName: 'Viman Nagar', lat: 18.5679, lng: 73.9143, landmark: 'Near Phoenix Mall / Symbiosis' },
         { name: 'Koregaon Park, Pune', shortName: 'Koregaon Park', lat: 18.5362, lng: 73.8940, landmark: 'North Main Road / Osho Ashram' },
         { name: 'Hadapsar, Pune', shortName: 'Hadapsar', lat: 18.5089, lng: 73.9259, landmark: 'Magarpatta City / Amanora' },
-        { name: 'Katraj, Pune', shortName: 'Katraj', lat: 18.4575, lng: 73.8677, landmark: 'Katraj Zoo / Bharati Vidyapeeth' }
+        { name: 'Katraj, Pune', shortName: 'Katraj', lat: 18.4575, lng: 73.8677, landmark: 'Katraj Zoo / Bharati Vidyapeeth' },
+        { name: 'Wakad, Pune', shortName: 'Wakad', lat: 18.5987, lng: 73.7660, landmark: 'Dutta Mandir / Bhumkar Chowk' },
+        { name: 'Aundh, Pune', shortName: 'Aundh', lat: 18.5602, lng: 73.8031, landmark: 'Near Westend Mall / Bremen Chowk' }
     ];
 
     function matchPuneLocality(query) {
