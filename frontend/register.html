@@ -61,17 +61,23 @@
                     Connect with verified neighbors in your Pune locality. Give away items you no longer use and discover treasures right around the corner.
                 </p>
 
-                <!-- Testimonial / Social Proof -->
-                <div class="auth-testimonial-card">
-                    <p class="auth-testimonial-quote">
-                        "Setting up my student apartment in Baner was so easy thanks to generous neighbors giving away study lamps & cookware."
-                    </p>
-                    <div class="auth-testimonial-user">
-                        <div class="auth-testimonial-avatar">AK</div>
-                        <div class="auth-testimonial-meta">
-                            <strong>Aniket K.</strong>
-                            <span>📍 Baner Hub • Active Member</span>
-                        </div>
+                <!-- Live Pune Community Activity Ticker -->
+                <div class="auth-live-ticker" style="margin: 18px 0;">
+                    <div class="auth-live-ticker-header">
+                        <span><i class="fas fa-bolt" style="color:var(--accent); margin-right:4px;"></i> Live Pune Exchanges</span>
+                        <span style="font-size:10.5px; color:#34d399; font-weight:700;">Active Now</span>
+                    </div>
+                    <div class="auth-live-ticker-item">
+                        <span class="item-title"><i class="fas fa-book" style="color:#60a5fa; font-size:11px;"></i> GATE Engineering Guide</span>
+                        <span class="item-loc">📍 Kothrud</span>
+                    </div>
+                    <div class="auth-live-ticker-item">
+                        <span class="item-title"><i class="fas fa-chair" style="color:#f59e0b; font-size:11px;"></i> Study Desk & Lamp</span>
+                        <span class="item-loc">📍 Baner</span>
+                    </div>
+                    <div class="auth-live-ticker-item">
+                        <span class="item-title"><i class="fas fa-bicycle" style="color:#ec4899; font-size:11px;"></i> Kids Bicycle</span>
+                        <span class="item-loc">📍 Wakad</span>
                     </div>
                 </div>
             </div>
@@ -79,7 +85,7 @@
             <div class="brand-features">
                 <div class="brand-feature">
                     <div class="brand-feature-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg></div>
-                    Always 100% free to join and give
+                    Always 100% free to join and share
                 </div>
                 <div class="brand-feature">
                     <div class="brand-feature-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>
@@ -87,7 +93,7 @@
                 </div>
                 <div class="brand-feature">
                     <div class="brand-feature-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-                    Privacy-protected addresses & fuzzed map pins
+                    Privacy-protected addresses & fuzzed GPS pins
                 </div>
             </div>
         </div>
@@ -104,11 +110,21 @@
                 </div>
 
                 <form action="/register" method="POST" onsubmit="handleRegister(event)">
-                    <div class="form-group">
-                        <label>Full Name / Display Name <span style="font-size:11px; color:var(--accent); font-weight:600;">*Required</span></label>
-                        <div class="input-icon-wrapper">
-                            <i class="fas fa-user"></i>
-                            <input type="text" name="name" id="registerName" placeholder="e.g. Rahul Sharma" minlength="2" maxlength="100" required autocomplete="name">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Full Name <span style="font-size:11px; color:var(--accent); font-weight:600;">*Required</span></label>
+                            <div class="input-icon-wrapper">
+                                <i class="fas fa-user"></i>
+                                <input type="text" name="name" id="registerName" placeholder="e.g. Rahul Sharma" minlength="2" maxlength="100" required autocomplete="name">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Phone Number <span style="font-size:11px; color:var(--text-3); font-weight:500;">(Optional)</span></label>
+                            <div class="input-icon-wrapper">
+                                <i class="fas fa-phone"></i>
+                                <input type="tel" name="phone" id="phoneInput" placeholder="10-digit mobile number" maxlength="10">
+                            </div>
                         </div>
                     </div>
 
@@ -141,33 +157,27 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label>Password <span style="font-size:11px; color:var(--text-3); font-weight:500;">Min 6 characters</span></label>
-                        <div class="input-icon-wrapper">
-                            <i class="fas fa-lock"></i>
-                            <input type="password" name="password" id="registerPassword" class="password-input" placeholder="••••••••" minlength="6" required autocomplete="new-password">
-                            <button type="button" class="password-toggle" onclick="togglePassword('registerPassword', this)" aria-label="Toggle password visibility">
-                                <i class="fas fa-eye"></i>
-                            </button>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Password <span style="font-size:11px; color:var(--text-3); font-weight:500;">Min 6 chars</span></label>
+                            <div class="input-icon-wrapper">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" name="password" id="registerPassword" class="password-input" placeholder="••••••••" minlength="6" required autocomplete="new-password">
+                                <button type="button" class="password-toggle" onclick="togglePassword('registerPassword', this)" aria-label="Toggle password visibility">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label>Confirm Password</label>
-                        <div class="input-icon-wrapper">
-                            <i class="fas fa-shield-alt"></i>
-                            <input type="password" name="confirmPassword" id="registerConfirmPassword" class="password-input" placeholder="••••••••" minlength="6" required autocomplete="new-password">
-                            <button type="button" class="password-toggle" onclick="togglePassword('registerConfirmPassword', this)" aria-label="Toggle password visibility">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Phone Number <span style="font-size:11px; color:var(--text-3); font-weight:500;">(Optional)</span></label>
-                        <div class="input-icon-wrapper">
-                            <i class="fas fa-phone"></i>
-                            <input type="tel" name="phone" id="phoneInput" placeholder="10-digit mobile number" maxlength="10">
+                        <div class="form-group">
+                            <label>Confirm Password</label>
+                            <div class="input-icon-wrapper">
+                                <i class="fas fa-shield-alt"></i>
+                                <input type="password" name="confirmPassword" id="registerConfirmPassword" class="password-input" placeholder="••••••••" minlength="6" required autocomplete="new-password">
+                                <button type="button" class="password-toggle" onclick="togglePassword('registerConfirmPassword', this)" aria-label="Toggle password visibility">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
