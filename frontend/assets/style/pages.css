@@ -3105,3 +3105,77 @@
     border-top: 1px solid var(--border-medium);
     border-bottom: 1px solid var(--border-medium);
 }
+
+/* ==============================================================
+   Mobile View Enhancements & Touch-Optimized Layouts
+   ============================================================== */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+
+    /* Post item mobile responsiveness */
+    .post-wrapper {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+        margin: 76px 12px 24px 12px !important;
+        padding: 0 !important;
+    }
+
+    .form-side {
+        padding: 24px 18px !important;
+        border-radius: var(--radius-xl, 16px) !important;
+    }
+
+    .tips-side {
+        padding: 20px 18px !important;
+        border-radius: var(--radius-xl, 16px) !important;
+    }
+
+    /* Mobile Catalog items layout */
+    .catalog-search-wrapper {
+        margin: 12px 0 16px 0 !important;
+        padding: 0 4px !important;
+    }
+
+    .unified-search-pill {
+        flex-direction: column !important;
+        border-radius: var(--radius-xl, 16px) !important;
+        padding: 8px !important;
+        gap: 6px !important;
+    }
+
+    .filter-pill-divider {
+        display: none !important;
+    }
+
+    .select-pill-wrap {
+        width: 100% !important;
+    }
+
+    .select-pill-wrap select {
+        width: 100% !important;
+    }
+
+    .btn-search-go {
+        width: 100% !important;
+        height: 42px !important;
+        border-radius: var(--radius-lg, 12px) !important;
+    }
+
+    /* Request & Activity Cards on mobile */
+    .request-card,
+    .item-card {
+        margin-bottom: 12px !important;
+    }
+
+    /* Full-width mobile buttons in forms */
+    .form-submit-btn,
+    .btn-post-submit {
+        width: 100% !important;
+        min-height: 48px !important;
+        font-size: 1rem !important;
+    }
+}
+

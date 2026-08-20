@@ -1,6 +1,6 @@
-const CACHE_NAME = 'giving-tree-v28';
-const STATIC_CACHE = 'giving-tree-static-v28';
-const API_CACHE = 'giving-tree-api-v28';
+const CACHE_NAME = 'giving-tree-v30';
+const STATIC_CACHE = 'giving-tree-static-v30';
+const API_CACHE = 'giving-tree-api-v30';
 
 const STATIC_ASSETS = [
   '/',
@@ -22,6 +22,7 @@ const STATIC_ASSETS = [
   '/assets/style/cards.css',
   '/assets/style/ui.css',
   '/assets/style/pages.css',
+  '/assets/style/mobile.css',
   '/assets/style/animations.css',
   '/assets/vendor/leaflet/leaflet.css',
   '/assets/vendor/leaflet/leaflet.js',

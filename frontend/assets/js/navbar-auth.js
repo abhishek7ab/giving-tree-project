@@ -98,6 +98,7 @@
                     const footerAdmin = document.getElementById('footerAdminLink');
                     if (footerAdmin) footerAdmin.style.display = 'list-item';
                 }
+                renderMobileBottomNav(data);
             } else {
                 nav.innerHTML = `
                     <a href="/items.html" ${getLinkClass('/items.html')}>${svgIcons.search} Browse</a>
@@ -107,11 +108,61 @@
                         <a href="/register.html" class="nav-link nav-cta auth-join-link">${svgIcons.join} Join</a>
                     </div>
                 `;
+                renderMobileBottomNav({ loggedIn: false });
             }
         })
         .catch(() => {
-            // Keep default fallback
+            renderMobileBottomNav({ loggedIn: false });
         });
+
+    function renderMobileBottomNav(userData) {
+        if (typeof document === 'undefined') return;
+
+        let existingNav = document.getElementById('mobileBottomNav');
+        if (!existingNav) {
+            existingNav = document.createElement('nav');
+            existingNav.id = 'mobileBottomNav';
+            existingNav.className = 'mobile-bottom-nav';
+            existingNav.setAttribute('aria-label', 'Mobile Navigation');
+            document.body.appendChild(existingNav);
+        }
+
+        const isHome = path === '/' || path.endsWith('/index.html') || path === '';
+        const isBrowse = path.includes('items.html') && !path.includes('my-items');
+        const isPost = path.includes('post-item');
+        const isActivity = path.includes('requests.html');
+        const isProfile = path.includes('profile.html') || path.includes('login.html') || path.includes('register.html');
+
+        const isLoggedIn = userData && userData.loggedIn;
+        const profileHref = isLoggedIn ? '/profile.html' : '/login.html';
+        const profileLabel = isLoggedIn ? 'Profile' : 'Log In';
+
+        existingNav.innerHTML = `
+            <a href="/index.html" class="mobile-nav-item ${isHome ? 'active' : ''}" aria-label="Home">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                <span>Home</span>
+            </a>
+            <a href="/items.html" class="mobile-nav-item ${isBrowse ? 'active' : ''}" aria-label="Browse Items">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <span>Browse</span>
+            </a>
+            <a href="/post-item.html" class="mobile-nav-create-btn ${isPost ? 'active' : ''}" aria-label="Share or Post an Item">
+                <div class="mobile-nav-create-icon-wrap">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#042F24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </div>
+                <span>+ Give</span>
+            </a>
+            <a href="/requests.html" class="mobile-nav-item ${isActivity ? 'active' : ''}" aria-label="Activity and Requests">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
+                <span class="mobile-nav-badge" id="mobileNavBadge"></span>
+                <span>Activity</span>
+            </a>
+            <a href="${profileHref}" class="mobile-nav-item ${isProfile ? 'active' : ''}" aria-label="${profileLabel}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span>${profileLabel}</span>
+            </a>
+        `;
+    }
 
     // Mobile menu toggle handler
     document.addEventListener('DOMContentLoaded', () => {

@@ -477,3 +477,183 @@
         display: flex;
     }
 }
+
+/* ============================================================
+   MOBILE BOTTOM NAVIGATION DOCK & QUICK CREATE FAB
+   ============================================================ */
+
+.mobile-bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: calc(64px + env(safe-area-inset-bottom, 0px));
+    padding: 6px 12px calc(6px + env(safe-area-inset-bottom, 0px)) 12px;
+    background: rgba(9, 13, 22, 0.94);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.65);
+    z-index: 1000;
+    justify-content: space-around;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    color: var(--text-2, #94A3B8);
+    text-decoration: none !important;
+    font-size: 0.70rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    padding: 6px 10px;
+    border-radius: var(--radius-lg, 12px);
+    position: relative;
+    transition: all var(--dur-fast, 0.15s) var(--ease-out, ease-out);
+    min-width: 54px;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-nav-item:hover,
+.mobile-nav-item:focus {
+    color: #FFFFFF;
+}
+
+.mobile-nav-item:active {
+    transform: scale(0.92);
+}
+
+.mobile-nav-item.active {
+    color: var(--accent, #10B981) !important;
+}
+
+.mobile-nav-item svg {
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
+    transition: stroke var(--dur-fast, 0.15s) var(--ease-out, ease-out);
+}
+
+.mobile-nav-item.active svg {
+    stroke: var(--accent, #10B981);
+}
+
+/* Elevated Center "+ Give" / Quick Post Button */
+.mobile-nav-create-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    top: -12px;
+    text-decoration: none !important;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+}
+
+.mobile-nav-create-icon-wrap {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--accent, #10B981);
+    color: #042F24;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45), 0 0 0 4px rgba(9, 13, 22, 0.95);
+    transition: all var(--dur-fast, 0.15s) var(--ease-out, ease-out);
+}
+
+.mobile-nav-create-btn:hover .mobile-nav-create-icon-wrap,
+.mobile-nav-create-btn:active .mobile-nav-create-icon-wrap {
+    background: var(--leaf-green, #34D399);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.6), 0 0 0 4px rgba(9, 13, 22, 0.95);
+}
+
+.mobile-nav-create-btn span {
+    font-size: 0.68rem;
+    font-weight: 800;
+    color: var(--accent, #10B981);
+    margin-top: 3px;
+    letter-spacing: 0.02em;
+}
+
+.mobile-nav-badge {
+    position: absolute;
+    top: 4px;
+    right: 12px;
+    min-width: 8px;
+    height: 8px;
+    background: var(--accent, #10B981);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--accent, #10B981);
+    display: none;
+}
+
+/* Floating Quick Action Button (FAB) for Mobile Catalog & Feed */
+.mobile-quick-fab {
+    display: none;
+    position: fixed;
+    bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+    right: 18px;
+    background: var(--accent, #10B981);
+    color: #042F24;
+    padding: 12px 18px;
+    border-radius: var(--radius-full, 9999px);
+    font-weight: 800;
+    font-size: 0.88rem;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none !important;
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.45);
+    z-index: 998;
+    transition: all var(--dur-fast, 0.15s) var(--ease-out, ease-out);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-quick-fab:hover,
+.mobile-quick-fab:active {
+    background: var(--leaf-green, #34D399);
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 10px 30px rgba(16, 185, 129, 0.6);
+}
+
+@media (max-width: 768px) {
+    .mobile-bottom-nav {
+        display: flex;
+    }
+
+    body {
+        padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
+    }
+
+    .navbar {
+        top: 8px;
+        left: 10px;
+        right: 10px;
+        height: 56px;
+        padding: 0 14px;
+    }
+
+    .logo-icon-wrap {
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+    }
+
+    .logo-text {
+        font-size: 1.15rem;
+    }
+
+    .mobile-quick-fab {
+        display: inline-flex;
+    }
+}
+

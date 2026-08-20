@@ -3,10 +3,14 @@
 > **Small Acts. Big Connections.**  
 > A hyper-local community circular-sharing platform where neighbors in Pune give away unused items for free, build trust, reduce landfill waste, and connect with their local community.
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-giving--tree--project.vercel.app-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://giving-tree-project.vercel.app/)
 [![Tests](https://img.shields.io/badge/Tests-44%20Passed-10b981?style=for-the-badge&logo=jest)](tests/)
 [![Node.js](https://img.shields.io/badge/Node.js-v18%2B-339933?style=for-the-badge&logo=node.js)](https://nodejs.org)
 [![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL%20(Neon)-4169E1?style=for-the-badge&logo=postgresql)](https://neon.tech)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
+
+> 🚀 **Live Production Deployment**:  
+> Explore and use the live application at: **[https://giving-tree-project.vercel.app/](https://giving-tree-project.vercel.app/)**
 
 ---
 
@@ -60,9 +64,10 @@ Instead of letting them gather dust or throwing them in landfills, **Giving Tree
 - **CSV Data Export**: Export members and inventory records with one click.
 - **Audit Logging**: Track administrative actions and system security events.
 
-### 📱 5. Progressive Web App (PWA) & Responsive UI
+### 📱 5. Progressive Web App (PWA) & Mobile-First Experience
 - **Editorial Dark Theme**: Restrained `#10b981` emerald accent on sleek dark surfaces with smooth scroll-reveal animations.
-- **Mobile-First Glass Navbar**: Full-width frosted glass dropdown menu and tactile buttons.
+- **Mobile Bottom Navigation Dock**: Native app-like fixed frosted glass bottom navigation bar with instant access to Home, Browse, Activity, Profile, and quick actions.
+- **Quick-Post ("+ Give") Action**: Elevated centerpiece button on mobile view and floating quick-create button for 1-tap item sharing.
 - **Installable PWA**: Offline-capable service worker with standard W3C Web App Manifest.
 
 ---
@@ -210,6 +215,9 @@ npm test
 ---
 
 ## ☁️ Deployment (Vercel / Render / Cloud)
+
+### Live Deployment:
+- **Production URL**: [https://giving-tree-project.vercel.app/](https://giving-tree-project.vercel.app/)
 
 ### Deploying to Vercel:
 1. Push your repository to GitHub:

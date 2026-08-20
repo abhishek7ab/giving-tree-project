@@ -2,6 +2,7 @@
   "name": "giving-tree-project",
   "version": "1.0.0",
   "description": "Community sharing platform - Giving Tree",
+  "homepage": "https://giving-tree-project.vercel.app/",
   "main": "server.js",
   "scripts": {
     "dev": "node --watch server.js",

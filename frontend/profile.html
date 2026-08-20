@@ -1,10 +1,12 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile | Giving Tree</title>
-    <meta name="description" content="View and manage your Giving Tree profile — track your impact, edit your details, and see your full sharing history.">
+    <meta name="description"
+        content="View and manage your Giving Tree profile — track your impact, edit your details, and see your full sharing history.">
 
     <link rel="stylesheet" href="/assets/style/variables.css">
     <link rel="stylesheet" href="/assets/style/base.css">
@@ -15,405 +17,439 @@
     <link rel="stylesheet" href="/assets/style/ui.css">
     <link rel="stylesheet" href="/assets/style/animations.css">
     <link rel="stylesheet" href="/assets/style/pages.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/style/mobile.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#090D16">
 </head>
 
 <body>
-<a href="#main-content" class="skip-link">Skip to main content</a>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
-<!-- NAVBAR -->
-<header class="navbar">
-    <a href="/index.html" class="logo">
-        <div class="logo-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.4 19 2c1 2 2 4.1 2 7 0 6-4.5 11-10 11z"/><path d="M11 20v-6"/></svg></div>
-        <span class="logo-text">Giving<span> Tree</span></span>
-    </a>
-    <div style="display:flex; align-items:center; gap:12px; height:100%;">
-        <nav class="nav-links" id="navLinks">
-            <a href="/index.html" class="nav-link"><svg class="nav-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Home</a>
-            <a href="/items.html" class="nav-link"><svg class="nav-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg> Browse Items</a>
-            <a href="/post-item.html" class="nav-link nav-cta"><svg class="nav-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg> Donate Item</a>
-        </nav>
-        <a href="/requests.html" class="nav-notif-bell" title="Notifications">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-            <span class="nav-notif-badge" id="navNotifBadge"></span>
+    <!-- NAVBAR -->
+    <div class="navbar">
+        <a href="/index.html" class="logo">
+            <div class="logo-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.4 19 2c1 2 2 4.1 2 7 0 6-4.5 11-10 11z" />
+                    <path d="M11 20v-6" />
+                </svg></div>
+            <span class="logo-text">Giving<span> Tree</span></span>
         </a>
-        <button class="nav-mobile-toggle" id="mobileMenuToggle" aria-label="Toggle navigation menu">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
-        </button>
-    </div>
-</header>
-
-<!-- PROFILE HEADER -->
-<header class="profile-header" id="profileHeader">
-    <div class="profile-avatar" id="profileAvatar">
-        <i class="fas fa-user"></i>
-    </div>
-    <h1 class="profile-name" id="profileName">Loading...</h1>
-    <div id="profileLocalityBadge" style="display:inline-flex; align-items:center; gap:6px; background:rgba(16,185,129,0.12); color:var(--accent); border:1px solid rgba(16,185,129,0.25); padding:5px 14px; border-radius:20px; font-size:12.5px; font-weight:700; margin-bottom:12px;">
-        <i class="fas fa-map-marker-alt"></i> <span id="profileLocText">Pune Locality</span>
-    </div>
-    <p class="profile-email" id="profileEmail" style="margin-top:2px;">—</p>
-    <div class="profile-badges" id="profileBadges"></div>
-</header>
-
-<main id="main-content" class="profile-body">
-
-    <!-- ENVIRONMENTAL IMPACT & COMMUNITY KARMA STRIP -->
-    <div class="impact-strip" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:14px; margin-bottom:32px;">
-        <div class="impact-tile">
-            <div class="impact-tile-num" id="pStatShared">—</div>
-            <div class="impact-tile-label">Donations Given</div>
-        </div>
-        <div class="impact-tile">
-            <div class="impact-tile-num" id="pStatHelped">—</div>
-            <div class="impact-tile-label">People Helped</div>
-        </div>
-        <div class="impact-tile">
-            <div class="impact-tile-num" id="pStatReceived">—</div>
-            <div class="impact-tile-label">Donations Received</div>
-        </div>
-        <div class="impact-tile" style="background:rgba(16,185,129,0.08); border-color:rgba(16,185,129,0.25);">
-            <div class="impact-tile-num" id="pStatCo2" style="color:var(--accent);">—</div>
-            <div class="impact-tile-label">🌿 CO₂ Offset (kg)</div>
-        </div>
-        <div class="impact-tile" style="background:rgba(245,158,11,0.08); border-color:rgba(245,158,11,0.25);">
-            <div class="impact-tile-num" id="pStatKarma" style="color:#fbbf24;">—</div>
-            <div class="impact-tile-label">⭐ Karma Points</div>
+        <div style="display:flex; align-items:center; gap:12px; height:100%;">
+            <nav class="nav-links" id="navLinks">
+                <a href="/index.html" class="nav-link"><svg class="nav-svg" width="15" height="15" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2.2">
+                        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                        <polyline points="9 22 9 12 15 12 15 22" />
+                    </svg> Home</a>
+                <a href="/items.html" class="nav-link"><svg class="nav-svg" width="15" height="15" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2.2">
+                        <circle cx="11" cy="11" r="8" />
+                        <path d="m21 21-4.3-4.3" />
+                    </svg> Browse Items</a>
+                <a href="/post-item.html" class="nav-link nav-cta"><svg class="nav-svg" width="15" height="15"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+                        <path
+                            d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                    </svg> Donate Item</a>
+            </nav>
+            <a href="/requests.html" class="nav-notif-bell" title="Notifications">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                </svg>
+                <span class="nav-notif-badge" id="navNotifBadge"></span>
+            </a>
+            <button class="nav-mobile-toggle" id="mobileMenuToggle" aria-label="Toggle navigation menu">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="4" x2="20" y1="12" y2="12" />
+                    <line x1="4" x2="20" y1="6" y2="6" />
+                    <line x1="4" x2="20" y1="18" y2="18" />
+                </svg>
+            </button>
         </div>
     </div>
 
-    <div class="profile-grid">
+    <!-- PROFILE HEADER -->
+    <header class="profile-header" id="profileHeader">
+        <div class="profile-avatar" id="profileAvatar">
+            <i class="fas fa-user"></i>
+        </div>
+        <h1 class="profile-name" id="profileName">Loading...</h1>
+        <div id="profileLocalityBadge"
+            style="display:inline-flex; align-items:center; gap:6px; background:rgba(16,185,129,0.12); color:var(--accent); border:1px solid rgba(16,185,129,0.25); padding:5px 14px; border-radius:20px; font-size:12.5px; font-weight:700; margin-bottom:12px;">
+            <i class="fas fa-map-marker-alt"></i> <span id="profileLocText">Pune Locality</span>
+        </div>
+        <p class="profile-email" id="profileEmail" style="margin-top:2px;">—</p>
+        <div class="profile-badges" id="profileBadges"></div>
+    </header>
 
-        <!-- LEFT: Edit forms -->
-        <div>
-            <!-- Profile Info & Location Card with View & Edit Modes -->
-            <div class="profile-form-card" data-animate>
-                <div class="profile-card-top">
-                    <h3><i class="fas fa-id-card"></i> Profile &amp; Neighborhood</h3>
-                    <button type="button" id="toggleEditProfileBtn" class="btn secondary" style="padding:6px 14px; font-size:12.5px; border-radius:20px; display:inline-flex; align-items:center; gap:6px; cursor:pointer;" onclick="toggleProfileEditMode()">
-                        <i class="fas fa-pen" id="editBtnIcon"></i> <span id="editBtnText">Edit Profile</span>
-                    </button>
-                </div>
+    <main id="main-content" class="profile-body">
 
-                <!-- OK Done / Saved Banner -->
-                <div id="profileSavedBanner" class="profile-saved-banner">
-                    <i class="fas fa-check-circle" style="font-size:16px;"></i>
-                    <span id="profileSavedBannerText"><strong>OK Done!</strong> Your profile details and neighborhood location are saved.</span>
-                </div>
+        <!-- ENVIRONMENTAL IMPACT & COMMUNITY KARMA STRIP -->
+        <div class="impact-strip"
+            style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:14px; margin-bottom:32px;">
+            <div class="impact-tile">
+                <div class="impact-tile-num" id="pStatShared">—</div>
+                <div class="impact-tile-label">Donations Given</div>
+            </div>
+            <div class="impact-tile">
+                <div class="impact-tile-num" id="pStatHelped">—</div>
+                <div class="impact-tile-label">People Helped</div>
+            </div>
+            <div class="impact-tile">
+                <div class="impact-tile-num" id="pStatReceived">—</div>
+                <div class="impact-tile-label">Donations Received</div>
+            </div>
+            <div class="impact-tile" style="background:rgba(16,185,129,0.08); border-color:rgba(16,185,129,0.25);">
+                <div class="impact-tile-num" id="pStatCo2" style="color:var(--accent);">—</div>
+                <div class="impact-tile-label">🌿 CO₂ Offset (kg)</div>
+            </div>
+            <div class="impact-tile" style="background:rgba(245,158,11,0.08); border-color:rgba(245,158,11,0.25);">
+                <div class="impact-tile-num" id="pStatKarma" style="color:#fbbf24;">—</div>
+                <div class="impact-tile-label">⭐ Karma Points</div>
+            </div>
+        </div>
 
-                <!-- VIEW MODE (Saved State) -->
-                <div id="profileViewMode">
-                    <div class="profile-view-item">
-                        <div class="profile-view-info">
-                            <span class="profile-view-label">Unique Display Name / Username</span>
-                            <span class="profile-view-val" id="viewDisplayName">—</span>
-                        </div>
-                        <span style="display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:700; color:var(--accent); background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.25); padding:4px 10px; border-radius:20px;">
-                            <i class="fas fa-check"></i> Unique
-                        </span>
-                    </div>
+        <div class="profile-grid">
 
-                    <div class="profile-view-item">
-                        <div class="profile-view-info">
-                            <span class="profile-view-label">Neighborhood Location</span>
-                            <span class="profile-view-val" id="viewDisplayCity">—</span>
-                        </div>
-                        <span style="display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:700; color:var(--accent); background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.25); padding:4px 10px; border-radius:20px;">
-                            <i class="fas fa-map-marker-alt"></i> Verified Hub
-                        </span>
-                    </div>
-
-                    <div class="profile-view-item">
-                        <div class="profile-view-info">
-                            <span class="profile-view-label">Email Address</span>
-                            <span class="profile-view-val" id="viewDisplayEmail" style="color:var(--text-2); font-weight:500;">—</span>
-                        </div>
-                        <span style="font-size:11.5px; color:var(--text-3); font-weight:600;">Registered</span>
-                    </div>
-                </div>
-
-                <!-- EDIT MODE (Toggled Form) -->
-                <form id="editNameForm" style="display:none;" onsubmit="handleProfileSave(event)">
-                    <div class="pf-group">
-                        <label>Unique Display Name / Username <span style="color:var(--accent); font-size:10.5px;">(Compulsory)</span></label>
-                        <input type="text" id="nameInput" placeholder="Your unique name" minlength="2" maxlength="100" required autocomplete="name">
-                    </div>
-                    <div class="pf-group">
-                        <label>Your Neighborhood Location <span style="color:var(--accent); font-size:10.5px;">(Compulsory)</span></label>
-                        <div style="position:relative;">
-                            <select id="profileCitySelect" required style="width:100%; padding:13px 36px 13px 16px; background:rgba(15,23,42,0.6); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius-sm); color:var(--text-1); font-family:inherit; font-size:14.5px; outline:none; -webkit-appearance:none; appearance:none; cursor:pointer;">
-                                <option value="Kothrud, Pune">📍 Kothrud, Pune (Near MIT / Vanaz)</option>
-                                <option value="Baner, Pune">📍 Baner, Pune (High Street / Pan Card Club Rd)</option>
-                                <option value="FC Road, Pune">📍 FC Road, Pune (Shivaji Nagar / FC Road)</option>
-                                <option value="Hinjawadi, Pune">📍 Hinjawadi, Pune (Phase 1 IT Park / Shivaji Chowk)</option>
-                                <option value="Viman Nagar, Pune">📍 Viman Nagar, Pune (Near Phoenix Mall / Symbiosis)</option>
-                                <option value="Koregaon Park, Pune">📍 Koregaon Park, Pune (North Main Road / Osho Ashram)</option>
-                                <option value="Hadapsar, Pune">📍 Hadapsar, Pune (Magarpatta City / Amanora)</option>
-                                <option value="Katraj, Pune">📍 Katraj, Pune (Katraj Zoo / Bharati Vidyapeeth)</option>
-                            </select>
-                            <i class="fas fa-chevron-down" style="position:absolute; right:16px; top:50%; transform:translateY(-50%); pointer-events:none; font-size:12px; color:var(--text-3);"></i>
-                        </div>
-                    </div>
-                    <div class="pf-group">
-                        <label>Email Address</label>
-                        <input type="email" id="emailInput" disabled title="Email cannot be changed">
-                    </div>
-                    <div style="display:flex; gap:10px; margin-top:8px;">
-                        <button type="submit" class="btn primary" id="saveProfileBtn" style="flex:1;">
-                            <i class="fas fa-save"></i> Save Profile Changes
-                        </button>
-                        <button type="button" class="btn secondary" onclick="cancelProfileEdit()" style="padding:12px 20px;">
-                            Cancel
+            <!-- LEFT: Edit forms -->
+            <div>
+                <!-- Profile Info & Location Card with View & Edit Modes -->
+                <div class="profile-form-card" data-animate>
+                    <div class="profile-card-top">
+                        <h3><i class="fas fa-id-card"></i> Profile &amp; Neighborhood</h3>
+                        <button type="button" id="toggleEditProfileBtn" class="btn secondary"
+                            style="padding:6px 14px; font-size:12.5px; border-radius:20px; display:inline-flex; align-items:center; gap:6px; cursor:pointer;"
+                            onclick="toggleProfileEditMode()">
+                            <i class="fas fa-pen" id="editBtnIcon"></i> <span id="editBtnText">Edit Profile</span>
                         </button>
                     </div>
-                </form>
+
+                    <!-- OK Done / Saved Banner -->
+                    <div id="profileSavedBanner" class="profile-saved-banner">
+                        <i class="fas fa-check-circle" style="font-size:16px;"></i>
+                        <span id="profileSavedBannerText"><strong>OK Done!</strong> Your profile details and
+                            neighborhood location are saved.</span>
+                    </div>
+
+                    <!-- VIEW MODE (Saved State) -->
+                    <div id="profileViewMode">
+                        <div class="profile-view-item">
+                            <div class="profile-view-info">
+                                <span class="profile-view-label">Unique Display Name / Username</span>
+                                <span class="profile-view-val" id="viewDisplayName">—</span>
+                            </div>
+                            <span
+                                style="display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:700; color:var(--accent); background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.25); padding:4px 10px; border-radius:20px;">
+                                <i class="fas fa-check"></i> Unique
+                            </span>
+                        </div>
+
+                        <div class="profile-view-item">
+                            <div class="profile-view-info">
+                                <span class="profile-view-label">Neighborhood Location</span>
+                                <span class="profile-view-val" id="viewDisplayCity">—</span>
+                            </div>
+                            <span
+                                style="display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:700; color:var(--accent); background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.25); padding:4px 10px; border-radius:20px;">
+                                <i class="fas fa-map-marker-alt"></i> Verified Hub
+                            </span>
+                        </div>
+
+                        <div class="profile-view-item">
+                            <div class="profile-view-info">
+                                <span class="profile-view-label">Email Address</span>
+                                <span class="profile-view-val" id="viewDisplayEmail"
+                                    style="color:var(--text-2); font-weight:500;">—</span>
+                            </div>
+                            <span style="font-size:11.5px; color:var(--text-3); font-weight:600;">Registered</span>
+                        </div>
+                    </div>
+
+                    <!-- EDIT MODE (Toggled Form) -->
+                    <form id="editNameForm" style="display:none;" onsubmit="handleProfileSave(event)">
+                        <div class="pf-group">
+                            <label>Unique Display Name / Username <span
+                                    style="color:var(--accent); font-size:10.5px;">(Compulsory)</span></label>
+                            <input type="text" id="nameInput" placeholder="Your unique name" minlength="2"
+                                maxlength="100" required autocomplete="name">
+                        </div>
+                        <div class="pf-group">
+                            <label>Your Neighborhood Location <span
+                                    style="color:var(--accent); font-size:10.5px;">(Compulsory)</span></label>
+                            <div style="position:relative;">
+                                <select id="profileCitySelect" required
+                                    style="width:100%; padding:13px 36px 13px 16px; background:rgba(15,23,42,0.6); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius-sm); color:var(--text-1); font-family:inherit; font-size:14.5px; outline:none; -webkit-appearance:none; appearance:none; cursor:pointer;">
+                                    <option value="Kothrud, Pune">📍 Kothrud, Pune (Near MIT / Vanaz)</option>
+                                    <option value="Baner, Pune">📍 Baner, Pune (High Street / Pan Card Club Rd)</option>
+                                    <option value="FC Road, Pune">📍 FC Road, Pune (Shivaji Nagar / FC Road)</option>
+                                    <option value="Hinjawadi, Pune">📍 Hinjawadi, Pune (Phase 1 IT Park / Shivaji Chowk)
+                                    </option>
+                                    <option value="Viman Nagar, Pune">📍 Viman Nagar, Pune (Near Phoenix Mall /
+                                        Symbiosis)</option>
+                                    <option value="Koregaon Park, Pune">📍 Koregaon Park, Pune (North Main Road / Osho
+                                        Ashram)</option>
+                                    <option value="Hadapsar, Pune">📍 Hadapsar, Pune (Magarpatta City / Amanora)
+                                    </option>
+                                    <option value="Katraj, Pune">📍 Katraj, Pune (Katraj Zoo / Bharati Vidyapeeth)
+                                    </option>
+                                </select>
+                                <i class="fas fa-chevron-down"
+                                    style="position:absolute; right:16px; top:50%; transform:translateY(-50%); pointer-events:none; font-size:12px; color:var(--text-3);"></i>
+                            </div>
+                        </div>
+                        <div class="pf-group">
+                            <label>Email Address</label>
+                            <input type="email" id="emailInput" disabled title="Email cannot be changed">
+                        </div>
+                        <div style="display:flex; gap:10px; margin-top:8px;">
+                            <button type="submit" class="btn primary" id="saveProfileBtn" style="flex:1;">
+                                <i class="fas fa-save"></i> Save Profile Changes
+                            </button>
+                            <button type="button" class="btn secondary" onclick="cancelProfileEdit()"
+                                style="padding:12px 20px;">
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Notes of Gratitude Wall Card -->
+                <div class="profile-form-card" data-animate style="border-color:rgba(16,185,129,0.25);">
+                    <div class="profile-card-top" style="margin-bottom:14px;">
+                        <div>
+                            <h3 style="margin:0 0 2px;"><i class="fas fa-envelope-open-text"
+                                    style="color:var(--accent);"></i> Notes of Gratitude</h3>
+                            <span style="font-size:12px; color:var(--text-3);">Heartfelt words left by neighbors who
+                                received your shared items</span>
+                        </div>
+                        <span id="gratitudeCountBadge"
+                            style="font-size:12px; font-weight:700; color:var(--accent); background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); padding:4px 10px; border-radius:20px;">0
+                            Notes</span>
+                    </div>
+                    <div id="gratitudeWallList" style="display:flex; flex-direction:column; gap:12px;">
+                        <div style="text-align:center; padding:24px 12px; color:var(--text-3); font-size:13px;">
+                            <i class="fas fa-seedling"
+                                style="font-size:24px; color:var(--accent); margin-bottom:8px; display:block;"></i>
+                            No gratitude notes yet. When neighbors receive items from you, their thank-you notes will
+                            bloom here!
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Change password -->
+                <div class="profile-form-card" data-animate>
+                    <h3><i class="fas fa-lock"></i> Change Password</h3>
+                    <form id="changePasswordForm">
+                        <div class="pf-group">
+                            <label>Current Password</label>
+                            <input type="password" id="currentPwd" placeholder="••••••••"
+                                autocomplete="current-password">
+                        </div>
+                        <div class="pf-group">
+                            <label>New Password</label>
+                            <input type="password" id="newPwd" placeholder="••••••••" autocomplete="new-password">
+                        </div>
+                        <div class="pf-group">
+                            <label>Confirm New Password</label>
+                            <input type="password" id="confirmPwd" placeholder="••••••••" autocomplete="new-password">
+                        </div>
+                        <button type="submit" class="btn primary" style="width:100%; margin-top:4px;">
+                            <i class="fas fa-key"></i> Update Password
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Danger zone -->
+                <div class="profile-form-card" data-animate>
+                    <h3><i class="fas fa-exclamation-triangle" style="color:var(--danger);"></i> Danger Zone</h3>
+                    <div class="danger-zone">
+                        <h4>Delete Account</h4>
+                        <p>This will permanently delete your account, all your listed items, and all your request
+                            history. This action cannot be undone.</p>
+                        <button id="deleteAccountBtn" class="btn"
+                            style="background:var(--danger-dim); color:var(--danger); border:1px solid rgba(244,63,94,0.3); width:100%;">
+                            <i class="fas fa-trash-alt"></i> Delete My Account
+                        </button>
+                    </div>
+                </div>
             </div>
 
-            <!-- Notes of Gratitude Wall Card -->
-            <div class="profile-form-card" data-animate style="border-color:rgba(16,185,129,0.25);">
-                <div class="profile-card-top" style="margin-bottom:14px;">
-                    <div>
-                        <h3 style="margin:0 0 2px;"><i class="fas fa-envelope-open-text" style="color:var(--accent);"></i> Notes of Gratitude</h3>
-                        <span style="font-size:12px; color:var(--text-3);">Heartfelt words left by neighbors who received your shared items</span>
-                    </div>
-                    <span id="gratitudeCountBadge" style="font-size:12px; font-weight:700; color:var(--accent); background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); padding:4px 10px; border-radius:20px;">0 Notes</span>
-                </div>
-                <div id="gratitudeWallList" style="display:flex; flex-direction:column; gap:12px;">
-                    <div style="text-align:center; padding:24px 12px; color:var(--text-3); font-size:13px;">
-                        <i class="fas fa-seedling" style="font-size:24px; color:var(--accent); margin-bottom:8px; display:block;"></i>
-                        No gratitude notes yet. When neighbors receive items from you, their thank-you notes will bloom here!
-                    </div>
-                </div>
-            </div>
+            <!-- RIGHT: Sidebar -->
+            <div class="profile-sidebar">
 
-            <!-- Change password -->
-            <div class="profile-form-card" data-animate>
-                <h3><i class="fas fa-lock"></i> Change Password</h3>
-                <form id="changePasswordForm">
-                    <div class="pf-group">
-                        <label>Current Password</label>
-                        <input type="password" id="currentPwd" placeholder="••••••••" autocomplete="current-password">
+                <!-- Donor Impact Certificate Card -->
+                <div class="sidebar-stat-card" data-animate
+                    style="border-color:rgba(16,185,129,0.3); background:rgba(16,185,129,0.04);">
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                        <span style="font-size:18px;">🎗️</span>
+                        <h4 style="margin:0; color:var(--accent);">Donor Impact Seal</h4>
                     </div>
-                    <div class="pf-group">
-                        <label>New Password</label>
-                        <input type="password" id="newPwd" placeholder="••••••••" autocomplete="new-password">
-                    </div>
-                    <div class="pf-group">
-                        <label>Confirm New Password</label>
-                        <input type="password" id="confirmPwd" placeholder="••••••••" autocomplete="new-password">
-                    </div>
-                    <button type="submit" class="btn primary" style="width:100%; margin-top:4px;">
-                        <i class="fas fa-key"></i> Update Password
+                    <p style="font-size:12.5px; color:var(--text-2); margin:0 0 14px; line-height:1.5;">
+                        Your items shared prevent landfill waste and build trust in our Pune community.
+                    </p>
+                    <button type="button" class="btn primary" onclick="openImpactCertificate()"
+                        style="width:100%; font-size:13px; font-weight:800; padding:10px; display:inline-flex; align-items:center; justify-content:center; gap:8px;">
+                        <i class="fas fa-award"></i> View Giving Certificate
                     </button>
-                </form>
-            </div>
-
-            <!-- Danger zone -->
-            <div class="profile-form-card" data-animate>
-                <h3><i class="fas fa-exclamation-triangle" style="color:var(--danger);"></i> Danger Zone</h3>
-                <div class="danger-zone">
-                    <h4>Delete Account</h4>
-                    <p>This will permanently delete your account, all your listed items, and all your request history. This action cannot be undone.</p>
-                    <button id="deleteAccountBtn" class="btn" style="background:var(--danger-dim); color:var(--danger); border:1px solid rgba(244,63,94,0.3); width:100%;">
-                        <i class="fas fa-trash-alt"></i> Delete My Account
-                    </button>
                 </div>
+
+                <!-- Member info -->
+                <div class="sidebar-stat-card" data-animate>
+                    <h4>Account Info</h4>
+                    <div class="member-since">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Member since <strong id="memberSince">—</strong></span>
+                    </div>
+                    <div style="margin-top:16px; padding-top:16px; border-top:1px solid var(--border);">
+                        <a href="/my-items.html"
+                            style="display:flex; align-items:center; gap:10px; color:var(--text-2); font-size:13.5px; font-weight:600; text-decoration:none; padding:10px 0; transition:color 0.2s;"
+                            onmouseenter="this.style.color='var(--accent)'" onmouseleave="this.style.color=''">
+                            <i class="fas fa-box-open" style="color:var(--accent); width:16px;"></i> My Listed Items
+                        </a>
+                        <a href="/requests.html"
+                            style="display:flex; align-items:center; gap:10px; color:var(--text-2); font-size:13.5px; font-weight:600; text-decoration:none; padding:10px 0; transition:color 0.2s;"
+                            onmouseenter="this.style.color='var(--accent)'" onmouseleave="this.style.color=''">
+                            <i class="fas fa-list-alt" style="color:var(--accent); width:16px;"></i> Activity Hub
+                        </a>
+                        <a href="/logout"
+                            style="display:flex; align-items:center; gap:10px; color:var(--text-2); font-size:13.5px; font-weight:600; text-decoration:none; padding:10px 0; transition:color 0.2s;"
+                            onmouseenter="this.style.color='var(--danger)'" onmouseleave="this.style.color=''">
+                            <i class="fas fa-sign-out-alt" style="color:var(--danger); width:16px;"></i> Log Out
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Tips -->
+                <div class="sidebar-stat-card" data-animate>
+                    <h4>💡 Profile Tips</h4>
+                    <ul
+                        style="padding:0; margin:0; list-style:none; font-size:13px; color:var(--text-2); line-height:2;">
+                        <li>• Use your real name — it builds trust</li>
+                        <li>• Add a photo to your items for 3x more requests</li>
+                        <li>• Check Activity Hub regularly for updates</li>
+                    </ul>
+                </div>
+
             </div>
         </div>
+    </main>
 
-        <!-- RIGHT: Sidebar -->
-        <div class="profile-sidebar">
-
-            <!-- Donor Impact Certificate Card -->
-            <div class="sidebar-stat-card" data-animate style="border-color:rgba(16,185,129,0.3); background:rgba(16,185,129,0.04);">
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
-                    <span style="font-size:18px;">🎗️</span>
-                    <h4 style="margin:0; color:var(--accent);">Donor Impact Seal</h4>
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-brand-logo"><i class="fas fa-leaf"></i><span>Giving Tree</span></div>
+                    <p>Connecting neighborhoods through generosity. Every item shared brings our community closer
+                        together.</p>
                 </div>
-                <p style="font-size:12.5px; color:var(--text-2); margin:0 0 14px; line-height:1.5;">
-                    Your items shared prevent landfill waste and build trust in our Pune community.
-                </p>
-                <button type="button" class="btn primary" onclick="openImpactCertificate()" style="width:100%; font-size:13px; font-weight:800; padding:10px; display:inline-flex; align-items:center; justify-content:center; gap:8px;">
-                    <i class="fas fa-award"></i> View Giving Certificate
-                </button>
-            </div>
-
-            <!-- Member info -->
-            <div class="sidebar-stat-card" data-animate>
-                <h4>Account Info</h4>
-                <div class="member-since">
-                    <i class="fas fa-calendar-alt"></i>
-                    <span>Member since <strong id="memberSince">—</strong></span>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/index.html"><i class="fas fa-chevron-right"></i>Home</a></li>
+                        <li><a href="/items.html"><i class="fas fa-chevron-right"></i>Browse Items</a></li>
+                        <li><a href="/post-item.html"><i class="fas fa-chevron-right"></i>Give an Item</a></li>
+                        <li><a href="/requests.html"><i class="fas fa-chevron-right"></i>Activity Hub</a></li>
+                    </ul>
                 </div>
-                <div style="margin-top:16px; padding-top:16px; border-top:1px solid var(--border);">
-                    <a href="/my-items.html" style="display:flex; align-items:center; gap:10px; color:var(--text-2); font-size:13.5px; font-weight:600; text-decoration:none; padding:10px 0; transition:color 0.2s;" onmouseenter="this.style.color='var(--accent)'" onmouseleave="this.style.color=''">
-                        <i class="fas fa-box-open" style="color:var(--accent); width:16px;"></i> My Listed Items
-                    </a>
-                    <a href="/requests.html" style="display:flex; align-items:center; gap:10px; color:var(--text-2); font-size:13.5px; font-weight:600; text-decoration:none; padding:10px 0; transition:color 0.2s;" onmouseenter="this.style.color='var(--accent)'" onmouseleave="this.style.color=''">
-                        <i class="fas fa-list-alt" style="color:var(--accent); width:16px;"></i> Activity Hub
-                    </a>
-                    <a href="/logout" style="display:flex; align-items:center; gap:10px; color:var(--text-2); font-size:13.5px; font-weight:600; text-decoration:none; padding:10px 0; transition:color 0.2s;" onmouseenter="this.style.color='var(--danger)'" onmouseleave="this.style.color=''">
-                        <i class="fas fa-sign-out-alt" style="color:var(--danger); width:16px;"></i> Log Out
-                    </a>
+                <div class="footer-col">
+                    <h4>Stay in the Loop</h4>
+                    <p style="font-size:13px; color:var(--text-3); margin:0 0 8px; line-height:1.7;">Get notified when
+                        new items are shared in your area.</p>
+                    <form class="footer-newsletter-form" onsubmit="handleNewsletterSubmit(event)">
+                        <input type="email" placeholder="your@email.com" required id="footerEmailInput">
+                        <button type="submit" class="footer-newsletter-btn"><i class="fas fa-paper-plane"></i></button>
+                    </form>
                 </div>
             </div>
-
-            <!-- Tips -->
-            <div class="sidebar-stat-card" data-animate>
-                <h4>💡 Profile Tips</h4>
-                <ul style="padding:0; margin:0; list-style:none; font-size:13px; color:var(--text-2); line-height:2;">
-                    <li>• Use your real name — it builds trust</li>
-                    <li>• Add a photo to your items for 3x more requests</li>
-                    <li>• Check Activity Hub regularly for updates</li>
-                </ul>
-            </div>
-
-        </div>
-    </div>
-</main>
-
-<!-- FOOTER -->
-<footer>
-    <div class="container">
-        <div class="footer-grid">
-            <div class="footer-brand">
-                <div class="footer-brand-logo"><i class="fas fa-leaf"></i><span>Giving Tree</span></div>
-                <p>Connecting neighborhoods through generosity. Every item shared brings our community closer together.</p>
-            </div>
-            <div class="footer-col">
-                <h4>Quick Links</h4>
-                <ul>
-                    <li><a href="/index.html"><i class="fas fa-chevron-right"></i>Home</a></li>
-                    <li><a href="/items.html"><i class="fas fa-chevron-right"></i>Browse Items</a></li>
-                    <li><a href="/post-item.html"><i class="fas fa-chevron-right"></i>Give an Item</a></li>
-                    <li><a href="/requests.html"><i class="fas fa-chevron-right"></i>Activity Hub</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Stay in the Loop</h4>
-                <p style="font-size:13px; color:var(--text-3); margin:0 0 8px; line-height:1.7;">Get notified when new items are shared in your area.</p>
-                <form class="footer-newsletter-form" onsubmit="handleNewsletterSubmit(event)">
-                    <input type="email" placeholder="your@email.com" required id="footerEmailInput">
-                    <button type="submit" class="footer-newsletter-btn"><i class="fas fa-paper-plane"></i></button>
-                </form>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Giving Tree | Developed with ❤️ for the Community</p>
+                <p>Made in India 🇮🇳</p>
             </div>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 Giving Tree | Developed with ❤️ for the Community</p>
-            <p>Made in India 🇮🇳</p>
-        </div>
-    </div>
-</footer>
+    </footer>
 
-<script>
-function handleNewsletterSubmit(e) {
-    e.preventDefault();
-    const input = document.getElementById('footerEmailInput');
-    if (input && input.value) {
-        showToast('Thanks! We\'ll keep you updated. 🌿', 'success');
-        input.value = '';
-    }
-}
+    <script>
+        function handleNewsletterSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('footerEmailInput');
+            if (input && input.value) {
+                showToast('Thanks! We\'ll keep you updated. 🌿', 'success');
+                input.value = '';
+            }
+        }
 
-// ---- Load user data ----
-fetch('/api/user', { credentials: 'include' })
-.then(res => res.json())
-.then(data => {
-    if (!data.loggedIn) {
-        window.location.href = '/login.html';
-        return;
-    }
+        // ---- Load user data ----
+        fetch('/api/user', { credentials: 'include' })
+            .then(res => res.json())
+            .then(data => {
+                if (!data.loggedIn) {
+                    window.location.href = '/login.html';
+                    return;
+                }
 
-    const name  = data.name  || (data.email ? data.email.split('@')[0] : 'Neighbor');
-    const email = data.email || '';
-    const city  = data.city  || 'Kothrud, Pune';
-    const stats = data.stats || {};
-    const isAdmin = data.role === 'admin';
+                const name = data.name || (data.email ? data.email.split('@')[0] : 'Neighbor');
+                const email = data.email || '';
+                const city = data.city || 'Kothrud, Pune';
+                const stats = data.stats || {};
+                const isAdmin = data.role === 'admin';
 
-    // Header
-    document.getElementById('profileName').textContent  = name;
-    document.getElementById('profileEmail').textContent = email;
-    const locTextEl = document.getElementById('profileLocText');
-    if (locTextEl) locTextEl.textContent = city;
+                // Header
+                document.getElementById('profileName').textContent = name;
+                document.getElementById('profileEmail').textContent = email;
+                const locTextEl = document.getElementById('profileLocText');
+                if (locTextEl) locTextEl.textContent = city;
 
-    const firstLetter = name.charAt(0).toUpperCase();
-    document.getElementById('profileAvatar').innerHTML = `<span style="font-size:36px; font-weight:800; color:var(--accent);">${firstLetter}</span>`;
+                const firstLetter = name.charAt(0).toUpperCase();
+                document.getElementById('profileAvatar').innerHTML = `<span style="font-size:36px; font-weight:800; color:var(--accent);">${firstLetter}</span>`;
 
-    // Dynamic Ecological & Community Badges
-    const sharedCount = Number(stats.total_shared || 0);
-    const helpedCount = Number(stats.people_helped || 0);
-    const receivedCount = Number(stats.items_received || 0);
+                // Dynamic Ecological & Community Badges
+                const sharedCount = Number(stats.total_shared || 0);
+                const helpedCount = Number(stats.people_helped || 0);
+                const receivedCount = Number(stats.items_received || 0);
 
-    const co2Kg = ((sharedCount * 4.5) + (receivedCount * 2.8)).toFixed(1);
-    const karmaPts = (sharedCount * 50) + (helpedCount * 30) + (receivedCount * 10);
+                const co2Kg = ((sharedCount * 4.5) + (receivedCount * 2.8)).toFixed(1);
+                const karmaPts = (sharedCount * 50) + (helpedCount * 30) + (receivedCount * 10);
 
-    const badges = [];
-    if (isAdmin) badges.push(`<span class="profile-badge" style="background:rgba(244,63,94,0.1); color:var(--danger); border-color:rgba(244,63,94,0.25);"><i class="fas fa-shield-halved"></i> Master Admin</span>`);
-    if (sharedCount >= 5) badges.push(`<span class="profile-badge" style="background:rgba(245,158,11,0.12); color:#fbbf24; border-color:rgba(245,158,11,0.3);"><i class="fas fa-star"></i> Community Pillar</span>`);
-    if (helpedCount >= 3) badges.push(`<span class="profile-badge"><i class="fas fa-heart"></i> Verified Neighbor</span>`);
-    if (sharedCount >= 1) badges.push(`<span class="profile-badge"><i class="fas fa-seedling"></i> Active Giver</span>`);
-    badges.push(`<span class="profile-badge"><i class="fas fa-leaf"></i> Zero-Waste Member</span>`);
-    document.getElementById('profileBadges').innerHTML = badges.join('');
+                const badges = [];
+                if (isAdmin) badges.push(`<span class="profile-badge" style="background:rgba(244,63,94,0.1); color:var(--danger); border-color:rgba(244,63,94,0.25);"><i class="fas fa-shield-halved"></i> Master Admin</span>`);
+                if (sharedCount >= 5) badges.push(`<span class="profile-badge" style="background:rgba(245,158,11,0.12); color:#fbbf24; border-color:rgba(245,158,11,0.3);"><i class="fas fa-star"></i> Community Pillar</span>`);
+                if (helpedCount >= 3) badges.push(`<span class="profile-badge"><i class="fas fa-heart"></i> Verified Neighbor</span>`);
+                if (sharedCount >= 1) badges.push(`<span class="profile-badge"><i class="fas fa-seedling"></i> Active Giver</span>`);
+                badges.push(`<span class="profile-badge"><i class="fas fa-leaf"></i> Zero-Waste Member</span>`);
+                document.getElementById('profileBadges').innerHTML = badges.join('');
 
-    // Impact stats
-    document.getElementById('pStatShared').textContent   = sharedCount;
-    document.getElementById('pStatHelped').textContent   = helpedCount;
-    document.getElementById('pStatReceived').textContent = receivedCount;
-    if (document.getElementById('pStatCo2')) document.getElementById('pStatCo2').textContent = co2Kg;
-    if (document.getElementById('pStatKarma')) document.getElementById('pStatKarma').textContent = karmaPts.toLocaleString('en-IN');
 
-    // Update display & form fields
-    updateProfileViews(name, city, email);
+                const reviews = resData.reviews || [];
+                if (countBadge) countBadge.textContent = `${reviews.length} ${reviews.length === 1 ? 'Note' : 'Notes'}`;
 
-    // Member since (if available)
-    if (data.created_at) {
-        const d = new Date(data.created_at);
-        document.getElementById('memberSince').textContent = d.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
-    } else {
-        document.getElementById('memberSince').textContent = '2026';
-    }
-
-    // Load gratitude notes / reviews
-    if (data.id) {
-        loadGratitudeWall(data.id);
-    }
-})
-.catch(() => { window.location.href = '/login.html'; });
-
-function loadGratitudeWall(userId) {
-    const listEl = document.getElementById('gratitudeWallList');
-    const countBadge = document.getElementById('gratitudeCountBadge');
-    if (!listEl) return;
-
-    fetch(`/api/users/${userId}/reviews`)
-        .then(res => res.json())
-        .then(resData => {
-            const reviews = resData.reviews || [];
-            if (countBadge) countBadge.textContent = `${reviews.length} ${reviews.length === 1 ? 'Note' : 'Notes'}`;
-
-            if (reviews.length === 0) {
-                listEl.innerHTML = `
+                if (reviews.length === 0) {
+                    listEl.innerHTML = `
                     <div style="text-align:center; padding:24px 12px; color:var(--text-3); font-size:13px;">
                         <i class="fas fa-seedling" style="font-size:24px; color:var(--accent); margin-bottom:8px; display:block;"></i>
                         No gratitude notes yet. When neighbors receive items from you, their thank-you notes will bloom here!
                     </div>`;
-                return;
-            }
+                    return;
+                }
 
-            let html = '';
-            reviews.forEach(rev => {
-                const rName = rev.reviewer_name || 'Neighbor';
-                const rLetter = rName.charAt(0).toUpperCase();
-                const rCity = rev.reviewer_city ? ` • 📍 ${escapeHtml(rev.reviewer_city)}` : '';
-                const rDate = new Date(rev.created_at || Date.now()).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' });
-                const rRating = Number(rev.rating || 5);
-                const starsHtml = '★'.repeat(rRating) + '☆'.repeat(5 - rRating);
-                const commentText = rev.comment ? escapeHtml(rev.comment) : 'Thank you so much for your generosity!';
+                let html = '';
+                reviews.forEach(rev => {
+                    const rName = rev.reviewer_name || 'Neighbor';
+                    const rLetter = rName.charAt(0).toUpperCase();
+                    const rCity = rev.reviewer_city ? ` • 📍 ${escapeHtml(rev.reviewer_city)}` : '';
+                    const rDate = new Date(rev.created_at || Date.now()).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' });
+                    const rRating = Number(rev.rating || 5);
+                    const starsHtml = '★'.repeat(rRating) + '☆'.repeat(5 - rRating);
+                    const commentText = rev.comment ? escapeHtml(rev.comment) : 'Thank you so much for your generosity!';
 
-                html += `
+                    html += `
                     <div class="gratitude-wall-card">
                         <div class="gratitude-card-header">
                             <div class="gratitude-sender-badge">
@@ -432,293 +468,299 @@ function loadGratitudeWall(userId) {
                             “${commentText}”
                         </div>
                     </div>`;
+                });
+                listEl.innerHTML = html;
+            })
+            .catch(err => {
+                console.error("Error loading gratitude wall:", err);
             });
-            listEl.innerHTML = html;
-        })
-        .catch(err => {
-            console.error("Error loading gratitude wall:", err);
-        });
 }
 
-let currentProfile = { name: '', city: '', email: '' };
+        let currentProfile = { name: '', city: '', email: '' };
 
-function updateProfileViews(name, city, email) {
-    currentProfile = { name, city, email };
+        function updateProfileViews(name, city, email) {
+            currentProfile = { name, city, email };
 
-    // Header updates
-    const nameEl = document.getElementById('profileName');
-    const emailEl = document.getElementById('profileEmail');
-    const locTextEl = document.getElementById('profileLocText');
-    const avatarEl = document.getElementById('profileAvatar');
+            // Header updates
+            const nameEl = document.getElementById('profileName');
+            const emailEl = document.getElementById('profileEmail');
+            const locTextEl = document.getElementById('profileLocText');
+            const avatarEl = document.getElementById('profileAvatar');
 
-    if (nameEl) nameEl.textContent = name;
-    if (emailEl) emailEl.textContent = email;
-    if (locTextEl) locTextEl.textContent = city;
-    if (avatarEl && name) {
-        const firstLetter = name.charAt(0).toUpperCase();
-        avatarEl.innerHTML = `<span style="font-size:36px; font-weight:800; color:var(--accent);">${firstLetter}</span>`;
-    }
+            if (nameEl) nameEl.textContent = name;
+            if (emailEl) emailEl.textContent = email;
+            if (locTextEl) locTextEl.textContent = city;
+            if (avatarEl && name) {
+                const firstLetter = name.charAt(0).toUpperCase();
+                avatarEl.innerHTML = `<span style="font-size:36px; font-weight:800; color:var(--accent);">${firstLetter}</span>`;
+            }
 
-    // View mode card values
-    const viewNameEl = document.getElementById('viewDisplayName');
-    const viewCityEl = document.getElementById('viewDisplayCity');
-    const viewEmailEl = document.getElementById('viewDisplayEmail');
+            // View mode card values
+            const viewNameEl = document.getElementById('viewDisplayName');
+            const viewCityEl = document.getElementById('viewDisplayCity');
+            const viewEmailEl = document.getElementById('viewDisplayEmail');
 
-    if (viewNameEl) viewNameEl.textContent = name;
-    if (viewCityEl) viewCityEl.textContent = `📍 ${city}`;
-    if (viewEmailEl) viewEmailEl.textContent = email;
+            if (viewNameEl) viewNameEl.textContent = name;
+            if (viewCityEl) viewCityEl.textContent = `📍 ${city}`;
+            if (viewEmailEl) viewEmailEl.textContent = email;
 
-    // Edit form inputs
-    const nameInput = document.getElementById('nameInput');
-    const citySelect = document.getElementById('profileCitySelect');
-    const emailInput = document.getElementById('emailInput');
+            // Edit form inputs
+            const nameInput = document.getElementById('nameInput');
+            const citySelect = document.getElementById('profileCitySelect');
+            const emailInput = document.getElementById('emailInput');
 
-    if (nameInput) nameInput.value = name;
-    if (citySelect) citySelect.value = city;
-    if (emailInput) emailInput.value = email;
-}
+            if (nameInput) nameInput.value = name;
+            if (citySelect) citySelect.value = city;
+            if (emailInput) emailInput.value = email;
+        }
 
-function toggleProfileEditMode() {
-    const editForm = document.getElementById('editNameForm');
-    const viewMode = document.getElementById('profileViewMode');
-    const banner = document.getElementById('profileSavedBanner');
-    const btnText = document.getElementById('editBtnText');
-    const btnIcon = document.getElementById('editBtnIcon');
+        function toggleProfileEditMode() {
+            const editForm = document.getElementById('editNameForm');
+            const viewMode = document.getElementById('profileViewMode');
+            const banner = document.getElementById('profileSavedBanner');
+            const btnText = document.getElementById('editBtnText');
+            const btnIcon = document.getElementById('editBtnIcon');
 
-    const isEditing = editForm && editForm.style.display !== 'none';
+            const isEditing = editForm && editForm.style.display !== 'none';
 
-    if (isEditing) {
-        cancelProfileEdit();
-    } else {
-        if (editForm) editForm.style.display = 'block';
-        if (viewMode) viewMode.style.display = 'none';
-        if (banner) banner.style.display = 'none';
-        if (btnText) btnText.textContent = 'Cancel Edit';
-        if (btnIcon) btnIcon.className = 'fas fa-times';
+            if (isEditing) {
+                cancelProfileEdit();
+            } else {
+                if (editForm) editForm.style.display = 'block';
+                if (viewMode) viewMode.style.display = 'none';
+                if (banner) banner.style.display = 'none';
+                if (btnText) btnText.textContent = 'Cancel Edit';
+                if (btnIcon) btnIcon.className = 'fas fa-times';
 
-        const nameInput = document.getElementById('nameInput');
-        if (nameInput) nameInput.focus();
-    }
-}
+                const nameInput = document.getElementById('nameInput');
+                if (nameInput) nameInput.focus();
+            }
+        }
 
-function cancelProfileEdit() {
-    const editForm = document.getElementById('editNameForm');
-    const viewMode = document.getElementById('profileViewMode');
-    const btnText = document.getElementById('editBtnText');
-    const btnIcon = document.getElementById('editBtnIcon');
-
-    // Reset input fields to current saved profile values
-    const nameInput = document.getElementById('nameInput');
-    const citySelect = document.getElementById('profileCitySelect');
-    if (nameInput) nameInput.value = currentProfile.name;
-    if (citySelect) citySelect.value = currentProfile.city;
-
-    if (editForm) editForm.style.display = 'none';
-    if (viewMode) viewMode.style.display = 'block';
-    if (btnText) btnText.textContent = 'Edit Profile';
-    if (btnIcon) btnIcon.className = 'fas fa-pen';
-}
-
-// ---- Edit profile submit handler ----
-async function handleProfileSave(e) {
-    e.preventDefault();
-    const saveBtn = document.getElementById('saveProfileBtn');
-    const nameInput = document.getElementById('nameInput');
-    const citySelect = document.getElementById('profileCitySelect');
-
-    const newName = nameInput ? nameInput.value.trim() : '';
-    const newCity = citySelect ? citySelect.value.trim() : '';
-
-    if (!newName) { showToast('Please enter a valid unique name.', 'warning'); return; }
-    if (!newCity) { showToast('Please select your neighborhood location.', 'warning'); return; }
-
-    const origHtml = saveBtn ? saveBtn.innerHTML : 'Save Profile Changes';
-    if (saveBtn) {
-        saveBtn.disabled = true;
-        saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving Profile...';
-    }
-
-    try {
-        const res = await fetch('/api/user/update-name', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-            body: JSON.stringify({ name: newName, city: newCity })
-        });
-        const data = await res.json().catch(() => ({}));
-
-        if (res.ok && data.success) {
-            // Update views & stored profile
-            updateProfileViews(data.name || newName, data.city || newCity, currentProfile.email);
-
-            // Switch to view mode
+        function cancelProfileEdit() {
             const editForm = document.getElementById('editNameForm');
             const viewMode = document.getElementById('profileViewMode');
             const btnText = document.getElementById('editBtnText');
             const btnIcon = document.getElementById('editBtnIcon');
-            const banner = document.getElementById('profileSavedBanner');
+
+            // Reset input fields to current saved profile values
+            const nameInput = document.getElementById('nameInput');
+            const citySelect = document.getElementById('profileCitySelect');
+            if (nameInput) nameInput.value = currentProfile.name;
+            if (citySelect) citySelect.value = currentProfile.city;
 
             if (editForm) editForm.style.display = 'none';
             if (viewMode) viewMode.style.display = 'block';
             if (btnText) btnText.textContent = 'Edit Profile';
             if (btnIcon) btnIcon.className = 'fas fa-pen';
+        }
 
-            // Show "OK Done" confirmation banner
-            if (banner) {
-                banner.innerHTML = '<i class="fas fa-check-circle" style="font-size:16px;"></i> <span><strong>OK Done!</strong> Your profile and neighborhood are saved successfully.</span>';
-                banner.style.display = 'flex';
+        // ---- Edit profile submit handler ----
+        async function handleProfileSave(e) {
+            e.preventDefault();
+            const saveBtn = document.getElementById('saveProfileBtn');
+            const nameInput = document.getElementById('nameInput');
+            const citySelect = document.getElementById('profileCitySelect');
+
+            const newName = nameInput ? nameInput.value.trim() : '';
+            const newCity = citySelect ? citySelect.value.trim() : '';
+
+            if (!newName) { showToast('Please enter a valid unique name.', 'warning'); return; }
+            if (!newCity) { showToast('Please select your neighborhood location.', 'warning'); return; }
+
+            const origHtml = saveBtn ? saveBtn.innerHTML : 'Save Profile Changes';
+            if (saveBtn) {
+                saveBtn.disabled = true;
+                saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving Profile...';
             }
 
-            showToast('OK Done! Profile updated successfully. 🌿', 'success');
-        } else {
-            if (data.error === 'nameexists') {
-                showToast('This username/name is already taken. Please choose another.', 'error');
-            } else {
-                showToast(data.message || data.error || 'Could not update profile. Try again.', 'error');
+            try {
+                const res = await fetch('/api/user/update-name', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ name: newName, city: newCity })
+                });
+                const data = await res.json().catch(() => ({}));
+
+                if (res.ok && data.success) {
+                    // Update views & stored profile
+                    updateProfileViews(data.name || newName, data.city || newCity, currentProfile.email);
+
+                    // Switch to view mode
+                    const editForm = document.getElementById('editNameForm');
+                    const viewMode = document.getElementById('profileViewMode');
+                    const btnText = document.getElementById('editBtnText');
+                    const btnIcon = document.getElementById('editBtnIcon');
+                    const banner = document.getElementById('profileSavedBanner');
+
+                    if (editForm) editForm.style.display = 'none';
+                    if (viewMode) viewMode.style.display = 'block';
+                    if (btnText) btnText.textContent = 'Edit Profile';
+                    if (btnIcon) btnIcon.className = 'fas fa-pen';
+
+                    // Show "OK Done" confirmation banner
+                    if (banner) {
+                        banner.innerHTML = '<i class="fas fa-check-circle" style="font-size:16px;"></i> <span><strong>OK Done!</strong> Your profile and neighborhood are saved successfully.</span>';
+                        banner.style.display = 'flex';
+                    }
+
+                    showToast('OK Done! Profile updated successfully. 🌿', 'success');
+                } else {
+                    if (data.error === 'nameexists') {
+                        showToast('This username/name is already taken. Please choose another.', 'error');
+                    } else {
+                        showToast(data.message || data.error || 'Could not update profile. Try again.', 'error');
+                    }
+                }
+            } catch {
+                showToast('Network error. Please try again.', 'error');
+            } finally {
+                if (saveBtn) {
+                    saveBtn.disabled = false;
+                    saveBtn.innerHTML = origHtml;
+                }
             }
         }
-    } catch {
-        showToast('Network error. Please try again.', 'error');
-    } finally {
-        if (saveBtn) {
-            saveBtn.disabled = false;
-            saveBtn.innerHTML = origHtml;
-        }
-    }
-}
 
-// ---- Change password form ----
-document.getElementById('changePasswordForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    const current = document.getElementById('currentPwd').value;
-    const next    = document.getElementById('newPwd').value;
-    const confirm = document.getElementById('confirmPwd').value;
+        // ---- Change password form ----
+        document.getElementById('changePasswordForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const current = document.getElementById('currentPwd').value;
+            const next = document.getElementById('newPwd').value;
+            const confirm = document.getElementById('confirmPwd').value;
 
-    if (!current || !next || !confirm) { showToast('Please fill in all password fields.', 'warning'); return; }
-    if (next !== confirm)              { showToast('New passwords do not match.', 'error'); return; }
-    if (next.length < 6)              { showToast('Password must be at least 6 characters.', 'warning'); return; }
+            if (!current || !next || !confirm) { showToast('Please fill in all password fields.', 'warning'); return; }
+            if (next !== confirm) { showToast('New passwords do not match.', 'error'); return; }
+            if (next.length < 6) { showToast('Password must be at least 6 characters.', 'warning'); return; }
 
-    try {
-        const res = await fetch('/api/user/change-password', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-            body: JSON.stringify({ currentPassword: current, newPassword: next })
+            try {
+                const res = await fetch('/api/user/change-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ currentPassword: current, newPassword: next })
+                });
+                if (res.ok) {
+                    showToast('Password changed successfully!', 'success');
+                    this.reset();
+                } else {
+                    const msg = await res.text();
+                    showToast(msg || 'Incorrect current password.', 'error');
+                }
+            } catch {
+                showToast('Network error. Please try again.', 'error');
+            }
         });
-        if (res.ok) {
-            showToast('Password changed successfully!', 'success');
-            this.reset();
-        } else {
-            const msg = await res.text();
-            showToast(msg || 'Incorrect current password.', 'error');
-        }
-    } catch {
-        showToast('Network error. Please try again.', 'error');
-    }
-});
 
-// ---- Delete account ----
-document.getElementById('deleteAccountBtn').addEventListener('click', async function() {
-    const confirmed = window.confirm('Are you absolutely sure? This will delete your account and all your data permanently. This cannot be undone.');
-    if (!confirmed) return;
+        // ---- Delete account ----
+        document.getElementById('deleteAccountBtn').addEventListener('click', async function () {
+            const confirmed = window.confirm('Are you absolutely sure? This will delete your account and all your data permanently. This cannot be undone.');
+            if (!confirmed) return;
 
-    try {
-        const res = await fetch('/api/user/delete', {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-            body: JSON.stringify({ confirmDelete: 'yes' })
+            try {
+                const res = await fetch('/api/user/delete', {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ confirmDelete: 'yes' })
+                });
+                if (res.ok) {
+                    showToast('Account deleted. Redirecting...', 'info');
+                    setTimeout(() => window.location.href = '/', 2000);
+                } else {
+                    showToast('Could not delete account. Please contact support.', 'error');
+                }
+            } catch {
+                showToast('Network error. Please try again.', 'error');
+            }
         });
-        if (res.ok) {
-            showToast('Account deleted. Redirecting...', 'info');
-            setTimeout(() => window.location.href = '/', 2000);
-        } else {
-            showToast('Could not delete account. Please contact support.', 'error');
+
+        // ---- Impact Certificate Functions ----
+        function openImpactCertificate() {
+            const modal = document.getElementById('impactCertModal');
+            if (!modal) return;
+
+            const userName = document.getElementById('certUserName');
+            const userHub = document.getElementById('certUserHub');
+            const givenCount = document.getElementById('certGivenCount');
+            const co2Saved = document.getElementById('certCo2Saved');
+            const karmaScore = document.getElementById('certKarmaScore');
+
+            if (userName) userName.textContent = currentProfile.name || 'Giving Neighbor';
+            if (userHub) userHub.textContent = currentProfile.city || 'Pune, Maharashtra';
+            if (givenCount) givenCount.textContent = currentProfile.itemsGiven || '0';
+            if (co2Saved) co2Saved.textContent = `${(currentProfile.itemsGiven || 0) * 12} kg`;
+            if (karmaScore) karmaScore.textContent = currentProfile.karma || '0';
+
+            modal.classList.add('active');
         }
-    } catch {
-        showToast('Network error. Please try again.', 'error');
-    }
-});
 
-// ---- Impact Certificate Functions ----
-function openImpactCertificate() {
-    const modal = document.getElementById('impactCertModal');
-    if (!modal) return;
+        function closeImpactCertificate() {
+            const modal = document.getElementById('impactCertModal');
+            if (modal) modal.classList.remove('active');
+        }
 
-    const userName = document.getElementById('certUserName');
-    const userHub = document.getElementById('certUserHub');
-    const givenCount = document.getElementById('certGivenCount');
-    const co2Saved = document.getElementById('certCo2Saved');
-    const karmaScore = document.getElementById('certKarmaScore');
+        function handleCertOverlayClick(e) {
+            if (e.target.id === 'impactCertModal') {
+                closeImpactCertificate();
+            }
+        }
+    </script>
 
-    if (userName) userName.textContent = currentProfile.name || 'Giving Neighbor';
-    if (userHub) userHub.textContent = currentProfile.city || 'Pune, Maharashtra';
-    if (givenCount) givenCount.textContent = currentProfile.itemsGiven || '0';
-    if (co2Saved) co2Saved.textContent = `${(currentProfile.itemsGiven || 0) * 12} kg`;
-    if (karmaScore) karmaScore.textContent = currentProfile.karma || '0';
-
-    modal.classList.add('active');
-}
-
-function closeImpactCertificate() {
-    const modal = document.getElementById('impactCertModal');
-    if (modal) modal.classList.remove('active');
-}
-
-function handleCertOverlayClick(e) {
-    if (e.target.id === 'impactCertModal') {
-        closeImpactCertificate();
-    }
-}
-</script>
-
-<!-- ================= DONOR IMPACT CERTIFICATE MODAL ================= -->
-<div class="certificate-modal-overlay" id="impactCertModal" onclick="handleCertOverlayClick(event)">
-    <div class="certificate-card">
-        <button type="button" onclick="closeImpactCertificate()" style="position:absolute; top:16px; right:16px; background:none; border:none; color:var(--text-3); font-size:18px; cursor:pointer;" aria-label="Close certificate"><i class="fas fa-times"></i></button>
-        <div class="cert-seal">
-            <i class="fas fa-tree"></i>
-        </div>
-        <h3 class="cert-title">Giving Tree Community</h3>
-        <div class="cert-subtitle">Verified Generosity &amp; Zero-Waste Seal</div>
-        <p style="font-size:13px; color:var(--text-2); margin:0 0 14px;">This honors the active neighborhood sharing contribution of:</p>
-        <div class="cert-recipient-name" id="certUserName">Abhishek Badave</div>
-        
-        <div class="cert-stats-grid">
-            <div>
-                <div class="cert-stat-num" id="certGivenCount">0</div>
-                <div class="cert-stat-lbl">Items Shared</div>
+    <!-- ================= DONOR IMPACT CERTIFICATE MODAL ================= -->
+    <div class="certificate-modal-overlay" id="impactCertModal" onclick="handleCertOverlayClick(event)">
+        <div class="certificate-card">
+            <button type="button" onclick="closeImpactCertificate()"
+                style="position:absolute; top:16px; right:16px; background:none; border:none; color:var(--text-3); font-size:18px; cursor:pointer;"
+                aria-label="Close certificate"><i class="fas fa-times"></i></button>
+            <div class="cert-seal">
+                <i class="fas fa-tree"></i>
             </div>
-            <div>
-                <div class="cert-stat-num" id="certCo2Saved">0 kg</div>
-                <div class="cert-stat-lbl">CO₂ Offset</div>
-            </div>
-            <div>
-                <div class="cert-stat-num" id="certKarmaScore">0</div>
-                <div class="cert-stat-lbl">Karma Score</div>
-            </div>
-        </div>
+            <h3 class="cert-title">Giving Tree Community</h3>
+            <div class="cert-subtitle">Verified Generosity &amp; Zero-Waste Seal</div>
+            <p style="font-size:13px; color:var(--text-2); margin:0 0 14px;">This honors the active neighborhood sharing
+                contribution of:</p>
+            <div class="cert-recipient-name" id="certUserName">Abhishek Badave</div>
 
-        <div class="cert-footer-row">
-            <span>Verified Local Hub: <strong id="certUserHub" style="color:#fff;">Pune, MH</strong></span>
-            <span>Community Status: <strong style="color:var(--accent);">Active Donor</strong></span>
-        </div>
+            <div class="cert-stats-grid">
+                <div>
+                    <div class="cert-stat-num" id="certGivenCount">0</div>
+                    <div class="cert-stat-lbl">Items Shared</div>
+                </div>
+                <div>
+                    <div class="cert-stat-num" id="certCo2Saved">0 kg</div>
+                    <div class="cert-stat-lbl">CO₂ Offset</div>
+                </div>
+                <div>
+                    <div class="cert-stat-num" id="certKarmaScore">0</div>
+                    <div class="cert-stat-lbl">Karma Score</div>
+                </div>
+            </div>
 
-        <div class="cert-actions">
-            <button type="button" class="btn primary" onclick="window.print()" style="flex:1; padding:10px; font-size:13px; display:inline-flex; align-items:center; justify-content:center; gap:6px;">
-                <i class="fas fa-print"></i> Print / Save PDF
-            </button>
-            <button type="button" class="btn secondary" onclick="closeImpactCertificate()" style="padding:10px 18px; font-size:13px;">
-                Close
-            </button>
+            <div class="cert-footer-row">
+                <span>Verified Local Hub: <strong id="certUserHub" style="color:#fff;">Pune, MH</strong></span>
+                <span>Community Status: <strong style="color:var(--accent);">Active Donor</strong></span>
+            </div>
+
+            <div class="cert-actions">
+                <button type="button" class="btn primary" onclick="window.print()"
+                    style="flex:1; padding:10px; font-size:13px; display:inline-flex; align-items:center; justify-content:center; gap:6px;">
+                    <i class="fas fa-print"></i> Print / Save PDF
+                </button>
+                <button type="button" class="btn secondary" onclick="closeImpactCertificate()"
+                    style="padding:10px 18px; font-size:13px;">
+                    Close
+                </button>
+            </div>
         </div>
     </div>
-</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
-<script src="/assets/js/utils.js"></script>
-<script src="/assets/js/navbar-auth.js"></script>
-<script src="/assets/js/notifications.js"></script>
-<script src="/assets/js/animations.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
+    <script src="/assets/js/utils.js"></script>
+    <script src="/assets/js/navbar-auth.js"></script>
+    <script src="/assets/js/notifications.js"></script>
+    <script src="/assets/js/animations.js"></script>
 </body>
+
 </html>
