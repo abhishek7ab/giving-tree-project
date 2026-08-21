@@ -103,12 +103,6 @@
                     <span id="errorText"></span>
                 </div>
 
-                <!-- One-click demo test account helper -->
-                <button type="button" class="auth-demo-pill" onclick="fillDemoCredentials()">
-                    <i class="fas fa-sparkles"></i>
-                    <span>Fill Demo Neighbor Account</span>
-                </button>
-
                 <form action="/login" method="POST" onsubmit="handleLogin(event)">
                     <div class="form-group">
                         <label for="loginEmail">
@@ -235,16 +229,6 @@
         const show = input.type === 'password';
         input.type = show ? 'text' : 'password';
         icon.className = show ? 'fas fa-eye-slash' : 'fas fa-eye';
-    }
-
-    function fillDemoCredentials() {
-        const emailInput = document.getElementById('loginEmail');
-        const passInput = document.getElementById('loginPassword');
-        if (emailInput && passInput) {
-            emailInput.value = 'aarav.deshmukh@gmail.com';
-            passInput.value = 'SafePassword123!';
-            emailInput.focus();
-        }
     }
 
     async function handleLogin(e) {

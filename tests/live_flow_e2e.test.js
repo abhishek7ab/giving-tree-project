@@ -305,6 +305,12 @@ describe('Full Giving Tree End-to-End User Flow & Handover Testing', () => {
 
     afterAll(async () => {
         const db = require('../database/db');
+        try {
+            await db.query('DELETE FROM users WHERE email LIKE $1 OR email LIKE $2', [
+                `%${timestamp}%`,
+                '%@pune.community.org%'
+            ]);
+        } catch(e) {}
         if (db.pool && typeof db.pool.end === 'function') {
             await db.pool.end().catch(() => {});
         }

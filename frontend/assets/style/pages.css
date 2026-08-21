@@ -2319,30 +2319,6 @@
     line-height: 1.5;
 }
 
-.auth-demo-pill {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    width: 100%;
-    padding: 9px 14px;
-    background: rgba(16, 185, 129, 0.07);
-    border: 1px dashed rgba(16, 185, 129, 0.35);
-    border-radius: 12px;
-    color: #34d399;
-    font-size: 12.5px;
-    font-weight: 600;
-    cursor: pointer;
-    margin-bottom: 16px;
-    transition: all 0.2s ease;
-}
-
-.auth-demo-pill:hover {
-    background: rgba(16, 185, 129, 0.14);
-    border-color: #10b981;
-    transform: translateY(-1px);
-}
-
 /* Form Inputs Styling */
 .auth-card .form-group {
     margin-bottom: 12px;
