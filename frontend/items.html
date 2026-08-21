@@ -235,11 +235,17 @@
                 <p class="detail-description" id="detailDesc">Item description will be shown here.</p>
 
                 <div style="font-size:13px; color:var(--text-2); display:flex; flex-direction:column; gap:6px;">
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
                         <div><i class="fas fa-map-marker-alt" style="color:var(--accent); width:18px;"></i> <span id="detailLoc">Location</span></div>
-                        <button type="button" id="detailViewOnMapBtn" class="btn-detect-loc" style="padding:4px 10px; font-size:11.5px;" onclick="viewItemOnMap()">
-                            <i class="fas fa-map-marked-alt"></i> View on Map
-                        </button>
+                        <div style="display:flex; gap:6px; align-items:center;">
+                            <a id="detailGoogleMapLink" href="#" target="_blank" rel="noopener noreferrer" class="btn-detect-loc" style="text-decoration:none; padding:4px 10px; font-size:11.5px; display:inline-flex; align-items:center; gap:5px; color:#FFFFFF; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15);" title="Open directly in Google Maps">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.4"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                <span>Google Maps ↗</span>
+                            </a>
+                            <button type="button" id="detailViewOnMapBtn" class="btn-detect-loc" style="padding:4px 10px; font-size:11.5px;" onclick="viewItemOnMap()" title="View on interactive community map">
+                                <i class="fas fa-map-marked-alt"></i> In-App Map
+                            </button>
+                        </div>
                     </div>
                     <div id="detailPickupRow"><i class="fas fa-clock" style="color:var(--accent); width:18px;"></i> <span id="detailPickup">Availability</span></div>
                 </div>
@@ -812,6 +818,10 @@
                     distBadge = `<span class="coords-pill-badge" style="color:var(--accent); font-weight:700;"><i class="fas fa-route"></i> ${GivingTreeLocation.formatDistance(distKm)}</span>`;
                 }
 
+                const gmapsCardUrl = (i.latitude && i.longitude)
+                    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(i.latitude)},${encodeURIComponent(i.longitude)}`
+                    : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((i.location || 'Pune') + ', Pune, Maharashtra, India')}`;
+
                 let statusBadge = '';
                 if (i.status === 'reserved' || i.is_reserved) {
                     statusBadge = `<span class="card-status-pill status-reserved"><i class="fas fa-clock"></i> Reserved</span>`;
@@ -850,7 +860,9 @@
                         <p class="card-desc">${escapeHtml(cleanDesc || 'Generously shared by a neighbor.')}</p>
 
                         <div class="card-meta-line">
-                            <span style="cursor:pointer;" onclick="event.stopPropagation(); viewItemOnMap(${i.id})" title="Click to view pickup spot on map"><i class="fas fa-map-marker-alt" style="color:var(--accent);"></i> ${escapeHtml(i.location || 'Pune')}</span>
+                            <a href="${gmapsCardUrl}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" title="Open location directly on Google Maps" style="color:var(--text-2); text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
+                                <i class="fas fa-map-marker-alt" style="color:var(--accent);"></i> ${escapeHtml(i.location || 'Pune')} <i class="fas fa-arrow-up-right-from-square" style="font-size:9px; opacity:0.6;"></i>
+                            </a>
                             ${distBadge}
                             <span><i class="fas fa-tag"></i> ${escapeHtml(i.condition || 'Good')}</span>
                         </div>
@@ -971,6 +983,17 @@
                 document.getElementById('detailWeight').innerHTML = `<i class="fas fa-weight-hanging"></i> ${item.weight_category || 'Easy to carry'}`;
                 document.getElementById('detailLoc').textContent = item.location || 'Local Neighborhood';
                 
+                const googleMapLink = document.getElementById('detailGoogleMapLink');
+                if (googleMapLink) {
+                    let gmapsUrl = '';
+                    if (item.latitude && item.longitude) {
+                        gmapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.latitude)},${encodeURIComponent(item.longitude)}`;
+                    } else {
+                        gmapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((item.location || 'Pune') + ', Pune, Maharashtra, India')}`;
+                    }
+                    googleMapLink.href = gmapsUrl;
+                }
+
                 const pickupRow = document.getElementById('detailPickupRow');
                 if (item.pickup_availability) {
                     pickupRow.style.display = 'block';

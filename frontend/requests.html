@@ -652,9 +652,15 @@
                                     <span>Pickup / Delivery: <strong>${escapeHtml(r.requester_location || 'Local Pune Area')}</strong></span>
                                     ${distText ? `<span style="background:rgba(16,185,129,0.12); color:var(--accent); padding:2px 8px; border-radius:12px; font-size:11px; font-weight:700;">📍 ${distText}</span>` : ''}
                                 </div>
-                                <button type="button" class="btn-hub-glass" style="padding:4px 10px; font-size:11.5px;" onclick="viewDeliveryRoute(${r.id})">
-                                    <i class="fas fa-map-marked-alt" style="color:var(--accent);"></i> Map Route
-                                </button>
+                                <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+                                    <a href="${(r.requester_latitude && r.requester_longitude) ? `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(r.requester_latitude)},${encodeURIComponent(r.requester_longitude)}` : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((r.requester_location || 'Pune') + ', Pune, Maharashtra, India')}`}" target="_blank" rel="noopener noreferrer" class="btn-hub-glass" style="padding:4px 10px; font-size:11.5px; text-decoration:none; display:inline-flex; align-items:center; gap:4px;" title="Open directly in Google Maps">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                        <span>Google Maps ↗</span>
+                                    </a>
+                                    <button type="button" class="btn-hub-glass" style="padding:4px 10px; font-size:11.5px;" onclick="viewDeliveryRoute(${r.id})" title="View route on interactive community map">
+                                        <i class="fas fa-map-marked-alt" style="color:var(--accent);"></i> In-App Map
+                                    </button>
+                                </div>
                                 ${r.delivery_instructions ? `<div class="note-bubble">"${escapeHtml(r.delivery_instructions)}"</div>` : ''}
                             </div>
 
@@ -764,9 +770,15 @@
                                     <span>Pickup Location: <strong>${escapeHtml(s.location || 'Local Area')}</strong></span>
                                     ${distText ? `<span style="background:rgba(16,185,129,0.12); color:var(--accent); padding:2px 8px; border-radius:12px; font-size:11px; font-weight:700;">📍 ${distText}</span>` : ''}
                                 </div>
-                                <button type="button" class="btn-hub-glass" style="padding:4px 10px; font-size:11.5px;" onclick="viewDeliveryRoute(${s.id})">
-                                    <i class="fas fa-map-marked-alt" style="color:var(--accent);"></i> Map Route
-                                </button>
+                                <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+                                    <a href="${(s.item_latitude && s.item_longitude) ? `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(s.item_latitude)},${encodeURIComponent(s.item_longitude)}` : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((s.location || 'Pune') + ', Pune, Maharashtra, India')}`}" target="_blank" rel="noopener noreferrer" class="btn-hub-glass" style="padding:4px 10px; font-size:11.5px; text-decoration:none; display:inline-flex; align-items:center; gap:4px;" title="Open directly in Google Maps">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                        <span>Google Maps ↗</span>
+                                    </a>
+                                    <button type="button" class="btn-hub-glass" style="padding:4px 10px; font-size:11.5px;" onclick="viewDeliveryRoute(${s.id})" title="View route on interactive community map">
+                                        <i class="fas fa-map-marked-alt" style="color:var(--accent);"></i> In-App Map
+                                    </button>
+                                </div>
                             </div>
 
                             ${status === 'accepted' && s.handover_pin ? `
