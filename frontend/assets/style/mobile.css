@@ -366,11 +366,44 @@
         flex-shrink: 0 !important;
         white-space: nowrap !important;
     }
+
+    /* Wishlist tab switch & banner on mobile */
+    .catalog-tab-switch {
+        width: calc(100% - 24px) !important;
+        justify-content: center !important;
+        margin: 0 12px 16px !important;
+    }
+
+    .catalog-tab-opt {
+        flex: 1 !important;
+        justify-content: center !important;
+        padding: 8px 10px !important;
+        font-size: 12px !important;
+    }
+
+    .wishlist-hero-bar {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        padding: 14px 16px !important;
+        margin: 0 12px 18px !important;
+    }
+
+    .btn-post-wish {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+
+    .wishes-grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+        padding: 0 12px !important;
+    }
 }
 
 @media (max-width: 400px) {
     /* Very small phones: single column items grid */
-    .items-grid {
+    .items-grid,
+    .wishes-grid {
         grid-template-columns: 1fr !important;
         gap: 12px !important;
     }

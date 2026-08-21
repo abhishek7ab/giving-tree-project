@@ -127,6 +127,24 @@ async function initDB() {
             )
         `);
 
+        // Community Wishes (Items Wanted Board)
+        await db.query(`
+            CREATE TABLE IF NOT EXISTS community_wishes (
+                id SERIAL PRIMARY KEY,
+                user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                requester_name VARCHAR(255) NOT NULL,
+                requester_email VARCHAR(255) NOT NULL,
+                title VARCHAR(255) NOT NULL,
+                description TEXT,
+                category VARCHAR(100) NOT NULL,
+                locality VARCHAR(100) NOT NULL,
+                urgency VARCHAR(50) DEFAULT 'Normal',
+                status VARCHAR(50) DEFAULT 'open',
+                fulfilled_by_item_id INTEGER REFERENCES items(id) ON DELETE SET NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
         // Security Audit Logs
         await db.query(`
             CREATE TABLE IF NOT EXISTS audit_logs (
@@ -150,6 +168,8 @@ async function initDB() {
         await db.query("CREATE INDEX IF NOT EXISTS idx_reviews_reviewee ON reviews(reviewee_id)");
         await db.query("CREATE INDEX IF NOT EXISTS idx_reviews_request ON reviews(request_id)");
         await db.query("CREATE INDEX IF NOT EXISTS idx_saved_items_user ON saved_items(user_id)");
+        await db.query("CREATE INDEX IF NOT EXISTS idx_wishes_status_locality ON community_wishes(status, locality)");
+        await db.query("CREATE INDEX IF NOT EXISTS idx_wishes_user_id ON community_wishes(user_id)");
         await db.query("CREATE UNIQUE INDEX IF NOT EXISTS idx_users_unique_name ON users (LOWER(TRIM(name))) WHERE archived_at IS NULL");
         await db.query("CREATE INDEX IF NOT EXISTS idx_audit_logs_action ON audit_logs(action, created_at DESC)");
         await db.query("CREATE INDEX IF NOT EXISTS idx_audit_logs_user ON audit_logs(user_email, created_at DESC)");

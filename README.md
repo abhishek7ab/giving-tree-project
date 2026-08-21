@@ -4,7 +4,7 @@
 > A simple, trusted community platform where neighbors in Pune give away unused items for 100% free, reduce landfill waste, and help people nearby.
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-giving--tree--project.vercel.app-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://giving-tree-project.vercel.app/)
-[![Tests](https://img.shields.io/badge/Tests-59%20Passed-10b981?style=for-the-badge&logo=jest)](tests/)
+[![Tests](https://img.shields.io/badge/Tests-68%20Passed-10b981?style=for-the-badge&logo=jest)](tests/)
 [![Node.js](https://img.shields.io/badge/Node.js-v18%2B-339933?style=for-the-badge&logo=node.js)](https://nodejs.org)
 [![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL%20(Neon)-4169E1?style=for-the-badge&logo=postgresql)](https://neon.tech)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
@@ -204,10 +204,11 @@ npm test
 - `tests/models_and_utils.test.js` — Database models, calculations, coordinate math.
 - `tests/security_and_auth.test.js` — Password hashing, JWT token safety, rate limiting, and CAPTCHA.
 - `tests/api_routes.test.js` — Items, categories, and request workflow APIs.
+- `tests/wishlist.test.js` — Community wishlist, items wanted queries, smart matching, and fulfillment.
 - `tests/comprehensive_e2e.test.js` — Complete registration, post, request, and handover flow.
 - `tests/live_flow_e2e.test.js` — Real-time chat, PIN verification, and neighbor reviews.
 
-**Status: 59 / 59 tests passing (100% success rate)**.
+**Status: 68 / 68 tests passing (100% success rate across all 6 suites)**.
 
 ---
 
@@ -228,6 +229,14 @@ npm test
 - `POST /post-item` — Publish a new donation listing
 - `PUT /api/items/:id` — Edit an existing item
 - `POST /delete-item` — Remove an item listing
+
+### ✨ Community Wishlist ("Items Wanted" Board)
+- `GET /api/wishes` — List active wishes with category & Pune locality filters
+- `POST /api/wishes` — Post a new community wish with urgency badge
+- `GET /api/wishes/my` — Get logged-in user's active/fulfilled wishes
+- `POST /api/wishes/:id/fulfill` — Mark a wish as fulfilled by the community
+- `DELETE /api/wishes/:id` — Delete a posted wish
+- `GET /api/wishes/match` — Query matching open wishes for donor item categories & hubs
 
 ### 🤝 Requests & Handover
 - `POST /request-item` — Send a request for an item

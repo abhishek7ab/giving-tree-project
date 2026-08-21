@@ -536,10 +536,21 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Auto-fill cause or category if coming from a Donation Drive pledge link
+    // Auto-fill cause or category if coming from a Donation Drive pledge link or Wishlist fulfillment
     const urlParams = new URLSearchParams(window.location.search);
-    const catParam = urlParams.get('category');
+    const catParam = urlParams.get('category') || urlParams.get('wishCat');
     const causeParam = urlParams.get('cause');
+    const wishTitleParam = urlParams.get('wishTitle');
+    const wishLocParam = urlParams.get('wishLoc');
+
+    if (wishTitleParam) {
+        const titleInput = document.getElementById('itemTitle');
+        if (titleInput) {
+            titleInput.value = wishTitleParam;
+            const prevTitle = document.getElementById('prevTitle');
+            if (prevTitle) prevTitle.innerText = wishTitleParam;
+        }
+    }
 
     if (catParam) {
         const catSelect = document.getElementById('itemCategory');
@@ -547,6 +558,15 @@ window.addEventListener('DOMContentLoaded', () => {
             catSelect.value = catParam;
             const prevCat = document.getElementById('prevCat');
             if (prevCat) prevCat.innerText = catParam;
+        }
+    }
+
+    if (wishLocParam) {
+        const locInput = document.getElementById('locInput');
+        if (locInput) {
+            locInput.value = wishLocParam;
+            const prevLoc = document.getElementById('prevLoc');
+            if (prevLoc) prevLoc.innerText = wishLocParam;
         }
     }
 

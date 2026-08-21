@@ -56,14 +56,26 @@
 
     <header class="items-hero-header">
         <span class="eyebrow-pill" style="display:inline-flex; align-items:center; gap:6px;">
-            🌿 Pune Community Catalog
+            🌿 Pune Community Hub
         </span>
-        <h1 class="items-hero-title">Community Donations</h1>
-        <p class="items-hero-subtitle">Explore free items shared by caring neighbors across Pune.</p>
+        <h1 class="items-hero-title" id="catalogHeroTitle">Community Donations</h1>
+        <p class="items-hero-subtitle" id="catalogHeroSubtitle">Explore free items shared by caring neighbors across Pune.</p>
+
+        <!-- Mode Switcher: Donations vs Wishlist -->
+        <div style="display:flex; justify-content:center; margin-top:20px;">
+            <div class="catalog-tab-switch" role="tablist">
+                <button type="button" class="catalog-tab-opt active" id="tabModeDonations" onclick="switchCatalogMode('donations')">
+                    <i class="fas fa-gift"></i> Available Donations <span class="tab-badge-num" id="donationsTabCount">0</span>
+                </button>
+                <button type="button" class="catalog-tab-opt" id="tabModeWishes" onclick="switchCatalogMode('wishes')">
+                    <i class="fas fa-sparkles"></i> Community Wishlist <span class="tab-badge-num" id="wishesTabCount">0</span>
+                </button>
+            </div>
+        </div>
     </header>
 
     <!-- Unified Command Control Center -->
-    <div class="catalog-control-center">
+    <div class="catalog-control-center" id="catalogControlCenter">
         <!-- 1. Main Search & Filters Card -->
         <div class="catalog-search-card">
             <div class="unified-search-pill">
@@ -226,6 +238,22 @@
 
     <div class="items-grid" id="itemsGrid"></div>
 
+    <!-- Community Wishlist Container -->
+    <div id="wishlistSectionWrapper" style="display:none; max-width:1200px; margin:0 auto; padding:0 20px;">
+        <div class="wishlist-hero-bar">
+            <div class="wishlist-hero-text">
+                <h3><i class="fas fa-sparkles" style="color:var(--accent);"></i> Community Wishlist &amp; Items Wanted</h3>
+                <p>See what neighbors and students across Pune are looking for. Have something to give? Fulfill a wish directly!</p>
+            </div>
+            <button type="button" class="btn-post-wish" onclick="openPostWishModal()">
+                <i class="fas fa-plus"></i> Post What You Need
+            </button>
+        </div>
+
+        <div class="wishes-grid" id="wishesGrid">
+            <!-- Dynamically populated -->
+        </div>
+    </div>
 
     <!-- Interactive Full Catalog Map View -->
     <div class="catalog-map-wrapper" id="catalogMapWrapper" style="display:none;">
@@ -414,6 +442,90 @@
                     <i class="fas fa-paper-plane"></i> Send Request
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- ================= 4. POST COMMUNITY WISH MODAL ================= -->
+    <div class="modal-overlay" id="postWishModal" onclick="handleWishOverlayClick(event)">
+        <div class="modal-box" style="max-width:520px;">
+            <button class="detail-modal-close" onclick="closePostWishModal()" aria-label="Close modal">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-icon" style="background:rgba(16,185,129,0.12); color:var(--accent);">
+                <i class="fas fa-sparkles"></i>
+            </div>
+            <h3 style="margin-bottom:4px;">Post a Community Wish</h3>
+            <p style="font-size:13px; color:var(--text-2); margin-bottom:16px;">Tell Pune neighbors what item you're looking for. Someone nearby may have it ready to give!</p>
+
+            <form id="postWishForm" onsubmit="handlePostWishSubmit(event)">
+                <div class="modal-form-group">
+                    <label class="modal-label">What item are you looking for? <span style="color:var(--accent);">*</span></label>
+                    <input type="text" id="wishTitleInput" class="location-input" placeholder="e.g., 10th Standard Science Textbooks, Study Chair" required maxlength="150">
+                </div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;" class="form-row">
+                    <div class="modal-form-group">
+                        <label class="modal-label">Category <span style="color:var(--accent);">*</span></label>
+                        <select id="wishCategorySelect" class="location-input" required style="cursor:pointer;">
+                            <option value="">Select category</option>
+                            <option value="Furniture">Furniture</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Appliances">Appliances</option>
+                            <option value="Books">Books</option>
+                            <option value="Clothing">Clothing</option>
+                            <option value="Kitchen & Dining">Kitchen &amp; Dining</option>
+                            <option value="Baby & Kids">Baby &amp; Kids</option>
+                            <option value="Sports & Outdoors">Sports &amp; Outdoors</option>
+                            <option value="Home & Garden">Home &amp; Garden</option>
+                            <option value="Pet Supplies">Pet Supplies</option>
+                            <option value="Office & Study">Office &amp; Study</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="modal-form-group">
+                        <label class="modal-label">Urgency Level</label>
+                        <select id="wishUrgencySelect" class="location-input" style="cursor:pointer;">
+                            <option value="Normal">Normal</option>
+                            <option value="Urgent">⚡ Urgent (Need soon)</option>
+                            <option value="Flexible">🌱 Flexible (Whenever available)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="modal-form-group" style="margin-top:12px;">
+                    <label class="modal-label">Pune Neighborhood Hub <span style="color:var(--accent);">*</span></label>
+                    <select id="wishLocalitySelect" class="location-input" required style="cursor:pointer;">
+                        <option value="">Select your Pune hub</option>
+                        <option value="Kothrud, Pune">📍 Kothrud, Pune</option>
+                        <option value="Baner, Pune">📍 Baner, Pune</option>
+                        <option value="FC Road, Pune">📍 FC Road, Pune</option>
+                        <option value="Hinjawadi, Pune">📍 Hinjawadi, Pune</option>
+                        <option value="Viman Nagar, Pune">📍 Viman Nagar, Pune</option>
+                        <option value="Koregaon Park, Pune">📍 Koregaon Park, Pune</option>
+                        <option value="Hadapsar, Pune">📍 Hadapsar, Pune</option>
+                        <option value="Katraj, Pune">📍 Katraj, Pune</option>
+                        <option value="Wakad, Pune">📍 Wakad, Pune</option>
+                        <option value="Aundh, Pune">📍 Aundh, Pune</option>
+                    </select>
+                </div>
+
+                <div class="modal-form-group" style="margin-top:12px;">
+                    <label class="modal-label">Why do you need it? <span style="color:var(--text-3); font-weight:400;">(optional details)</span></label>
+                    <textarea id="wishDescriptionInput" class="location-input" rows="3" placeholder="e.g., Needed for my exam preparation starting next month..." maxlength="1000" style="resize:vertical;"></textarea>
+                </div>
+
+                <div id="wishErrorMessage" style="display:none; color:#f87171; background:rgba(239,68,68,0.12); padding:8px 12px; border-radius:8px; font-size:12.5px; margin:12px 0 6px; border:1px solid rgba(239,68,68,0.25);"></div>
+
+                <div class="modal-actions" style="margin-top:16px;">
+                    <button type="button" class="btn-cancel-modal" onclick="closePostWishModal()">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                    <button type="submit" class="btn-confirm" id="btnSubmitWish">
+                        <i class="fas fa-sparkles"></i> Publish Wish
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -809,9 +921,12 @@
 
                     currentLoadedItems = items;
                     animateCounter('headerTotalItems', items.length);
-                    updatePuneChipCounts(items);
+                    const donationsBadge = document.getElementById('donationsTabCount');
+                    if (donationsBadge) donationsBadge.textContent = items.length;
 
+                    updatePuneChipCounts(items);
                     renderFilteredResults();
+                    loadWishCountBadge();
                 })
                 .catch((err) => {
                     console.error("loadItems error:", err);
@@ -827,6 +942,242 @@
                             </button>
                         </div>`;
                 });
+        }
+
+        let currentCatalogMode = 'donations';
+        let currentLoadedWishes = [];
+
+        function switchCatalogMode(mode) {
+            currentCatalogMode = mode;
+            const btnDonations = document.getElementById('tabModeDonations');
+            const btnWishes = document.getElementById('tabModeWishes');
+            const controlCenter = document.getElementById('catalogControlCenter');
+            const itemsGrid = document.getElementById('itemsGrid');
+            const mapWrapper = document.getElementById('catalogMapWrapper');
+            const wishlistWrapper = document.getElementById('wishlistSectionWrapper');
+            const heroTitle = document.getElementById('catalogHeroTitle');
+            const heroSubtitle = document.getElementById('catalogHeroSubtitle');
+
+            if (mode === 'wishes') {
+                if (btnDonations) btnDonations.classList.remove('active');
+                if (btnWishes) btnWishes.classList.add('active');
+                if (controlCenter) controlCenter.style.display = 'none';
+                if (itemsGrid) itemsGrid.style.display = 'none';
+                if (mapWrapper) mapWrapper.style.display = 'none';
+                if (wishlistWrapper) wishlistWrapper.style.display = 'block';
+                if (heroTitle) heroTitle.textContent = 'Community Wishlist';
+                if (heroSubtitle) heroSubtitle.textContent = 'See what neighbors and students across Pune need, or post what you are looking for.';
+                loadWishes();
+            } else {
+                if (btnDonations) btnDonations.classList.add('active');
+                if (btnWishes) btnWishes.classList.remove('active');
+                if (controlCenter) controlCenter.style.display = 'block';
+                if (wishlistWrapper) wishlistWrapper.style.display = 'none';
+                if (heroTitle) heroTitle.textContent = 'Community Donations';
+                if (heroSubtitle) heroSubtitle.textContent = 'Explore free items shared by caring neighbors across Pune.';
+                switchCatalogView(currentCatalogView);
+            }
+        }
+
+        async function loadWishCountBadge() {
+            try {
+                const res = await fetch('/api/wishes?status=open');
+                const data = await res.json();
+                const badge = document.getElementById('wishesTabCount');
+                if (badge && data.wishes) {
+                    badge.textContent = data.wishes.length;
+                }
+            } catch (e) {
+                // Ignore silent count failure
+            }
+        }
+
+        async function loadWishes() {
+            const grid = document.getElementById('wishesGrid');
+            if (!grid) return;
+
+            grid.innerHTML = `
+                <div style="text-align:center; color:var(--text-3); padding:40px; grid-column:1/-1;">
+                    <i class="fas fa-spinner fa-spin fa-2x" style="color:var(--accent);"></i>
+                    <p style="margin-top:12px;">Loading community wishlist...</p>
+                </div>
+            `;
+
+            try {
+                const res = await fetch('/api/wishes?status=open');
+                const data = await res.json();
+                currentLoadedWishes = data.wishes || [];
+
+                const badge = document.getElementById('wishesTabCount');
+                if (badge) badge.textContent = currentLoadedWishes.length;
+
+                renderWishes(currentLoadedWishes);
+            } catch (err) {
+                grid.innerHTML = `
+                    <div style="text-align:center; color:#ef4444; padding:40px; grid-column:1/-1;">
+                        <i class="fas fa-exclamation-circle fa-2x" style="margin-bottom:12px;"></i>
+                        <p>Failed to load community wishlist. Please try again.</p>
+                        <button class="btn secondary" onclick="loadWishes()" style="margin-top:8px;">Retry</button>
+                    </div>
+                `;
+            }
+        }
+
+        function renderWishes(wishes) {
+            const grid = document.getElementById('wishesGrid');
+            if (!grid) return;
+
+            if (!wishes || !wishes.length) {
+                grid.innerHTML = `
+                    <div style="text-align:center; color:var(--text-2); padding:60px 20px; grid-column:1/-1; background:rgba(15,23,42,0.6); border:1px dashed rgba(255,255,255,0.12); border-radius:18px;">
+                        <div style="width:64px; height:64px; background:rgba(16,185,129,0.12); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 16px; font-size:24px; color:var(--accent);">
+                            <i class="fas fa-sparkles"></i>
+                        </div>
+                        <h3 style="color:#FFFFFF; font-size:18px; margin:0 0 6px;">No Open Wishes Right Now</h3>
+                        <p style="font-size:13px; color:var(--text-3); max-width:380px; margin:0 auto 18px;">Are you looking for something in Pune? Be the first to post a community wish!</p>
+                        <button type="button" class="btn primary" onclick="openPostWishModal()" style="font-size:13px; padding:8px 18px;">
+                            <i class="fas fa-plus"></i> Post What You Need
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = wishes.map(w => {
+                const urgencyClass = (w.urgency || 'Normal').toLowerCase();
+                const timeAgo = formatTimeAgo(w.created_at);
+                const isOwner = currentUserId && Number(w.user_id) === Number(currentUserId);
+
+                return `
+                    <div class="wish-card">
+                        <div>
+                            <div class="wish-card-top">
+                                <span class="wish-category-pill"><i class="fas fa-tag" style="color:var(--accent);"></i> ${escapeHtml(w.category)}</span>
+                                <span class="wish-urgency-badge ${urgencyClass}">
+                                    ${urgencyClass === 'urgent' ? '<i class="fas fa-bolt"></i> Urgent' : urgencyClass === 'flexible' ? '<i class="fas fa-seedling"></i> Flexible' : '<i class="fas fa-circle-check"></i> Needed'}
+                                </span>
+                            </div>
+                            <h3 class="wish-card-title">${escapeHtml(w.title)}</h3>
+                            <p class="wish-card-desc">${escapeHtml(w.description || 'No additional details provided.')}</p>
+                        </div>
+
+                        <div>
+                            <div class="wish-card-meta">
+                                <span class="wish-loc-badge"><i class="fas fa-map-marker-alt"></i> ${escapeHtml(w.locality)}</span>
+                                <span><i class="fas fa-user-circle"></i> ${escapeHtml(w.requester_name || 'Neighbor')} • ${timeAgo}</span>
+                            </div>
+
+                            <div class="wish-card-actions">
+                                ${isOwner ? `
+                                    <button type="button" class="btn secondary" style="flex:1; font-size:12px; padding:7px 10px;" onclick="handleFulfillWish(${w.id})">
+                                        <i class="fas fa-check"></i> Mark Fulfilled
+                                    </button>
+                                ` : `
+                                    <a href="/post-item.html?wishTitle=${encodeURIComponent(w.title)}&wishCat=${encodeURIComponent(w.category)}&wishLoc=${encodeURIComponent(w.locality)}" class="btn-give-wish">
+                                        <i class="fas fa-hand-holding-heart"></i> I Can Donate This!
+                                    </a>
+                                `}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openPostWishModal() {
+            if (!currentUserId) {
+                showToast('Please sign in or create an account to post a community wish.', 'warning');
+                setTimeout(() => {
+                    window.location.href = '/login.html?redirect=/items.html';
+                }, 1200);
+                return;
+            }
+            const modal = document.getElementById('postWishModal');
+            if (modal) modal.classList.add('active');
+        }
+
+        function closePostWishModal() {
+            const modal = document.getElementById('postWishModal');
+            if (modal) modal.classList.remove('active');
+            const errBox = document.getElementById('wishErrorMessage');
+            if (errBox) errBox.style.display = 'none';
+        }
+
+        function handleWishOverlayClick(e) {
+            if (e.target.id === 'postWishModal') {
+                closePostWishModal();
+            }
+        }
+
+        async function handlePostWishSubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btnSubmitWish');
+            const errBox = document.getElementById('wishErrorMessage');
+            if (errBox) errBox.style.display = 'none';
+
+            const title = document.getElementById('wishTitleInput')?.value.trim();
+            const category = document.getElementById('wishCategorySelect')?.value;
+            const urgency = document.getElementById('wishUrgencySelect')?.value || 'Normal';
+            const locality = document.getElementById('wishLocalitySelect')?.value;
+            const description = document.getElementById('wishDescriptionInput')?.value.trim();
+
+            if (!title || !category || !locality) {
+                if (errBox) {
+                    errBox.textContent = 'Please fill in all required fields.';
+                    errBox.style.display = 'block';
+                }
+                return;
+            }
+
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publishing...';
+            }
+
+            try {
+                const res = await fetch('/api/wishes', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ title, category, urgency, locality, description })
+                });
+
+                const data = await res.json();
+                if (!res.ok) {
+                    throw new Error(data.error || 'Failed to post wish.');
+                }
+
+                showToast('✨ Wish published! Pune neighbors can now see what you need.', 'success');
+                closePostWishModal();
+                document.getElementById('postWishForm')?.reset();
+                loadWishes();
+            } catch (err) {
+                if (errBox) {
+                    errBox.textContent = err.message || 'An error occurred while publishing your wish.';
+                    errBox.style.display = 'block';
+                }
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-sparkles"></i> Publish Wish';
+                }
+            }
+        }
+
+        async function handleFulfillWish(wishId) {
+            if (!confirm('Mark this wish as fulfilled? It will be archived from the public board.')) return;
+            try {
+                const res = await fetch(`/api/wishes/${wishId}/fulfill`, {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Failed to update wish.');
+                showToast('Wish marked as fulfilled!', 'success');
+                loadWishes();
+            } catch (e) {
+                showToast(e.message || 'Error updating wish.', 'error');
+            }
         }
 
         function updatePuneChipCounts(items) {

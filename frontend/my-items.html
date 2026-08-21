@@ -63,7 +63,10 @@
                     <i class="fas fa-box-open"></i> <strong id="summarySharedCount">0</strong> Active Donations
                 </div>
                 <div class="metric-pill">
-                    <i class="fas fa-heart"></i> <strong id="summaryWishlistCount">0</strong> In Wishlist
+                    <i class="fas fa-heart"></i> <strong id="summaryWishlistCount">0</strong> Saved Items
+                </div>
+                <div class="metric-pill">
+                    <i class="fas fa-sparkles"></i> <strong id="summaryWishesCount">0</strong> My Wishes
                 </div>
                 <div class="metric-pill">
                     <i class="fas fa-hand-holding-heart"></i> <strong id="summaryGivenCount">0</strong> Donated to Neighbors
@@ -79,8 +82,12 @@
                     <span class="tab-pill-badge" id="sharedCountBadge">0</span>
                 </button>
                 <button type="button" class="tab-btn" id="tabWishlist" onclick="switchTab('wishlist')">
-                    <i class="fas fa-heart"></i> Saved Wishlist
+                    <i class="fas fa-heart"></i> Saved Items
                     <span class="tab-pill-badge" id="wishlistCountBadge">0</span>
+                </button>
+                <button type="button" class="tab-btn" id="tabMyWishes" onclick="switchTab('wishes')">
+                    <i class="fas fa-sparkles"></i> My Wishes
+                    <span class="tab-pill-badge" id="wishesCountBadge">0</span>
                 </button>
             </div>
             <a href="/post-item.html" class="btn-hub-primary" style="display:inline-flex; align-items:center; gap:8px; padding:9px 20px; border-radius:var(--radius-full); text-decoration:none; font-size:13px; font-weight:800; white-space:nowrap;">
@@ -196,12 +203,15 @@
         let currentTab = 'shared';
         let sharedItems = [];
         let savedItems = [];
+        let myWishes = [];
         let pendingDeleteId = null;
 
         function switchTab(tab) {
             currentTab = tab;
             document.getElementById('tabMyShared').classList.toggle('active', tab === 'shared');
             document.getElementById('tabWishlist').classList.toggle('active', tab === 'wishlist');
+            const tabWishesEl = document.getElementById('tabMyWishes');
+            if (tabWishesEl) tabWishesEl.classList.toggle('active', tab === 'wishes');
             renderItems();
         }
 
@@ -218,6 +228,19 @@
                 const dataSaved = await resSaved.json();
                 savedItems = dataSaved.items || [];
                 document.getElementById('wishlistCountBadge').textContent = savedItems.length;
+
+                // Fetch my wishes
+                try {
+                    const resWishes = await fetch('/api/wishes/my', { credentials: 'include' });
+                    const dataWishes = await resWishes.json();
+                    myWishes = dataWishes.wishes || [];
+                    const wishesBadge = document.getElementById('wishesCountBadge');
+                    if (wishesBadge) wishesBadge.textContent = myWishes.length;
+                    const summaryWishes = document.getElementById('summaryWishesCount');
+                    if (summaryWishes) summaryWishes.textContent = myWishes.length;
+                } catch(wErr) {
+                    console.warn("My wishes note:", wErr);
+                }
 
                 // Update summary metrics
                 const givenCount = sharedItems.filter(x => x.status === 'given' || x.status === 'completed').length;
@@ -306,16 +329,16 @@
                         </div>
                     </div>`;
                 }).join('');
-            } else {
-                // Wishlist Tab
+            } else if (currentTab === 'wishlist') {
+                // Saved Items Tab
                 if (!savedItems.length) {
                     grid.innerHTML = `
                         <div class="hub-empty-state" style="grid-column: 1 / -1;">
                             <div class="hub-empty-icon" style="background:rgba(244,63,94,0.12); color:var(--danger); border-color:rgba(244,63,94,0.3);">
                                 <i class="fas fa-heart"></i>
                             </div>
-                            <h3>Your Wishlist is Empty</h3>
-                            <p>Explore the community catalog and tap the heart icon on items you'd like to save.</p>
+                            <h3>Your Saved Items List is Empty</h3>
+                            <p>Explore the community catalog and tap the heart icon on items you'd like to bookmark.</p>
                             <a href="/items.html" class="btn-hub-primary" style="display:inline-flex; padding:10px 24px; border-radius:50px; text-decoration:none; font-size:13.5px;">
                                 <i class="fas fa-search"></i> Browse Community Items
                             </a>
@@ -358,7 +381,102 @@
                         </div>
                     </div>`;
                 }).join('');
+            } else if (currentTab === 'wishes') {
+                // My Posted Wishes Tab
+                if (!myWishes.length) {
+                    grid.innerHTML = `
+                        <div class="hub-empty-state" style="grid-column: 1 / -1;">
+                            <div class="hub-empty-icon" style="background:rgba(16,185,129,0.12); color:var(--accent); border-color:rgba(16,185,129,0.3);">
+                                <i class="fas fa-sparkles"></i>
+                            </div>
+                            <h3>No Active Wishes Posted</h3>
+                            <p>Are you looking for specific textbooks, appliances, or study furniture in Pune? Post a community wish so neighbors can help.</p>
+                            <a href="/items.html" class="btn-hub-primary" style="display:inline-flex; padding:10px 24px; border-radius:50px; text-decoration:none; font-size:13.5px;">
+                                <i class="fas fa-plus"></i> Post a Community Wish
+                            </a>
+                        </div>`;
+                    return;
+                }
+
+                grid.innerHTML = myWishes.map(w => {
+                    const isFulfilled = w.status === 'fulfilled';
+                    const urgencyClass = (w.urgency || 'Normal').toLowerCase();
+
+                    return `
+                    <div class="item-card in-view">
+                        <div style="padding:18px 20px 10px; border-bottom:1px solid rgba(255,255,255,0.06); display:flex; justify-content:space-between; align-items:center;">
+                            <span class="card-status-badge ${isFulfilled ? 'completed' : 'available'}" style="position:static;">
+                                ${isFulfilled ? '✨ Fulfilled' : '🟢 Open Request'}
+                            </span>
+                            <span class="wish-urgency-badge ${urgencyClass}" style="margin:0;">
+                                ${urgencyClass === 'urgent' ? '⚡ Urgent' : urgencyClass === 'flexible' ? '🌱 Flexible' : 'Needed'}
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            <h3>${escapeHtml(w.title)}</h3>
+                            <div style="font-size:12.5px; color:var(--text-2); margin-bottom:8px;">
+                                <i class="fas fa-map-marker-alt" style="color:var(--accent);"></i> ${escapeHtml(w.locality)}
+                                <span> · ${escapeHtml(w.category)}</span>
+                            </div>
+                            <p style="font-size:13px; color:var(--text-2); line-height:1.5; margin:0 0 14px; display:-webkit-box; -webkit-line-clamp:3; line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; min-height:2.6em;">
+                                ${escapeHtml(w.description || 'No additional details.')}
+                            </p>
+
+                            <div class="card-control-grid" style="margin-bottom:8px;">
+                                ${!isFulfilled ? `
+                                    <button class="btn-ctrl btn-ctrl-status" onclick="fulfillMyWish(${w.id})">
+                                        <i class="fas fa-check-circle"></i> Mark Fulfilled
+                                    </button>
+                                ` : `
+                                    <button class="btn-ctrl" disabled style="opacity:0.5; cursor:default;">
+                                        <i class="fas fa-circle-check"></i> Fulfilled
+                                    </button>
+                                `}
+                                <button class="btn-delete" onclick="deleteMyWish(${w.id})">
+                                    <i class="fas fa-trash-alt"></i> Remove
+                                </button>
+                            </div>
+                        </div>
+                    </div>`;
+                }).join('');
             }
+
+            if (window.initAnimations) {
+                setTimeout(initAnimations, 50);
+            }
+        }
+
+        async function fulfillMyWish(wishId) {
+            if (!confirm('Mark this wish as fulfilled? Thank you for letting the community know!')) return;
+            try {
+                const res = await fetch(`/api/wishes/${wishId}/fulfill`, {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Failed to update wish.');
+                showToast('✨ Wish marked as fulfilled!', 'success');
+                fetchMyData();
+            } catch(e) {
+                showToast(e.message || 'Error updating wish.', 'error');
+            }
+        }
+
+        async function deleteMyWish(wishId) {
+            if (!confirm('Remove this community wish?')) return;
+            try {
+                const res = await fetch(`/api/wishes/${wishId}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Failed to remove wish.');
+                showToast('Wish removed successfully.', 'success');
+                fetchMyData();
+            } catch(e) {
+                showToast(e.message || 'Error deleting wish.', 'error');
+            }
+        }
 
             if (window.initAnimations) {
                 setTimeout(initAnimations, 50);

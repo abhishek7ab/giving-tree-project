@@ -106,6 +106,19 @@ exports.findUserByEmail = async (email, includeArchived = false) => {
     }
 };
 
+exports.findUserById = async (id, includeArchived = false) => {
+    try {
+        const query = includeArchived
+            ? "SELECT * FROM users WHERE id = $1"
+            : "SELECT * FROM users WHERE id = $1 AND archived_at IS NULL";
+        const result = await db.query(query, [id]);
+        return result.rows[0] || null;
+    } catch(e) {
+        console.error("DB FIND USER BY ID ERROR:", e.message);
+        throw e;
+    }
+};
+
 exports.getAllUsers = async () => {
     const result = await db.query(
         "SELECT id,name,email,phone,city,role FROM users WHERE archived_at IS NULL ORDER BY id DESC"

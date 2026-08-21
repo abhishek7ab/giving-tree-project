@@ -15,6 +15,7 @@ const pino = require('pino');
 const authRoutes = require('./routes/authRoutes');
 const itemRoutes = require('./routes/itemRoutes');
 const requestRoutes = require('./routes/requestRoutes');
+const wishRoutes = require('./routes/wishRoutes');
 const userModel = require('./models/userModel');
 const requestController = require('./controllers/requestController');
 const db = require('./database/db');
@@ -140,6 +141,7 @@ app.post('/make-me-admin', authLimiter);
 app.post('/post-item', actionLimiter);
 app.post('/request-item', actionLimiter);
 app.post('/api/reviews', actionLimiter);
+app.post('/api/wishes', actionLimiter);
 app.use('/admin/', adminLimiter);
 app.use('/api/admin/', adminLimiter);
 app.use('/api/', apiLimiter);
@@ -195,6 +197,7 @@ app.use('/uploads', express.static(path.join(frontendPath, 'assets', 'uploads'))
 app.use('/', authRoutes);
 app.use('/', itemRoutes);
 app.use('/', requestRoutes);
+app.use('/', wishRoutes);
 
 // ✅ Global Defensive Error Handler
 app.use(errorHandler);
