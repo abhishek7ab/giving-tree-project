@@ -105,7 +105,10 @@
 
                 <form action="/login" method="POST" onsubmit="handleLogin(event)">
                     <div class="form-group">
-                        <label>Email Address</label>
+                        <label for="loginEmail">
+                            <span>Email Address</span>
+                            <span class="auth-label-badge req">Required</span>
+                        </label>
                         <div class="input-icon-wrapper">
                             <i class="fas fa-envelope"></i>
                             <input type="email" name="email" id="loginEmail" placeholder="name@example.com" required autocomplete="email">
@@ -113,7 +116,10 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Password</label>
+                        <label for="loginPassword">
+                            <span>Password</span>
+                            <span class="auth-label-badge req">Required</span>
+                        </label>
                         <div class="input-icon-wrapper">
                             <i class="fas fa-lock"></i>
                             <input type="password" name="password" id="loginPassword" class="password-input" placeholder="••••••••" required autocomplete="current-password">
@@ -123,9 +129,9 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn primary auth-btn">
+                    <button type="submit" class="btn primary auth-btn" id="loginBtn">
                         <span>Login to Account</span>
-                        <i class="fas fa-arrow-right" style="font-size:13px;"></i>
+                        <i class="fas fa-arrow-right"></i>
                     </button>
                 </form>
 
@@ -134,7 +140,7 @@
                 </div>
 
                 <div class="auth-security-seal">
-                    <i class="fas fa-shield-halved" style="color:var(--accent);"></i>
+                    <i class="fas fa-shield-halved"></i>
                     <span>256-Bit SSL Encrypted • Zero Spam Guarantee</span>
                 </div>
             </div>
