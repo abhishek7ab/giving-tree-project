@@ -1305,6 +1305,16 @@
                     loadItems();
                 }
 
+                const chipsScroll = document.getElementById('puneChipsScroll');
+                if (chipsScroll) {
+                    chipsScroll.addEventListener('wheel', (e) => {
+                        if (e.deltaY !== 0) {
+                            e.preventDefault();
+                            chipsScroll.scrollLeft += e.deltaY * 1.2;
+                        }
+                    }, { passive: false });
+                }
+
                 if (queryView === 'map') {
                     setTimeout(() => switchCatalogView('map'), 300);
                 }

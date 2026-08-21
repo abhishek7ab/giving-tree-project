@@ -275,55 +275,57 @@
 
                 <div class="map-editorial-wrapper reveal-on-scroll delay-100">
                     <!-- Pune Locality Filter Chips -->
-                    <div class="pune-chips-scroll" style="margin-bottom:20px;">
-                        <button type="button" class="pune-locality-chip active"
-                            onclick="filterPuneLocality('all', 18.5204, 73.8567, 12, this)">
-                            🌐 All Pune
-                        </button>
-                        <button type="button" class="pune-locality-chip"
-                            onclick="filterPuneLocality('Kothrud', 18.5074, 73.8077, 14, this)">
-                            📍 Kothrud
-                        </button>
-                        <button type="button" class="pune-locality-chip"
-                            onclick="filterPuneLocality('Baner', 18.5590, 73.7868, 14, this)">
-                            📍 Baner
-                        </button>
-                        <button type="button" class="pune-locality-chip"
-                            onclick="filterPuneLocality('FC Road', 18.5284, 73.8417, 15, this)">
-                            📍 FC Road
-                        </button>
-                        <button type="button" class="pune-locality-chip"
-                            onclick="filterPuneLocality('Hinjawadi', 18.5913, 73.7389, 14, this)">
-                            📍 Hinjawadi
-                        </button>
-                        <button type="button" class="pune-locality-chip"
-                            onclick="filterPuneLocality('Viman Nagar', 18.5679, 73.9143, 14, this)">
-                            📍 Viman Nagar
-                        </button>
-                        <button type="button" class="pune-locality-chip"
-                            onclick="filterPuneLocality('Koregaon Park', 18.5362, 73.8940, 14, this)">
-                            📍 Koregaon Park
-                        </button>
-                        <button type="button" class="pune-locality-chip"
-                            onclick="filterPuneLocality('Hadapsar', 18.5089, 73.9259, 14, this)">
-                            📍 Hadapsar
-                        </button>
-                        <button type="button" class="pune-locality-chip"
-                            onclick="filterPuneLocality('Katraj', 18.4575, 73.8677, 14, this)">
-                            📍 Katraj
-                        </button>
-                        <button type="button" class="pune-locality-chip"
-                            onclick="filterPuneLocality('Wakad', 18.5987, 73.7660, 14, this)">
-                            📍 Wakad
-                        </button>
-                        <button type="button" class="pune-locality-chip"
-                            onclick="filterPuneLocality('Aundh', 18.5602, 73.8031, 14, this)">
-                            📍 Aundh
-                        </button>
-                        <button type="button" class="pune-locality-chip" id="btnPuneGPSLocate"
-                            onclick="locateUserOnPuneMap()" style="background:var(--tree-green); color:#FFFFFF;">
-                            <i class="fas fa-crosshairs"></i> Locate Near Me
-                        </button>
+                    <div class="pune-chips-scroll-wrapper" style="margin-bottom:20px;">
+                        <div class="pune-chips-scroll" id="puneHomeChipsScroll">
+                            <button type="button" class="pune-locality-chip active"
+                                onclick="filterPuneLocality('all', 18.5204, 73.8567, 12, this)">
+                                🌐 All Pune
+                            </button>
+                            <button type="button" class="pune-locality-chip"
+                                onclick="filterPuneLocality('Kothrud', 18.5074, 73.8077, 14, this)">
+                                📍 Kothrud
+                            </button>
+                            <button type="button" class="pune-locality-chip"
+                                onclick="filterPuneLocality('Baner', 18.5590, 73.7868, 14, this)">
+                                📍 Baner
+                            </button>
+                            <button type="button" class="pune-locality-chip"
+                                onclick="filterPuneLocality('FC Road', 18.5284, 73.8417, 15, this)">
+                                📍 FC Road
+                            </button>
+                            <button type="button" class="pune-locality-chip"
+                                onclick="filterPuneLocality('Hinjawadi', 18.5913, 73.7389, 14, this)">
+                                📍 Hinjawadi
+                            </button>
+                            <button type="button" class="pune-locality-chip"
+                                onclick="filterPuneLocality('Viman Nagar', 18.5679, 73.9143, 14, this)">
+                                📍 Viman Nagar
+                            </button>
+                            <button type="button" class="pune-locality-chip"
+                                onclick="filterPuneLocality('Koregaon Park', 18.5362, 73.8940, 14, this)">
+                                📍 Koregaon Park
+                            </button>
+                            <button type="button" class="pune-locality-chip"
+                                onclick="filterPuneLocality('Hadapsar', 18.5089, 73.9259, 14, this)">
+                                📍 Hadapsar
+                            </button>
+                            <button type="button" class="pune-locality-chip"
+                                onclick="filterPuneLocality('Katraj', 18.4575, 73.8677, 14, this)">
+                                📍 Katraj
+                            </button>
+                            <button type="button" class="pune-locality-chip"
+                                onclick="filterPuneLocality('Wakad', 18.5987, 73.7660, 14, this)">
+                                📍 Wakad
+                            </button>
+                            <button type="button" class="pune-locality-chip"
+                                onclick="filterPuneLocality('Aundh', 18.5602, 73.8031, 14, this)">
+                                📍 Aundh
+                            </button>
+                            <button type="button" class="pune-locality-chip" id="btnPuneGPSLocate"
+                                onclick="locateUserOnPuneMap()" style="background:var(--tree-green); color:#FFFFFF;">
+                                <i class="fas fa-crosshairs"></i> Locate Near Me
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Map Shell -->
@@ -775,6 +777,17 @@
                     }
                 );
             }
+        }
+
+        // Enable smooth horizontal scrolling with mouse wheel over locality chips
+        const homeChips = document.getElementById('puneHomeChipsScroll');
+        if (homeChips) {
+            homeChips.addEventListener('wheel', (e) => {
+                if (e.deltaY !== 0) {
+                    e.preventDefault();
+                    homeChips.scrollLeft += e.deltaY * 1.2;
+                }
+            }, { passive: false });
         }
 
         if (document.readyState === 'loading') {

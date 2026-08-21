@@ -119,6 +119,25 @@ textarea.form-control,
 }
 
 /* ---- Pune Locality Chips & Horizontal Scroll ---- */
+.pune-chips-scroll-wrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    min-width: 0;
+}
+
+.pune-chips-scroll-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 52px;
+    background: linear-gradient(to right, transparent, rgba(9, 13, 22, 0.95));
+    pointer-events: none;
+    z-index: 2;
+}
+
 .pune-chips-scroll {
     display: flex;
     align-items: center;
@@ -126,7 +145,8 @@ textarea.form-control,
     overflow-x: auto;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
-    padding: 4px 0;
+    scroll-behavior: smooth;
+    padding: 4px 60px 6px 4px;
     flex: 1;
 }
 
