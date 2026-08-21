@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Master Admin | Giving Tree</title>
+    <title>Master Admin Dashboard | Giving Tree</title>
 
     <link rel="stylesheet" href="/assets/style/variables.css">
     <link rel="stylesheet" href="/assets/style/base.css">
@@ -16,100 +16,69 @@
     <link rel="stylesheet" href="/assets/style/animations.css">
     <link rel="stylesheet" href="/assets/style/pages.css">
     <link rel="stylesheet" href="/assets/style/mobile.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
         :root {
-            --admin-dark: var(--bg-deep);
-            --admin-card: var(--bg-surface);
-            --admin-accent: var(--accent);
-            --admin-accent-glow: var(--accent-glow);
-            --text-main: var(--text-1);
-            --text-muted: var(--text-2);
+            --admin-dark: #090D16;
+            --admin-card: #0F172A;
+            --admin-surface: #1E293B;
+            --admin-accent: #10b981;
+            --admin-accent-glow: rgba(16, 185, 129, 0.25);
+            --admin-border: rgba(255, 255, 255, 0.08);
+            --text-main: #FFFFFF;
+            --text-muted: #94A3B8;
         }
 
         body {
             background: var(--admin-dark) !important;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             margin: 0;
             color: var(--text-main);
-            -webkit-tap-highlight-color: transparent;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Global dark selection for entire admin page */
-        ::selection {
-            background: var(--accent-dim);
-            color: #f8fafc;
-        }
-
-        ::-moz-selection {
-            background: var(--accent-dim);
-            color: #f8fafc;
-        }
-
-        /* Override any inherited white backgrounds */
-        *,
-        *::before,
-        *::after {
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        /* --- PREMIUM ADMIN NAVBAR --- */
+        /* --- TOP ADMIN BAR --- */
         .admin-nav {
-            background: linear-gradient(90deg, #080d1a 0%, #0d1528 50%, #080d1a 100%);
-            padding: 0 40px;
-            height: 68px;
+            background: rgba(9, 13, 22, 0.95);
+            backdrop-filter: blur(12px);
+            padding: 0 32px;
+            height: 64px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
             z-index: 100;
-            border-bottom: 1px solid rgba(16, 185, 129, 0.15);
-            box-shadow:
-                0 1px 0 0 rgba(16, 185, 129, 0.3),
-                0 4px 30px rgba(0, 0, 0, 0.5);
+            border-bottom: 1px solid var(--admin-border);
         }
 
         .admin-nav .nav-brand {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
         }
 
         .admin-nav .brand-icon {
-            width: 38px;
-            height: 38px;
+            width: 36px;
+            height: 36px;
             border-radius: 10px;
-            background: var(--accent-dim);
+            background: rgba(16, 185, 129, 0.12);
             border: 1px solid rgba(16, 185, 129, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 17px;
+            font-size: 16px;
             color: var(--admin-accent);
-            box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
-            animation: iconPulse 3s ease-in-out infinite;
-        }
-
-        @keyframes iconPulse {
-
-            0%,
-            100% {
-                box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
-            }
-
-            50% {
-                box-shadow: 0 0 25px rgba(16, 185, 129, 0.4);
-            }
         }
 
         .admin-nav .brand-text {
-            font-size: 16px;
-            font-weight: 700;
-            color: #fff;
+            font-size: 15px;
+            font-weight: 800;
+            color: #FFFFFF;
             letter-spacing: 0.5px;
         }
 
@@ -118,450 +87,381 @@
         }
 
         .admin-nav .admin-badge {
-            background: rgba(239, 68, 68, 0.12);
+            background: rgba(239, 68, 68, 0.15);
             color: #f87171;
-            border: 1px solid rgba(239, 68, 68, 0.25);
-            padding: 4px 10px;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 3px 8px;
             border-radius: 6px;
             font-size: 10px;
             font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-left: 12px;
+            letter-spacing: 0.8px;
         }
 
         .admin-nav .nav-actions {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .admin-nav .nav-link {
-            color: rgba(255, 255, 255, 0.5);
+            color: var(--text-muted);
             text-decoration: none;
             font-size: 13px;
-            font-weight: 500;
-            padding: 8px 16px;
+            font-weight: 600;
+            padding: 8px 14px;
             border-radius: 8px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            transition: all 0.25s ease;
-            position: relative;
+            gap: 6px;
+            transition: all 0.2s ease;
         }
 
         .admin-nav .nav-link:hover {
-            color: #fff;
-            background: rgba(255, 255, 255, 0.06);
-        }
-
-        .admin-nav .nav-link:hover i {
-            color: var(--admin-accent);
-        }
-
-        .admin-nav .nav-divider {
-            width: 1px;
-            height: 28px;
-            background: rgba(255, 255, 255, 0.08);
-            margin: 0 8px;
+            color: #FFFFFF;
+            background: rgba(255, 255, 255, 0.05);
         }
 
         .admin-nav .nav-logout {
-            background: rgba(239, 68, 68, 0.08) !important;
-            border: 1px solid rgba(239, 68, 68, 0.2) !important;
-            color: rgba(239, 68, 68, 0.85) !important;
-            padding: 8px 16px !important;
+            background: rgba(239, 68, 68, 0.1) !important;
+            border: 1px solid rgba(239, 68, 68, 0.25) !important;
+            color: #f87171 !important;
+            padding: 7px 14px !important;
             border-radius: 8px !important;
             font-size: 12.5px !important;
-            font-weight: 600 !important;
+            font-weight: 700 !important;
             text-decoration: none;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 6px;
-            transition: all 0.25s ease !important;
-        }
-
-        .admin-nav .nav-logout::after {
-            display: none !important;
+            transition: all 0.2s ease;
         }
 
         .admin-nav .nav-logout:hover {
-            background: rgba(239, 68, 68, 0.2) !important;
-            border-color: rgba(239, 68, 68, 0.4) !important;
-            color: #ef4444 !important;
-            transform: none !important;
+            background: #ef4444 !important;
+            color: #FFFFFF !important;
         }
 
-        /* Nav shimmer accent line */
-        .admin-nav::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            width: 70px;
-            height: 2px;
-            background: var(--admin-accent);
-            border-radius: 2px;
-            box-shadow: 0 0 10px var(--admin-accent-glow);
-            animation: navScan 5s ease-in-out infinite;
-        }
-
-        @keyframes navScan {
-            0% {
-                left: 0;
-                opacity: 1;
-            }
-
-            50% {
-                left: calc(100% - 70px);
-                opacity: 0.5;
-            }
-
-            100% {
-                left: 0;
-                opacity: 1;
-            }
-        }
-
-        /* --- HEADER --- */
-        .admin-header {
-            padding: 60px 40px 40px;
-            max-width: 1200px;
+        /* --- DASHBOARD HEADER --- */
+        .admin-page-container {
+            max-width: 1240px;
             margin: 0 auto;
+            padding: 36px 24px 60px;
+            width: 100%;
+            box-sizing: border-box;
+            flex: 1;
+        }
+
+        .admin-header-row {
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-        }
-
-        .admin-header h1 {
-            font-size: 36px;
-            font-weight: 800;
-            margin: 0 0 10px 0;
-            color: var(--text-main);
-            letter-spacing: -1px;
-        }
-
-        .admin-header p {
-            color: var(--text-muted);
-            margin: 0;
-            font-size: 16px;
-        }
-
-        /* --- STAT CARDS --- */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 40px 60px;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 24px;
-            margin-bottom: 50px;
-        }
-
-        .stat-card {
-            background: var(--admin-card);
-            padding: 24px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            transition: 0.3s;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-        }
-
-        .stat-card.items-card:hover {
-            border-color: rgba(56, 189, 248, 0.35);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3), 0 0 20px rgba(56, 189, 248, 0.08);
-        }
-
-        .stat-card.users-card:hover {
-            border-color: rgba(52, 211, 153, 0.35);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3), 0 0 20px rgba(52, 211, 153, 0.08);
-        }
-
-        .stat-card.health-card:hover {
-            border-color: rgba(251, 191, 36, 0.35);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3), 0 0 20px rgba(251, 191, 36, 0.08);
-        }
-
-        .stat-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-        }
-
-        .icon-items {
-            background: rgba(14, 165, 233, 0.15);
-            color: #38bdf8;
-        }
-
-        .icon-users {
-            background: rgba(16, 185, 129, 0.15);
-            color: #34d399;
-        }
-
-        .icon-health {
-            background: rgba(245, 158, 11, 0.15);
-            color: #fbbf24;
-        }
-
-        .stat-info span {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .stat-info h2 {
-            font-size: 32px;
-            margin: 5px 0 0;
-            color: var(--text-main);
-            font-weight: 700;
-        }
-
-        /* --- SECTIONS & TABLES --- */
-        .admin-section {
-            background: var(--admin-card);
-            border-radius: 24px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            margin-bottom: 40px;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 16px;
         }
 
-        .section-header h3 {
-            font-size: 20px;
-            font-weight: 700;
-            margin: 0;
+        .admin-header-row h1 {
+            font-size: 28px;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin: 0 0 6px 0;
+            letter-spacing: -0.5px;
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        .section-header h3 i {
-            color: var(--admin-accent);
-        }
-
-        /* Search Bar (Matching Login Style) */
-        .search-box {
-            position: relative;
-            width: 300px;
-        }
-
-        .search-box i {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
+        .admin-header-row p {
             color: var(--text-muted);
-            font-size: 14px;
+            margin: 0;
+            font-size: 14.5px;
         }
 
-        .search-box input {
-            width: 100%;
-            background: var(--admin-dark);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            color: var(--text-main);
-            padding: 12px 15px 12px 40px;
-            border-radius: 12px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 14px;
-            outline: none;
-            transition: 0.3s;
-            box-sizing: border-box;
+        .live-time-pill {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            color: var(--admin-accent);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .search-box input:focus {
-            border-color: var(--admin-accent);
-            box-shadow: 0 0 12px var(--admin-accent-glow);
+        /* --- STATS GRID --- */
+        .admin-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px;
+            margin-bottom: 32px;
         }
 
-        /* Table — all !important to override base.css white backgrounds */
-        .table-responsive {
-            overflow-x: auto;
-        }
-
-        .admin-table {
-            width: 100% !important;
-            border-collapse: separate !important;
-            border-spacing: 0 8px !important;
-            text-align: left !important;
-            background: transparent !important;
-        }
-
-        .admin-table thead,
-        .admin-table tbody,
-        .admin-table tr {
-            background: transparent !important;
-        }
-
-        .admin-table th {
-            padding: 0 20px 10px !important;
-            font-size: 12px !important;
-            font-weight: 700 !important;
-            color: var(--text-muted) !important;
-            text-transform: uppercase !important;
-            letter-spacing: 0.5px !important;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
-            background: transparent !important;
-        }
-
-        .admin-table td {
-            background: rgba(15, 23, 42, 0.5) !important;
-            padding: 16px 20px !important;
-            font-size: 14px !important;
-            vertical-align: middle !important;
-            border-bottom: none !important;
-        }
-
-        .admin-table tr td:first-child {
-            border-radius: 12px 0 0 12px;
-        }
-
-        .admin-table tr td:last-child {
-            border-radius: 0 12px 12px 0;
-        }
-
-        .admin-table tr:hover {
-            background: transparent !important;
-        }
-
-        .admin-table tr:hover td {
-            background: rgba(16, 185, 129, 0.06) !important;
-        }
-
-        /* Kill ALL white flash on click/focus/select */
-        .admin-table tr:active,
-        .admin-table tr:focus,
-        .admin-table tr:focus-within {
-            background: transparent !important;
-        }
-
-        .admin-table tr:active td,
-        .admin-table tr:focus td,
-        .admin-table tr:focus-within td,
-        .admin-table td:active,
-        .admin-table td:focus,
-        .admin-table th:active,
-        .admin-table th:focus {
-            background: rgba(15, 23, 42, 0.5) !important;
-            outline: none !important;
-            box-shadow: none !important;
-        }
-
-        .admin-table *,
-        .admin-section * {
-            -webkit-tap-highlight-color: transparent !important;
-        }
-
-        /* Avatars & Badges */
-        .user-info {
+        .admin-stat-card {
+            background: var(--admin-card);
+            border: 1px solid var(--admin-border);
+            border-radius: 16px;
+            padding: 20px 24px;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 18px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease, border-color 0.2s ease;
         }
 
-        .avatar {
-            width: 40px;
-            height: 40px;
+        .admin-stat-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .admin-stat-icon {
+            width: 48px;
+            height: 48px;
             border-radius: 12px;
-            background: var(--admin-dark);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--admin-accent);
-            font-weight: 700;
-            border: 1px solid rgba(16, 185, 129, 0.2);
+            font-size: 20px;
+            flex-shrink: 0;
         }
 
-        .badge-pill {
-            padding: 6px 14px;
-            border-radius: 50px;
-            font-size: 11px;
+        .icon-items {
+            background: rgba(56, 189, 248, 0.12);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.25);
+        }
+
+        .icon-users {
+            background: rgba(16, 185, 129, 0.12);
+            color: var(--admin-accent);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+        }
+
+        .icon-health {
+            background: rgba(245, 158, 11, 0.12);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.25);
+        }
+
+        .stat-details span {
+            font-size: 11.5px;
             font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .stat-details h2 {
+            font-size: 26px;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin: 0;
+            line-height: 1.1;
+        }
+
+        /* --- ADMIN SECTIONS & TABLES --- */
+        .admin-section-box {
+            background: var(--admin-card);
+            border: 1px solid var(--admin-border);
+            border-radius: 18px;
+            padding: 24px;
+            margin-bottom: 32px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        .admin-section-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        .admin-section-title {
+            font-size: 17px;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-section-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .admin-search-wrap {
+            position: relative;
+            min-width: 240px;
+        }
+
+        .admin-search-wrap i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .admin-search-input {
+            width: 100%;
+            background: rgba(9, 13, 22, 0.7);
+            border: 1px solid var(--admin-border);
+            color: #FFFFFF;
+            padding: 8px 14px 8px 34px;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 13px;
+            outline: none;
+            box-sizing: border-box;
+            transition: border-color 0.2s ease;
+        }
+
+        .admin-search-input:focus {
+            border-color: var(--admin-accent);
+        }
+
+        .btn-admin-action {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--admin-border);
+            color: #FFFFFF;
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 12.5px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-admin-action:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* --- TABLE STYLES --- */
+        .admin-table-container {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .admin-data-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .admin-data-table th {
+            background: rgba(9, 13, 22, 0.85);
+            padding: 12px 18px;
+            font-size: 11.5px;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            border-bottom: 1px solid var(--admin-border);
+        }
+
+        .admin-data-table td {
+            background: rgba(15, 23, 42, 0.4);
+            padding: 14px 18px;
+            font-size: 13.5px;
+            color: #FFFFFF;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            vertical-align: middle;
+        }
+
+        .admin-data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .admin-data-table tr:hover td {
+            background: rgba(16, 185, 129, 0.04);
+        }
+
+        /* Status & Role Badges */
+        .pill-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
-        .badge-admin {
+        .pill-admin {
             background: rgba(239, 68, 68, 0.15);
             color: #f87171;
-            border: 1px solid rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.3);
         }
 
-        .badge-user {
-            background: rgba(148, 163, 184, 0.1);
+        .pill-user {
+            background: rgba(148, 163, 184, 0.12);
             color: #cbd5e1;
-            border: 1px solid rgba(148, 163, 184, 0.2);
+            border: 1px solid rgba(148, 163, 184, 0.25);
         }
 
-        .btn-delete-small {
-            background: rgba(225, 29, 72, 0.15) !important;
-            color: #fb7185 !important;
-            border: 1px solid rgba(225, 29, 72, 0.35) !important;
-            padding: 8px 16px;
+        .pill-available {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .pill-completed {
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-table-delete {
+            background: rgba(225, 29, 72, 0.12);
+            color: #fb7185;
+            border: 1px solid rgba(225, 29, 72, 0.3);
+            padding: 6px 12px;
             border-radius: 8px;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer !important;
-            transition: all 0.2s ease;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            user-select: none;
-            position: relative;
-            z-index: 10;
+            gap: 5px;
+            transition: all 0.2s ease;
         }
 
-        .btn-delete-small:hover {
-            background: #e11d48 !important;
-            color: #ffffff !important;
-            box-shadow: 0 0 15px rgba(225, 29, 72, 0.4);
-            border-color: #e11d48 !important;
-            transform: translateY(-1px);
+        .btn-table-delete:hover {
+            background: #e11d48;
+            color: #FFFFFF;
+            border-color: #e11d48;
+            box-shadow: 0 0 12px rgba(225, 29, 72, 0.4);
         }
 
+        /* --- MODAL --- */
         .confirm-overlay {
             position: fixed;
             inset: 0;
             background: rgba(2, 6, 23, 0.85);
             backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            z-index: 999999 !important;
+            z-index: 999999;
             display: none;
             align-items: center;
             justify-content: center;
             padding: 20px;
-        }
-
-        .confirm-overlay.active {
-            display: flex !important;
-            visibility: visible !important;
-
         }
 
         .confirm-overlay.active {
@@ -571,92 +471,75 @@
         .confirm-modal {
             background: #0f172a;
             border: 1px solid rgba(239, 68, 68, 0.35);
-            border-radius: 20px;
-            padding: 32px;
-            max-width: 440px;
+            border-radius: 18px;
+            padding: 28px;
+            max-width: 420px;
             width: 100%;
             text-align: center;
-            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
-        }
-
-        .warning-icon {
-            font-size: 38px;
-            color: #ef4444;
-            margin-bottom: 14px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
         }
 
         .confirm-modal h4 {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 800;
             color: #FFFFFF;
-            margin: 0 0 10px;
-        }
-
-        .confirm-note {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.25);
-            border-radius: 8px;
-            padding: 10px 14px;
-            font-size: 12.5px;
-            color: #fca5a5;
-            margin-bottom: 24px;
+            margin: 0 0 8px;
         }
 
         .confirm-actions {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             justify-content: center;
+            margin-top: 20px;
         }
 
-        .btn-modal {
-            padding: 12px 24px;
-            border-radius: 100px;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            font-family: inherit;
-            transition: all 0.2s ease;
-            border: none;
-        }
-
-        .btn-modal.btn-cancel {
+        .btn-modal-cancel {
             background: rgba(255, 255, 255, 0.08);
             color: #94a3b8;
             border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
         }
 
-        .btn-modal.btn-danger {
+        .btn-modal-danger {
             background: #ef4444;
             color: #FFFFFF;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
         }
 
-        .btn-modal.btn-danger:hover {
+        .btn-modal-danger:hover {
             background: #dc2626;
-            transform: translateY(-1px);
         }
     </style>
 </head>
 
 <body>
 
-    <div class="confirm-overlay" id="confirmOverlay" role="presentation">
-        <div class="confirm-modal" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle"
-            aria-describedby="confirmMessage">
-            <div class="warning-icon" aria-hidden="true"><i class="fas fa-triangle-exclamation"></i></div>
-            <h4 id="confirmTitle">Confirm action</h4>
-            <div id="confirmMessage" style="color: #cbd5e1; font-size: 14px; margin-bottom: 20px;">Are you sure you want
-                to continue?</div>
-            <div class="confirm-note"><i class="fas fa-circle-exclamation"></i> ⚠️ WARNING: This action is permanent and
-                cannot be undone.</div>
+    <!-- CONFIRMATION MODAL -->
+    <div class="confirm-overlay" id="confirmOverlay">
+        <div class="confirm-modal">
+            <div style="font-size:36px; color:#ef4444; margin-bottom:12px;"><i class="fas fa-triangle-exclamation"></i></div>
+            <h4 id="confirmTitle">Confirm Action</h4>
+            <div id="confirmMessage" style="color:#cbd5e1; font-size:13.5px; margin-bottom:14px;">Are you sure you want to proceed?</div>
+            <div style="background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.25); border-radius:8px; padding:8px 12px; font-size:12px; color:#fca5a5; margin-bottom:16px;">
+                <i class="fas fa-circle-exclamation"></i> This action is permanent and cannot be undone.
+            </div>
             <div class="confirm-actions">
-                <button type="button" class="btn-modal btn-cancel" id="cancelDeleteButton"
-                    onclick="closeDeleteModal()">Cancel</button>
-                <button type="button" class="btn-modal btn-danger" id="confirmDeleteButton"
-                    onclick="confirmDelete()">Delete permanently</button>
+                <button type="button" class="btn-modal-cancel" id="cancelDeleteButton" onclick="closeDeleteModal()">Cancel</button>
+                <button type="button" class="btn-modal-danger" id="confirmDeleteButton" onclick="confirmDelete()">Delete Permanently</button>
             </div>
         </div>
     </div>
 
+    <!-- TOP NAVIGATION -->
     <nav class="admin-nav">
         <div class="nav-brand">
             <div class="brand-icon"><i class="fas fa-shield-halved"></i></div>
@@ -665,119 +548,150 @@
         </div>
         <div class="nav-actions">
             <a href="/index.html" class="nav-link"><i class="fas fa-globe"></i> Main Site</a>
-            <a href="/items.html" class="nav-link"><i class="fas fa-boxes-stacked"></i> Browse</a>
-            <div class="nav-divider"></div>
+            <a href="/items.html" class="nav-link"><i class="fas fa-boxes-stacked"></i> Catalog</a>
             <a href="/logout" class="nav-logout"><i class="fas fa-arrow-right-from-bracket"></i> Logout</a>
         </div>
     </nav>
 
-    <div class="admin-header">
-        <div>
-            <h1>Dashboard Overview <span class="live-time" id="liveTime"></span></h1>
-            <p>Monitor community activity and manage platform resources.</p>
+    <!-- MAIN DASHBOARD CONTENT -->
+    <main class="admin-page-container">
+        
+        <!-- HEADER -->
+        <div class="admin-header-row">
+            <div>
+                <h1>Dashboard Overview <span class="live-time-pill" id="liveTimePill"><i class="fas fa-clock"></i> <span id="liveTime">--:--:--</span></span></h1>
+                <p>Real-time community moderation, inventory control, and platform audit station.</p>
+            </div>
         </div>
-    </div>
 
-    <div class="container">
-        <!-- STATS -->
-        <div class="stats-grid">
-            <div class="stat-card items-card">
-                <div class="stat-icon icon-items"><i class="fas fa-boxes-stacked"></i></div>
-                <div class="stat-info">
+        <!-- STATS OVERVIEW CARDS -->
+        <div class="admin-stats-grid">
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon icon-items"><i class="fas fa-boxes-stacked"></i></div>
+                <div class="stat-details">
                     <span>Total Inventory</span>
                     <h2 id="countItems">-</h2>
                 </div>
             </div>
-            <div class="stat-card users-card">
-                <div class="stat-icon icon-users"><i class="fas fa-users"></i></div>
-                <div class="stat-info">
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon icon-users"><i class="fas fa-users"></i></div>
+                <div class="stat-details">
                     <span>Active Members</span>
                     <h2 id="countUsers">-</h2>
                 </div>
             </div>
-            <div class="stat-card health-card">
-                <div class="stat-icon icon-health"><i class="fas fa-server"></i></div>
-            <div class="stat-card health-card">
-                <div class="stat-icon icon-health"><i class="fas fa-server"></i></div>
-                <div class="stat-info">
-                    <span>Platform Health</span>
-                    <h2 style="color: #34d399;">Live</h2>
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon icon-health"><i class="fas fa-server"></i></div>
+                <div class="stat-details">
+                    <span>Platform Status</span>
+                    <h2 style="color: #34d399; font-size:22px;">🟢 Live & Secure</h2>
                 </div>
             </div>
         </div>
 
-        <!-- MEMBERS TABLE -->
-        <div class="section-header">
-            <h3><i class="fas fa-users" style="color:var(--admin-accent); margin-right:10px;"></i>Community Members</h3>
-            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-                <input type="text" id="userSearch" placeholder="🔍 Search members..." class="search-input">
-                <button type="button" class="btn-export" onclick="exportCSV('users')"><i class="fas fa-download"></i> Export CSV</button>
+        <!-- SECTION 1: COMMUNITY MEMBERS -->
+        <section class="admin-section-box">
+            <div class="admin-section-top">
+                <h3 class="admin-section-title"><i class="fas fa-users" style="color:var(--admin-accent);"></i> Community Members</h3>
+                <div class="admin-section-controls">
+                    <div class="admin-search-wrap">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="userSearch" placeholder="Search members by name or email..." class="admin-search-input">
+                    </div>
+                    <button type="button" class="btn-admin-action" onclick="exportCSV('users')">
+                        <i class="fas fa-download"></i> Export CSV
+                    </button>
+                </div>
             </div>
-        </div>
-        <div class="table-wrap">
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>Member</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Role</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="userList">
-                    <tr><td colspan="5" style="text-align:center; padding:40px; color:var(--text-muted);"><i class="fas fa-spinner fa-spin" style="font-size:24px; display:block; margin-bottom:10px;"></i>Loading members...</td></tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- INVENTORY TABLE -->
-        <div class="section-header" style="margin-top:40px;">
-            <h3><i class="fas fa-boxes-stacked" style="color:var(--admin-accent); margin-right:10px;"></i>Community Inventory</h3>
-            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-                <input type="text" id="itemSearch" placeholder="🔍 Search items..." class="search-input">
-                <button type="button" class="btn-export" onclick="exportCSV('items')"><i class="fas fa-download"></i> Export CSV</button>
+            <div class="admin-table-container">
+                <table class="admin-data-table">
+                    <thead>
+                        <tr>
+                            <th>Member Name</th>
+                            <th>Email Address</th>
+                            <th>Neighborhood / City</th>
+                            <th>Role</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userList">
+                        <tr>
+                            <td colspan="5" style="text-align:center; padding:30px; color:var(--text-muted);">
+                                <i class="fas fa-spinner fa-spin"></i> Loading members...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-        </div>
-        <div class="table-wrap">
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>Ref #</th>
-                        <th>Item Title</th>
-                        <th>Location</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="itemList">
-                    <tr><td colspan="5" style="text-align:center; padding:40px; color:var(--text-muted);"><i class="fas fa-spinner fa-spin" style="font-size:24px; display:block; margin-bottom:10px;"></i>Loading inventory...</td></tr>
-                </tbody>
-            </table>
-        </div>
+        </section>
 
-        <!-- AUDIT LOGS TABLE -->
-        <div class="section-header" style="margin-top:40px;">
-            <h3><i class="fas fa-shield-halved" style="color:var(--admin-accent); margin-right:10px;"></i>Recent Audit Log</h3>
-        </div>
-        <div class="table-wrap">
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>Time</th>
-                        <th>User</th>
-                        <th>Action</th>
-                        <th>Details</th>
-                        <th>IP Address</th>
-                    </tr>
-                </thead>
-                <tbody id="auditList">
-                    <tr><td colspan="5" style="text-align:center; padding:30px; color:var(--text-muted);"><i class="fas fa-spinner fa-spin" style="font-size:18px; display:block; margin-bottom:8px;"></i>Loading audit logs...</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+        <!-- SECTION 2: COMMUNITY INVENTORY -->
+        <section class="admin-section-box">
+            <div class="admin-section-top">
+                <h3 class="admin-section-title"><i class="fas fa-boxes-stacked" style="color:#38bdf8;"></i> Community Inventory</h3>
+                <div class="admin-section-controls">
+                    <div class="admin-search-wrap">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="itemSearch" placeholder="Search items by title or locality..." class="admin-search-input">
+                    </div>
+                    <button type="button" class="btn-admin-action" onclick="exportCSV('items')">
+                        <i class="fas fa-download"></i> Export CSV
+                    </button>
+                </div>
+            </div>
+            <div class="admin-table-container">
+                <table class="admin-data-table">
+                    <thead>
+                        <tr>
+                            <th>Ref #</th>
+                            <th>Item Title</th>
+                            <th>Location / Pune Landmark</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="itemList">
+                        <tr>
+                            <td colspan="5" style="text-align:center; padding:30px; color:var(--text-muted);">
+                                <i class="fas fa-spinner fa-spin"></i> Loading inventory...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
 
+        <!-- SECTION 3: PLATFORM AUDIT & ACTIVITY LOGS -->
+        <section class="admin-section-box">
+            <div class="admin-section-top">
+                <h3 class="admin-section-title"><i class="fas fa-shield-halved" style="color:#fbbf24;"></i> Real-Time Platform Audit Logs</h3>
+            </div>
+            <div class="admin-table-container">
+                <table class="admin-data-table">
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>User Email</th>
+                            <th>Action Event</th>
+                            <th>Details</th>
+                            <th>IP Address</th>
+                        </tr>
+                    </thead>
+                    <tbody id="auditList">
+                        <tr>
+                            <td colspan="5" style="text-align:center; padding:30px; color:var(--text-muted);">
+                                <i class="fas fa-spinner fa-spin"></i> Loading audit logs...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- SOCKET.IO & SCRIPT -->
+    <script src="/socket.io/socket.io.js"></script>
     <script>
         const BACKEND_URL = '';
         let allUsers = [];
@@ -801,12 +715,10 @@
             const toast = document.createElement('div');
             toast.id = 'adminToast';
             toast.style.cssText = `
-                position:fixed; bottom:24px; right:24px; padding:12px 20px;
-                border-radius:10px; font-size:13.5px; font-weight:600;
-                display:flex; align-items:center; gap:10px; z-index:9999;
-                box-shadow:0 10px 25px rgba(0,0,0,0.4);
-                transition:all 0.3s cubic-bezier(0.16,1,0.3,1);
-                max-width:380px; word-break:break-word;
+                position: fixed; bottom: 24px; right: 24px; padding: 12px 20px;
+                border-radius: 10px; font-size: 13.5px; font-weight: 700;
+                display: flex; align-items: center; gap: 10px; z-index: 999999;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.5);
             `;
             if (type === 'success') {
                 toast.style.background = '#10b981';
@@ -818,218 +730,66 @@
                 toast.innerHTML = `<i class="fas fa-exclamation-circle"></i> <span>${escapeHtml(message)}</span>`;
             }
             document.body.appendChild(toast);
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateY(10px)';
-                setTimeout(() => toast.remove(), 300);
-            }, 3500);
+            setTimeout(() => { if (toast) toast.remove(); }, 3500);
         }
 
         function promptRemoveUser(userId, userName, userEmail) {
-            let id = null;
-            if (typeof userId === 'object' && userId !== null) {
-                if (userId.dataset) {
-                    id = Number(userId.dataset.userId || userId.dataset.id);
-                    userName = userId.dataset.userName || userId.dataset.name || userName;
-                    userEmail = userId.dataset.userEmail || userId.dataset.email || userEmail;
-                } else {
-                    id = Number(userId.id || userId.userId);
-                    userName = userId.name || userId.userName || userName;
-                    userEmail = userId.email || userId.userEmail || userEmail;
-                }
-            } else {
-                id = Number(userId);
-            }
+            const id = Number(userId);
+            if (!id) return;
 
-            if (!id || isNaN(id)) {
-                console.error('Invalid user ID in promptRemoveUser:', userId);
-                return;
-            }
-
-            pendingDelete = { type: 'user', id: id, name: String(userName || 'Member'), email: String(userEmail || '') };
-
-            const titleEl = document.getElementById('confirmTitle');
-            const msgEl = document.getElementById('confirmMessage');
-            const btnEl = document.getElementById('confirmDeleteButton');
-            const cancelBtn = document.getElementById('cancelDeleteButton');
-            const overlay = document.getElementById('confirmOverlay');
-
-            if (btnEl) {
-                btnEl.dataset.targetId = String(id);
-                btnEl.dataset.targetType = 'user';
-                btnEl.dataset.targetName = String(userName || 'Member');
-                btnEl.dataset.targetEmail = String(userEmail || '');
-                btnEl.disabled = false;
-                btnEl.innerHTML = '<i class="fas fa-user-xmark"></i> Remove Member Permanently';
-                btnEl.onclick = confirmDelete;
-            }
-
-            if (titleEl) titleEl.innerHTML = '<i class="fas fa-user-slash" style="color:#fb7185; margin-right:8px;"></i> Remove Member Account?';
-            if (msgEl) msgEl.innerHTML = `
-                <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:12px; padding:14px; margin-bottom:16px; text-align:left;">
-                    <div style="font-size:15px; font-weight:700; color:#fff; margin-bottom:4px;">
-                        <i class="fas fa-user" style="color:var(--admin-accent); margin-right:6px;"></i>
-                        ${escapeHtml(userName || 'Member')}
-                    </div>
-                    <div style="font-size:13.5px; color:#94a3b8;">
-                        <i class="fas fa-envelope" style="color:var(--admin-accent); margin-right:6px;"></i>
-                        ${escapeHtml(userEmail || '')}
-                    </div>
-                </div>
-                <p style="margin:0 0 16px; color:#cbd5e1; font-size:13.5px; line-height:1.5;">
-                    You are about to remove this member from the platform. Their account access and all their shared community items will also be removed.
-                </p>
+            pendingDelete = { type: 'user', id: id, name: userName, email: userEmail };
+            document.getElementById('confirmTitle').textContent = 'Remove Member Account?';
+            document.getElementById('confirmMessage').innerHTML = `
+                Are you sure you want to permanently remove <strong>${escapeHtml(userName)}</strong> (<em>${escapeHtml(userEmail)}</em>)? All items shared by this member will also be deleted.
             `;
-            if (cancelBtn) {
-                cancelBtn.textContent = 'Keep Member';
-                cancelBtn.onclick = closeDeleteModal;
-            }
-
-            if (overlay) {
-                overlay.classList.add('active');
-                overlay.style.display = 'flex';
-                overlay.style.visibility = 'visible';
-                overlay.style.opacity = '1';
-                if (cancelBtn) cancelBtn.focus();
-            }
+            document.getElementById('confirmOverlay').classList.add('active');
         }
 
         function promptRemoveItem(itemId, itemTitle, itemLocation) {
-            let id = null;
-            if (typeof itemId === 'object' && itemId !== null) {
-                if (itemId.dataset) {
-                    id = Number(itemId.dataset.itemId || itemId.dataset.id);
-                    itemTitle = itemId.dataset.itemTitle || itemId.dataset.title || itemTitle;
-                    itemLocation = itemId.dataset.itemLocation || itemId.dataset.location || itemLocation;
-                } else {
-                    id = Number(itemId.id || itemId.itemId);
-                    itemTitle = itemId.title || itemId.itemTitle || itemTitle;
-                    itemLocation = itemId.location || itemId.itemLocation || itemLocation;
-                }
-            } else {
-                id = Number(itemId);
-            }
+            const id = Number(itemId);
+            if (!id) return;
 
-            if (!id || isNaN(id)) {
-                console.error('Invalid item ID in promptRemoveItem:', itemId);
-                return;
-            }
-
-            pendingDelete = { type: 'item', id: id, name: String(itemTitle || 'Item'), location: String(itemLocation || 'Local') };
-
-            const titleEl = document.getElementById('confirmTitle');
-            const msgEl = document.getElementById('confirmMessage');
-            const btnEl = document.getElementById('confirmDeleteButton');
-            const cancelBtn = document.getElementById('cancelDeleteButton');
-            const overlay = document.getElementById('confirmOverlay');
-
-            if (btnEl) {
-                btnEl.dataset.targetId = String(id);
-                btnEl.dataset.targetType = 'item';
-                btnEl.dataset.targetName = String(itemTitle || 'Item');
-                btnEl.dataset.targetLocation = String(itemLocation || 'Local');
-                btnEl.disabled = false;
-                btnEl.innerHTML = '<i class="fas fa-trash-alt"></i> Delete Item Permanently';
-                btnEl.onclick = confirmDelete;
-            }
-
-            if (titleEl) titleEl.innerHTML = '<i class="fas fa-trash-alt" style="color:#fb7185; margin-right:8px;"></i> Delete Inventory Item?';
-            if (msgEl) msgEl.innerHTML = `
-                <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:12px; padding:14px; margin-bottom:16px; text-align:left;">
-                    <div style="font-size:15px; font-weight:700; color:#fff; margin-bottom:4px;">
-                        <i class="fas fa-box-open" style="color:#38bdf8; margin-right:6px;"></i>
-                        ${escapeHtml(itemTitle || 'Item')}
-                        <span style="font-size:12px; color:#94a3b8; font-weight:500; margin-left:6px;">(Ref #${id})</span>
-                    </div>
-                    <div style="font-size:13.5px; color:#94a3b8;">
-                        <i class="fas fa-map-marker-alt" style="color:var(--admin-accent); margin-right:6px;"></i>
-                        ${escapeHtml(itemLocation || 'Local')}
-                    </div>
-                </div>
-                <p style="margin:0 0 16px; color:#cbd5e1; font-size:13.5px; line-height:1.5;">
-                    This item will be permanently removed from Community Inventory. It will no longer be visible or available for neighbors to request.
-                </p>
+            pendingDelete = { type: 'item', id: id, name: itemTitle, location: itemLocation };
+            document.getElementById('confirmTitle').textContent = 'Delete Inventory Item?';
+            document.getElementById('confirmMessage').innerHTML = `
+                Are you sure you want to permanently delete item <strong>${escapeHtml(itemTitle)}</strong> (Ref #${id})?
             `;
-            if (cancelBtn) {
-                cancelBtn.textContent = 'Keep Item';
-                cancelBtn.onclick = closeDeleteModal;
-            }
-
-            if (overlay) {
-                overlay.classList.add('active');
-                overlay.style.display = 'flex';
-                overlay.style.visibility = 'visible';
-                overlay.style.opacity = '1';
-                if (cancelBtn) cancelBtn.focus();
-            }
+            document.getElementById('confirmOverlay').classList.add('active');
         }
 
         function closeDeleteModal() {
-            const overlay = document.getElementById('confirmOverlay');
-            if (overlay) {
-                overlay.classList.remove('active');
-                overlay.style.display = 'none';
-            }
-            const btnEl = document.getElementById('confirmDeleteButton');
-            if (btnEl) {
-                delete btnEl.dataset.targetId;
-                delete btnEl.dataset.targetType;
-                delete btnEl.dataset.targetName;
-                delete btnEl.dataset.targetEmail;
-                btnEl.disabled = false;
-            }
+            document.getElementById('confirmOverlay').classList.remove('active');
             pendingDelete = { type: null, id: null, name: '' };
         }
 
-        let isDeleteInProgress = false;
-
         async function confirmDelete() {
-            if (isDeleteInProgress) return;
-
-            const confirmBtn = document.getElementById('confirmDeleteButton');
-            const id = Number(pendingDelete && pendingDelete.id ? pendingDelete.id : (confirmBtn && confirmBtn.dataset ? confirmBtn.dataset.targetId : null));
-            const type = (pendingDelete && pendingDelete.type) || (confirmBtn && confirmBtn.dataset && confirmBtn.dataset.targetType) || 'user';
-            const name = (pendingDelete && pendingDelete.name) || (confirmBtn && confirmBtn.dataset && confirmBtn.dataset.targetName) || 'Member';
-            const email = (pendingDelete && pendingDelete.email) || (confirmBtn && confirmBtn.dataset && confirmBtn.dataset.targetEmail) || '';
-
-            if (!id || isNaN(id)) {
-                showToast('Please select a member or item to remove.', 'error');
-                return;
-            }
-
-            isDeleteInProgress = true;
-            const isItem = type === 'item';
+            if (!pendingDelete.id) return;
+            const isItem = pendingDelete.type === 'item';
             const actionUrl = isItem ? '/admin/delete-item' : '/admin/delete-user';
 
-            if (confirmBtn) {
-                confirmBtn.disabled = true;
-                confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Removing...';
-            }
+            const btn = document.getElementById('confirmDeleteButton');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Removing...';
 
             try {
                 const res = await fetch(actionUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                     credentials: 'include',
-                    body: JSON.stringify({ id: Number(id), confirmDelete: 'yes' })
+                    body: JSON.stringify({ id: pendingDelete.id, confirmDelete: 'yes' })
                 });
-
                 const data = await res.json().catch(() => ({}));
-
-                if (!res.ok) {
-                    throw new Error(data.error || data.details || 'Failed to remove.');
-                }
+                if (!res.ok) throw new Error(data.error || data.details || 'Action failed');
 
                 closeDeleteModal();
-                showToast(isItem ? `Item "${name}" deleted successfully!` : `Member "${name}" (${email || ''}) removed successfully!`, 'success');
+                showToast(isItem ? `Item "${pendingDelete.name}" deleted successfully.` : `Member "${pendingDelete.name}" removed successfully.`, 'success');
                 await loadAdminData();
             } catch (err) {
-                console.error('Delete error:', err);
-                showToast(err.message || 'Failed to perform action.', 'error');
-                closeDeleteModal();
+                console.error(err);
+                showToast(err.message || 'Error executing delete.', 'error');
             } finally {
-                isDeleteInProgress = false;
-                if (confirmBtn) confirmBtn.disabled = false;
+                btn.disabled = false;
+                btn.textContent = 'Delete Permanently';
             }
         }
 
@@ -1037,32 +797,24 @@
             const tbody = document.getElementById('userList');
             if (!tbody) return;
             if (users.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:40px; color:var(--text-muted);"><i class="fas fa-users-slash" style="font-size:32px; margin-bottom:12px; display:block; color:#334155;"></i>No members match your search.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:30px; color:var(--text-muted);"><i class="fas fa-users-slash" style="font-size:24px; display:block; margin-bottom:8px; opacity:0.4;"></i>No members match search.</td></tr>';
                 return;
             }
             tbody.innerHTML = users.map(u => {
-                const initials = (u.name || 'U').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-                const canDelete = u.role !== 'admin' && String(u.email || '').toLowerCase().trim() !== 'badaveabhishek2004@gmail.com';
-                const safeName = escapeHtml(u.name || 'this member');
+                const isProtectedAdmin = u.role === 'admin' || String(u.email || '').toLowerCase().trim() === 'badaveabhishek2004@gmail.com';
+                const safeName = escapeHtml(u.name || 'Member');
                 const safeEmail = escapeHtml(u.email || '');
-                const safeCity = escapeHtml(u.city || '');
-                return `<tr>
+                const safeCity = escapeHtml(u.city || 'Pune');
+                return `
+                <tr>
+                    <td><strong>${safeName}</strong></td>
+                    <td style="color:var(--text-muted);">${safeEmail}</td>
+                    <td><i class="fas fa-map-marker-alt" style="color:var(--admin-accent); font-size:11px; margin-right:4px;"></i> ${safeCity}</td>
+                    <td><span class="pill-badge ${u.role === 'admin' ? 'pill-admin' : 'pill-user'}">${u.role}</span></td>
                     <td>
-                        <div class="user-info">
-                            <div class="avatar">${initials}</div>
-                            <div>
-                                <strong>${safeName}</strong>
-                                ${safeCity ? `<div style="font-size:11px; color:var(--admin-accent); margin-top:2px;"><i class="fas fa-map-marker-alt" style="font-size:10px;"></i> ${safeCity}</div>` : ''}
-                            </div>
-                        </div>
-                    </td>
-                    <td><span style="color:var(--text-muted)">${safeEmail}</span></td>
-                    <td><span style="color:var(--text-muted)">${u.phone || '-'}</span></td>
-                    <td><span class="badge-pill ${u.role === 'admin' ? 'badge-admin' : 'badge-user'}">${u.role}</span></td>
-                    <td>
-                        ${canDelete
-                            ? `<button type="button" class="btn-delete-small" data-action="remove-user" data-user-id="${u.id}" data-user-name="${safeName}" data-user-email="${safeEmail}"><i class="fas fa-user-xmark"></i> Remove</button>`
-                            : `<span style="color:var(--text-muted); font-size:12px; font-weight:600;"><i class="fas fa-shield-alt" style="color:var(--admin-accent);"></i> Protected (Admin)</span>`
+                        ${isProtectedAdmin 
+                            ? `<span style="color:var(--text-muted); font-size:12px; font-weight:700;"><i class="fas fa-shield-halved" style="color:var(--admin-accent);"></i> Protected</span>`
+                            : `<button type="button" class="btn-table-delete" onclick="promptRemoveUser(${u.id}, '${safeName.replace(/'/g, "\\'")}', '${safeEmail.replace(/'/g, "\\'")}')"><i class="fas fa-user-xmark"></i> Remove</button>`
                         }
                     </td>
                 </tr>`;
@@ -1073,91 +825,45 @@
             const tbody = document.getElementById('itemList');
             if (!tbody) return;
             if (items.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:40px; color:var(--text-muted);"><i class="fas fa-box-open" style="font-size:32px; margin-bottom:12px; display:block; color:#334155;"></i>No items match your search.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:30px; color:var(--text-muted);"><i class="fas fa-box-open" style="font-size:24px; display:block; margin-bottom:8px; opacity:0.4;"></i>No inventory items match search.</td></tr>';
                 return;
             }
             tbody.innerHTML = items.map(i => {
+                const safeTitle = escapeHtml(i.title || 'Item');
+                const safeLoc = escapeHtml(i.location || 'Pune');
                 const status = i.status || 'available';
-                const statusClass = status === 'claimed' ? 'badge-claimed' : 'badge-available';
-                const safeTitle = escapeHtml(i.title || 'this item');
-                const safeLoc = escapeHtml(i.location || 'Local');
-                return `<tr>
-                    <td><code style="background:rgba(0,0,0,0.2); padding:4px 8px; border-radius:6px; font-size:12px; color:var(--text-muted)">#${i.id}</code></td>
-                    <td><strong style="color:var(--text-main)">${safeTitle}</strong></td>
-                    <td><i class="fas fa-map-marker-alt" style="color:var(--admin-accent); font-size:12px; margin-right:5px;"></i> <span style="color:var(--text-muted)">${safeLoc}</span></td>
-                    <td><span class="badge-pill ${statusClass}">${status}</span></td>
+                return `
+                <tr>
+                    <td><code style="background:rgba(255,255,255,0.06); padding:3px 6px; border-radius:4px; font-size:12px;">#${i.id}</code></td>
+                    <td><strong>${safeTitle}</strong></td>
+                    <td><i class="fas fa-map-marker-alt" style="color:var(--admin-accent); font-size:11px; margin-right:4px;"></i> ${safeLoc}</td>
+                    <td><span class="pill-badge ${status === 'available' ? 'pill-available' : 'pill-completed'}">${status}</span></td>
                     <td>
-                        <button type="button" class="btn-delete-small" data-action="delete-item" data-item-id="${i.id}" data-item-title="${safeTitle}" data-item-location="${safeLoc}">
-                            <i class="fas fa-trash-alt"></i> Delete
-                        </button>
+                        <button type="button" class="btn-table-delete" onclick="promptRemoveItem(${i.id}, '${safeTitle.replace(/'/g, "\\'")}', '${safeLoc.replace(/'/g, "\\'")}')"><i class="fas fa-trash-alt"></i> Delete</button>
                     </td>
                 </tr>`;
             }).join('');
         }
 
-        // Global delegated click listener
-        document.addEventListener('click', (e) => {
-            if (e.target.closest('#confirmDeleteButton')) {
-                e.preventDefault();
-                e.stopPropagation();
-                confirmDelete();
-                return;
-            }
-
-            if (e.target.closest('#cancelDeleteButton')) {
-                e.preventDefault();
-                e.stopPropagation();
-                closeDeleteModal();
-                return;
-            }
-
-            const userBtn = e.target.closest('[data-action="remove-user"]');
-            if (userBtn) {
-                e.preventDefault();
-                e.stopPropagation();
-                promptRemoveUser(userBtn.dataset.userId, userBtn.dataset.userName, userBtn.dataset.userEmail);
-                return;
-            }
-
-            const itemBtn = e.target.closest('[data-action="delete-item"]');
-            if (itemBtn) {
-                e.preventDefault();
-                e.stopPropagation();
-                promptRemoveItem(itemBtn.dataset.itemId, itemBtn.dataset.itemTitle, itemBtn.dataset.itemLocation);
-                return;
-            }
-
-            if (e.target.id === 'confirmOverlay') {
-                closeDeleteModal();
-            }
-        });
-
         function renderAuditLogs(logs) {
             const tbody = document.getElementById('auditList');
             if (!tbody) return;
             if (!logs || logs.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:30px; color:var(--text-muted);"><i class="fas fa-shield-check" style="font-size:24px; margin-bottom:8px; display:block; color:#334155;"></i>No audit events recorded yet.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:24px; color:var(--text-muted);">No audit logs recorded yet.</td></tr>';
                 return;
             }
-            tbody.innerHTML = logs.map(log => {
-                const date = log.created_at ? new Date(log.created_at).toLocaleString() : 'Just now';
-                const safeEmail = escapeHtml(log.user_email || 'System / Anonymous');
-                const action = escapeHtml(log.action || 'EVENT');
-                const details = escapeHtml(typeof log.details === 'object' ? JSON.stringify(log.details) : (log.details || '-'));
-                const ip = escapeHtml(log.ip_address || '127.0.0.1');
-
-                let badgeStyle = 'background:rgba(16,185,129,0.15); color:#34d399; border:1px solid rgba(16,185,129,0.3);';
-                if (action.includes('DELETE')) {
-                    badgeStyle = 'background:rgba(239,68,68,0.15); color:#f87171; border:1px solid rgba(239,68,68,0.3);';
-                } else if (action.includes('ACCESS') || action.includes('VIEW')) {
-                    badgeStyle = 'background:rgba(59,130,246,0.15); color:#60a5fa; border:1px solid rgba(59,130,246,0.3);';
-                }
-
-                return `<tr>
-                    <td style="color:var(--text-muted); font-size:12px;"><i class="far fa-clock" style="margin-right:4px;"></i> ${date}</td>
-                    <td><strong style="color:var(--text-main); font-size:13px;">${safeEmail}</strong></td>
-                    <td><span style="display:inline-block; padding:3px 8px; border-radius:6px; font-size:11px; font-weight:700; font-family:monospace; ${badgeStyle}">${action}</span></td>
-                    <td style="color:var(--text-muted); font-size:12px; max-width:250px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${details}">${details}</td>
+            tbody.innerHTML = logs.map(l => {
+                const date = l.created_at ? new Date(l.created_at).toLocaleString() : 'Just now';
+                const safeEmail = escapeHtml(l.user_email || 'System');
+                const action = escapeHtml(l.action || 'EVENT');
+                const details = escapeHtml(typeof l.details === 'object' ? JSON.stringify(l.details) : (l.details || '-'));
+                const ip = escapeHtml(l.ip_address || '127.0.0.1');
+                return `
+                <tr>
+                    <td style="color:var(--text-muted); font-size:12px;"><i class="far fa-clock"></i> ${date}</td>
+                    <td><strong>${safeEmail}</strong></td>
+                    <td><span style="background:rgba(16,185,129,0.12); color:#34d399; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:700; font-family:monospace;">${action}</span></td>
+                    <td style="color:var(--text-muted); font-size:12px; max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${details}">${details}</td>
                     <td style="color:var(--text-muted); font-size:12px; font-family:monospace;">${ip}</td>
                 </tr>`;
             }).join('');
@@ -1171,49 +877,39 @@
                         window.location.href = '/login.html?error=adminonly';
                         return;
                     }
-                    throw new Error('Failed to fetch admin data');
+                    throw new Error('Could not fetch admin data');
                 }
                 const data = await res.json();
-                if (data.error) throw new Error(data.error);
-
                 allUsers = data.users || [];
                 allItems = data.items || [];
 
-                const countItemsEl = document.getElementById('countItems');
-                const countUsersEl = document.getElementById('countUsers');
-                if (countItemsEl) countItemsEl.innerText = (data.stats && data.stats.totalItems != null) ? data.stats.totalItems : allItems.length;
-                if (countUsersEl) countUsersEl.innerText = (data.stats && data.stats.totalUsers != null) ? data.stats.totalUsers : allUsers.length;
+                document.getElementById('countItems').textContent = data.stats?.totalItems ?? allItems.length;
+                document.getElementById('countUsers').textContent = data.stats?.totalUsers ?? allUsers.length;
 
                 renderUsers(allUsers);
                 renderItems(allItems);
                 renderAuditLogs(data.recentAuditLogs || []);
             } catch (err) {
-                console.error('Failed to load admin data', err);
-                const userListEl = document.getElementById('userList');
-                const itemListEl = document.getElementById('itemList');
-                const auditListEl = document.getElementById('auditList');
-                if (userListEl) userListEl.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:30px; color:#ef4444;"><i class="fas fa-exclamation-triangle" style="font-size:24px; margin-bottom:8px; display:block;"></i>Failed to load member data. <a href="#" onclick="loadAdminData();return false;" style="color:var(--admin-accent); font-weight:600; text-decoration:underline;">Retry</a></td></tr>';
-                if (itemListEl) itemListEl.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:30px; color:#ef4444;"><i class="fas fa-exclamation-triangle" style="font-size:24px; margin-bottom:8px; display:block;"></i>Failed to load inventory data. <a href="#" onclick="loadAdminData();return false;" style="color:var(--admin-accent); font-weight:600; text-decoration:underline;">Retry</a></td></tr>';
-                if (auditListEl) auditListEl.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:30px; color:#ef4444;">Failed to load audit logs.</td></tr>';
+                console.error(err);
+                showToast('Failed to load admin data.', 'error');
             }
         }
 
-        loadAdminData();
-
-        // Search handlers
+        // Live Search Listeners
         document.getElementById('userSearch').addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
-            const filtered = allUsers.filter(u =>
-                (u.name || '').toLowerCase().includes(term) ||
-                (u.email || '').toLowerCase().includes(term)
+            const filtered = allUsers.filter(u => 
+                (u.name || '').toLowerCase().includes(term) || 
+                (u.email || '').toLowerCase().includes(term) ||
+                (u.city || '').toLowerCase().includes(term)
             );
             renderUsers(filtered);
         });
 
         document.getElementById('itemSearch').addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
-            const filtered = allItems.filter(i =>
-                (i.title || '').toLowerCase().includes(term) ||
+            const filtered = allItems.filter(i => 
+                (i.title || '').toLowerCase().includes(term) || 
                 (i.location || '').toLowerCase().includes(term)
             );
             renderItems(filtered);
@@ -1229,13 +925,13 @@
         function exportCSV(type) {
             let headers, rows, filename;
             if (type === 'users') {
-                headers = ['Name', 'Email', 'Phone', 'Role'];
-                rows = allUsers.map(u => [u.name, u.email, u.phone || '-', u.role]);
-                filename = 'members_export.csv';
+                headers = ['Name', 'Email', 'City', 'Role'];
+                rows = allUsers.map(u => [u.name, u.email, u.city || 'Pune', u.role]);
+                filename = 'givingtree_members.csv';
             } else {
                 headers = ['ID', 'Title', 'Location', 'Status'];
                 rows = allItems.map(i => [i.id, i.title, i.location, i.status || 'available']);
-                filename = 'inventory_export.csv';
+                filename = 'givingtree_inventory.csv';
             }
             const csv = [headers, ...rows].map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n');
             const blob = new Blob([csv], { type: 'text/csv' });
@@ -1247,11 +943,19 @@
             document.body.removeChild(a);
         }
 
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeDeleteModal();
-        });
+        // Socket.IO Real-Time Auto Refresh
+        if (typeof io !== 'undefined') {
+            const socket = io();
+            socket.on('connect', () => {
+                socket.emit('join', 'admin');
+            });
+            socket.on('admin_user_joined', () => loadAdminData());
+            socket.on('admin_item_posted', () => loadAdminData());
+            socket.on('admin_user_login', () => loadAdminData());
+        }
+
+        loadAdminData();
     </script>
-    <script src="/assets/js/animations.js"></script>
 </body>
 
 </html>
