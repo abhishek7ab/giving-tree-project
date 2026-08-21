@@ -1,266 +1,278 @@
-# 🌿 Giving Tree — Community Sharing Hub
+# 🌿 Giving Tree — Community Sharing Platform
 
-> **Small Acts. Big Connections.**  
-> A hyper-local community circular-sharing platform where neighbors in Pune give away unused items for free, build trust, reduce landfill waste, and connect with their local community.
+> **Share More. Waste Less. Connect Locally.**  
+> A simple, trusted community platform where neighbors in Pune give away unused items for 100% free, reduce landfill waste, and help people nearby.
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-giving--tree--project.vercel.app-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://giving-tree-project.vercel.app/)
-[![Tests](https://img.shields.io/badge/Tests-44%20Passed-10b981?style=for-the-badge&logo=jest)](tests/)
+[![Tests](https://img.shields.io/badge/Tests-59%20Passed-10b981?style=for-the-badge&logo=jest)](tests/)
 [![Node.js](https://img.shields.io/badge/Node.js-v18%2B-339933?style=for-the-badge&logo=node.js)](https://nodejs.org)
 [![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL%20(Neon)-4169E1?style=for-the-badge&logo=postgresql)](https://neon.tech)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
-> 🚀 **Live Production Deployment**:  
-> Explore and use the live application at: **[https://giving-tree-project.vercel.app/](https://giving-tree-project.vercel.app/)**
+> 🚀 **Live Website**: Try it live right now at **[https://giving-tree-project.vercel.app/](https://giving-tree-project.vercel.app/)**
 
 ---
 
 ## 📖 Table of Contents
 
-- [💡 Why Giving Tree?](#-why-giving-tree)
-- [✨ Core Features](#-core-features)
-- [📍 Pune Neighborhood Hubs](#-pune-neighborhood-hubs)
-- [🏗️ Tech Stack & Architecture](#️-tech-stack--architecture)
-- [🚀 Quick Start (Local Setup)](#-quick-start-local-setup)
+- [💡 What is Giving Tree?](#-what-is-giving-tree)
+- [✨ Key Features](#-key-features)
+- [📍 10 Pune Neighborhood Hubs](#-10-pune-neighborhood-hubs)
+- [🛡️ Trust, Safety & Anti-Fake Policy](#️-trust-safety--anti-fake-policy)
+- [📱 Mobile-First Experience](#-mobile-first-experience)
+- [🏗️ Technology Stack](#️-technology-stack)
+- [🚀 Quick Local Setup](#-quick-local-setup)
 - [🧪 Running Automated Tests](#-running-automated-tests)
-- [🌐 Live API Endpoints](#-live-api-endpoints)
-- [☁️ Deployment (Vercel / Render / Cloud)](#️-deployment-vercel--render--cloud)
-- [🛡️ Security Architecture](#️-security-architecture)
+- [🌐 Main API Endpoints](#-main-api-endpoints)
+- [☁️ Deployment (Vercel & Cloud)](#️-deployment-vercel--cloud)
 - [🤝 Contributing](#-contributing)
 - [📜 License](#-license)
 
 ---
 
-## 💡 Why Giving Tree?
+## 💡 What is Giving Tree?
 
-Think about how many usable items sit idle in our homes:
-- An extra study table or office chair after moving flats.
-- A drill machine or toolkit used only once a year.
-- College textbooks, fiction novels, and reference guides.
-- Electronic gadgets, monitors, monitors, and kitchenware.
+Most of us have useful things at home that we no longer use:
+- Textbooks and novels after finishing exams.
+- A study chair or table after shifting apartments.
+- Kitchen appliances, baby toys, or extra electronic cables.
 
-Instead of letting them gather dust or throwing them in landfills, **Giving Tree** enables neighbors to pass them on for free. No bidding, no fees, no ads—just pure community trust.
+Instead of throwing them in the trash or letting them gather dust, **Giving Tree** helps you give them directly to a neighbor who needs them—completely free. 
 
----
-
-## ✨ Core Features
-
-### 🎁 1. Free Item Sharing & Posting
-- **Multi-Step Posting**: Post an item in under 60 seconds with title, category, description, and condition (`New`, `Good`, `Fair`).
-- **Cloudinary Image Uploads**: Fast image hosting with automatic responsive transformations and fallback previews.
-- **Interactive Map Pinning**: Drop a GPS pin on your neighborhood street or landmark using OpenStreetMap / Leaflet.
-
-### 🔍 2. Intelligent Catalog & Search
-- **Faceted Filtering**: Filter by category (*Electronics*, *Furniture*, *Books*, *Clothing*, *Home*, *Other*), condition, and locality.
-- **Live Search**: Instant client-side & server-side search across titles and descriptions.
-- **Visual Card Badges**: Clear non-overlapping category and condition tags.
-
-### 💬 3. Activity Hub & Live Coordination Chat
-- **Instant Item Requests**: Send requests with custom polite notes to donors.
-- **Real-Time WebSockets**: Socket.IO-powered real-time notifications for incoming requests and status changes.
-- **Direct Handover Chat**: Coordinate safe local meeting spots and timings in-app.
-
-### 🛡️ 4. Master Admin Dashboard
-- **Comprehensive Management**: Search and manage community members and inventory items.
-- **CSV Data Export**: Export members and inventory records with one click.
-- **Audit Logging**: Track administrative actions and system security events.
-
-### 📱 5. Progressive Web App (PWA) & Mobile-First Experience
-- **Editorial Dark Theme**: Restrained `#10b981` emerald accent on sleek dark surfaces with smooth scroll-reveal animations.
-- **Mobile Bottom Navigation Dock**: Native app-like fixed frosted glass bottom navigation bar with instant access to Home, Browse, Activity, Profile, and quick actions.
-- **Quick-Post ("+ Give") Action**: Elevated centerpiece button on mobile view and floating quick-create button for 1-tap item sharing.
-- **Installable PWA**: Offline-capable service worker with standard W3C Web App Manifest.
+- **100% Free**: No money, no hidden charges, no bidding wars.
+- **Hyper-Local**: Pick up items in your own Pune neighborhood.
+- **Zero Fake Data**: Real people and genuine items only.
 
 ---
 
-## 📍 Pune Neighborhood Hubs
+## ✨ Key Features
 
-Giving Tree is mapped to 10 major community clusters across Pune:
+### 🎁 1. Easy Item Donating (Under 60 Seconds)
+- Fill in item title, condition (`New`, `Like new`, `Good`, `Fair`, `For repair`), and category.
+- **100% Real Photo Upload**: Donors upload authentic photos taken on their phone or camera.
+- **Precise Pickup Pin**: Pinpoint a safe public meetup spot on the interactive map.
 
-| Locality | Key Landmarks | Latitude | Longitude |
-|---|---|---|---|
-| **Kothrud** | MIT World Peace Univ / Vanaz Metro | `18.5074` | `73.8077` |
-| **Baner** | Baner High Street / Pan Card Club | `18.5590` | `73.7868` |
-| **FC Road** | Shivaji Nagar / Fergusson College | `18.5204` | `73.8406` |
-| **Hinjawadi** | Phase 1 & 2 IT Park Hub | `18.5913` | `73.7389` |
-| **Viman Nagar** | Phoenix Marketcity / Symbiosis | `18.5679` | `73.9143` |
-| **Koregaon Park**| North Main Road / Osho Garden | `18.5362` | `73.8940` |
-| **Hadapsar** | Magarpatta City / Amanora Town | `18.5089` | `73.9259` |
-| **Katraj** | Bharati Vidyapeeth / Katraj Lake | `18.4575` | `73.8677` |
-| **Wakad** | Dutta Mandir / Bhumkar Chowk | `18.5987` | `73.7660` |
-| **Aundh** | Westend Mall / Bremen Chowk | `18.5602` | `73.8031` |
+### 🔍 2. Smart Catalog & Filters
+- **10-Hub Dropdown**: Switch between 10 Pune localities (*Kothrud*, *Baner*, *FC Road*, *Hinjawadi*, *Viman Nagar*, etc.) with real-time item counts.
+- **Distance Filter**: Filter items by distance (`< 2 km`, `< 5 km`, `< 15 km`, or `Near Me`).
+- **Instant Search**: Search by name or category with fast response times.
+
+### 💬 3. Live Chat & Meetup Coordination
+- Request items with a friendly note to the donor.
+- Use **In-App Chat** with instant quick-reply buttons (e.g. *"Free today 6 PM"*, *"Let's meet at main gate"*, *"On my way!"*).
+- Real-time updates with **Socket.IO** notifications.
+
+### 🔐 4. 4-Digit Handover PIN Verification
+- When you meet to collect an item, the recipient shares a unique **4-digit safety PIN** shown on their screen.
+- The donor enters the PIN to confirm the successful handover.
+
+### 💌 5. Gratitude Wall & Neighbor Reviews
+- After receiving an item, leave a warm thank-you message for the donor.
+- Review notes appear on the neighbor's public profile and celebrate local kindness.
+
+### 🛡️ 6. Master Admin Dashboard
+- Live dashboard for platform health and moderation.
+- View real-time activity events and manage user or item listings.
+- One-click CSV export for offline reports.
 
 ---
 
-## 🏗️ Tech Stack & Architecture
+## 📍 10 Pune Neighborhood Hubs
+
+Giving Tree connects 10 verified public neighborhood clusters across Pune:
+
+| Locality | Key Landmark / Pickup Spot | Area Type |
+|---|---|---|
+| **Kothrud** | Near MIT / Vanaz Metro Station | Residential & Student Area |
+| **Baner** | Baner High Street / Balewadi | IT & Residential Hub |
+| **FC Road** | Fergusson College / Shivaji Nagar | Central Student District |
+| **Hinjawadi** | Phase 1 IT Park / Shivaji Chowk | Major Tech Park Hub |
+| **Viman Nagar** | Near Phoenix Marketcity / Symbiosis | Airport & College Hub |
+| **Koregaon Park** | North Main Road / Osho Garden | Central Neighborhood |
+| **Hadapsar** | Magarpatta City / Amanora Town | Residential & Tech Hub |
+| **Katraj** | Katraj Lake / Bharati Vidyapeeth | Southern Pune Hub |
+| **Wakad** | Dutta Mandir / Bhumkar Chowk | Western Residential Hub |
+| **Aundh** | Westend Mall / Bremen Chowk | North-West Pune |
+
+---
+
+## 🛡️ Trust, Safety & Anti-Fake Policy
+
+1. **Human Security CAPTCHA**: Built-in visual security challenge during login/registration to stop spam bots.
+2. **Valid Email Verification**: Enforces genuine, well-formed email addresses with live password strength meters.
+3. **Authentic Photos Only**: Stock photos, AI-generated images, and fake placeholders are prohibited.
+4. **Public Meetup Standard**: Encourages pickups at well-lit, public landmarks.
+5. **Fair-Share Quota**: 5 active requests maximum per user to prevent hoarding.
+
+---
+
+## 📱 Mobile-First Experience
+
+Giving Tree is fully optimized for smartphones and tablets:
+- **Bottom Navigation Dock**: 1-tap dock to quickly switch between *Home*, *Browse*, *+ Donate*, *Activity*, and *Profile*.
+- **Touch-Friendly Modals**: Item details and live chats slide up smoothly as bottom sheets.
+- **Zero Viewport Clutter**: No horizontal scrolling issues or oversized popovers.
+- **iOS Zoom Protection**: Clean inputs sized at 16px to prevent unwanted Safari zooming.
+
+---
+
+## 🏗️ Technology Stack
 
 ```
 giving-tree-project/
 ├── config/              # Cloudinary & JWT configuration
-├── controllers/         # Request handlers (auth, items, requests)
-├── database/            # PostgreSQL connection pool & schema migrations
-├── middleware/          # JWT auth, role validation, input sanitization, rate limiting
-├── models/              # Data access models (user, item, request, audit)
-├── routes/              # Express route definitions
-├── frontend/            # Frontend static assets (HTML, CSS, JS, PWA manifest)
-│   ├── assets/style/    # Modular CSS design system (variables, base, navbar, cards, pages)
-│   ├── assets/js/       # Client-side scripts (animations, location-picker, navbar-auth)
-│   └── *.html           # Semantic HTML5 pages
-├── tests/               # Automated Jest test suites
-├── server.js            # Express application entrypoint & Socket.IO server
-└── package.json         # Dependencies & scripts
+├── controllers/         # Request handlers (auth, items, requests, reviews)
+├── database/            # PostgreSQL connection pool & schema
+├── middleware/          # Security, auth tokens, rate limits, input cleaning
+├── models/              # Database models (User, Item, Request, Review, Audit)
+├── routes/              # Express API endpoints
+├── frontend/            # Frontend web application
+│   ├── assets/style/    # Modular CSS design system (dark mode, mobile-first)
+│   ├── assets/js/       # Client logic (auth, chat, maps, notifications)
+│   └── *.html           # Web pages
+├── tests/               # Automated test suites
+├── utils/               # CAPTCHA, emailer, admin notifier utilities
+├── server.js            # Main Express & Socket.IO server
+└── package.json         # Project dependencies
 ```
 
-- **Backend**: Node.js, Express 4, Socket.IO
-- **Database**: PostgreSQL with `pg` connection pooling (compatible with Neon, Supabase, Railway)
-- **Frontend**: Native HTML5, Vanilla JavaScript (ES2022), Custom CSS Design System
-- **Mapping**: Leaflet.js, OpenStreetMap CartoDB Tiles
-- **Media**: Cloudinary API + Local fallback storage
-- **Security**: Helmet, Rate Limiter, bcryptjs, HTTP-only JWT Cookies, Input Sanitization
+- **Backend**: Node.js & Express
+- **Real-Time Communication**: Socket.IO
+- **Database**: PostgreSQL (Neon Serverless PostgreSQL)
+- **Frontend**: HTML5, Vanilla JavaScript, Custom CSS Design System
+- **Maps**: Leaflet.js & OpenStreetMap
+- **Security**: bcryptjs, JWT Cookies (`HttpOnly`), Helmet, Express Rate Limit
 
 ---
 
-## 🚀 Quick Start (Local Setup)
+## 🚀 Quick Local Setup
 
-### 1. Prerequisites
-- **Node.js** (v18.0 or higher)
-- **PostgreSQL** database (local or hosted on [Neon](https://neon.tech))
+### 1. Requirements
+- **Node.js** (v18 or higher)
+- **PostgreSQL** database (local or free cloud database on [Neon](https://neon.tech))
 
-### 2. Clone & Install
+### 2. Clone the Project
 ```bash
 git clone https://github.com/abhishek7ab/giving-tree-project.git
 cd giving-tree-project
 npm install
 ```
 
-### 3. Configure Environment Variables
-Create a `.env` file in the root directory:
+### 3. Set Up Environment Variables
+Create a `.env` file in the project folder:
 ```env
 PORT=3000
-DATABASE_URL=postgresql://user:password@localhost:5432/giving_tree_db
-JWT_SECRET=your_super_secret_jwt_key_at_least_32_chars
+DATABASE_URL=postgresql://your_user:your_password@your_host/giving_tree_db
+JWT_SECRET=your_secret_jwt_key_at_least_32_characters_long
 FRONTEND_URL=http://localhost:3000
 
-# Optional: Cloudinary (for cloud image hosting)
+# Optional: Cloudinary for cloud photos (falls back to local uploads if omitted)
 CLOUDINARY_CLOUD_NAME=your_cloud_name
 CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
 
-# Optional: SMTP Email (for notifications)
+# Optional: Email notifications (falls back to test mailer if omitted)
 EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=586
+EMAIL_PORT=587
 EMAIL_USER=your_email@gmail.com
 EMAIL_PASS=your_app_password
 ```
 
-### 4. Initialize Database Schema
+### 4. Create Database Tables
 ```bash
 node database/init.js
 ```
 
-### 5. Start Development Server
+### 5. Start the Server
 ```bash
 npm start
 ```
 
-Visit **`http://localhost:3000`** in your browser! 🎉
+Open your browser and visit: **`http://localhost:3000`** 🎉
 
 ---
 
 ## 🧪 Running Automated Tests
 
-Giving Tree includes comprehensive unit, integration, and security tests powered by **Jest** and **Supertest**:
+Giving Tree comes with full automated test coverage using **Jest** and **Supertest**:
 
 ```bash
 npm test
 ```
 
-### Test Suite Breakdown:
-- **`tests/models_and_utils.test.js`**: Data models, coordinate calculation, and input validation.
-- **`tests/security_and_auth.test.js`**: Password hashing, JWT token rotation, authentication guards, and rate limiting.
-- **`tests/api_routes.test.js`**: Public & protected HTTP endpoints, item creation, and status transitions.
-- **`tests/comprehensive_e2e.test.js`**: End-to-end user workflows and static asset integrity.
+### Test Suites Included:
+- `tests/models_and_utils.test.js` — Database models, calculations, coordinate math.
+- `tests/security_and_auth.test.js` — Password hashing, JWT token safety, rate limiting, and CAPTCHA.
+- `tests/api_routes.test.js` — Items, categories, and request workflow APIs.
+- `tests/comprehensive_e2e.test.js` — Complete registration, post, request, and handover flow.
+- `tests/live_flow_e2e.test.js` — Real-time chat, PIN verification, and neighbor reviews.
 
-**Result: 44 / 44 tests passed (100% success rate)**.
-
----
-
-## 🌐 Live API Endpoints
-
-### 🔐 Authentication
-- `POST /register` — Register a new member account
-- `POST /login` — Authenticate and receive HTTP-only JWT cookie
-- `GET /logout` — Clear session cookie and log out
-- `GET /api/user` — Get current authenticated user profile
-- `POST /api/user/update-name` — Update display name and neighborhood
-- `POST /api/user/change-password` — Change password securely
-
-### 📦 Items & Inventory
-- `GET /api/items` — Fetch paginated items with filters (query, category, locality)
-- `GET /api/items/recent` — Fetch recent items for homepage preview
-- `POST /post-item` — Create a new item listing (with multipart image upload)
-- `PUT /api/items/:id` — Update an existing item
-- `POST /delete-item` — Delete an item listing
-
-### 🤝 Requests & Activity
-- `POST /api/requests` — Submit a request for an item
-- `GET /api/requests/incoming` — Fetch requests received for donor's items
-- `GET /api/requests/outgoing` — Fetch requests sent by user
-- `POST /api/requests/:id/accept` — Accept a request and open coordination chat
-- `POST /api/requests/:id/reject` — Reject a request
-
-### 🛡️ Administration (Admin Role Required)
-- `GET /api/admin/data` — Master dashboard inventory, members, and metrics
-- `POST /admin/delete-user` — Remove a user account
-- `POST /admin/delete-item` — Permanently remove an item listing
-- `GET /api/admin/audit-logs` — Fetch recent security audit events
+**Status: 59 / 59 tests passing (100% success rate)**.
 
 ---
 
-## ☁️ Deployment (Vercel / Render / Cloud)
+## 🌐 Main API Endpoints
 
-### Live Deployment:
-- **Production URL**: [https://giving-tree-project.vercel.app/](https://giving-tree-project.vercel.app/)
+### 🔐 Authentication & Profile
+- `POST /register` — Register a new member
+- `POST /login` — Sign in and get session cookie
+- `GET /logout` — Sign out safely
+- `GET /api/captcha` — Generate new security CAPTCHA
+- `GET /api/user` — Get logged-in profile data
+- `POST /api/user/update-name` — Update display name and neighborhood hub
+- `POST /api/user/change-password` — Change password
 
-### Deploying to Vercel:
-1. Push your repository to GitHub:
+### 📦 Items & Donations
+- `GET /api/items` — List items with search, category, and locality filters
+- `GET /api/items/recent` — Get latest shared items
+- `POST /post-item` — Publish a new donation listing
+- `PUT /api/items/:id` — Edit an existing item
+- `POST /delete-item` — Remove an item listing
+
+### 🤝 Requests & Handover
+- `POST /request-item` — Send a request for an item
+- `GET /api/activity/data` — Fetch all incoming & outgoing requests
+- `POST /update-status` — Accept, reject, or cancel a request
+- `POST /api/requests/:id/verify-pin` — Confirm handover with 4-digit PIN
+- `POST /api/requests/:id/messages` — Send live coordination chat message
+- `POST /api/reviews` — Post a thank-you note to a neighbor
+
+### 🛡️ Admin
+- `GET /api/admin/data` — Master inventory, member stats, and health metrics
+- `POST /admin/delete-user` — Remove a spam/fake user
+- `POST /admin/delete-item` — Remove an inappropriate item
+
+---
+
+## ☁️ Deployment (Vercel & Cloud)
+
+### Live Website:
+👉 **[https://giving-tree-project.vercel.app/](https://giving-tree-project.vercel.app/)**
+
+### Deploy to Vercel in 3 Steps:
+1. Push your code to GitHub:
    ```bash
    git push origin main
    ```
-2. Go to [Vercel Dashboard](https://vercel.com/dashboard) and click **Add New Project**.
-3. Select your `giving-tree-project` repository.
-4. Add the Environment Variables:
-   - `DATABASE_URL`
-   - `JWT_SECRET`
-   - `FRONTEND_URL`
-   - *(Optional)* Cloudinary & Email credentials
-5. Click **Deploy**.
-
----
-
-## 🛡️ Security Architecture
-
-- **Password Security**: Passwords hashed with `bcryptjs` (salt rounds: 10).
-- **Authentication**: Stateless signed JWT cookies with `HttpOnly`, `SameSite: Lax`, and `Secure` flags.
-- **HTTP Headers**: Enforced via `helmet` (CSP, X-Content-Type-Options, X-Frame-Options).
-- **Rate Limiting**: Configured with `express-rate-limit` to prevent brute-force attacks.
-- **SQL Injection Prevention**: Parameterized queries across all PostgreSQL database interactions.
-- **Input Sanitization**: HTML escaping to eliminate Cross-Site Scripting (XSS).
+2. Open [Vercel Dashboard](https://vercel.com/dashboard) and import your `giving-tree-project` repository.
+3. Add `DATABASE_URL` and `JWT_SECRET` in **Environment Variables**, then click **Deploy**.
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome!
-1. Fork the repository.
-2. Create your feature branch (`git checkout -b feature/amazing-feature`).
-3. Commit your changes (`git commit -m "feat: add amazing feature"`).
-4. Push to the branch (`git push origin feature/amazing-feature`).
+We welcome community contributions!
+1. Fork the repo.
+2. Create your branch: `git checkout -b feature/new-idea`.
+3. Commit your work: `git commit -m "Add new idea"`.
+4. Push to branch: `git push origin feature/new-idea`.
 5. Open a Pull Request.
 
 ---
 
 ## 📜 License
 
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+This project is open-source and licensed under the **MIT License**.
 
-Built with 💚 for the Pune community.
+Built with 💚 to make local giving easy and accessible for everyone in Pune.
+
