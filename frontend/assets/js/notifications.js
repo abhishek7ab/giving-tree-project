@@ -91,7 +91,13 @@
             popover.className = 'nav-notif-popover';
             popover.id = 'navNotifPopover';
             popover.onclick = (e) => e.stopPropagation();
-            wrapper.appendChild(popover);
+            const isMobileViewport = window.matchMedia('(max-width: 768px)').matches;
+            if (isMobileViewport) {
+                popover.classList.add('mobile-notif-portal');
+                document.body.appendChild(popover);
+            } else {
+                wrapper.appendChild(popover);
+            }
 
             bell.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -100,14 +106,16 @@
             });
 
             document.addEventListener('click', (e) => {
-                if (!wrapper.contains(e.target)) {
+                if (!wrapper.contains(e.target) && !popover.contains(e.target)) {
                     wrapper.classList.remove('open');
+                    popover.classList.remove('open');
                 }
             });
 
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
                     wrapper.classList.remove('open');
+                    popover.classList.remove('open');
                 }
             });
         }
@@ -123,8 +131,12 @@
 
     async function toggleNotificationPopover() {
         const wrapper = document.getElementById('navNotifWrapper');
+        const popover = document.getElementById('navNotifPopover');
         if (!wrapper) return;
         const isOpen = wrapper.classList.toggle('open');
+        if (popover && popover.classList.contains('mobile-notif-portal')) {
+            popover.classList.toggle('open', isOpen);
+        }
         if (isOpen) {
             // Once checked, clear badge immediately to 0 and normal appearance
             clearNotificationBadge();

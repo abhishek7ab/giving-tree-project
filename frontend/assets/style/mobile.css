@@ -1594,6 +1594,10 @@
         transform-origin: top right !important;
     }
 
+    .nav-notif-popover.mobile-notif-portal.open {
+        display: flex !important;
+    }
+
     .notif-popover-header {
         gap: 10px !important;
         min-height: 40px !important;
