@@ -103,6 +103,12 @@
                     <span id="errorText"></span>
                 </div>
 
+                <!-- One-click demo test account helper -->
+                <button type="button" class="auth-demo-pill" onclick="fillDemoCredentials()">
+                    <i class="fas fa-sparkles"></i>
+                    <span>Fill Demo Neighbor Account</span>
+                </button>
+
                 <form action="/login" method="POST" onsubmit="handleLogin(event)">
                     <div class="form-group">
                         <label for="loginEmail">
@@ -175,6 +181,16 @@
         icon.className = show ? 'fas fa-eye-slash' : 'fas fa-eye';
     }
 
+    function fillDemoCredentials() {
+        const emailInput = document.getElementById('loginEmail');
+        const passInput = document.getElementById('loginPassword');
+        if (emailInput && passInput) {
+            emailInput.value = 'aarav.deshmukh@gmail.com';
+            passInput.value = 'SafePassword123!';
+            emailInput.focus();
+        }
+    }
+
     async function handleLogin(e) {
         e.preventDefault();
         const btn = document.querySelector('.auth-btn');
@@ -225,7 +241,7 @@
             errorText.textContent = err.message || 'Invalid credentials. Please try again.';
             errorMsg.style.display = 'block';
             btn.disabled = false;
-            btn.innerHTML = '<span>Login to Account</span> <i class="fas fa-arrow-right" style="font-size:13px;"></i>';
+            btn.innerHTML = '<span>Login to Account</span> <i class="fas fa-arrow-right"></i>';
         }
     }
 </script>
