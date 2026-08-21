@@ -777,18 +777,16 @@
 
 .location-dropdown-popover {
     position: absolute;
-    top: calc(100% + 8px);
+    top: calc(100% + 10px);
     right: 0;
-    width: 320px;
-    background: #0f172a;
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    border-radius: 16px;
-    padding: 14px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(16, 185, 129, 0.15);
-    z-index: 1000;
+    width: 380px;
+    background: #090e1a !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    border-radius: 18px;
+    padding: 16px;
+    box-shadow: 0 24px 60px -10px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(16, 185, 129, 0.25), 0 4px 20px rgba(16, 185, 129, 0.1) !important;
+    z-index: 99999 !important;
     display: none;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
     animation: popoverFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -797,20 +795,26 @@
 }
 
 @keyframes popoverFadeIn {
-    from { opacity: 0; transform: translateY(-6px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(-8px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .location-popover-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 10px;
-    margin-bottom: 10px;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 800;
     color: #FFFFFF;
+}
+
+.location-popover-header span {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
 }
 
 .btn-reset-loc {
@@ -820,21 +824,20 @@
     font-size: 11.5px;
     font-weight: 700;
     cursor: pointer;
-    padding: 2px 6px;
-    border-radius: 4px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    transition: all 0.15s ease;
 }
 
 .btn-reset-loc:hover {
-    text-decoration: underline;
+    background: rgba(16, 185, 129, 0.12);
+    text-decoration: none;
 }
 
 .location-popover-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    max-height: 280px;
-    overflow-y: auto;
-    scrollbar-width: thin;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
 }
 
 .loc-option-btn {
@@ -842,49 +845,58 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    padding: 8px 12px;
-    border-radius: 10px;
-    background: transparent;
-    border: 1px solid transparent;
-    color: var(--text-2);
-    font-size: 13px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    color: #cbd5e1;
+    font-size: 12.5px;
     font-weight: 600;
     font-family: inherit;
     cursor: pointer;
-    transition: all 0.15s ease;
+    transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
     text-align: left;
 }
 
 .loc-option-btn:hover {
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.14);
     color: #FFFFFF;
+    transform: translateY(-1px);
 }
 
 .loc-option-btn.active {
-    background: rgba(16, 185, 129, 0.15);
-    border-color: rgba(16, 185, 129, 0.35);
-    color: var(--accent);
+    background: rgba(16, 185, 129, 0.16) !important;
+    border-color: rgba(16, 185, 129, 0.45) !important;
+    color: #34d399 !important;
     font-weight: 800;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
 }
 
 .loc-opt-name {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 7px;
+    font-size: 12px;
+}
+
+.loc-opt-name i {
+    color: var(--accent);
+    font-size: 11px;
 }
 
 .pune-chip-count {
-    background: rgba(0, 0, 0, 0.25);
+    background: rgba(0, 0, 0, 0.45);
+    color: var(--text-3);
     padding: 1px 7px;
-    border-radius: 10px;
+    border-radius: 12px;
     font-size: 11px;
     font-weight: 800;
-    color: var(--text-muted);
 }
 
 .loc-option-btn.active .pune-chip-count {
-    background: rgba(16, 185, 129, 0.25);
-    color: var(--accent);
+    background: rgba(16, 185, 129, 0.3);
+    color: #34d399;
 }
 
 /* Items Grid Container */

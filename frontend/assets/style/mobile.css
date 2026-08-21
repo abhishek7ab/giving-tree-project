@@ -272,7 +272,7 @@
         border: 1px solid rgba(255, 255, 255, 0.1) !important;
     }
 
-    /* Popover must appear BELOW the button and stay within screen */
+    /* Popover must appear nicely as a bottom sheet modal above dock */
     .location-dropdown-popover {
         position: fixed !important;
         top: auto !important;
@@ -280,10 +280,23 @@
         left: 12px !important;
         right: 12px !important;
         width: auto !important;
-        z-index: 2000 !important;
+        background: #090e1a !important;
+        border: 1px solid rgba(255, 255, 255, 0.16) !important;
+        z-index: 99999 !important;
         border-radius: 18px !important;
-        max-height: 60vh !important;
+        max-height: 65vh !important;
         overflow-y: auto !important;
+        box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.9) !important;
+    }
+
+    .location-popover-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 6px !important;
+    }
+
+    .loc-option-btn {
+        padding: 9px 8px !important;
+        font-size: 12px !important;
     }
 
     /* Search go button: full width */
