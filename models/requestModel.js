@@ -90,6 +90,25 @@ exports.createRequest = async (item_id, requester, requesterLocation, requesterL
         throw err;
     }
 
+    // 5-Active-Requests Fair Sharing Community Limit
+    const activeRequestsCountResult = await db.query(
+        `
+        SELECT COUNT(*) AS count
+        FROM requests
+        WHERE requester_email = $1
+          AND archived_at IS NULL
+          AND LOWER(status) IN ('pending', 'accepted')
+        `,
+        [requesterEmail]
+    );
+
+    const activeCount = parseInt(activeRequestsCountResult.rows[0]?.count || '0', 10);
+    if (activeCount >= 5) {
+        const err = new Error("Community Limit Reached: You have 5 active requests in progress. Please complete or cancel an existing request before requesting more items to ensure fair sharing for all Pune neighbors.");
+        err.statusCode = 400;
+        throw err;
+    }
+
     const duplicateCheck = await db.query(
         `
         SELECT id
