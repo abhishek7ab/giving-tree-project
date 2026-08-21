@@ -720,114 +720,171 @@
     color: #FFFFFF;
 }
 
-/* Improvement #3 — Pune Locality Filter Bar with scroll fade mask */
-.pune-catalog-bar {
-    max-width: 100%;
-    margin: 2px 0 6px;
-    padding: 0 4px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.pune-bar-label {
+/* ============================================================
+   UNIFIED PUNE LOCATION DROPDOWN (Single Streamlined Filter)
+   ============================================================ */
+.location-dropdown-container {
+    position: relative;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    color: var(--accent);
-    font-size: 12px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    white-space: nowrap;
-    flex-shrink: 0;
 }
 
-.pune-pulse-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 8px var(--accent);
-    animation: pulseDot 2s ease-in-out infinite;
-}
-
-@keyframes pulseDot {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.75); }
-}
-
-.pune-chips-scroll-wrapper {
-    position: relative;
-    flex: 1;
-    overflow: hidden;
-    min-width: 0;
-}
-
-/* Fade mask indicating horizontal scroll overflow */
-.pune-chips-scroll-wrapper::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 4px;
-    width: 48px;
-    background: linear-gradient(to right, transparent, #090D16);
-    pointer-events: none;
-    z-index: 1;
-}
-
-.pune-chips-scroll {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 4px;
-    padding-right: 48px;
-}
-
-.pune-chips-scroll::-webkit-scrollbar {
-    display: none;
-}
-
-.pune-locality-chip {
-    background: rgba(15, 23, 42, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    color: var(--text-2);
-    padding: 6px 14px;
-    border-radius: 50px;
-    font-size: 12.5px;
+.btn-location-trigger {
+    background: transparent;
+    border: none;
+    color: #FFFFFF;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 13px;
     font-weight: 700;
     cursor: pointer;
-    white-space: nowrap;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     font-family: inherit;
     transition: all 0.2s ease;
+    white-space: nowrap;
 }
 
-.pune-locality-chip:hover {
-    border-color: rgba(255, 255, 255, 0.25);
+.btn-location-trigger:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.btn-location-trigger.active-filter {
+    background: rgba(16, 185, 129, 0.14);
+    color: var(--accent);
+}
+
+.location-count-badge {
+    background: rgba(16, 185, 129, 0.2);
+    color: var(--accent);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    padding: 1px 7px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.loc-caret {
+    font-size: 10px;
+    color: var(--text-3);
+    transition: transform 0.2s ease;
+}
+
+.location-dropdown-container.open .loc-caret {
+    transform: rotate(180deg);
+}
+
+.location-dropdown-popover {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: 320px;
+    background: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 16px;
+    padding: 14px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(16, 185, 129, 0.15);
+    z-index: 1000;
+    display: none;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    animation: popoverFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.location-dropdown-container.open .location-dropdown-popover {
+    display: block;
+}
+
+@keyframes popoverFadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.location-popover-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 12px;
+    font-weight: 800;
     color: #FFFFFF;
-    transform: translateY(-1px);
 }
 
-.pune-locality-chip.active {
-    background: var(--accent);
-    color: #042F24;
-    border-color: var(--accent);
-    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+.btn-reset-loc {
+    background: none;
+    border: none;
+    color: var(--accent);
+    font-size: 11.5px;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.btn-reset-loc:hover {
+    text-decoration: underline;
+}
+
+.location-popover-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-height: 280px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.loc-option-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text-2);
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: left;
+}
+
+.loc-option-btn:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: #FFFFFF;
+}
+
+.loc-option-btn.active {
+    background: rgba(16, 185, 129, 0.15);
+    border-color: rgba(16, 185, 129, 0.35);
+    color: var(--accent);
+    font-weight: 800;
+}
+
+.loc-opt-name {
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .pune-chip-count {
-    background: rgba(0, 0, 0, 0.18);
-    padding: 1px 6px;
-    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.25);
+    padding: 1px 7px;
+    border-radius: 10px;
     font-size: 11px;
     font-weight: 800;
+    color: var(--text-muted);
+}
+
+.loc-option-btn.active .pune-chip-count {
+    background: rgba(16, 185, 129, 0.25);
+    color: var(--accent);
 }
 
 /* Items Grid Container */

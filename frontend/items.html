@@ -118,6 +118,70 @@
                     </select>
                 </div>
 
+                <div class="filter-pill-divider"></div>
+
+                <!-- Single Unified Location Filter Dropdown -->
+                <div class="location-dropdown-container" id="locationDropdownContainer">
+                    <button type="button" class="btn-location-trigger" id="locationDropdownBtn" onclick="toggleLocationDropdown(event)" aria-haspopup="true" aria-expanded="false" title="Click to select from 10 Pune neighborhood hubs">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                        <span id="selectedLocationLabel">All Pune</span>
+                        <span class="location-count-badge" id="selectedLocationBadge">0</span>
+                        <i class="fas fa-chevron-down loc-caret"></i>
+                    </button>
+                    <div class="location-dropdown-popover" id="locationDropdownPopover" onclick="event.stopPropagation()">
+                        <div class="location-popover-header">
+                            <span><i class="fas fa-map-pin" style="color:var(--accent);"></i> 10 Pune Hubs</span>
+                            <button type="button" class="btn-reset-loc" onclick="selectCatalogLocality('all', 'All Pune')">Reset All</button>
+                        </div>
+                        <div class="location-popover-grid">
+                            <button type="button" class="loc-option-btn active" data-locality="all" onclick="selectCatalogLocality('all', 'All Pune')">
+                                <span class="loc-opt-name">🌐 All Pune</span>
+                                <span class="pune-chip-count" id="count-all">0</span>
+                            </button>
+                            <button type="button" class="loc-option-btn" data-locality="Kothrud" onclick="selectCatalogLocality('Kothrud', 'Kothrud')">
+                                <span class="loc-opt-name">📍 Kothrud</span>
+                                <span class="pune-chip-count" id="count-kothrud">0</span>
+                            </button>
+                            <button type="button" class="loc-option-btn" data-locality="Katraj" onclick="selectCatalogLocality('Katraj', 'Katraj')">
+                                <span class="loc-opt-name">📍 Katraj</span>
+                                <span class="pune-chip-count" id="count-katraj">0</span>
+                            </button>
+                            <button type="button" class="loc-option-btn" data-locality="Hadapsar" onclick="selectCatalogLocality('Hadapsar', 'Hadapsar')">
+                                <span class="loc-opt-name">📍 Hadapsar</span>
+                                <span class="pune-chip-count" id="count-hadapsar">0</span>
+                            </button>
+                            <button type="button" class="loc-option-btn" data-locality="Baner" onclick="selectCatalogLocality('Baner', 'Baner')">
+                                <span class="loc-opt-name">📍 Baner</span>
+                                <span class="pune-chip-count" id="count-baner">0</span>
+                            </button>
+                            <button type="button" class="loc-option-btn" data-locality="FC Road" onclick="selectCatalogLocality('FC Road', 'FC Road')">
+                                <span class="loc-opt-name">📍 FC Road</span>
+                                <span class="pune-chip-count" id="count-fcroad">0</span>
+                            </button>
+                            <button type="button" class="loc-option-btn" data-locality="Hinjawadi" onclick="selectCatalogLocality('Hinjawadi', 'Hinjawadi')">
+                                <span class="loc-opt-name">📍 Hinjawadi</span>
+                                <span class="pune-chip-count" id="count-hinjawadi">0</span>
+                            </button>
+                            <button type="button" class="loc-option-btn" data-locality="Viman Nagar" onclick="selectCatalogLocality('Viman Nagar', 'Viman Nagar')">
+                                <span class="loc-opt-name">📍 Viman Nagar</span>
+                                <span class="pune-chip-count" id="count-vimannagar">0</span>
+                            </button>
+                            <button type="button" class="loc-option-btn" data-locality="Koregaon Park" onclick="selectCatalogLocality('Koregaon Park', 'Koregaon Park')">
+                                <span class="loc-opt-name">📍 Koregaon Park</span>
+                                <span class="pune-chip-count" id="count-koregaonpark">0</span>
+                            </button>
+                            <button type="button" class="loc-option-btn" data-locality="Wakad" onclick="selectCatalogLocality('Wakad', 'Wakad')">
+                                <span class="loc-opt-name">📍 Wakad</span>
+                                <span class="pune-chip-count" id="count-wakad">0</span>
+                            </button>
+                            <button type="button" class="loc-option-btn" data-locality="Aundh" onclick="selectCatalogLocality('Aundh', 'Aundh')">
+                                <span class="loc-opt-name">📍 Aundh</span>
+                                <span class="pune-chip-count" id="count-aundh">0</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 <button type="button" class="btn-search-go" onclick="loadItems()" title="Search catalog">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
                 </button>
@@ -152,52 +216,6 @@
                     <button type="button" class="view-btn" id="viewBtnMap" onclick="switchCatalogView('map')" title="Interactive Map View">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" x2="9" y1="3" y2="18"/><line x1="15" x2="15" y1="6" y2="21"/></svg>
                         <span>Map</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- 3. Pune Locality Quick-Jump Rail -->
-        <div class="pune-catalog-bar" role="region" aria-label="Filter by Pune neighborhood">
-            <div class="pune-bar-label">
-                <span class="pune-pulse-dot"></span>
-                <i class="fas fa-location-dot"></i>
-                <span>Pune Hubs</span>
-            </div>
-            <div class="pune-chips-scroll-wrapper">
-                <div class="pune-chips-scroll" id="puneChipsScroll">
-                    <button type="button" class="pune-locality-chip active" data-locality="all" onclick="filterCatalogPuneLocality('all', this)">
-                        <i class="fas fa-globe-asia" style="font-size:11px;"></i> All Pune <span class="pune-chip-count" id="count-all">0</span>
-                    </button>
-                    <button type="button" class="pune-locality-chip" data-locality="Kothrud" onclick="filterCatalogPuneLocality('Kothrud', this)">
-                        Kothrud <span class="pune-chip-count" id="count-kothrud">0</span>
-                    </button>
-                    <button type="button" class="pune-locality-chip" data-locality="Katraj" onclick="filterCatalogPuneLocality('Katraj', this)">
-                        Katraj <span class="pune-chip-count" id="count-katraj">0</span>
-                    </button>
-                    <button type="button" class="pune-locality-chip" data-locality="Hadapsar" onclick="filterCatalogPuneLocality('Hadapsar', this)">
-                        Hadapsar <span class="pune-chip-count" id="count-hadapsar">0</span>
-                    </button>
-                    <button type="button" class="pune-locality-chip" data-locality="Baner" onclick="filterCatalogPuneLocality('Baner', this)">
-                        Baner <span class="pune-chip-count" id="count-baner">0</span>
-                    </button>
-                    <button type="button" class="pune-locality-chip" data-locality="FC Road" onclick="filterCatalogPuneLocality('FC Road', this)">
-                        FC Road <span class="pune-chip-count" id="count-fcroad">0</span>
-                    </button>
-                    <button type="button" class="pune-locality-chip" data-locality="Hinjawadi" onclick="filterCatalogPuneLocality('Hinjawadi', this)">
-                        Hinjawadi <span class="pune-chip-count" id="count-hinjawadi">0</span>
-                    </button>
-                    <button type="button" class="pune-locality-chip" data-locality="Viman Nagar" onclick="filterCatalogPuneLocality('Viman Nagar', this)">
-                        Viman Nagar <span class="pune-chip-count" id="count-vimannagar">0</span>
-                    </button>
-                    <button type="button" class="pune-locality-chip" data-locality="Koregaon Park" onclick="filterCatalogPuneLocality('Koregaon Park', this)">
-                        Koregaon Park <span class="pune-chip-count" id="count-koregaonpark">0</span>
-                    </button>
-                    <button type="button" class="pune-locality-chip" data-locality="Wakad" onclick="filterCatalogPuneLocality('Wakad', this)">
-                        Wakad <span class="pune-chip-count" id="count-wakad">0</span>
-                    </button>
-                    <button type="button" class="pune-locality-chip" data-locality="Aundh" onclick="filterCatalogPuneLocality('Aundh', this)">
-                        Aundh <span class="pune-chip-count" id="count-aundh">0</span>
                     </button>
                 </div>
             </div>
@@ -643,8 +661,61 @@
             card.style.display = 'flex';
         }
 
+        let activeLocalityFilter = 'all';
+
+        function toggleLocationDropdown(e) {
+            if (e) e.stopPropagation();
+            const container = document.getElementById('locationDropdownContainer');
+            if (container) {
+                container.classList.toggle('open');
+            }
+        }
+
+        function selectCatalogLocality(locality, labelName) {
+            activeLocalityFilter = locality;
+
+            const labelEl = document.getElementById('selectedLocationLabel');
+            const btnEl = document.getElementById('locationDropdownBtn');
+            const container = document.getElementById('locationDropdownContainer');
+
+            if (labelEl) labelEl.textContent = labelName;
+            if (btnEl) {
+                btnEl.classList.toggle('active-filter', locality !== 'all');
+            }
+
+            document.querySelectorAll('.loc-option-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-locality') === locality);
+            });
+
+            if (container) container.classList.remove('open');
+            renderFilteredResults();
+        }
+
+        // Close location dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            const container = document.getElementById('locationDropdownContainer');
+            if (container && !container.contains(e.target)) {
+                container.classList.remove('open');
+            }
+        });
+
         function getFilteredItems() {
             let items = [...currentLoadedItems];
+
+            // 1. Locality Filter (Pune Hubs)
+            if (activeLocalityFilter !== 'all') {
+                const locLower = activeLocalityFilter.toLowerCase();
+                items = items.filter(i => {
+                    const itemLoc = String(i.location || '').toLowerCase();
+                    if (locLower === 'fc road') return itemLoc.includes('fc') || itemLoc.includes('shivaji');
+                    if (locLower === 'hadapsar') return itemLoc.includes('hadap');
+                    if (locLower === 'viman nagar') return itemLoc.includes('viman');
+                    if (locLower === 'koregaon park') return itemLoc.includes('koregaon');
+                    return itemLoc.includes(locLower);
+                });
+            }
+
+            // 2. Radius Filter
             if (activeRadiusFilter !== 'all' && userCurrentCoords && window.GivingTreeLocation) {
                 const maxDist = Number(activeRadiusFilter);
                 items = items.filter(i => {
@@ -777,6 +848,12 @@
             for (const key of ['all', 'kothrud', 'katraj', 'hadapsar', 'baner', 'fcroad', 'hinjawadi', 'vimannagar', 'koregaonpark', 'wakad', 'aundh']) {
                 const el = document.getElementById(`count-${key}`);
                 if (el) el.textContent = counts[key] || 0;
+            }
+
+            const badgeEl = document.getElementById('selectedLocationBadge');
+            if (badgeEl) {
+                const activeKey = activeLocalityFilter === 'all' ? 'all' : activeLocalityFilter.toLowerCase().replace(/\s+/g, '');
+                badgeEl.textContent = counts[activeKey] ?? counts.all;
             }
         }
 
