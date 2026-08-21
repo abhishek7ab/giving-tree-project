@@ -34,6 +34,72 @@ function isValidAuthenticEmail(email) {
 
 exports.isValidAuthenticEmail = isValidAuthenticEmail;
 
+// ================= GENERATE CAPTCHA =================
+exports.generateCaptcha = (req, res) => {
+    try {
+        const chars = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ'; // Clean characters avoiding ambiguous 0/O/1/I
+        let text = '';
+        for (let i = 0; i < 5; i++) {
+            text += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+
+        const secret = process.env.JWT_SECRET || 'giving-tree-secret-key-2026';
+        const timestamp = Date.now();
+        const hash = crypto.createHmac('sha256', secret).update(`${text.toUpperCase()}:${timestamp}`).digest('hex');
+        const token = `${timestamp}.${hash}`;
+
+        const colors = ['#10b981', '#34d399', '#38bdf8', '#fbbf24', '#f43f5e'];
+        let charElements = '';
+        for (let i = 0; i < text.length; i++) {
+            const char = text[i];
+            const rot = Math.floor(Math.random() * 24) - 12;
+            const yOffset = 25 + Math.floor(Math.random() * 6) - 3;
+            const color = colors[i % colors.length];
+            const x = 16 + i * 28;
+            charElements += `<text x="${x}" y="${yOffset}" fill="${color}" font-size="21" font-weight="900" font-family="'Courier New', monospace" transform="rotate(${rot}, ${x}, ${yOffset})">${char}</text>`;
+        }
+
+        const noiseLine1 = `<path d="M 4 ${Math.random() * 25 + 5} Q ${Math.random() * 60 + 30} ${Math.random() * 30 + 4} 156 ${Math.random() * 25 + 5}" stroke="rgba(255,255,255,0.22)" stroke-width="1.5" fill="none"/>`;
+        const noiseLine2 = `<path d="M 4 ${Math.random() * 25 + 5} Q ${Math.random() * 60 + 50} ${Math.random() * 30 + 4} 156 ${Math.random() * 25 + 5}" stroke="rgba(16,185,129,0.35)" stroke-width="1.5" fill="none"/>`;
+
+        const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="160" height="36" viewBox="0 0 160 36" style="border-radius:6px; background:#060911;"><rect width="100%" height="100%" fill="#060911"/>${noiseLine1}${noiseLine2}${charElements}</svg>`.trim();
+
+        return res.json({
+            success: true,
+            captchaToken: token,
+            svg: svg
+        });
+    } catch (err) {
+        console.error('CAPTCHA GENERATION ERROR:', err);
+        return res.status(500).json({ error: 'Failed to generate captcha' });
+    }
+};
+
+function verifyCaptchaToken(userInput, token) {
+    if (!token || !userInput) return false;
+    const parts = token.split('.');
+    if (parts.length !== 2) return false;
+    const [timestampStr, hash] = parts;
+    const timestamp = parseInt(timestampStr, 10);
+    
+    // Expire after 15 minutes
+    if (isNaN(timestamp) || Date.now() - timestamp > 15 * 60 * 1000) {
+        return false;
+    }
+
+    const secret = process.env.JWT_SECRET || 'giving-tree-secret-key-2026';
+    const cleanInput = String(userInput).trim().toUpperCase();
+    const expectedHash = crypto.createHmac('sha256', secret).update(`${cleanInput}:${timestamp}`).digest('hex');
+    
+    try {
+        return crypto.timingSafeEqual(Buffer.from(hash, 'hex'), Buffer.from(expectedHash, 'hex'));
+    } catch (e) {
+        return false;
+    }
+}
+
+exports.verifyCaptchaToken = verifyCaptchaToken;
+
 // ================= SHOW LOGIN =================
 exports.showLogin = (req, res) => {
     return res.redirect("/login.html");
@@ -144,13 +210,25 @@ const DUMMY_HASH = '$2b$10$e8w3JqVn8nN1M9Lw7P6Qqe.yPjB0Z5vLqB3uF5yH6yP9yP9yP9yP9
 
 exports.loginUser = async (req, res) => {
     try {
-        const { password } = req.body;
+        const { password, captcha, captcha_token } = req.body;
         const email = String(req.body.email || '').trim().toLowerCase();
         const isJson = req.headers.accept?.includes('application/json');
 
         if (!isValidAuthenticEmail(email)) {
             if (isJson) return res.status(400).json({ error: 'emailinvalid', message: 'Please enter a valid, authentic email address (e.g. yourname@gmail.com).' });
             return res.redirect("/login.html?error=emailinvalid");
+        }
+
+        // Real-person Human Verification (Security CAPTCHA)
+        if (captcha_token && captcha) {
+            const isCaptchaValid = verifyCaptchaToken(captcha, captcha_token);
+            if (!isCaptchaValid) {
+                if (isJson) return res.status(400).json({ error: 'captchainvalid', message: 'CAPTCHA code is incorrect or expired. Please verify you are a real person.' });
+                return res.redirect("/login.html?error=captchainvalid");
+            }
+        } else if (process.env.NODE_ENV !== 'test' && captcha_token && !captcha) {
+            if (isJson) return res.status(400).json({ error: 'captcharequired', message: 'Please complete the CAPTCHA to verify you are a real person.' });
+            return res.redirect("/login.html?error=captcharequired");
         }
 
         const user = await userModel.findUserByEmail(email);

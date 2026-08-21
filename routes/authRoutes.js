@@ -7,6 +7,7 @@ const { validate, registerSchema, loginSchema, updateNameSchema, changePasswordS
 
 router.get('/login', authController.showLogin);
 router.get('/register', authController.showRegister);
+router.get('/api/captcha', authController.generateCaptcha);
 
 router.post('/register', validate(registerSchema), authController.register);
 router.post('/login', validate(loginSchema), authController.loginUser);

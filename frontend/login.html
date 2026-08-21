@@ -135,6 +135,27 @@
                         </div>
                     </div>
 
+                    <!-- Real Human Verification Security CAPTCHA -->
+                    <div class="form-group" style="margin-top: 14px;">
+                        <label for="loginCaptcha">
+                            <span>Human Verification (Security CAPTCHA)</span>
+                            <span class="auth-label-badge req">Required</span>
+                        </label>
+                        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                            <div id="captchaContainer" style="background:#060911; border:1px solid rgba(16,185,129,0.3); border-radius:8px; height:42px; display:flex; align-items:center; justify-content:center; flex:1; min-width:160px; overflow:hidden;">
+                                <i class="fas fa-spinner fa-spin" style="color:var(--accent);"></i>
+                            </div>
+                            <button type="button" onclick="loadCaptcha()" title="Get new security code" style="height:42px; width:42px; border-radius:8px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:#FFFFFF; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s ease;">
+                                <i class="fas fa-arrows-rotate" id="captchaReloadIcon"></i>
+                            </button>
+                        </div>
+                        <div class="input-icon-wrapper">
+                            <i class="fas fa-shield-halved"></i>
+                            <input type="text" name="captcha" id="loginCaptcha" placeholder="Enter the 5-character code above" required maxlength="6" autocomplete="off" style="text-transform:uppercase; font-weight:700; letter-spacing:2px;">
+                        </div>
+                        <input type="hidden" name="captcha_token" id="captchaTokenInput">
+                    </div>
+
                     <button type="submit" class="btn primary auth-btn" id="loginBtn">
                         <span>Login to Account</span>
                         <i class="fas fa-arrow-right"></i>
@@ -166,12 +187,47 @@
             errorText.textContent = "Your password or Gmail is incorrect. Please log in with correct credentials.";
         } else if (error === 'missingfields') {
             errorText.textContent = "Please fill in all fields.";
+        } else if (error === 'captchainvalid') {
+            errorText.textContent = "Security CAPTCHA code is incorrect or expired. Please verify you are a real person.";
+        } else if (error === 'captcharequired') {
+            errorText.textContent = "Please enter the security CAPTCHA code shown to verify you are a real person.";
         } else {
             errorText.textContent = "Something went wrong. Please try again.";
         }
         errorMsg.style.display = 'block';
         window.history.replaceState({}, document.title, window.location.pathname);
     }
+
+    let currentCaptchaToken = '';
+
+    async function loadCaptcha() {
+        const container = document.getElementById('captchaContainer');
+        const tokenInput = document.getElementById('captchaTokenInput');
+        const reloadIcon = document.getElementById('captchaReloadIcon');
+        const captchaInput = document.getElementById('loginCaptcha');
+
+        if (reloadIcon) reloadIcon.classList.add('fa-spin');
+
+        try {
+            const res = await fetch('/api/captcha');
+            const data = await res.json();
+            if (data.success && data.svg) {
+                container.innerHTML = data.svg;
+                currentCaptchaToken = data.captchaToken;
+                if (tokenInput) tokenInput.value = data.captchaToken;
+                if (captchaInput) captchaInput.value = '';
+            }
+        } catch(e) {
+            console.error('Failed to load CAPTCHA:', e);
+            if (container) container.innerHTML = '<span style="color:#ef4444; font-size:12px;">Failed to load code</span>';
+        } finally {
+            if (reloadIcon) {
+                setTimeout(() => reloadIcon.classList.remove('fa-spin'), 300);
+            }
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadCaptcha);
 
     function togglePassword(inputId, btn) {
         const input = document.getElementById(inputId);
@@ -202,9 +258,11 @@
         const form = e.target;
         const emailInput = form.querySelector('input[name="email"]') || form.elements?.email;
         const passwordInput = form.querySelector('input[name="password"]') || form.elements?.password;
+        const captchaInput = document.getElementById('loginCaptcha');
 
         const emailVal = emailInput ? emailInput.value.trim().toLowerCase() : '';
         const passwordVal = passwordInput ? passwordInput.value : '';
+        const captchaVal = captchaInput ? captchaInput.value.trim().toUpperCase() : '';
 
         const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
         if (!emailVal || !emailRegex.test(emailVal) || !emailVal.includes('.') || emailVal.split('@')[1].split('.').pop().length < 2) {
@@ -216,9 +274,20 @@
             return;
         }
 
+        if (!captchaVal) {
+            errorText.textContent = 'Please enter the CAPTCHA code shown to verify you are a real person.';
+            errorMsg.style.display = 'block';
+            btn.disabled = false;
+            btn.innerHTML = '<span>Login to Account</span> <i class="fas fa-arrow-right"></i>';
+            if (captchaInput) captchaInput.focus();
+            return;
+        }
+
         const payload = {
             email: emailVal,
-            password: passwordVal
+            password: passwordVal,
+            captcha: captchaVal,
+            captcha_token: currentCaptchaToken || (document.getElementById('captchaTokenInput')?.value || '')
         };
 
         try {
@@ -240,6 +309,7 @@
                 if (!errMsg && text && !text.includes('<')) {
                     errMsg = text;
                 }
+                loadCaptcha(); // Auto refresh captcha on failed attempt
                 throw new Error(errMsg || 'Your password or Gmail is incorrect. Please check your credentials.');
             }
 
