@@ -78,22 +78,21 @@
     <!-- PROFILE HEADER -->
     <header class="profile-header" id="profileHeader">
         <div class="profile-avatar" id="profileAvatar">
-            <i class="fas fa-user"></i>
+            <i class="fas fa-user" style="font-size:28px; color:rgba(16,185,129,0.7);"></i>
         </div>
         <h1 class="profile-name" id="profileName">Loading...</h1>
         <div id="profileLocalityBadge"
-            style="display:inline-flex; align-items:center; gap:6px; background:rgba(16,185,129,0.12); color:var(--accent); border:1px solid rgba(16,185,129,0.25); padding:5px 14px; border-radius:20px; font-size:12.5px; font-weight:700; margin-bottom:12px;">
-            <i class="fas fa-map-marker-alt"></i> <span id="profileLocText">Pune Locality</span>
+            style="display:inline-flex; align-items:center; gap:6px; background:rgba(16,185,129,0.12); color:var(--accent); border:1px solid rgba(16,185,129,0.25); padding:5px 14px; border-radius:20px; font-size:12px; font-weight:700; margin:6px auto 0;">
+            <i class="fas fa-location-dot"></i> <span id="profileLocText">Pune Locality</span>
         </div>
-        <p class="profile-email" id="profileEmail" style="margin-top:2px;">—</p>
+        <p class="profile-email" id="profileEmail">—</p>
         <div class="profile-badges" id="profileBadges"></div>
     </header>
 
     <main id="main-content" class="profile-body">
 
         <!-- ENVIRONMENTAL IMPACT & COMMUNITY KARMA STRIP -->
-        <div class="impact-strip"
-            style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:14px; margin-bottom:32px;">
+        <div class="impact-strip">
             <div class="impact-tile">
                 <div class="impact-tile-num" id="pStatShared">—</div>
                 <div class="impact-tile-label">Donations Given</div>
@@ -106,13 +105,13 @@
                 <div class="impact-tile-num" id="pStatReceived">—</div>
                 <div class="impact-tile-label">Donations Received</div>
             </div>
-            <div class="impact-tile" style="background:rgba(16,185,129,0.08); border-color:rgba(16,185,129,0.25);">
+            <div class="impact-tile impact-tile--eco">
                 <div class="impact-tile-num" id="pStatCo2" style="color:var(--accent);">—</div>
-                <div class="impact-tile-label">🌿 CO₂ Offset (kg)</div>
+                <div class="impact-tile-label"><i class="fas fa-leaf" style="color:var(--accent);"></i> CO₂ Offset (kg)</div>
             </div>
-            <div class="impact-tile" style="background:rgba(245,158,11,0.08); border-color:rgba(245,158,11,0.25);">
+            <div class="impact-tile impact-tile--karma">
                 <div class="impact-tile-num" id="pStatKarma" style="color:#fbbf24;">—</div>
-                <div class="impact-tile-label">⭐ Karma Points</div>
+                <div class="impact-tile-label"><i class="fas fa-star" style="color:#fbbf24;"></i> Karma Points</div>
             </div>
         </div>
 

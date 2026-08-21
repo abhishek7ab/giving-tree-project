@@ -845,72 +845,258 @@
    10. PROFILE PAGE — MOBILE
    ============================================================ */
 @media (max-width: 768px) {
+
+    /* ── HERO HEADER ── */
     .profile-header {
-        padding: calc(56px + 20px) 16px 20px !important;
+        padding: calc(56px + 16px) 20px 28px !important;
         text-align: center !important;
-        margin-bottom: 24px !important;
+        margin-bottom: 0 !important;
+        background: linear-gradient(180deg, rgba(16,185,129,0.06) 0%, transparent 100%) !important;
+        border-bottom: 1px solid rgba(16,185,129,0.1) !important;
+        position: relative !important;
     }
 
     .profile-avatar {
-        margin: 0 auto 12px !important;
+        width: 76px !important;
+        height: 76px !important;
+        margin: 0 auto 14px !important;
+        border-radius: 50% !important;
+        background: linear-gradient(135deg, rgba(16,185,129,0.2) 0%, rgba(16,185,129,0.08) 100%) !important;
+        border: 2px solid rgba(16,185,129,0.4) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-shadow: 0 0 0 6px rgba(16,185,129,0.07), 0 8px 24px rgba(0,0,0,0.3) !important;
     }
 
     .profile-name {
-        font-size: clamp(1.4rem, 6vw, 1.9rem) !important;
+        font-size: clamp(1.4rem, 6.5vw, 1.9rem) !important;
+        font-weight: 800 !important;
+        letter-spacing: -0.03em !important;
+        margin: 0 0 8px !important;
+        line-height: 1.2 !important;
     }
 
+    .profile-email {
+        font-size: 13px !important;
+        color: rgba(255,255,255,0.45) !important;
+        margin: 6px 0 10px !important;
+    }
+
+    .profile-badges {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+        justify-content: center !important;
+        margin-top: 12px !important;
+    }
+
+    .profile-badge {
+        font-size: 11px !important;
+        padding: 4px 10px !important;
+        border-radius: 20px !important;
+        font-weight: 700 !important;
+    }
+
+    /* ── BODY LAYOUT ── */
     .profile-body {
-        padding: 0 14px 80px !important;
+        padding: 20px 14px 100px !important;
+        max-width: 100% !important;
     }
 
-    /* Impact strip: 2x2 grid on mobile */
+    /* ── IMPACT STRIP: 2×2 + full-width last ── */
     .impact-strip {
+        display: grid !important;
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 10px !important;
-        margin-bottom: 24px !important;
+        margin-bottom: 22px !important;
+    }
+
+    /* Make the 5th tile (Karma) span both columns */
+    .impact-strip > div:nth-child(5) {
+        grid-column: 1 / -1 !important;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 12px !important;
+    }
+
+    .impact-strip > div:nth-child(5) .impact-tile-num {
+        font-size: 22px !important;
+    }
+
+    .impact-strip > div:nth-child(5) .impact-tile-label {
+        font-size: 12.5px !important;
     }
 
     .impact-tile {
-        padding: 14px 12px !important;
+        padding: 14px 13px !important;
+        border-radius: 14px !important;
+        background: rgba(255,255,255,0.04) !important;
+        border: 1px solid rgba(255,255,255,0.07) !important;
+        min-height: 76px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
     }
 
     .impact-tile-num {
-        font-size: 20px !important;
+        font-size: 22px !important;
+        font-weight: 800 !important;
+        line-height: 1.1 !important;
+        margin-bottom: 2px !important;
+        letter-spacing: -0.02em !important;
     }
 
+    .impact-tile-label {
+        font-size: 11.5px !important;
+        color: rgba(255,255,255,0.5) !important;
+        font-weight: 500 !important;
+        line-height: 1.3 !important;
+    }
+
+    /* ── PROFILE GRID ── */
     .profile-grid,
     .profile-layout,
     .profile-content-grid {
         grid-template-columns: 1fr !important;
-        gap: 20px !important;
+        gap: 0 !important;
     }
 
+    /* ── FORM CARDS ── */
     .profile-form-card {
-        padding: 18px 14px !important;
-        border-radius: 16px !important;
-        margin-bottom: 20px !important;
+        padding: 20px 16px !important;
+        border-radius: 18px !important;
+        margin-bottom: 14px !important;
         box-sizing: border-box !important;
+        background: rgba(255,255,255,0.035) !important;
+        border: 1px solid rgba(255,255,255,0.08) !important;
+    }
+
+    .profile-form-card h3 {
+        font-size: 15px !important;
+        font-weight: 700 !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        margin: 0 0 16px !important;
     }
 
     .profile-card-top {
         flex-wrap: wrap !important;
         gap: 10px !important;
+        margin-bottom: 16px !important;
+        align-items: center !important;
     }
 
+    .profile-card-top h3 {
+        margin: 0 !important;
+        flex: 1 !important;
+    }
+
+    /* ── VIEW MODE ITEMS ── */
     .profile-view-item {
+        display: flex !important;
         flex-direction: column !important;
         align-items: flex-start !important;
         gap: 6px !important;
-        padding: 12px 10px !important;
+        padding: 12px 14px !important;
+        border-radius: 12px !important;
+        background: rgba(255,255,255,0.03) !important;
+        border: 1px solid rgba(255,255,255,0.06) !important;
+        margin-bottom: 10px !important;
+    }
+
+    .profile-view-label {
+        font-size: 11px !important;
+        font-weight: 600 !important;
+        color: rgba(255,255,255,0.4) !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.05em !important;
+    }
+
+    .profile-view-val {
+        font-size: 14.5px !important;
+        font-weight: 600 !important;
+        color: rgba(255,255,255,0.9) !important;
+        word-break: break-all !important;
+    }
+
+    /* ── SAVED BANNER ── */
+    .profile-saved-banner {
+        border-radius: 12px !important;
+        padding: 10px 14px !important;
+        font-size: 13px !important;
+        margin-bottom: 14px !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+    }
+
+    /* ── FORM INPUTS ── */
+    .pf-group {
+        margin-bottom: 14px !important;
+    }
+
+    .pf-group label {
+        font-size: 12px !important;
+        font-weight: 600 !important;
+        margin-bottom: 6px !important;
+        display: block !important;
+        color: rgba(255,255,255,0.6) !important;
     }
 
     .pf-group input,
     .pf-group select {
         font-size: 16px !important;
-        height: 48px !important;
+        height: 50px !important;
+        border-radius: 12px !important;
+        width: 100% !important;
+        padding: 0 16px !important;
+        box-sizing: border-box !important;
     }
 
-    /* Profile stats row: horizontal scroll */
+    /* ── SIDEBAR CARDS (after single-col reflow) ── */
+    .profile-sidebar {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0 !important;
+    }
+
+    .sidebar-stat-card {
+        padding: 20px 16px !important;
+        border-radius: 18px !important;
+        margin-bottom: 14px !important;
+        background: rgba(255,255,255,0.035) !important;
+        border: 1px solid rgba(255,255,255,0.08) !important;
+        box-sizing: border-box !important;
+    }
+
+    .sidebar-stat-card h4 {
+        font-size: 14px !important;
+        font-weight: 700 !important;
+        margin: 0 0 12px !important;
+    }
+
+    /* ── DANGER ZONE ── */
+    .danger-zone {
+        border-radius: 12px !important;
+        padding: 14px !important;
+    }
+
+    .danger-zone h4 {
+        font-size: 14px !important;
+        margin: 0 0 6px !important;
+    }
+
+    .danger-zone p {
+        font-size: 12.5px !important;
+        line-height: 1.6 !important;
+        margin-bottom: 14px !important;
+    }
+
+    /* ── PROFILE STATS ROW ── */
     .profile-stats-row {
         overflow-x: auto !important;
         flex-wrap: nowrap !important;
@@ -920,45 +1106,70 @@
         padding-bottom: 4px !important;
     }
 
-    .profile-stats-row::-webkit-scrollbar {
-        display: none !important;
-    }
+    .profile-stats-row::-webkit-scrollbar { display: none !important; }
+    .profile-stat-pill { flex-shrink: 0 !important; }
 
-    .profile-stat-pill {
-        flex-shrink: 0 !important;
-    }
-
-    /* Profile tabs: horizontal scroll */
+    /* ── PROFILE TABS ── */
     .profile-tabs {
         overflow-x: auto !important;
         flex-wrap: nowrap !important;
         -webkit-overflow-scrolling: touch !important;
         scrollbar-width: none !important;
     }
-
-    .profile-tabs::-webkit-scrollbar {
-        display: none !important;
-    }
-
+    .profile-tabs::-webkit-scrollbar { display: none !important; }
     .profile-tab-btn {
         flex-shrink: 0 !important;
         white-space: nowrap !important;
     }
 
-    /* Profile action buttons: stack */
+    /* ── ACTION BUTTONS ── */
     .profile-actions {
         flex-direction: column !important;
         gap: 10px !important;
     }
 
-    .profile-actions .btn {
-        width: 100% !important;
-        justify-content: center !important;
+    .profile-actions .btn,
+    #toggleEditProfileBtn {
+        font-size: 12.5px !important;
+        padding: 7px 14px !important;
     }
 
-    /* Edit form fields: full-width on mobile */
+    /* ── EDIT FORM GRID ── */
     .profile-edit-grid {
         grid-template-columns: 1fr !important;
+    }
+
+    /* ── GRATITUDE WALL ── */
+    .gratitude-wall-card {
+        border-radius: 14px !important;
+        padding: 14px !important;
+    }
+
+    .gratitude-card-header {
+        gap: 10px !important;
+        flex-wrap: wrap !important;
+    }
+
+    /* ── CERTIFICATE MODAL ── */
+    .certificate-modal-overlay .certificate-card {
+        max-width: calc(100vw - 32px) !important;
+        padding: 24px 18px !important;
+        border-radius: 20px !important;
+    }
+
+    .cert-stats-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 12px !important;
+    }
+
+    .cert-stat-num {
+        font-size: 20px !important;
+    }
+
+    .cert-footer-row {
+        flex-direction: column !important;
+        gap: 6px !important;
+        font-size: 12px !important;
     }
 }
 

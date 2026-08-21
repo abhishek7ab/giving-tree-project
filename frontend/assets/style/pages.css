@@ -2691,6 +2691,409 @@
     padding: 0 20px;
 }
 
+/* ── Profile Header ── */
+.profile-header {
+    text-align: center;
+    padding: calc(56px + 28px) 24px 32px;
+    background: linear-gradient(180deg, rgba(16,185,129,0.05) 0%, transparent 100%);
+    border-bottom: 1px solid rgba(16,185,129,0.08);
+    margin-bottom: 40px;
+}
+
+.profile-avatar {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(16,185,129,0.2) 0%, rgba(16,185,129,0.06) 100%);
+    border: 2px solid rgba(16,185,129,0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    box-shadow: 0 0 0 8px rgba(16,185,129,0.06), 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.profile-name {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 900;
+    color: #FFFFFF;
+    letter-spacing: -0.04em;
+    margin: 0 0 8px;
+    line-height: 1.15;
+}
+
+.profile-email {
+    font-size: 13.5px;
+    color: rgba(255,255,255,0.45);
+    margin: 0;
+}
+
+.profile-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 14px;
+}
+
+.profile-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 20px;
+    background: rgba(16,185,129,0.1);
+    color: var(--accent);
+    border: 1px solid rgba(16,185,129,0.25);
+}
+
+/* ── Impact Strip ── */
+.impact-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 14px;
+    margin-bottom: 32px;
+}
+
+.impact-tile {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 20px 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.impact-tile--eco {
+    background: rgba(16,185,129,0.07);
+    border-color: rgba(16,185,129,0.22);
+}
+
+.impact-tile--karma {
+    background: rgba(245,158,11,0.07);
+    border-color: rgba(245,158,11,0.22);
+}
+
+.impact-tile-num {
+    font-size: 28px;
+    font-weight: 900;
+    color: #FFFFFF;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 4px;
+}
+
+.impact-tile-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.5);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    line-height: 1.3;
+}
+
+/* ── Profile Grid ── */
+.profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 24px;
+    align-items: start;
+}
+
+/* ── Profile Form Card ── */
+.profile-form-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px;
+    padding: 24px;
+    margin-bottom: 16px;
+}
+
+.profile-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+.profile-view-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.06);
+    margin-bottom: 10px;
+}
+
+.profile-view-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.profile-view-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.profile-view-val {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.88);
+    word-break: break-all;
+}
+
+.profile-saved-banner {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    background: rgba(16,185,129,0.1);
+    border: 1px solid rgba(16,185,129,0.3);
+    border-radius: 12px;
+    padding: 12px 16px;
+    color: var(--accent);
+    font-size: 13.5px;
+    margin-bottom: 16px;
+}
+
+/* ── Profile Sidebar ── */
+.profile-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.sidebar-stat-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px;
+    padding: 22px;
+    margin-bottom: 16px;
+}
+
+/* ── PF group ── */
+.pf-group {
+    margin-bottom: 16px;
+}
+
+.pf-group label {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 7px;
+}
+
+.pf-group input,
+.pf-group select {
+    width: 100%;
+    padding: 13px 16px;
+    background: rgba(15,23,42,0.6);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    color: var(--text-1);
+    font-family: inherit;
+    font-size: 14.5px;
+    outline: none;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+}
+
+.pf-group input:focus,
+.pf-group select:focus {
+    border-color: rgba(16,185,129,0.5);
+}
+
+/* ── Member since ── */
+.member-since {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13.5px;
+    color: rgba(255,255,255,0.6);
+}
+
+/* ── Danger zone ── */
+.danger-zone {
+    background: rgba(244,63,94,0.05);
+    border: 1px solid rgba(244,63,94,0.2);
+    border-radius: 14px;
+    padding: 18px;
+}
+
+.danger-zone h4 {
+    color: var(--danger);
+    margin: 0 0 8px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.danger-zone p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    margin: 0 0 16px;
+    line-height: 1.6;
+}
+
+/* ── Gratitude Wall ── */
+.gratitude-wall-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 16px;
+}
+
+.gratitude-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.gratitude-sender-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.gratitude-sender-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(16,185,129,0.15);
+    color: var(--accent);
+    font-size: 15px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.gratitude-text {
+    font-size: 13.5px;
+    color: rgba(255,255,255,0.7);
+    font-style: italic;
+    line-height: 1.6;
+}
+
+/* ── Certificate Modal ── */
+.certificate-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(6px);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.certificate-modal-overlay.active {
+    display: flex;
+}
+
+.certificate-card {
+    position: relative;
+    background: var(--bg-card);
+    border: 1px solid rgba(16,185,129,0.3);
+    border-radius: 24px;
+    padding: 36px 32px;
+    max-width: 520px;
+    width: 100%;
+    text-align: center;
+}
+
+.cert-seal {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(16,185,129,0.15);
+    border: 2px solid rgba(16,185,129,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    font-size: 26px;
+    color: var(--accent);
+}
+
+.cert-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: #FFFFFF;
+    margin: 0 0 4px;
+}
+
+.cert-subtitle {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 16px;
+}
+
+.cert-recipient-name {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--accent);
+    letter-spacing: -0.03em;
+    margin-bottom: 20px;
+}
+
+.cert-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 16px;
+}
+
+.cert-stat-num {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--accent);
+    margin-bottom: 2px;
+}
+
+.cert-stat-lbl {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 600;
+}
+
+.cert-footer-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.cert-actions {
+    display: flex;
+    gap: 10px;
+}
+
 .dashboard-header {
     display: flex;
     justify-content: space-between;
