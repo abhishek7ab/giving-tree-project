@@ -48,8 +48,8 @@
         <div class="auth-brand">
             <div>
                 <div class="brand-badge">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.4 19 2c1 2 2 4.1 2 7 0 6-4.5 11-10 11z"/><path d="M11 20v-6"/></svg>
-                    Giving Tree • Pune
+                    <span style="width:7px; height:7px; border-radius:50%; background:#10b981; display:inline-block; box-shadow:0 0 8px #10b981;"></span>
+                    Giving Tree • Pune Hub
                 </div>
 
                 <h2 class="brand-headline">
@@ -58,19 +58,26 @@
                 </h2>
 
                 <p class="brand-desc">
-                    Pune's free neighborhood sharing network. Declutter consciously, help local students & families, and build community trust.
+                    Pune's trusted peer-to-peer sharing community. Declutter consciously, help local students and families, and keep useful items out of landfills.
                 </p>
 
                 <!-- Testimonial / Social Proof -->
-                <div class="auth-testimonial-card">
+                <div class="auth-testimonial-card" style="margin-top:20px;">
+                    <div class="auth-testimonial-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
                     <p class="auth-testimonial-quote">
-                        "I shared my college engineering books with a student in Kothrud within 30 minutes. Warm, smooth, and 100% free."
+                        "I shared my college engineering textbooks with a student in Kothrud within 30 minutes. Warm, respectful, and 100% free."
                     </p>
                     <div class="auth-testimonial-user">
                         <div class="auth-testimonial-avatar">PS</div>
                         <div class="auth-testimonial-meta">
-                            <strong>Pooja S.</strong>
-                            <span>📍 Kothrud Hub • Verified Donor</span>
+                            <strong>Pooja S. <i class="fas fa-circle-check" style="color:#10b981; font-size:11px; margin-left:3px;"></i></strong>
+                            <span>📍 Kothrud Hub • Verified Neighbor</span>
                         </div>
                     </div>
                 </div>
@@ -78,16 +85,16 @@
 
             <div class="brand-features">
                 <div class="brand-feature">
-                    <div class="brand-feature-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.4 19 2c1 2 2 4.1 2 7 0 6-4.5 11-10 11z"/><path d="M11 20v-6"/></svg></div>
-                    Zero-waste, 100% free circular sharing
+                    <div class="brand-feature-icon"><i class="fas fa-arrows-rotate"></i></div>
+                    <span>Zero-waste, 100% free circular sharing</span>
                 </div>
                 <div class="brand-feature">
-                    <div class="brand-feature-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-                    Active in 10 verified Pune neighborhood hubs
+                    <div class="brand-feature-icon"><i class="fas fa-location-dot"></i></div>
+                    <span>Active in 10 verified Pune neighborhood hubs</span>
                 </div>
                 <div class="brand-feature">
-                    <div class="brand-feature-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
-                    Safe handovers with 4-digit verification PINs
+                    <div class="brand-feature-icon"><i class="fas fa-shield-halved"></i></div>
+                    <span>Safe public handovers with verified PIN codes</span>
                 </div>
             </div>
         </div>
@@ -95,9 +102,11 @@
         <!-- RIGHT: Form panel -->
         <div class="auth-form-panel">
             <div class="auth-card">
-                <a href="/index.html" class="back-home"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg> Back to Home</a>
-                <h2>Welcome Back</h2>
-                <p>Sign in to manage your shared items & requests</p>
+                <a href="/index.html" class="back-home">
+                    <i class="fas fa-arrow-left" style="font-size:11px;"></i> Back to Home
+                </a>
+                <h2>Welcome Back 👋</h2>
+                <p>Sign in to manage your donation listings, requests, and chats.</p>
 
                 <div class="error-msg" id="errorMsg" style="display:none;">
                     <span id="errorText"></span>
@@ -135,33 +144,33 @@
                             <span>Human Verification (Security CAPTCHA)</span>
                             <span class="auth-label-badge req">Required</span>
                         </label>
-                        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
-                            <div id="captchaContainer" style="background:#060911; border:1px solid rgba(16,185,129,0.3); border-radius:8px; height:42px; display:flex; align-items:center; justify-content:center; flex:1; min-width:160px; overflow:hidden;">
+                        <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+                            <div id="captchaContainer" style="background:#060911; border:1px solid rgba(16,185,129,0.35); border-radius:10px; height:46px; display:flex; align-items:center; justify-content:center; flex:1; min-width:160px; overflow:hidden; box-shadow:inset 0 1px 3px rgba(0,0,0,0.6);">
                                 <i class="fas fa-spinner fa-spin" style="color:var(--accent);"></i>
                             </div>
-                            <button type="button" onclick="loadCaptcha()" title="Get new security code" style="height:42px; width:42px; border-radius:8px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:#FFFFFF; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s ease;">
+                            <button type="button" onclick="loadCaptcha()" title="Refresh security CAPTCHA" style="height:46px; width:46px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14); color:#FFFFFF; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s ease;">
                                 <i class="fas fa-arrows-rotate" id="captchaReloadIcon"></i>
                             </button>
                         </div>
                         <div class="input-icon-wrapper">
                             <i class="fas fa-shield-halved"></i>
-                            <input type="text" name="captcha" id="loginCaptcha" placeholder="Enter the 5-character code above" required maxlength="6" autocomplete="off" style="text-transform:uppercase; font-weight:700; letter-spacing:2px;">
+                            <input type="text" name="captcha" id="loginCaptcha" placeholder="ENTER 5-CHARACTER CODE ABOVE" required maxlength="6" autocomplete="off" style="text-transform:uppercase; font-weight:800; letter-spacing:2.5px; font-family:monospace;">
                         </div>
                         <input type="hidden" name="captcha_token" id="captchaTokenInput">
                     </div>
 
                     <button type="submit" class="btn primary auth-btn" id="loginBtn">
-                        <span>Login to Account</span>
+                        <span>Sign In to Account</span>
                         <i class="fas fa-arrow-right"></i>
                     </button>
                 </form>
 
                 <div class="auth-footer">
-                    Don't have an account? <a href="/register.html">Create free account →</a>
+                    Don't have an account yet? <a href="/register.html">Create free account →</a>
                 </div>
 
                 <div class="auth-security-seal">
-                    <i class="fas fa-shield-halved"></i>
+                    <i class="fas fa-lock" style="color:#10b981;"></i>
                     <span>256-Bit SSL Encrypted • Zero Spam Guarantee</span>
                 </div>
             </div>
