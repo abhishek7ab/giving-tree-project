@@ -738,7 +738,7 @@
                 <span style="font-size:10px; font-weight:800; text-transform:uppercase; color:#10B981; background:rgba(16,185,129,0.15); padding:2px 6px; border-radius:4px;">${cat}</span>
                 <h4 style="margin:6px 0 2px; font-size:14px; font-weight:800; color:#FFFFFF;">${title}</h4>
                 <p style="margin:0 0 8px; font-size:12px; color:#94A3B8;"><i class="fas fa-map-marker-alt" style="color:#10B981;"></i> ${loc}</p>
-                <a href="/items.html" style="display:inline-block; font-size:12px; font-weight:800; color:#10B981; text-decoration:none;">View in Catalog →</a>
+                <a href="/items.html?openRequest=${item.id || ''}" style="display:inline-block; font-size:12px; font-weight:800; color:#10B981; text-decoration:none;">Request This Item →</a>
             </div>
         `);
                 puneMapMarkers.push(marker);

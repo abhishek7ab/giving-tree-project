@@ -41,6 +41,7 @@
     fetch(`${BACKEND_URL}/api/user`, { credentials: 'include' })
         .then(res => res.json())
         .then(data => {
+            window.GivingTreeUser = data;
             const nav = document.getElementById('navLinks');
             if (!nav) return;
 
@@ -100,6 +101,7 @@
                 }
                 renderMobileBottomNav(data);
             } else {
+                window.GivingTreeUser = { loggedIn: false };
                 const currentRelPath = window.location.pathname;
                 const loginHref = (currentRelPath && currentRelPath !== '/' && !currentRelPath.endsWith('/index.html') && !currentRelPath.includes('login') && !currentRelPath.includes('logout'))
                     ? `/login.html?redirect=${encodeURIComponent(currentRelPath + window.location.search)}`
@@ -117,8 +119,59 @@
             }
         })
         .catch(() => {
+            window.GivingTreeUser = { loggedIn: false };
             renderMobileBottomNav({ loggedIn: false });
         });
+
+    window.openGlobalAuthModal = function (title, desc, redirectUrl) {
+        let modal = document.getElementById('authRequiredModal');
+        const targetPath = redirectUrl || (window.location.pathname + window.location.search);
+        const encodedRedirect = encodeURIComponent(targetPath);
+
+        if (!modal) {
+            const modalHtml = `
+            <div class="detail-modal-overlay active" id="authRequiredModal" onclick="if(event.target.id==='authRequiredModal')this.classList.remove('active')" style="z-index:99999;">
+                <div class="edit-modal-card" style="max-width:440px; text-align:center; padding:32px 24px;">
+                    <button type="button" class="detail-modal-close" onclick="document.getElementById('authRequiredModal').classList.remove('active')"><i class="fas fa-times"></i></button>
+                    <div style="width:60px; height:60px; border-radius:50%; background:rgba(16,185,129,0.14); border:1.5px solid var(--accent); color:var(--accent); display:flex; align-items:center; justify-content:center; font-size:24px; margin:0 auto 16px; box-shadow:0 0 20px rgba(16,185,129,0.2);">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <span style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--accent); display:block; margin-bottom:4px;">
+                        Verified Neighbor Community 🌿
+                    </span>
+                    <h3 id="globalAuthModalTitle" style="font-size:20px; font-weight:800; color:#FFFFFF; margin:0 0 8px; line-height:1.3;">
+                        ${escapeHtml(title || 'Join Giving Tree')}
+                    </h3>
+                    <p id="globalAuthModalDesc" style="font-size:13px; color:var(--text-2); margin:0 0 22px; line-height:1.55;">
+                        ${escapeHtml(desc || 'Giving Tree is 100% free. To request items or share with verified neighbors, please create your free account or log in.')}
+                    </p>
+                    <div style="display:flex; flex-direction:column; gap:10px;">
+                        <a href="/register.html?redirect=${encodedRedirect}" id="globalAuthModalRegisterBtn" class="btn primary" style="width:100%; text-decoration:none; padding:11px; font-size:14px; display:inline-flex; align-items:center; justify-content:center; gap:8px;">
+                            <i class="fas fa-user-plus"></i> Create Free Account
+                        </a>
+                        <a href="/login.html?redirect=${encodedRedirect}" id="globalAuthModalLoginBtn" class="btn secondary" style="width:100%; text-decoration:none; padding:10px; font-size:13px; display:inline-flex; align-items:center; justify-content:center; gap:8px;">
+                            <i class="fas fa-sign-in-alt"></i> Log In to Existing Account
+                        </a>
+                    </div>
+                    <div style="margin-top:16px; font-size:11px; color:var(--text-3); display:flex; align-items:center; justify-content:center; gap:6px;">
+                        <i class="fas fa-lock" style="color:var(--accent);"></i> Free forever • Zero spam • Verified Pune local hubs
+                    </div>
+                </div>
+            </div>`;
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            modal = document.getElementById('authRequiredModal');
+        } else {
+            const titleEl = document.getElementById('globalAuthModalTitle') || document.getElementById('authModalTitle');
+            const descEl = document.getElementById('globalAuthModalDesc') || document.getElementById('authModalDesc');
+            const regBtn = document.getElementById('globalAuthModalRegisterBtn') || document.getElementById('authModalRegisterBtn');
+            const loginBtn = document.getElementById('globalAuthModalLoginBtn') || document.getElementById('authModalLoginBtn');
+            if (titleEl && title) titleEl.textContent = title;
+            if (descEl && desc) descEl.textContent = desc;
+            if (regBtn) regBtn.href = `/register.html?redirect=${encodedRedirect}`;
+            if (loginBtn) loginBtn.href = `/login.html?redirect=${encodedRedirect}`;
+            modal.classList.add('active');
+        }
+    };
 
     function renderMobileBottomNav(userData) {
         if (typeof document === 'undefined') return;

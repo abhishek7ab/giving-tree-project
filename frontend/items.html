@@ -1125,7 +1125,22 @@
         // ================= REQUEST ITEM MODAL =================
         let reqDeliveryPicker = null;
         function openRequestModal(itemId, itemTitle, isOwnItem = false, itemLat = null, itemLng = null, itemLocation = '') {
-            if (isOwnItem) {
+            // Compulsory authentication check for newcomers/guests
+            const user = window.GivingTreeUser;
+            if (!user || !user.loggedIn) {
+                if (typeof window.openGlobalAuthModal === 'function') {
+                    window.openGlobalAuthModal(
+                        `Join to Request "${itemTitle}"`,
+                        `Giving Tree is a verified neighborhood sharing community in Pune. Please sign in or create your free account to request this item.`,
+                        `/items.html?openRequest=${itemId}`
+                    );
+                } else {
+                    window.location.href = `/login.html?redirect=${encodeURIComponent(`/items.html?openRequest=${itemId}`)}`;
+                }
+                return;
+            }
+
+            if (isOwnItem || (user && user.id && Number(user.id) === Number(activeDetailItem?.user_id))) {
                 showToast('You cannot request your own item.', 'warning');
                 return;
             }
@@ -1303,6 +1318,20 @@
                     loadItems(queryLoc);
                 } else {
                     loadItems();
+                }
+
+                const autoReqId = urlParams.get('openRequest');
+                if (autoReqId) {
+                    const checkTimer = setInterval(() => {
+                        if (currentLoadedItems && currentLoadedItems.length > 0) {
+                            clearInterval(checkTimer);
+                            const targetItem = currentLoadedItems.find(x => Number(x.id) === Number(autoReqId));
+                            if (targetItem) {
+                                openRequestModal(targetItem.id, targetItem.title, false, targetItem.latitude, targetItem.longitude, targetItem.location);
+                            }
+                        }
+                    }, 100);
+                    setTimeout(() => clearInterval(checkTimer), 4000);
                 }
 
                 const chipsScroll = document.getElementById('puneChipsScroll');
