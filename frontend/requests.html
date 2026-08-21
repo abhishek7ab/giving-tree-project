@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -108,13 +108,21 @@
     <div class="chat-overlay" id="chatOverlay" onclick="handleChatOverlayClick(event)">
         <div class="chat-modal">
             <div class="chat-header">
-                <div>
-                    <h4 id="chatTitle" style="font-size:15px; font-weight:800; color:#ffffff; margin:0 0 2px;">Chat</h4>
-                    <span style="font-size:11px; color:var(--accent); font-weight:700;"><i class="fas fa-circle" style="font-size:8px;"></i> Live Neighbor Channel</span>
+                <div style="display:flex; align-items:center; gap:12px; min-width:0;">
+                    <div id="chatCounterpartAvatar" style="width:38px; height:38px; border-radius:50%; background:rgba(16,185,129,0.2); border:1px solid var(--accent); color:var(--accent); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:15px; flex-shrink:0;">
+                        N
+                    </div>
+                    <div style="min-width:0;">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <h4 id="chatCounterpartName" style="font-size:15px; font-weight:800; color:#ffffff; margin:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Neighbor</h4>
+                            <span id="chatCounterpartRole" style="font-size:10.5px; background:rgba(16,185,129,0.15); color:var(--accent); border:1px solid rgba(16,185,129,0.3); padding:1px 7px; border-radius:10px; font-weight:700;">Donor</span>
+                        </div>
+                        <div id="chatItemSubtitle" style="font-size:11.5px; color:var(--text-3); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:2px;">Item Coordination</div>
+                    </div>
                 </div>
-                <div style="display:flex; align-items:center; gap:8px;">
-                    <button type="button" class="btn-hub-glass" style="padding:4px 10px; font-size:11.5px;" onclick="openCurrentChatRoute()">
-                        <i class="fas fa-map-pin"></i> Spot
+                <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
+                    <button type="button" class="btn-hub-glass" style="padding:5px 12px; font-size:12px; display:inline-flex; align-items:center; gap:5px;" onclick="openCurrentChatRoute()">
+                        <i class="fas fa-map-location-dot" style="color:var(--accent);"></i> Pickup Spot
                     </button>
                     <button type="button" class="chat-close" onclick="closeChatModal()" aria-label="Close Chat">
                         <i class="fas fa-times"></i>
@@ -126,18 +134,55 @@
 
             <!-- Quick Action Scheduling Chips -->
             <div class="chat-quick-chips">
-                <button type="button" class="chat-chip" onclick="insertQuickChat('📅 I\'m free tomorrow after 5 PM')">📅 Free tomorrow 5 PM</button>
+                <button type="button" class="chat-chip" onclick="insertQuickChat('📅 I\'m free today after 6 PM')">📅 Free today 6 PM</button>
                 <button type="button" class="chat-chip" onclick="insertQuickChat('📍 Let\'s meet at the main gate')">📍 Main gate</button>
                 <button type="button" class="chat-chip" onclick="insertQuickChat('🚗 I\'m on my way!')">🚗 On my way!</button>
-                <button type="button" class="chat-chip" onclick="insertQuickChat('✅ Item collected, thank you! 🌿')">✅ Collected</button>
+                <button type="button" class="chat-chip" onclick="insertQuickChat('✅ Item received safely! Thank you 🌿')">✅ Item Received</button>
             </div>
 
             <div class="chat-compose">
-                <textarea id="chatInput" maxlength="500" placeholder="Coordinate timing and meetup spot..."></textarea>
-                <button type="button" class="chat-send" onclick="sendChatMessage()">
+                <textarea id="chatInput" maxlength="500" placeholder="Coordinate meetup timing and location... (Press Enter to send)"></textarea>
+                <button type="button" class="chat-send" onclick="sendChatMessage()" id="chatSendBtn">
                     <i class="fas fa-paper-plane"></i> Send
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- ================= HANDOVER PIN VERIFICATION MODAL ================= -->
+    <div class="detail-modal-overlay" id="handoverPinModal" onclick="handlePinOverlayClick(event)">
+        <div class="edit-modal-card" style="max-width:440px; text-align:center;">
+            <button class="detail-modal-close" onclick="closeHandoverPinModal()"><i class="fas fa-times"></i></button>
+            
+            <div style="width:52px; height:52px; border-radius:50%; background:rgba(16,185,129,0.15); color:var(--accent); display:flex; align-items:center; justify-content:center; font-size:22px; margin:0 auto 14px; border:1px solid rgba(16,185,129,0.3);">
+                <i class="fas fa-key"></i>
+            </div>
+            
+            <h3 style="font-size:20px; font-weight:800; color:#ffffff; margin:0 0 6px;">Verify Handover PIN</h3>
+            <p style="font-size:13px; color:var(--text-2); margin:0 0 20px; line-height:1.5;">
+                Ask the recipient for the <strong style="color:var(--accent);">4-digit safety code</strong> shown on their Giving Tree screen.
+            </p>
+
+            <form id="handoverPinForm" onsubmit="submitHandoverPin(event)">
+                <input type="hidden" id="pinModalRequestId">
+                
+                <div class="pin-inputs-row" style="display:flex; justify-content:center; gap:12px; margin-bottom:20px;">
+                    <input type="text" inputmode="numeric" maxlength="1" class="pin-box" id="pinDigit1" data-index="1" autocomplete="off" required>
+                    <input type="text" inputmode="numeric" maxlength="1" class="pin-box" id="pinDigit2" data-index="2" autocomplete="off" required>
+                    <input type="text" inputmode="numeric" maxlength="1" class="pin-box" id="pinDigit3" data-index="3" autocomplete="off" required>
+                    <input type="text" inputmode="numeric" maxlength="1" class="pin-box" id="pinDigit4" data-index="4" autocomplete="off" required>
+                </div>
+
+                <div id="pinErrorMessage" style="display:none; font-size:12.5px; color:#f87171; background:rgba(239,68,68,0.12); padding:8px 12px; border-radius:8px; margin-bottom:16px; border:1px solid rgba(239,68,68,0.25);">
+                </div>
+
+                <div style="display:flex; gap:10px;">
+                    <button type="button" class="btn secondary" onclick="closeHandoverPinModal()" style="flex:1;">Cancel</button>
+                    <button type="submit" class="btn primary" id="confirmPinBtn" style="flex:2;">
+                        <i class="fas fa-check-circle"></i> Confirm Handover
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -312,14 +357,140 @@
             }
         }
 
+        // ================= HANDOVER PIN VERIFICATION MODAL =================
+        function openHandoverPinModal(requestId) {
+            document.getElementById('pinModalRequestId').value = requestId;
+            document.getElementById('pinDigit1').value = '';
+            document.getElementById('pinDigit2').value = '';
+            document.getElementById('pinDigit3').value = '';
+            document.getElementById('pinDigit4').value = '';
+            const errEl = document.getElementById('pinErrorMessage');
+            if (errEl) { errEl.style.display = 'none'; errEl.textContent = ''; }
+            const confirmBtn = document.getElementById('confirmPinBtn');
+            if (confirmBtn) { confirmBtn.disabled = false; confirmBtn.innerHTML = '<i class="fas fa-check-circle"></i> Confirm Handover'; }
+
+            const modal = document.getElementById('handoverPinModal');
+            if (modal) {
+                modal.classList.add('active');
+                setTimeout(() => {
+                    const firstBox = document.getElementById('pinDigit1');
+                    if (firstBox) firstBox.focus();
+                }, 100);
+            }
+        }
+
+        function closeHandoverPinModal() {
+            const modal = document.getElementById('handoverPinModal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        function handlePinOverlayClick(e) {
+            if (e.target.id === 'handoverPinModal') closeHandoverPinModal();
+        }
+
+        // Initialize PIN auto-advance and backspace listeners
+        function initPinBoxes() {
+            const boxes = [1, 2, 3, 4].map(i => document.getElementById(`pinDigit${i}`));
+            boxes.forEach((box, idx) => {
+                if (!box) return;
+                box.addEventListener('input', (e) => {
+                    box.value = box.value.replace(/\D/g, '').slice(0, 1);
+                    if (box.value && idx < 3) {
+                        boxes[idx + 1]?.focus();
+                    }
+                });
+
+                box.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && !box.value && idx > 0) {
+                        boxes[idx - 1]?.focus();
+                    }
+                });
+
+                box.addEventListener('paste', (e) => {
+                    e.preventDefault();
+                    const pasteData = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '').slice(0, 4);
+                    if (pasteData) {
+                        for (let i = 0; i < 4; i++) {
+                            if (boxes[i]) boxes[i].value = pasteData[i] || '';
+                        }
+                        if (pasteData.length >= 4) {
+                            boxes[3]?.focus();
+                        } else {
+                            boxes[pasteData.length]?.focus();
+                        }
+                    }
+                });
+            });
+        }
+
+        async function submitHandoverPin(e) {
+            e.preventDefault();
+            const requestId = document.getElementById('pinModalRequestId').value;
+            const d1 = document.getElementById('pinDigit1').value.trim();
+            const d2 = document.getElementById('pinDigit2').value.trim();
+            const d3 = document.getElementById('pinDigit3').value.trim();
+            const d4 = document.getElementById('pinDigit4').value.trim();
+            const pin = `${d1}${d2}${d3}${d4}`;
+
+            const errEl = document.getElementById('pinErrorMessage');
+            if (pin.length !== 4) {
+                if (errEl) {
+                    errEl.textContent = 'Please enter all 4 digits of the handover PIN.';
+                    errEl.style.display = 'block';
+                }
+                return;
+            }
+
+            const confirmBtn = document.getElementById('confirmPinBtn');
+            confirmBtn.disabled = true;
+            confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying Code...';
+            if (errEl) errEl.style.display = 'none';
+
+            try {
+                const res = await fetch('/update-status', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ id: Number(requestId), status: 'completed', pin: pin })
+                });
+
+                const text = await res.text();
+                let data = {};
+                try { data = JSON.parse(text); } catch(err) {}
+
+                if (!res.ok) {
+                    const msg = data.message || data.error || (text && !text.includes('<') ? text : 'Incorrect Handover PIN.');
+                    throw new Error(msg);
+                }
+
+                closeHandoverPinModal();
+                showToast('Handover verified and marked complete! 🎉 🌿', 'success');
+                await fetchActivityData();
+
+                // Seamlessly open the Gratitude / Appreciation modal
+                const r = allRequestsById.get(Number(requestId));
+                if (r) {
+                    const recipientName = r.requester_name || r.requester_email || 'Recipient';
+                    setTimeout(() => {
+                        openReviewModal(r.id, recipientName);
+                    }, 400);
+                }
+            } catch (err) {
+                if (errEl) {
+                    errEl.textContent = err.message || 'Verification failed. Please check the 4-digit PIN.';
+                    errEl.style.display = 'block';
+                }
+                confirmBtn.disabled = false;
+                confirmBtn.innerHTML = '<i class="fas fa-check-circle"></i> Confirm Handover';
+            }
+        }
+
         async function updateRequestStatusAction(requestId, status) {
-            let pin = null;
             if (status === 'completed') {
                 const r = allRequestsById.get(Number(requestId));
                 if (r && r.handover_pin) {
-                    const entered = prompt(`Enter the 4-digit Handover PIN from recipient (or leave blank if verified):`);
-                    if (entered === null) return; 
-                    pin = entered.trim();
+                    openHandoverPinModal(requestId);
+                    return;
                 }
             }
 
@@ -328,7 +499,7 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                     credentials: 'include',
-                    body: JSON.stringify({ id: Number(requestId), status: status, pin: pin || undefined })
+                    body: JSON.stringify({ id: Number(requestId), status: status })
                 });
                 const text = await res.text();
                 let data = {};
@@ -339,6 +510,16 @@
                 }
                 showToast(`Request marked as ${status}! 🌿`, 'success');
                 await fetchActivityData();
+
+                if (status === 'completed') {
+                    const r = allRequestsById.get(Number(requestId));
+                    if (r) {
+                        const targetName = r.requester_name || r.owner_name || 'Neighbor';
+                        setTimeout(() => {
+                            openReviewModal(r.id, targetName);
+                        }, 400);
+                    }
+                }
             } catch(e) {
                 showToast(e.message || 'Status update failed', 'error');
             }
@@ -648,6 +829,12 @@
             if (e.target.id === 'chatOverlay') closeChatModal();
         }
 
+        function openCurrentChatRoute() {
+            if (activeChatRequestId) {
+                viewDeliveryRoute(activeChatRequestId);
+            }
+        }
+
         async function openChatModal(requestId, fallbackTitle) {
             if (!requestId) return;
             activeChatRequestId = Number(requestId);
@@ -661,9 +848,34 @@
                     if (r) allRequestsById.set(Number(r.id), r);
                 } catch(e) {}
             }
+
             const itemTitle = (r && r.title) ? r.title : (fallbackTitle || 'Item Handover');
-            document.getElementById('chatTitle').textContent = itemTitle;
-            document.getElementById('chatMessages').innerHTML = '<p style="text-align:center; color:var(--text-3); padding:20px; font-size:13px;">Loading messages...</p>';
+            const isOwner = currentUserEmail && r && String(r.owner_email || '').toLowerCase() === currentUserEmail;
+            const counterpartName = r ? (isOwner ? (r.requester_name || r.requester_email || 'Recipient') : (r.owner_name || r.owner_email || 'Donor')) : 'Neighbor';
+            const counterpartRole = isOwner ? 'Recipient' : 'Donor';
+            const initial = counterpartName.charAt(0).toUpperCase();
+
+            const avatarEl = document.getElementById('chatCounterpartAvatar');
+            if (avatarEl) avatarEl.textContent = initial;
+
+            const nameEl = document.getElementById('chatCounterpartName');
+            if (nameEl) nameEl.textContent = counterpartName;
+
+            const roleEl = document.getElementById('chatCounterpartRole');
+            if (roleEl) {
+                roleEl.textContent = counterpartRole;
+                roleEl.style.background = counterpartRole === 'Donor' ? 'rgba(16,185,129,0.15)' : 'rgba(56,189,248,0.15)';
+                roleEl.style.borderColor = counterpartRole === 'Donor' ? 'rgba(16,185,129,0.3)' : 'rgba(56,189,248,0.3)';
+                roleEl.style.color = counterpartRole === 'Donor' ? 'var(--accent)' : '#38bdf8';
+            }
+
+            const subEl = document.getElementById('chatItemSubtitle');
+            if (subEl) {
+                const spotLoc = r?.requester_location || r?.location || 'Pune';
+                subEl.textContent = `${itemTitle} • 📍 ${spotLoc}`;
+            }
+
+            document.getElementById('chatMessages').innerHTML = '<p style="text-align:center; color:var(--text-3); padding:20px; font-size:13px;">Loading conversation...</p>';
             
             const overlay = document.getElementById('chatOverlay');
             if (overlay) {
@@ -673,6 +885,9 @@
 
             if (socket) socket.emit('join-request', activeChatRequestId);
             await loadChatMessages();
+
+            const chatInput = document.getElementById('chatInput');
+            if (chatInput) setTimeout(() => chatInput.focus(), 150);
 
             if (chatPollInterval) clearInterval(chatPollInterval);
             chatPollInterval = setInterval(() => {
@@ -719,16 +934,17 @@
             const box = document.getElementById('chatMessages');
             renderedChatMsgIds.clear();
             if (!messages || !messages.length) {
-                box.innerHTML = '<p style="text-align:center; color:var(--text-3); padding:20px; font-size:13px;">No messages yet. Say hello and coordinate pickup!</p>';
+                box.innerHTML = '<p style="text-align:center; color:var(--text-3); padding:20px; font-size:13px;">No messages yet. Say hello and coordinate your handover meetup spot! 🌿</p>';
                 return;
             }
             box.innerHTML = messages.map(m => {
                 if (m.id) renderedChatMsgIds.add(m.id);
                 const isMine = String(m.sender_email).toLowerCase() === currentUserEmail;
+                const senderDisplay = isMine ? 'You' : escapeHtml(m.sender_name || m.sender_email.split('@')[0]);
                 return `
                 <div class="chat-msg ${isMine ? 'mine' : 'other'}">
                     <div>${escapeHtml(m.message)}</div>
-                    <div class="chat-meta">${isMine ? 'You' : escapeHtml(m.sender_email)} · ${timeAgo(m.created_at)}</div>
+                    <div class="chat-meta">${senderDisplay} · ${timeAgo(m.created_at)}</div>
                 </div>`;
             }).join('');
             box.scrollTop = box.scrollHeight;
@@ -744,9 +960,10 @@
             if (emptyNotice) box.innerHTML = '';
 
             const isMine = String(msg.sender_email).toLowerCase() === currentUserEmail;
+            const senderDisplay = isMine ? 'You' : escapeHtml(msg.sender_name || msg.sender_email.split('@')[0]);
             const div = document.createElement('div');
             div.className = `chat-msg ${isMine ? 'mine' : 'other'}`;
-            div.innerHTML = `<div>${escapeHtml(msg.message)}</div><div class="chat-meta">${isMine ? 'You' : escapeHtml(msg.sender_email)} · just now</div>`;
+            div.innerHTML = `<div>${escapeHtml(msg.message)}</div><div class="chat-meta">${senderDisplay} · just now</div>`;
             box.appendChild(div);
             box.scrollTop = box.scrollHeight;
         }
@@ -757,10 +974,21 @@
             if (!msg || !activeChatRequestId) return;
 
             input.value = '';
+            
+            // Optimistic rendering for instant tactile feedback
+            const optimisticMsg = {
+                id: 'temp-' + Date.now(),
+                request_id: activeChatRequestId,
+                sender_email: currentUserEmail,
+                message: msg,
+                created_at: new Date().toISOString()
+            };
+            appendSingleMessage(optimisticMsg);
+
             try {
                 const res = await fetch(`/api/requests/${activeChatRequestId}/messages`, {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    headers: { "Content-Type": "application/json", "Accept": "application/json" },
                     credentials: "include",
                     body: JSON.stringify({ message: msg })
                 });
@@ -769,9 +997,11 @@
                     throw new Error('Failed to send');
                 }
                 const data = await res.json();
-                if (data.message) appendSingleMessage(data.message);
+                if (data.message && data.message.id) {
+                    renderedChatMsgIds.add(data.message.id);
+                }
             } catch(e) {
-                showToast('Failed to send message.', 'error');
+                showToast('Failed to send message. Please try again.', 'error');
             }
         }
 
@@ -1001,13 +1231,29 @@
             if (modal) modal.classList.remove('active');
         }
 
-        function handleReceiptOverlayClick(e) {
-            if (e.target.id === 'generosityReceiptModal') {
-                closeGenerosityReceipt();
-            }
+        // Startup & Deep URL Query Handling
+        initPinBoxes();
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const tabParam = urlParams.get('tab');
+        const reqIdParam = urlParams.get('requestId') || urlParams.get('id');
+
+        if (tabParam === 'outgoing' || tabParam === 'sent') {
+            switchHubTab('outgoing');
+        } else if (tabParam === 'incoming' || tabParam === 'received') {
+            switchHubTab('incoming');
         }
 
-        fetchActivityData();
+        fetchActivityData().then(() => {
+            if (reqIdParam) {
+                const reqNum = Number(reqIdParam);
+                if (reqNum) {
+                    setTimeout(() => {
+                        openChatModal(reqNum);
+                    }, 200);
+                }
+            }
+        });
     </script>
 
     <!-- ================= KINDNESS POSTCARD MODAL ================= -->

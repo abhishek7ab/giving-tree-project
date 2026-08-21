@@ -47,12 +47,14 @@ describe('Comprehensive End-to-End System Audit', () => {
             expect(res.text).not.toContain('ResQ Pet Sanctuary');
         });
 
-        it('post-item.html contains streamlined donation fields', async () => {
+        it('post-item.html contains streamlined donation fields and donor gratitude celebration modal', async () => {
             const res = await request(app).get('/post-item.html');
             expect(res.status).toBe(200);
             expect(res.text).toContain('Donate to');
             expect(res.text).toContain('What item are you donating?');
             expect(res.text).toContain('Donation Category');
+            expect(res.text).toContain('id="donorGratitudeModal"');
+            expect(res.text).toContain('id="gratitudeModalTitle"');
             expect(res.text).not.toContain('Vidya Jyoti');
             expect(res.text).not.toContain('Door Step School');
         });
@@ -66,12 +68,16 @@ describe('Comprehensive End-to-End System Audit', () => {
             expect(res.text).toContain('my-items-wrapper');
         });
 
-        it('requests.html contains Donation Activity Hub', async () => {
+        it('requests.html contains Donation Activity Hub and Handover PIN modal', async () => {
             const res = await request(app).get('/requests.html');
             expect(res.status).toBe(200);
             expect(res.text).toContain('Donation Activity &amp; <span>Coordination</span>');
             expect(res.text).toContain('Requests For Your Donations');
             expect(res.text).toContain('Donations You\'ve Requested');
+            expect(res.text).toContain('id="handoverPinModal"');
+            expect(res.text).toContain('id="pinDigit1"');
+            expect(res.text).toContain('id="chatCounterpartRole"');
+            expect(res.text).toContain('id="chatCounterpartName"');
         });
     });
 

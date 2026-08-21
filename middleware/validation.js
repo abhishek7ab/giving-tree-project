@@ -88,7 +88,9 @@ const updateStatusSchema = z.object({
     id: z.coerce.number().int().positive().optional(),
     request_id: z.coerce.number().int().positive().optional(),
     status: z.string().trim().toLowerCase(),
-  }).refine(data => data.id !== undefined || data.request_id !== undefined, {
+    pin: z.string().max(10).optional().nullable(),
+    handover_pin: z.string().max(10).optional().nullable(),
+  }).passthrough().refine(data => data.id !== undefined || data.request_id !== undefined, {
     message: "id or request_id is required",
     path: ["id"]
   }),

@@ -3,6 +3,7 @@ const path = require('path');
 const { uploadToCloudinary } = require('../config/cloudinary');
 const itemModel = require('../models/itemModel');
 const userModel = require('../models/userModel');
+const requestModel = require('../models/requestModel');
 const auditModel = require('../models/auditModel');
 const db = require('../database/db');
 const { verifyToken } = require('../config/jwt');
@@ -239,8 +240,35 @@ exports.postItem = async (req, res) => {
             lng
         );
 
+        // Deliver Gratitude In-App Notification to Donor
+        try {
+            if (user.email) {
+                await requestModel.createNotification({
+                    userEmail: user.email,
+                    type: 'donation_published',
+                    title: 'Thank You for Giving Back! 🌿',
+                    body: `"${cleanTitle}" has been listed in the ${cleanLocation} catalog. Thank you for your generosity and keeping Pune zero-waste!`,
+                    requestId: null
+                });
+            }
+        } catch (notifErr) {
+            console.warn('Donor notification note:', notifErr.message);
+        }
+
         if (req.headers.accept?.includes('application/json') || req.xhr) {
-            return res.json({ success: true, item: newItem, message: 'Item shared successfully!' });
+            return res.json({
+                success: true,
+                item: newItem,
+                message: 'Item shared successfully!',
+                gratitude: {
+                    title: 'Thank You for Your Generosity! 🌿',
+                    subtitle: `Your donation is now live for neighbors in ${cleanLocation}.`,
+                    message: `By donating "${cleanTitle}" instead of throwing it away, you are helping build a zero-waste, connected Pune community.`,
+                    impactPoints: 50,
+                    wasteDivertedKg: 4.5,
+                    locality: cleanLocation
+                }
+            });
         }
 
         res.redirect('/items.html');

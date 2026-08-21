@@ -20,4 +20,6 @@ temp_*
 Thumbs.db
 .claude/
 .vscode/
+frontend/assets/uploads/*
+!frontend/assets/uploads/.gitkeep
 

@@ -208,12 +208,18 @@
                 throw new Error(errMsg || 'Your password or Gmail is incorrect. Please check your credentials.');
             }
 
-            window.location.href = data.redirect || '/index.html';
+            // Honor redirect URL parameter if provided and safe (internal path)
+            const redirectParam = urlParams.get('redirect');
+            const targetUrl = (redirectParam && redirectParam.startsWith('/') && !redirectParam.startsWith('//'))
+                ? redirectParam
+                : (data.redirect || '/index.html');
+
+            window.location.href = targetUrl;
         } catch(err) {
             errorText.textContent = err.message || 'Invalid credentials. Please try again.';
             errorMsg.style.display = 'block';
             btn.disabled = false;
-            btn.innerHTML = 'Login to Account';
+            btn.innerHTML = '<span>Login to Account</span> <i class="fas fa-arrow-right" style="font-size:13px;"></i>';
         }
     }
 </script>

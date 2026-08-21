@@ -193,9 +193,10 @@
             const iconClass = isMsg ? 'msg' : '';
             const iconHtml = isMsg ? '<i class="fas fa-comment-dots"></i>' : '<i class="fas fa-handshake"></i>';
             const unreadIndicator = !n.is_read ? '<span style="width:7px; height:7px; border-radius:50%; background:#10b981; margin-left:auto; flex-shrink:0;"></span>' : '';
+            const targetUrl = n.request_id ? `/requests.html?requestId=${n.request_id}` : `/requests.html`;
 
             itemsHtml += `
-                <a href="/requests.html" class="notif-popover-item" onclick="handleNotificationClick(${n.id}, ${n.request_id || 'null'})">
+                <a href="${targetUrl}" class="notif-popover-item" onclick="handleNotificationClick(${n.id}, ${n.request_id || 'null'})">
                     <div class="notif-item-icon ${iconClass}">
                         ${iconHtml}
                     </div>

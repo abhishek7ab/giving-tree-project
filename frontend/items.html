@@ -1219,7 +1219,10 @@
                     closeModal();
                     btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Request';
                     btn.disabled = false;
-                    showToast('Request sent successfully! 🎉 You can coordinate delivery in your Activity Hub.', 'success');
+                    showToast('Request sent! Directing you to Activity Hub & Live Chat... 🌿', 'success');
+                    setTimeout(() => {
+                        window.location.href = '/requests.html?tab=outgoing';
+                    }, 1000);
                 })
                 .catch((err) => {
                     const msg = err?.message || 'Request failed. Please try again.';

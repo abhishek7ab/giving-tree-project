@@ -179,26 +179,51 @@ exports.updateRequestStatus = async (req, res) => {
             }
         }
 
-        const notifyEmail = isOwner ? requestDetails.requester_email : requestDetails.owner_email;
-        if (notifyEmail) {
-            const notification = await requestModel.createNotification({
-                userEmail: notifyEmail,
-                type: 'request_status',
-                title: 'Request status updated',
-                body: `The request for "${requestDetails.item_title || 'item'}" was ${mappedStatus}.`,
-                requestId: Number(id)
-            });
-            if (io) {
-                io.to(`user:${String(notifyEmail).toLowerCase()}`).emit('notification:new', notification);
+        if (mappedStatus === 'completed') {
+            // Notify Donor with deep gratitude
+            if (requestDetails.owner_email) {
+                const donorNotif = await requestModel.createNotification({
+                    userEmail: requestDetails.owner_email,
+                    type: 'handover_completed',
+                    title: 'Handover Complete! Thank You 🌿',
+                    body: `You successfully shared "${requestDetails.item_title || 'an item'}". Thank you for your generosity and keeping Pune green!`,
+                    requestId: Number(id)
+                });
+                if (io) io.to(`user:${String(requestDetails.owner_email).toLowerCase()}`).emit('notification:new', donorNotif);
             }
+            // Notify Requester to say thanks
+            if (requestDetails.requester_email) {
+                const recipientNotif = await requestModel.createNotification({
+                    userEmail: requestDetails.requester_email,
+                    type: 'handover_completed',
+                    title: 'Item Received! Say Thanks 🌿',
+                    body: `Handover for "${requestDetails.item_title || 'an item'}" is complete. Leave a note of appreciation for your neighbor!`,
+                    requestId: Number(id)
+                });
+                if (io) io.to(`user:${String(requestDetails.requester_email).toLowerCase()}`).emit('notification:new', recipientNotif);
+            }
+        } else {
+            const notifyEmail = isOwner ? requestDetails.requester_email : requestDetails.owner_email;
+            if (notifyEmail) {
+                const notification = await requestModel.createNotification({
+                    userEmail: notifyEmail,
+                    type: 'request_status',
+                    title: 'Request status updated',
+                    body: `The request for "${requestDetails.item_title || 'item'}" was ${mappedStatus}.`,
+                    requestId: Number(id)
+                });
+                if (io) {
+                    io.to(`user:${String(notifyEmail).toLowerCase()}`).emit('notification:new', notification);
+                }
 
-            if (mappedStatus === 'accepted' || mappedStatus === 'rejected') {
-                mailer.sendStatusEmail(
-                    requestDetails.requester_email,
-                    mappedStatus,
-                    requestDetails.item_title || 'an item',
-                    isAdmin
-                ).catch(err => console.error("Mail error:", err));
+                if (mappedStatus === 'accepted' || mappedStatus === 'rejected') {
+                    mailer.sendStatusEmail(
+                        requestDetails.requester_email,
+                        mappedStatus,
+                        requestDetails.item_title || 'an item',
+                        isAdmin
+                    ).catch(err => console.error("Mail error:", err));
+                }
             }
         }
 

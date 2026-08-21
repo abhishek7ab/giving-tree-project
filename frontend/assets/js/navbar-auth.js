@@ -100,11 +100,16 @@
                 }
                 renderMobileBottomNav(data);
             } else {
+                const currentRelPath = window.location.pathname;
+                const loginHref = (currentRelPath && currentRelPath !== '/' && !currentRelPath.endsWith('/index.html') && !currentRelPath.includes('login') && !currentRelPath.includes('logout'))
+                    ? `/login.html?redirect=${encodeURIComponent(currentRelPath + window.location.search)}`
+                    : `/login.html`;
+
                 nav.innerHTML = `
                     <a href="/items.html" ${getLinkClass('/items.html')}>${svgIcons.search} Browse</a>
                     <a href="/post-item.html" ${getLinkClass('/post-item.html', 'nav-cta')}>${svgIcons.give} Donate Item</a>
                     <div class="auth-btns-group">
-                        <a href="/login.html" class="nav-link nav-login auth-login-link">${svgIcons.login} Log In</a>
+                        <a href="${loginHref}" class="nav-link nav-login auth-login-link">${svgIcons.login} Log In</a>
                         <a href="/register.html" class="nav-link nav-cta auth-join-link">${svgIcons.join} Join</a>
                     </div>
                 `;

@@ -197,10 +197,14 @@ exports.updateName = async (req, res) => {
 
         const updatedUser = await userModel.updateUserProfile(userId, { name: newName, city: newCity });
 
-        // Refresh JWT token with updated name and location
-        const token = signToken(
-            { id: updatedUser.id, role: updatedUser.role, name: updatedUser.name, email: updatedUser.email, city: updatedUser.city }
-        );
+        const token = signToken({
+            id: updatedUser.id,
+            role: updatedUser.role,
+            name: updatedUser.name,
+            email: updatedUser.email,
+            city: updatedUser.city,
+            tokenVersion: updatedUser.token_version || req.user?.tokenVersion || 1
+        });
         res.cookie("token", token, {
             httpOnly: true,
             secure: isProduction,

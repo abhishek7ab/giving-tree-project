@@ -476,3 +476,34 @@ textarea.form-control,
 .status-requested  { background: var(--warm-yellow-dim); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.4); }
 .status-claimed    { background: var(--lilac-dim); color: #C4B5FD; border: 1px solid rgba(139, 92, 246, 0.4); }
 .status-completed  { background: var(--sky-dim); color: var(--info); border: 1px solid rgba(56, 189, 248, 0.4); }
+
+/* ---- 4-Digit Handover Verification PIN Boxes ---- */
+.pin-inputs-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.pin-box {
+    width: 58px;
+    height: 64px;
+    background: rgba(15, 23, 42, 0.8) !important;
+    border: 2px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: var(--radius-md) !important;
+    font-size: 28px !important;
+    font-weight: 800 !important;
+    color: var(--accent) !important;
+    text-align: center !important;
+    font-family: monospace, inherit !important;
+    transition: all 0.2s ease !important;
+    outline: none !important;
+}
+
+.pin-box:focus {
+    border-color: var(--accent) !important;
+    background: rgba(16, 185, 129, 0.1) !important;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25) !important;
+    transform: translateY(-2px);
+}
+
