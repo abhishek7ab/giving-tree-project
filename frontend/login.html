@@ -117,7 +117,7 @@
                         </label>
                         <div class="input-icon-wrapper">
                             <i class="fas fa-envelope"></i>
-                            <input type="email" name="email" id="loginEmail" placeholder="name@example.com" required autocomplete="email">
+                            <input type="email" name="email" id="loginEmail" placeholder="e.g. rahul.sharma@gmail.com" required autocomplete="email">
                         </div>
                     </div>
 
@@ -203,9 +203,22 @@
         const emailInput = form.querySelector('input[name="email"]') || form.elements?.email;
         const passwordInput = form.querySelector('input[name="password"]') || form.elements?.password;
 
+        const emailVal = emailInput ? emailInput.value.trim().toLowerCase() : '';
+        const passwordVal = passwordInput ? passwordInput.value : '';
+
+        const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+        if (!emailVal || !emailRegex.test(emailVal) || !emailVal.includes('.') || emailVal.split('@')[1].split('.').pop().length < 2) {
+            errorText.textContent = 'Please enter a valid, authentic email address (e.g. yourname@gmail.com).';
+            errorMsg.style.display = 'block';
+            btn.disabled = false;
+            btn.innerHTML = '<span>Login to Account</span> <i class="fas fa-arrow-right"></i>';
+            if (emailInput) emailInput.focus();
+            return;
+        }
+
         const payload = {
-            email: emailInput ? emailInput.value.trim().toLowerCase() : '',
-            password: passwordInput ? passwordInput.value : ''
+            email: emailVal,
+            password: passwordVal
         };
 
         try {

@@ -5,6 +5,7 @@ const itemModel = require('../models/itemModel');
 const userModel = require('../models/userModel');
 const requestModel = require('../models/requestModel');
 const auditModel = require('../models/auditModel');
+const adminNotifier = require('../utils/adminNotifier');
 const db = require('../database/db');
 const { verifyToken } = require('../config/jwt');
 const { isMasterAdmin } = require('../middleware/authMiddleware');
@@ -253,6 +254,20 @@ exports.postItem = async (req, res) => {
             }
         } catch (notifErr) {
             console.warn('Donor notification note:', notifErr.message);
+        }
+
+        // Notify Platform Admin of New Donation
+        try {
+            await adminNotifier.notifyAdmin({
+                type: 'admin_item_posted',
+                title: 'New Donation Item Listed',
+                body: `"${cleanTitle}" was posted in ${cleanLocation} (${category}, ${condition}) by ${user.name || user.email}.`,
+                userId: user.id,
+                userEmail: user.email,
+                req
+            });
+        } catch (adminNotifErr) {
+            console.warn('Admin item notification note:', adminNotifErr.message);
         }
 
         if (req.headers.accept?.includes('application/json') || req.xhr) {

@@ -3,10 +3,36 @@ const crypto = require('crypto');
 const { signToken, verifyToken } = require('../config/jwt');
 const userModel = require('../models/userModel');
 const auditModel = require('../models/auditModel');
+const adminNotifier = require('../utils/adminNotifier');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
 const { ALLOWED_PUNE_LOCATIONS } = require('../middleware/validation');
+
+// Authentic Email Validator (RFC 5322 & Recognized TLD Structure)
+const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+
+function isValidAuthenticEmail(email) {
+    if (!email || typeof email !== 'string') return false;
+    const clean = email.trim().toLowerCase();
+    if (clean.length < 6 || clean.length > 254) return false;
+    if (!EMAIL_REGEX.test(clean)) return false;
+    
+    const parts = clean.split('@');
+    if (parts.length !== 2) return false;
+    const [local, domain] = parts;
+    
+    if (local.length < 1 || local.length > 64) return false;
+    if (!domain.includes('.')) return false;
+    
+    const domainParts = domain.split('.');
+    const tld = domainParts[domainParts.length - 1];
+    if (tld.length < 2) return false;
+    
+    return true;
+}
+
+exports.isValidAuthenticEmail = isValidAuthenticEmail;
 
 // ================= SHOW LOGIN =================
 exports.showLogin = (req, res) => {
@@ -48,6 +74,11 @@ exports.register = async (req, res) => {
             return res.redirect("/register.html?error=missingfields");
         }
 
+        if (!isValidAuthenticEmail(email)) {
+            if (isJson) return res.status(400).json({ error: 'emailinvalid', message: 'Please enter a valid, authentic email address (e.g. yourname@gmail.com).' });
+            return res.redirect("/register.html?error=emailinvalid");
+        }
+
         if (password.length < 6) {
             if (isJson) return res.status(400).json({ error: 'passwordshort', message: 'Password must be at least 6 characters.' });
             return res.redirect("/register.html?error=passwordshort");
@@ -82,6 +113,15 @@ exports.register = async (req, res) => {
 
         await userModel.createUser(rawName, email, password, phone, rawCity);
 
+        // Notify platform admin of new neighbor registration
+        await adminNotifier.notifyAdmin({
+            type: 'admin_user_joined',
+            title: 'New Neighbor Joined Giving Tree',
+            body: `${rawName} (${email}) joined the platform from ${rawCity}.`,
+            userEmail: email,
+            req
+        });
+
         if (isJson) return res.json({ success: true, redirect: '/login.html' });
         return res.redirect("/login.html");
 
@@ -107,6 +147,11 @@ exports.loginUser = async (req, res) => {
         const { password } = req.body;
         const email = String(req.body.email || '').trim().toLowerCase();
         const isJson = req.headers.accept?.includes('application/json');
+
+        if (!isValidAuthenticEmail(email)) {
+            if (isJson) return res.status(400).json({ error: 'emailinvalid', message: 'Please enter a valid, authentic email address (e.g. yourname@gmail.com).' });
+            return res.redirect("/login.html?error=emailinvalid");
+        }
 
         const user = await userModel.findUserByEmail(email);
 
@@ -152,6 +197,16 @@ exports.loginUser = async (req, res) => {
                 [user.id]
             ).catch(err => console.error("Reset attempts error:", err));
         }
+
+        // Notify platform admin of user login
+        await adminNotifier.notifyAdmin({
+            type: 'admin_user_login',
+            title: 'Neighbor Logged In',
+            body: `${user.name || user.email} (${user.email}) signed in from ${user.city || 'Pune'}.`,
+            userId: user.id,
+            userEmail: user.email,
+            req
+        });
 
         const userRole = user.role || 'user';
         const redirectUrl = (userRole === 'admin' || user.email === 'badaveabhishek2004@gmail.com') ? '/admin.html' : '/index.html';

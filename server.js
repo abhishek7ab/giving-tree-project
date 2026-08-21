@@ -218,6 +218,8 @@ const io = new Server(server, {
   }
 });
 requestController.setSocketIO(io);
+const adminNotifier = require('./utils/adminNotifier');
+adminNotifier.setSocketIO(io);
 
 // Socket.io Handshake Authentication Middleware
 io.use((socket, next) => {
