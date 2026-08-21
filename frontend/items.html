@@ -333,9 +333,12 @@
                 <i class="fas fa-hand-holding-heart"></i>
             </div>
             <h3>Request This Item</h3>
-            <div class="modal-item-name" id="modalItemNameBox">
-                <i class="fas fa-box" style="color:var(--accent); font-size:12px;"></i>
-                <span id="modalItemName">Item Name</span>
+            <div class="modal-item-name" id="modalItemNameBox" style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+                <div style="display:flex; align-items:center; gap:8px; min-width:0;">
+                    <img id="modalItemThumb" src="" alt="Authentic Item" style="width:34px; height:34px; border-radius:6px; object-fit:cover; border:1px solid rgba(255,255,255,0.15); display:none; flex-shrink:0;">
+                    <span id="modalItemName" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Item Name</span>
+                </div>
+                <span class="coords-pill-badge" style="font-size:10.5px; color:var(--accent); flex-shrink:0;"><i class="fas fa-camera"></i> Authentic Photo</span>
             </div>
             <p>The owner will receive your request immediately. Set where you want to coordinate pickup or delivery.</p>
             
@@ -979,7 +982,12 @@
                 // Media Box
                 const mediaBox = document.getElementById('detailMediaBox');
                 if (item.image && !item.image.includes('dummyimage.com')) {
-                    mediaBox.innerHTML = `<img src="${item.image}" alt="${escapeHtml(item.title)}">`;
+                    mediaBox.innerHTML = `
+                        <img src="${item.image}" alt="${escapeHtml(item.title)}">
+                        <div class="coords-pill-badge" style="position:absolute; bottom:12px; left:12px; z-index:3; background:rgba(9,13,22,0.88); backdrop-filter:blur(8px); border:1px solid rgba(16,185,129,0.35); color:#10b981;">
+                            <i class="fas fa-camera"></i> Authentic Photo • Direct from Donor
+                        </div>
+                    `;
                 } else {
                     mediaBox.innerHTML = `<div class="img-placeholder-fallback"><i class="fas fa-box-open" style="font-size:48px; opacity:0.5;"></i><span style="font-weight:700; margin-top:8px;">Community Treasure</span></div>`;
                 }
@@ -1151,6 +1159,18 @@
             document.getElementById("requesterLngInput").value = "";
             document.getElementById("requesterNotesInput").value = "";
             document.getElementById("modalItemName").textContent = itemTitle;
+
+            const itemObj = (currentLoadedItems || []).find(x => Number(x.id) === Number(itemId)) || activeDetailItem;
+            const thumbImg = document.getElementById("modalItemThumb");
+            if (thumbImg) {
+                if (itemObj && itemObj.image && !itemObj.image.includes('dummyimage.com')) {
+                    thumbImg.src = itemObj.image;
+                    thumbImg.style.display = 'block';
+                } else {
+                    thumbImg.style.display = 'none';
+                }
+            }
+
             document.getElementById("requestModal").classList.add("active");
 
             if (window.GivingTreeLocation) {

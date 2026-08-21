@@ -197,13 +197,24 @@
             </div>
 
             <div class="input-group">
-                <label>Visuals / Photo</label>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:6px;">
+                    <label style="margin-bottom:0;">Item Photo <span style="color:var(--accent); font-weight:700;">(100% Real Photo Required)</span></label>
+                    <span class="coords-pill-badge" style="color:var(--accent);"><i class="fas fa-shield-check"></i> Genuine Photos Only • No AI</span>
+                </div>
                 <div class="upload-box" id="uploadBox">
-                    <input type="file" name="image" id="imageInput" hidden required accept="image/*">
+                    <input type="file" name="image" id="imageInput" hidden required accept="image/png,image/jpeg,image/webp,image/jpg" capture="environment">
                     <div class="upload-content" id="uploadContent">
-                        <i class="fas fa-camera"></i>
-                        <p id="uploadPromptText">Add a clear photo</p>
-                        <span>Clear photos get requested 3x faster</span>
+                        <i class="fas fa-camera" style="font-size:28px; color:var(--accent); margin-bottom:6px;"></i>
+                        <p id="uploadPromptText" style="font-weight:700; color:#FFFFFF;">Take Live Photo or Choose From Device</p>
+                        <span style="font-size:12px; color:var(--text-3);">Upload a genuine photo of your physical item showing its real condition</span>
+                    </div>
+                </div>
+
+                <!-- 100% Authenticity Guarantee Note -->
+                <div style="display:flex; align-items:flex-start; gap:10px; margin-top:10px; font-size:12px; color:var(--text-2); background:rgba(16,185,129,0.06); border:1px solid rgba(16,185,129,0.2); border-radius:10px; padding:10px 14px;">
+                    <i class="fas fa-camera-rotate" style="color:var(--accent); font-size:15px; margin-top:2px;"></i>
+                    <div style="line-height:1.5;">
+                        <strong style="color:#FFFFFF;">100% Authentic Photo Standard:</strong> To protect neighbor trust, all donors must upload real photos of the physical item they are handing over. Stock images, AI-generated photos, or fake placeholders are strictly prohibited.
                     </div>
                 </div>
             </div>
@@ -266,11 +277,15 @@ if (locInput) locInput.addEventListener('input', (e) => prevLoc.innerText = e.ta
 imageInput.addEventListener('change', function(e) {
     const file = e.target.files[0];
     if (file) {
-        uploadPromptText.textContent = `Selected: ${file.name}`;
+        uploadPromptText.innerHTML = `<span style="color:var(--accent);"><i class="fas fa-check-circle"></i> Authentic Photo:</span> ${escapeHtml(file.name)}`;
         const reader = new FileReader();
         reader.onload = function(event) {
             previewImgBox.style.backgroundImage = `url(${event.target.result})`;
-            previewImgBox.innerHTML = '';
+            previewImgBox.innerHTML = `
+                <div style="position:absolute; bottom:8px; left:8px; background:rgba(9,13,22,0.88); backdrop-filter:blur(6px); border:1px solid rgba(16,185,129,0.35); border-radius:50px; padding:3px 8px; font-size:10px; font-weight:700; color:#10b981; display:inline-flex; align-items:center; gap:4px;">
+                    <i class="fas fa-shield-check"></i> Authentic Photo
+                </div>
+            `;
         }
         reader.readAsDataURL(file);
     }
