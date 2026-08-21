@@ -54,149 +54,152 @@
         </div>
     </header>
 
-    <header class="items-header" style="text-align:center; padding: 28px 20px 8px;">
-        <span class="eyebrow-pill" style="display:inline-flex; align-items:center; gap:6px; margin-bottom:10px;">
+    <header class="items-hero-header">
+        <span class="eyebrow-pill" style="display:inline-flex; align-items:center; gap:6px;">
             🌿 Pune Community Catalog
         </span>
-        <h1 style="font-size:clamp(1.8rem, 3.4vw, 2.6rem); font-weight:800; margin:0 0 8px; color:#FFFFFF;">Community Donations</h1>
-        <p style="color:var(--text-2); font-size:14px; margin:0 auto; max-width:500px;">Explore free items shared by caring neighbors across Pune.</p>
+        <h1 class="items-hero-title">Community Donations</h1>
+        <p class="items-hero-subtitle">Explore free items shared by caring neighbors across Pune.</p>
     </header>
 
-    <!-- Unified Luxury Search & Filter Toolbar -->
-    <div class="catalog-search-wrapper">
-        <div class="unified-search-pill">
-            <div class="search-input-wrap">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                <input type="text" id="searchInput" placeholder="Search furniture, electronics, books, clothing..." oninput="debounceSearch()">
-            </div>
-            
-            <div class="filter-pill-divider"></div>
+    <!-- Unified Command Control Center -->
+    <div class="catalog-control-center">
+        <!-- 1. Main Search & Filters Card -->
+        <div class="catalog-search-card">
+            <div class="unified-search-pill">
+                <div class="search-input-wrap">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                    <input type="text" id="searchInput" placeholder="Search furniture, electronics, books, clothing..." oninput="debounceSearch()">
+                </div>
+                
+                <div class="filter-pill-divider"></div>
 
-            <div class="select-pill-wrap">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
-                <select id="categoryFilter" onchange="loadItems()" aria-label="Filter by category">
-                    <option value="All">All Categories</option>
-                    <option value="Furniture">Furniture</option>
-                    <option value="Electronics">Electronics</option>
-                    <option value="Appliances">Appliances</option>
-                    <option value="Books">Books</option>
-                    <option value="Clothing">Clothing</option>
-                    <option value="Kitchen & Dining">Kitchen &amp; Dining</option>
-                    <option value="Baby & Kids">Baby &amp; Kids</option>
-                    <option value="Sports & Outdoors">Sports &amp; Outdoors</option>
-                    <option value="Home & Garden">Home &amp; Garden</option>
-                    <option value="Pet Supplies">Pet Supplies</option>
-                    <option value="Office & Study">Office &amp; Study</option>
-                    <option value="Other">Other</option>
-                </select>
-            </div>
+                <div class="select-pill-wrap">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
+                    <select id="categoryFilter" onchange="loadItems()" aria-label="Filter by category">
+                        <option value="All">All Categories</option>
+                        <option value="Furniture">Furniture</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Appliances">Appliances</option>
+                        <option value="Books">Books</option>
+                        <option value="Clothing">Clothing</option>
+                        <option value="Kitchen & Dining">Kitchen &amp; Dining</option>
+                        <option value="Baby & Kids">Baby &amp; Kids</option>
+                        <option value="Sports & Outdoors">Sports &amp; Outdoors</option>
+                        <option value="Home & Garden">Home &amp; Garden</option>
+                        <option value="Pet Supplies">Pet Supplies</option>
+                        <option value="Office & Study">Office &amp; Study</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
 
-            <div class="filter-pill-divider"></div>
+                <div class="filter-pill-divider"></div>
 
-            <div class="select-pill-wrap">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                <select id="conditionFilter" onchange="loadItems()" aria-label="Filter by condition">
-                    <option value="All">Any Condition</option>
-                    <option value="New">New</option>
-                    <option value="Like new">Like New</option>
-                    <option value="Good">Good</option>
-                    <option value="Fair">Fair</option>
-                    <option value="For repair">For Repair</option>
-                </select>
-            </div>
+                <div class="select-pill-wrap">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    <select id="conditionFilter" onchange="loadItems()" aria-label="Filter by condition">
+                        <option value="All">Any Condition</option>
+                        <option value="New">New</option>
+                        <option value="Like new">Like New</option>
+                        <option value="Good">Good</option>
+                        <option value="Fair">Fair</option>
+                        <option value="For repair">For Repair</option>
+                    </select>
+                </div>
 
-            <div class="filter-pill-divider"></div>
+                <div class="filter-pill-divider"></div>
 
-            <div class="select-pill-wrap">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="14" y1="12" y2="12"/><line x1="4" x2="8" y1="18" y2="18"/></svg>
-                <select id="sortFilter" onchange="loadItems()" aria-label="Sort catalog">
-                    <option value="newest">Newest Added</option>
-                    <option value="oldest">Oldest First</option>
-                    <option value="title">Title (A-Z)</option>
-                </select>
-            </div>
+                <div class="select-pill-wrap">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="14" y1="12" y2="12"/><line x1="4" x2="8" y1="18" y2="18"/></svg>
+                    <select id="sortFilter" onchange="loadItems()" aria-label="Sort catalog">
+                        <option value="newest">Newest Added</option>
+                        <option value="oldest">Oldest First</option>
+                        <option value="title">Title (A-Z)</option>
+                    </select>
+                </div>
 
-            <button type="button" class="btn-search-go" onclick="loadItems()" title="Search catalog">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-            </button>
-        </div>
-    </div>
-
-    <!-- Quick Location Chips & View Switcher Toolbar -->
-    <div class="results-count-bar" style="margin-top:8px;">
-        <div style="display:flex; align-items:center; gap:10px;">
-            <span id="resultsCount">Donations in Pune</span>
-            <span class="results-count-badge" id="resultsBadge">Loading...</span>
-        </div>
-
-        <div class="catalog-view-actions">
-            <!-- Distance radius filter pills -->
-            <div class="distance-radius-pills" id="radiusFilterGroup">
-                <button type="button" class="radius-chip active" data-radius="all" onclick="setRadiusFilter('all')">All</button>
-                <button type="button" class="radius-chip" data-radius="2" onclick="setRadiusFilter(2)">&lt; 2 km</button>
-                <button type="button" class="radius-chip" data-radius="5" onclick="setRadiusFilter(5)">&lt; 5 km</button>
-                <button type="button" class="radius-chip" data-radius="15" onclick="setRadiusFilter(15)">&lt; 15 km</button>
-                <button type="button" class="btn-near-me" id="btnNearMe" onclick="detectUserLocationAndFilter()">
-                    <i class="fas fa-location-crosshairs"></i> Near Me
-                </button>
-            </div>
-
-            <!-- Grid vs Map Toggle -->
-            <div class="view-toggle-group">
-                <button type="button" class="view-btn active" id="viewBtnGrid" onclick="switchCatalogView('grid')" title="Grid View">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
-                    <span>Grid</span>
-                </button>
-                <button type="button" class="view-btn" id="viewBtnMap" onclick="switchCatalogView('map')" title="Interactive Map View">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" x2="9" y1="3" y2="18"/><line x1="15" x2="15" y1="6" y2="21"/></svg>
-                    <span>Map</span>
+                <button type="button" class="btn-search-go" onclick="loadItems()" title="Search catalog">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
                 </button>
             </div>
         </div>
-    </div>
 
-    <!-- Pune Locality Quick-Jump Bar -->
-    <div class="pune-catalog-bar" role="region" aria-label="Filter by Pune neighborhood" style="margin-top:6px;">
-        <div class="pune-bar-label">
-            <span class="pune-pulse-dot"></span>
-            <i class="fas fa-location-dot"></i>
-            <span>Pune Hubs</span>
+        <!-- 2. Results Count Bar & Distance Radius & View Mode -->
+        <div class="results-count-bar">
+            <div style="display:flex; align-items:center; gap:10px;">
+                <span id="resultsCount">Donations in Pune</span>
+                <span class="results-count-badge" id="resultsBadge">Loading...</span>
+            </div>
+
+            <div class="catalog-view-actions">
+                <!-- Distance radius filter pills -->
+                <div class="distance-radius-pills" id="radiusFilterGroup">
+                    <button type="button" class="radius-chip active" data-radius="all" onclick="setRadiusFilter('all')">All</button>
+                    <button type="button" class="radius-chip" data-radius="2" onclick="setRadiusFilter(2)">&lt; 2 km</button>
+                    <button type="button" class="radius-chip" data-radius="5" onclick="setRadiusFilter(5)">&lt; 5 km</button>
+                    <button type="button" class="radius-chip" data-radius="15" onclick="setRadiusFilter(15)">&lt; 15 km</button>
+                    <button type="button" class="btn-near-me" id="btnNearMe" onclick="detectUserLocationAndFilter()">
+                        <i class="fas fa-location-crosshairs"></i> Near Me
+                    </button>
+                </div>
+
+                <!-- Grid vs Map Toggle -->
+                <div class="view-toggle-group">
+                    <button type="button" class="view-btn active" id="viewBtnGrid" onclick="switchCatalogView('grid')" title="Grid View">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+                        <span>Grid</span>
+                    </button>
+                    <button type="button" class="view-btn" id="viewBtnMap" onclick="switchCatalogView('map')" title="Interactive Map View">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" x2="9" y1="3" y2="18"/><line x1="15" x2="15" y1="6" y2="21"/></svg>
+                        <span>Map</span>
+                    </button>
+                </div>
+            </div>
         </div>
-        <div class="pune-chips-scroll-wrapper">
-            <div class="pune-chips-scroll" id="puneChipsScroll">
-                <button type="button" class="pune-locality-chip active" data-locality="all" onclick="filterCatalogPuneLocality('all', this)">
-                    <i class="fas fa-globe-asia" style="font-size:11px;"></i> All Pune <span class="pune-chip-count" id="count-all">0</span>
-                </button>
-                <button type="button" class="pune-locality-chip" data-locality="Kothrud" onclick="filterCatalogPuneLocality('Kothrud', this)">
-                    Kothrud <span class="pune-chip-count" id="count-kothrud">0</span>
-                </button>
-                <button type="button" class="pune-locality-chip" data-locality="Katraj" onclick="filterCatalogPuneLocality('Katraj', this)">
-                    Katraj <span class="pune-chip-count" id="count-katraj">0</span>
-                </button>
-                <button type="button" class="pune-locality-chip" data-locality="Hadapsar" onclick="filterCatalogPuneLocality('Hadapsar', this)">
-                    Hadapsar <span class="pune-chip-count" id="count-hadapsar">0</span>
-                </button>
-                <button type="button" class="pune-locality-chip" data-locality="Baner" onclick="filterCatalogPuneLocality('Baner', this)">
-                    Baner <span class="pune-chip-count" id="count-baner">0</span>
-                </button>
-                <button type="button" class="pune-locality-chip" data-locality="FC Road" onclick="filterCatalogPuneLocality('FC Road', this)">
-                    FC Road <span class="pune-chip-count" id="count-fcroad">0</span>
-                </button>
-                <button type="button" class="pune-locality-chip" data-locality="Hinjawadi" onclick="filterCatalogPuneLocality('Hinjawadi', this)">
-                    Hinjawadi <span class="pune-chip-count" id="count-hinjawadi">0</span>
-                </button>
-                <button type="button" class="pune-locality-chip" data-locality="Viman Nagar" onclick="filterCatalogPuneLocality('Viman Nagar', this)">
-                    Viman Nagar <span class="pune-chip-count" id="count-vimannagar">0</span>
-                </button>
-                <button type="button" class="pune-locality-chip" data-locality="Koregaon Park" onclick="filterCatalogPuneLocality('Koregaon Park', this)">
-                    Koregaon Park <span class="pune-chip-count" id="count-koregaonpark">0</span>
-                </button>
-                <button type="button" class="pune-locality-chip" data-locality="Wakad" onclick="filterCatalogPuneLocality('Wakad', this)">
-                    Wakad <span class="pune-chip-count" id="count-wakad">0</span>
-                </button>
-                <button type="button" class="pune-locality-chip" data-locality="Aundh" onclick="filterCatalogPuneLocality('Aundh', this)">
-                    Aundh <span class="pune-chip-count" id="count-aundh">0</span>
-                </button>
+
+        <!-- 3. Pune Locality Quick-Jump Rail -->
+        <div class="pune-catalog-bar" role="region" aria-label="Filter by Pune neighborhood">
+            <div class="pune-bar-label">
+                <span class="pune-pulse-dot"></span>
+                <i class="fas fa-location-dot"></i>
+                <span>Pune Hubs</span>
+            </div>
+            <div class="pune-chips-scroll-wrapper">
+                <div class="pune-chips-scroll" id="puneChipsScroll">
+                    <button type="button" class="pune-locality-chip active" data-locality="all" onclick="filterCatalogPuneLocality('all', this)">
+                        <i class="fas fa-globe-asia" style="font-size:11px;"></i> All Pune <span class="pune-chip-count" id="count-all">0</span>
+                    </button>
+                    <button type="button" class="pune-locality-chip" data-locality="Kothrud" onclick="filterCatalogPuneLocality('Kothrud', this)">
+                        Kothrud <span class="pune-chip-count" id="count-kothrud">0</span>
+                    </button>
+                    <button type="button" class="pune-locality-chip" data-locality="Katraj" onclick="filterCatalogPuneLocality('Katraj', this)">
+                        Katraj <span class="pune-chip-count" id="count-katraj">0</span>
+                    </button>
+                    <button type="button" class="pune-locality-chip" data-locality="Hadapsar" onclick="filterCatalogPuneLocality('Hadapsar', this)">
+                        Hadapsar <span class="pune-chip-count" id="count-hadapsar">0</span>
+                    </button>
+                    <button type="button" class="pune-locality-chip" data-locality="Baner" onclick="filterCatalogPuneLocality('Baner', this)">
+                        Baner <span class="pune-chip-count" id="count-baner">0</span>
+                    </button>
+                    <button type="button" class="pune-locality-chip" data-locality="FC Road" onclick="filterCatalogPuneLocality('FC Road', this)">
+                        FC Road <span class="pune-chip-count" id="count-fcroad">0</span>
+                    </button>
+                    <button type="button" class="pune-locality-chip" data-locality="Hinjawadi" onclick="filterCatalogPuneLocality('Hinjawadi', this)">
+                        Hinjawadi <span class="pune-chip-count" id="count-hinjawadi">0</span>
+                    </button>
+                    <button type="button" class="pune-locality-chip" data-locality="Viman Nagar" onclick="filterCatalogPuneLocality('Viman Nagar', this)">
+                        Viman Nagar <span class="pune-chip-count" id="count-vimannagar">0</span>
+                    </button>
+                    <button type="button" class="pune-locality-chip" data-locality="Koregaon Park" onclick="filterCatalogPuneLocality('Koregaon Park', this)">
+                        Koregaon Park <span class="pune-chip-count" id="count-koregaonpark">0</span>
+                    </button>
+                    <button type="button" class="pune-locality-chip" data-locality="Wakad" onclick="filterCatalogPuneLocality('Wakad', this)">
+                        Wakad <span class="pune-chip-count" id="count-wakad">0</span>
+                    </button>
+                    <button type="button" class="pune-locality-chip" data-locality="Aundh" onclick="filterCatalogPuneLocality('Aundh', this)">
+                        Aundh <span class="pune-chip-count" id="count-aundh">0</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>

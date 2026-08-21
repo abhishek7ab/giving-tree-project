@@ -609,14 +609,14 @@
 
 /* Results Count & View Options */
 .results-count-bar {
-    max-width: 1200px;
-    margin: 0 auto 16px;
-    padding: 0 20px;
+    max-width: 100%;
+    margin: 2px 0 0;
+    padding: 0 4px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 14px;
+    gap: 12px;
 }
 
 .results-count-badge {
@@ -722,12 +722,12 @@
 
 /* Improvement #3 — Pune Locality Filter Bar with scroll fade mask */
 .pune-catalog-bar {
-    max-width: 1200px;
-    margin: 0 auto 28px;
-    padding: 0 20px;
+    max-width: 100%;
+    margin: 2px 0 6px;
+    padding: 0 4px;
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 12px;
 }
 
 .pune-bar-label {
