@@ -53,106 +53,134 @@
 <div class="post-wrapper">
     <!-- LEFT: THE FORM -->
     <div class="form-side">
+        <div class="post-header-badge">
+            <i class="fas fa-hand-holding-heart"></i>
+            <span>Pune Community Sharing</span>
+        </div>
         <h1>Donate to <span>Neighbors</span></h1>
-        <p class="subtitle">Your unused items give someone a helping hand, empower students, and divert landfill waste with 100% free donations.</p>
+        <p class="subtitle">Give your unused items a second life. Empower local Pune students, families, and prevent landfill waste with 100% free donations.</p>
 
         <!-- Guest Newcomer Auth Notice Banner -->
-        <div id="guestDonorNotice" style="display:none; background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.25); border-radius:14px; padding:14px 18px; margin-bottom:20px; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
-            <div style="display:flex; align-items:center; gap:10px;">
-                <i class="fas fa-shield-halved" style="color:var(--accent); font-size:20px;"></i>
+        <div id="guestDonorNotice" class="guest-donor-notice" style="display:none;">
+            <div class="guest-donor-info">
+                <i class="fas fa-shield-halved guest-donor-icon"></i>
                 <div>
-                    <div style="font-size:13.5px; font-weight:700; color:#FFFFFF;">Newcomer or Guest? Sign in to publish your donation</div>
-                    <div style="font-size:12px; color:var(--text-2);">All donations require a verified account so neighbors can reach out and coordinate handovers.</div>
+                    <div class="guest-donor-title">Newcomer or Guest? Sign in to publish your donation</div>
+                    <div class="guest-donor-desc">All donations require a verified account so neighbors can reach out and coordinate safe handovers.</div>
                 </div>
             </div>
-            <div style="display:flex; gap:8px;">
-                <a href="/register.html?redirect=/post-item.html" class="btn primary" style="padding:6px 14px; font-size:12.5px; text-decoration:none;">Create Free Account</a>
-                <a href="/login.html?redirect=/post-item.html" class="btn secondary" style="padding:6px 14px; font-size:12.5px; text-decoration:none;">Log In</a>
+            <div class="guest-donor-actions">
+                <a href="/register.html?redirect=/post-item.html" class="btn primary btn-sm">Create Account</a>
+                <a href="/login.html?redirect=/post-item.html" class="btn secondary btn-sm">Log In</a>
             </div>
         </div>
 
         <form id="postItemForm" onsubmit="handlePostSubmit(event)">
             
             <div class="input-group">
-                <label>What item are you donating?</label>
-                <input type="text" name="title" id="itemName" placeholder="e.g., Acoustic Guitar, Study Table, Blender" required maxlength="100">
-            </div>
-
-            <div class="input-group">
-                <label>Donation Description &amp; Condition Details</label>
-                <textarea name="description" id="itemDescription" placeholder="Describe brand, working condition, any flaws or scratches, and why you're donating it..." required maxlength="2000"></textarea>
-            </div>
-
-            <div class="form-row" style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
-                <div class="input-group">
-                    <label>Donation Category</label>
-                    <select name="category" id="itemCategory" required>
-                        <option value="">Choose a category</option>
-                        <option value="Furniture">Furniture</option>
-                        <option value="Electronics">Electronics</option>
-                        <option value="Appliances">Appliances</option>
-                        <option value="Books">Books</option>
-                        <option value="Clothing">Clothing</option>
-                        <option value="Kitchen &amp; Dining">Kitchen &amp; Dining</option>
-                        <option value="Baby &amp; Kids">Baby &amp; Kids</option>
-                        <option value="Sports &amp; Outdoors">Sports &amp; Outdoors</option>
-                        <option value="Home &amp; Garden">Home &amp; Garden</option>
-                        <option value="Pet Supplies">Pet Supplies</option>
-                        <option value="Office &amp; Study">Office &amp; Study</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-
-                <div class="input-group">
-                    <label>Item Condition</label>
-                    <select name="condition" id="itemCondition" required>
-                        <option value="">Choose condition</option>
-                        <option value="New">New</option>
-                        <option value="Like new">Like new</option>
-                        <option value="Good">Good</option>
-                        <option value="Fair">Fair</option>
-                        <option value="For repair">For repair</option>
-                    </select>
+                <label for="itemName">
+                    <span class="label-text"><i class="fas fa-tag"></i> What item are you donating?</span>
+                    <span class="label-req">Required</span>
+                </label>
+                <div class="input-icon-wrap">
+                    <input type="text" name="title" id="itemName" placeholder="e.g., Acoustic Guitar, Wooden Study Table, Kitchen Blender" required maxlength="100" autocomplete="off">
                 </div>
             </div>
 
-
-
             <div class="input-group">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                    <label style="margin-bottom:0;">Pickup Neighborhood / Locality (Pune)</label>
-                    <button type="button" class="btn-detect-loc" id="btnDetectGps">
-                        <i class="fas fa-location-crosshairs"></i> Use Current Location
+                <label for="itemDescription">
+                    <span class="label-text"><i class="fas fa-align-left"></i> Description &amp; Condition Details</span>
+                    <span class="label-req">Required</span>
+                </label>
+                <textarea name="description" id="itemDescription" placeholder="Mention brand, working state, size/dimensions, cosmetic flaws if any, and why you're passing it on..." required maxlength="2000"></textarea>
+            </div>
+
+            <div class="form-row-2col">
+                <div class="input-group">
+                    <label for="itemCategory">
+                        <span class="label-text"><i class="fas fa-shapes"></i> Donation Category</span>
+                        <span class="label-req">Required</span>
+                    </label>
+                    <div class="select-wrapper">
+                        <select name="category" id="itemCategory" required onchange="updatePreviewCategory(this.value)">
+                            <option value="">Choose a category</option>
+                            <option value="Furniture">🛋️ Furniture</option>
+                            <option value="Electronics">💻 Electronics</option>
+                            <option value="Appliances">🔌 Appliances</option>
+                            <option value="Books">📚 Books &amp; Study</option>
+                            <option value="Clothing">👕 Clothing &amp; Wear</option>
+                            <option value="Kitchen &amp; Dining">🍳 Kitchen &amp; Dining</option>
+                            <option value="Baby &amp; Kids">🧸 Baby &amp; Kids</option>
+                            <option value="Sports &amp; Outdoors">🚲 Sports &amp; Outdoors</option>
+                            <option value="Home &amp; Garden">🪴 Home &amp; Garden</option>
+                            <option value="Pet Supplies">🐾 Pet Supplies</option>
+                            <option value="Office &amp; Study">🖊️ Office &amp; Study</option>
+                            <option value="Other">🎁 Other Helpful Items</option>
+                        </select>
+                        <i class="fas fa-chevron-down select-chevron"></i>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="itemCondition">
+                        <span class="label-text"><i class="fas fa-star-half-stroke"></i> Item Condition</span>
+                        <span class="label-req">Required</span>
+                    </label>
+                    <div class="select-wrapper">
+                        <select name="condition" id="itemCondition" required onchange="updatePreviewCondition(this.value)">
+                            <option value="">Choose condition</option>
+                            <option value="New">✨ Brand New (Unopened)</option>
+                            <option value="Like new">🌟 Like New (Gently Used)</option>
+                            <option value="Good">👍 Good (Fully Working)</option>
+                            <option value="Fair">👌 Fair (Visible Wear)</option>
+                            <option value="For repair">🔧 For Repair / DIY Fix</option>
+                        </select>
+                        <i class="fas fa-chevron-down select-chevron"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group location-group-card">
+                <div class="location-group-header">
+                    <label for="puneLocalitySelect" style="margin-bottom:0;">
+                        <span class="label-text"><i class="fas fa-location-dot"></i> Pune Neighborhood Hub</span>
+                        <span class="label-req">Required</span>
+                    </label>
+                    <button type="button" class="btn-detect-loc" id="btnDetectGps" title="Detect your Pune location via GPS">
+                        <i class="fas fa-location-crosshairs"></i> Use GPS
                     </button>
                 </div>
 
                 <!-- 10 Curated Pune Hubs Selector Dropdown -->
-                <select id="puneLocalitySelect" class="pune-hub-select" onchange="handlePuneHubSelect(this.value)" required>
-                    <option value="">Choose from 10 Pune Neighborhood Hubs</option>
-                    <option value="Kothrud, Pune">📍 Kothrud, Pune (Near MIT / Vanaz)</option>
-                    <option value="Baner, Pune">📍 Baner, Pune (High Street / Balewadi)</option>
-                    <option value="FC Road, Pune">📍 FC Road, Pune (Shivaji Nagar / Deccan)</option>
-                    <option value="Hinjawadi, Pune">📍 Hinjawadi, Pune (Phase 1 IT Park)</option>
-                    <option value="Viman Nagar, Pune">📍 Viman Nagar, Pune (Phoenix / Symbiosis)</option>
-                    <option value="Koregaon Park, Pune">📍 Koregaon Park, Pune (North Main Rd)</option>
-                    <option value="Hadapsar, Pune">📍 Hadapsar, Pune (Magarpatta / Amanora)</option>
-                    <option value="Katraj, Pune">📍 Katraj, Pune (Katraj Zoo / Bharati Vidyapeeth)</option>
-                    <option value="Wakad, Pune">📍 Wakad, Pune (Dutta Mandir / Bhumkar Chowk)</option>
-                    <option value="Aundh, Pune">📍 Aundh, Pune (Westend Mall / Bremen Chowk)</option>
-                </select>
+                <div class="select-wrapper" style="margin-top:8px;">
+                    <select id="puneLocalitySelect" class="pune-hub-select" onchange="handlePuneHubSelect(this.value)" required>
+                        <option value="">Select from 10 Pune Neighborhood Hubs</option>
+                        <option value="Kothrud, Pune">📍 Kothrud, Pune (Near MIT / Vanaz)</option>
+                        <option value="Baner, Pune">📍 Baner, Pune (High Street / Balewadi)</option>
+                        <option value="FC Road, Pune">📍 FC Road, Pune (Shivaji Nagar / Deccan)</option>
+                        <option value="Hinjawadi, Pune">📍 Hinjawadi, Pune (Phase 1 IT Park)</option>
+                        <option value="Viman Nagar, Pune">📍 Viman Nagar, Pune (Phoenix / Symbiosis)</option>
+                        <option value="Koregaon Park, Pune">📍 Koregaon Park, Pune (North Main Rd)</option>
+                        <option value="Hadapsar, Pune">📍 Hadapsar, Pune (Magarpatta / Amanora)</option>
+                        <option value="Katraj, Pune">📍 Katraj, Pune (Katraj Zoo / Bharati Vidyapeeth)</option>
+                        <option value="Wakad, Pune">📍 Wakad, Pune (Dutta Mandir / Bhumkar Chowk)</option>
+                        <option value="Aundh, Pune">📍 Aundh, Pune (Westend Mall / Bremen Chowk)</option>
+                    </select>
+                    <i class="fas fa-chevron-down select-chevron"></i>
+                </div>
 
                 <!-- Quick-Pick Chips for the 10 Pune Hubs -->
-                <div class="pune-quick-chips" style="display:flex; gap:6px; flex-wrap:wrap; margin:10px 0 12px;">
-                    <button type="button" class="post-loc-chip" onclick="handlePuneHubSelect('Kothrud, Pune')">Kothrud</button>
-                    <button type="button" class="post-loc-chip" onclick="handlePuneHubSelect('Baner, Pune')">Baner</button>
-                    <button type="button" class="post-loc-chip" onclick="handlePuneHubSelect('FC Road, Pune')">FC Road</button>
-                    <button type="button" class="post-loc-chip" onclick="handlePuneHubSelect('Hinjawadi, Pune')">Hinjawadi</button>
-                    <button type="button" class="post-loc-chip" onclick="handlePuneHubSelect('Viman Nagar, Pune')">Viman Nagar</button>
-                    <button type="button" class="post-loc-chip" onclick="handlePuneHubSelect('Koregaon Park, Pune')">Koregaon Park</button>
-                    <button type="button" class="post-loc-chip" onclick="handlePuneHubSelect('Hadapsar, Pune')">Hadapsar</button>
-                    <button type="button" class="post-loc-chip" onclick="handlePuneHubSelect('Katraj, Pune')">Katraj</button>
-                    <button type="button" class="post-loc-chip" onclick="handlePuneHubSelect('Wakad, Pune')">Wakad</button>
-                    <button type="button" class="post-loc-chip" onclick="handlePuneHubSelect('Aundh, Pune')">Aundh</button>
+                <div class="pune-quick-chips">
+                    <button type="button" class="post-loc-chip" onclick="handlePuneHubSelect('Kothrud, Pune')"><i class="fas fa-location-dot"></i> Kothrud</button>
+                    <button type="button" class="post-loc-chip" onclick="handlePuneHubSelect('Baner, Pune')"><i class="fas fa-location-dot"></i> Baner</button>
+                    <button type="button" class="post-loc-chip" onclick="handlePuneHubSelect('FC Road, Pune')"><i class="fas fa-location-dot"></i> FC Road</button>
+                    <button type="button" class="post-loc-chip" onclick="handlePuneHubSelect('Hinjawadi, Pune')"><i class="fas fa-location-dot"></i> Hinjawadi</button>
+                    <button type="button" class="post-loc-chip" onclick="handlePuneHubSelect('Viman Nagar, Pune')"><i class="fas fa-location-dot"></i> Viman Nagar</button>
+                    <button type="button" class="post-loc-chip" onclick="handlePuneHubSelect('Koregaon Park, Pune')"><i class="fas fa-location-dot"></i> Koregaon Park</button>
+                    <button type="button" class="post-loc-chip" onclick="handlePuneHubSelect('Hadapsar, Pune')"><i class="fas fa-location-dot"></i> Hadapsar</button>
+                    <button type="button" class="post-loc-chip" onclick="handlePuneHubSelect('Katraj, Pune')"><i class="fas fa-location-dot"></i> Katraj</button>
+                    <button type="button" class="post-loc-chip" onclick="handlePuneHubSelect('Wakad, Pune')"><i class="fas fa-location-dot"></i> Wakad</button>
+                    <button type="button" class="post-loc-chip" onclick="handlePuneHubSelect('Aundh, Pune')"><i class="fas fa-location-dot"></i> Aundh</button>
                 </div>
 
                 <!-- Toggle Button to Open/Close Map -->
@@ -175,55 +203,71 @@
                         <span id="postItemCoordsBadge" class="coords-pill-badge">
                             <i class="fas fa-location-dot"></i> Click or drag map pin to set exact pickup spot
                         </span>
-                        <span style="color:var(--text-3); font-size:11px;">Serving 10 Pune community hubs</span>
+                        <span style="color:var(--text-3); font-size:11px;">Serving all 10 Pune hubs</span>
                     </div>
                 </div>
             </div>
 
-            <div class="form-row" style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+            <div class="form-row-2col">
                 <div class="input-group">
-                    <label>Portability / Weight</label>
-                    <select name="weight_category" id="weightSelect">
-                        <option value="Light (Easy to carry)">Light (Easy to carry)</option>
-                        <option value="Medium (Need a bag/box)">Medium (Need a bag/box)</option>
-                        <option value="Heavy (Need vehicle / 2 people)">Heavy (Need vehicle / 2 people)</option>
-                    </select>
+                    <label for="weightSelect">
+                        <span class="label-text"><i class="fas fa-weight-hanging"></i> Portability &amp; Size</span>
+                    </label>
+                    <div class="select-wrapper">
+                        <select name="weight_category" id="weightSelect" onchange="updatePreviewPortability(this.value)">
+                            <option value="Light (Easy to carry)">🪶 Light (Easy to carry in hands)</option>
+                            <option value="Medium (Need a bag/box)">📦 Medium (Need a bag / backpack)</option>
+                            <option value="Heavy (Need vehicle / 2 people)">🚚 Heavy (Need 2 people / vehicle)</option>
+                        </select>
+                        <i class="fas fa-chevron-down select-chevron"></i>
+                    </div>
                 </div>
 
                 <div class="input-group">
-                    <label>Pickup availability <span style="color:var(--text-3); font-weight:500;">(optional)</span></label>
+                    <label for="pickupInput">
+                        <span class="label-text"><i class="fas fa-clock"></i> Pickup Availability</span>
+                        <span class="label-opt">Optional</span>
+                    </label>
                     <input type="text" name="pickup_availability" id="pickupInput" placeholder="e.g., Weekends after 4 PM, or evenings" maxlength="150">
                 </div>
             </div>
 
             <div class="input-group">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:6px;">
-                    <label style="margin-bottom:0;">Item Photo <span style="color:var(--accent); font-weight:700;">(100% Real Photo Required)</span></label>
-                    <span class="coords-pill-badge" style="color:var(--accent);"><i class="fas fa-shield-check"></i> Genuine Photos Only • No AI</span>
+                <div class="photo-upload-header">
+                    <label for="imageInput" style="margin-bottom:0;">
+                        <span class="label-text"><i class="fas fa-camera"></i> Authentic Item Photo</span>
+                        <span class="label-req">Required</span>
+                    </label>
+                    <span class="photo-guarantee-badge"><i class="fas fa-shield-check"></i> Genuine Photos Only • No AI</span>
                 </div>
                 <div class="upload-box" id="uploadBox">
                     <input type="file" name="image" id="imageInput" hidden required accept="image/png,image/jpeg,image/webp,image/jpg" capture="environment">
                     <div class="upload-content" id="uploadContent">
-                        <i class="fas fa-camera" style="font-size:28px; color:var(--accent); margin-bottom:6px;"></i>
-                        <p id="uploadPromptText" style="font-weight:700; color:#FFFFFF;">Take Live Photo or Choose From Device</p>
-                        <span style="font-size:12px; color:var(--text-3);">Upload a genuine photo of your physical item showing its real condition</span>
+                        <div class="upload-icon-circle">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <p id="uploadPromptText" class="upload-prompt-title">Take Live Photo or Choose From Device</p>
+                        <span class="upload-prompt-sub">Upload a genuine photo of your physical item showing its real condition (PNG, JPG, WebP)</span>
                     </div>
                 </div>
 
                 <!-- 100% Authenticity Guarantee Note -->
-                <div style="display:flex; align-items:flex-start; gap:10px; margin-top:10px; font-size:12px; color:var(--text-2); background:rgba(16,185,129,0.06); border:1px solid rgba(16,185,129,0.2); border-radius:10px; padding:10px 14px;">
-                    <i class="fas fa-camera-rotate" style="color:var(--accent); font-size:15px; margin-top:2px;"></i>
-                    <div style="line-height:1.5;">
-                        <strong style="color:#FFFFFF;">100% Authentic Photo Standard:</strong> To protect neighbor trust, all donors must upload real photos of the physical item they are handing over. Stock images, AI-generated photos, or fake placeholders are strictly prohibited.
+                <div class="auth-guarantee-callout">
+                    <i class="fas fa-shield-heart auth-callout-icon"></i>
+                    <div class="auth-callout-text">
+                        <strong>100% Authentic Photo Policy:</strong> To build genuine neighborhood trust in Pune, only real photos of the actual physical item are permitted. Stock images or AI placeholders will be flagged.
                     </div>
                 </div>
             </div>
 
             <div class="form-footer">
                 <button type="submit" class="btn-submit" id="submitBtn">
-                    <i class="fas fa-sparkles"></i> Publish Listing
+                    <i class="fas fa-sparkles"></i>
+                    <span>Publish Donation Listing</span>
                 </button>
-                <a href="/items.html" class="btn-cancel">Cancel</a>
+                <a href="/items.html" class="btn-cancel">
+                    <i class="fas fa-arrow-left"></i> Cancel
+                </a>
             </div>
 
         </form>
@@ -231,29 +275,89 @@
 
     <!-- RIGHT: THE LIVE PREVIEW -->
     <div class="preview-side">
-        <div class="preview-label">Live Listing Preview</div>
-        
-        <div class="live-preview-card">
-            <div class="preview-img-box" id="previewImgBox">
-                <i class="fas fa-camera"></i>
+        <div class="preview-header-sticky">
+            <div class="preview-label">
+                <i class="fas fa-eye"></i>
+                <span>Live Catalog Card Preview</span>
+                <span class="preview-pulse-dot"></span>
             </div>
-            <div class="preview-body">
-                <h3 id="prevTitle">Item Title</h3>
-                <p id="prevDesc">Describe your item and it will appear here in real-time as you type...</p>
-                <div class="preview-loc">
-                    <i class="fas fa-map-marker-alt"></i> <span id="prevLoc">Kothrud, Pune</span>
-                    <span id="prevCoordsBadge" style="display:none; font-size:11px; color:var(--accent); font-weight:600; margin-left:6px;"></span>
+            
+            <!-- REALISTIC ITEM CARD PREVIEW (Matches items.html style) -->
+            <div class="live-preview-card" id="liveCardPreview">
+                <div class="preview-img-box" id="previewImgBox">
+                    <div class="preview-placeholder-content" id="previewPlaceholderContent">
+                        <i class="fas fa-camera-retro"></i>
+                        <span>Upload photo to preview</span>
+                    </div>
+                    <!-- Badges overlaid on top of media -->
+                    <div class="card-badge-container">
+                        <span class="card-badge" id="prevBadgeCat">🎁 Donation</span>
+                        <span class="card-badge condition" id="prevBadgeCond">Good Condition</span>
+                    </div>
+                    <div class="card-free-tag">
+                        <i class="fas fa-heart"></i> 100% Free
+                    </div>
+                </div>
+                <div class="preview-body">
+                    <div class="preview-donor-row">
+                        <div class="preview-donor-avatar" id="prevDonorAvatar">A</div>
+                        <div class="preview-donor-meta">
+                            <span class="preview-donor-name" id="prevDonorName">You (Donor)</span>
+                            <span class="preview-donor-trust"><i class="fas fa-shield-check"></i> Verified Pune Neighbor</span>
+                        </div>
+                    </div>
+                    <h3 id="prevTitle" class="item-card-title">What are you donating?</h3>
+                    <p id="prevDesc" class="item-card-desc">Enter your item description and condition details to see how your listing will appear to neighbors across Pune...</p>
+                    
+                    <div class="preview-specs-pill" id="prevSpecsPill">
+                        <span id="prevPortability"><i class="fas fa-box"></i> Light (Easy to carry)</span>
+                    </div>
+
+                    <div class="card-meta-line">
+                        <div class="locality-pin">
+                            <i class="fas fa-location-dot"></i>
+                            <span id="prevLoc">Kothrud, Pune</span>
+                            <span id="prevCoordsBadge" style="display:none; font-size:11px; color:var(--accent); font-weight:600; margin-left:4px;"></span>
+                        </div>
+                        <span class="preview-mock-cta">Request Item</span>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div style="margin-top: 32px; padding: 24px; background: var(--bg-surface); border-radius: var(--radius-md); border: 1px solid var(--border); width: 100%; max-width: 320px; box-sizing: border-box;">
-            <h4 style="margin:0 0 10px; font-size: 13.5px; color: var(--accent); font-weight:800;">💡 Community Sharing Tips</h4>
-            <ul style="padding: 0; margin: 0; list-style: none; font-size: 12.5px; color: var(--text-2); line-height: 1.7;">
-                <li>• Mention any cosmetic scratches or working flaws</li>
-                <li>• Share safe public pickup spots near you</li>
-                <li>• Coordinate directly in chat once accepted</li>
-            </ul>
+            <!-- COMMUNITY IMPACT & VALUE WIDGET -->
+            <div class="impact-preview-widget">
+                <div class="impact-widget-title">
+                    <i class="fas fa-leaf"></i>
+                    <span>Your Giving Impact in Pune</span>
+                </div>
+                <div class="impact-metrics-mini-grid">
+                    <div class="impact-metric-item">
+                        <div class="metric-val text-accent">+50</div>
+                        <div class="metric-lbl">Karma Pts</div>
+                    </div>
+                    <div class="impact-metric-item">
+                        <div class="metric-val text-sky">~4.5 kg</div>
+                        <div class="metric-lbl">CO₂ Diverted</div>
+                    </div>
+                    <div class="impact-metric-item">
+                        <div class="metric-val text-amber">100%</div>
+                        <div class="metric-lbl">Free Sharing</div>
+                    </div>
+                </div>
+                <div class="impact-widget-footer">
+                    <i class="fas fa-circle-check"></i> Handover secured via 4-digit PIN verification
+                </div>
+            </div>
+
+            <!-- COMMUNITY TIPS -->
+            <div class="sharing-tips-box">
+                <h4><i class="fas fa-lightbulb"></i> Community Sharing Best Practices</h4>
+                <ul>
+                    <li><strong>Accurate Details:</strong> Mention dimensions &amp; cosmetic flaws upfront.</li>
+                    <li><strong>Convenient Meetups:</strong> Select safe public spots or building lobbies.</li>
+                    <li><strong>Real-time Chat:</strong> Coordinate directly via Activity Hub once accepted.</li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
@@ -270,47 +374,96 @@ const prevLoc = document.getElementById("prevLoc");
 const previewImgBox = document.getElementById("previewImgBox");
 const uploadPromptText = document.getElementById("uploadPromptText");
 
-if (titleInput) titleInput.addEventListener('input', (e) => prevTitle.innerText = e.target.value || "Item Title");
-if (descInput) descInput.addEventListener('input', (e) => prevDesc.innerText = e.target.value || "Describe your item...");
-if (locInput) locInput.addEventListener('input', (e) => prevLoc.innerText = e.target.value || "Local Neighborhood");
+if (titleInput) {
+    titleInput.addEventListener('input', (e) => {
+        prevTitle.innerText = e.target.value.trim() || "What are you donating?";
+    });
+}
+
+if (descInput) {
+    descInput.addEventListener('input', (e) => {
+        prevDesc.innerText = e.target.value.trim() || "Enter your item description and condition details to see how your listing will appear to neighbors across Pune...";
+    });
+}
+
+if (locInput) {
+    locInput.addEventListener('input', (e) => {
+        prevLoc.innerText = e.target.value.trim() || "Kothrud, Pune";
+    });
+}
+
+function updatePreviewCategory(val) {
+    const badge = document.getElementById('prevBadgeCat');
+    if (!badge) return;
+    if (val) {
+        badge.textContent = `🎁 ${val}`;
+        badge.style.display = 'inline-block';
+    } else {
+        badge.textContent = '🎁 Donation';
+    }
+}
+
+function updatePreviewCondition(val) {
+    const badge = document.getElementById('prevBadgeCond');
+    if (!badge) return;
+    if (val) {
+        badge.textContent = `${val} Condition`;
+        badge.style.display = 'inline-block';
+    } else {
+        badge.textContent = 'Good Condition';
+    }
+}
+
+function updatePreviewPortability(val) {
+    const pill = document.getElementById('prevPortability');
+    if (!pill) return;
+    if (val) {
+        let icon = 'fa-box';
+        if (val.toLowerCase().includes('light')) icon = 'fa-feather-pointed';
+        else if (val.toLowerCase().includes('heavy')) icon = 'fa-truck-ramp-box';
+        pill.innerHTML = `<i class="fas ${icon}"></i> ${escapeHtml(val)}`;
+    }
+}
 
 imageInput.addEventListener('change', function(e) {
     const file = e.target.files[0];
     if (file) {
-        uploadPromptText.innerHTML = `<span style="color:var(--accent);"><i class="fas fa-check-circle"></i> Authentic Photo:</span> ${escapeHtml(file.name)}`;
+        uploadPromptText.innerHTML = `<span style="color:var(--accent);"><i class="fas fa-check-circle"></i> Authentic Photo Selected:</span> ${escapeHtml(file.name)}`;
         const reader = new FileReader();
         reader.onload = function(event) {
             previewImgBox.style.backgroundImage = `url(${event.target.result})`;
-            previewImgBox.innerHTML = `
-                <div style="position:absolute; bottom:8px; left:8px; background:rgba(9,13,22,0.88); backdrop-filter:blur(6px); border:1px solid rgba(16,185,129,0.35); border-radius:50px; padding:3px 8px; font-size:10px; font-weight:700; color:#10b981; display:inline-flex; align-items:center; gap:4px;">
-                    <i class="fas fa-shield-check"></i> Authentic Photo
-                </div>
-            `;
+            previewImgBox.style.backgroundSize = 'cover';
+            previewImgBox.style.backgroundPosition = 'center';
+            const placeholder = document.getElementById('previewPlaceholderContent');
+            if (placeholder) placeholder.style.display = 'none';
         }
         reader.readAsDataURL(file);
     }
 });
 
 const uploadBox = document.getElementById("uploadBox");
-uploadBox.addEventListener("click", () => imageInput.click());
+if (uploadBox) {
+    uploadBox.addEventListener("click", () => imageInput.click());
 
-uploadBox.addEventListener("dragover", e => {
-    e.preventDefault();
-    uploadBox.style.borderColor = "var(--accent)";
-});
+    uploadBox.addEventListener("dragover", e => {
+        e.preventDefault();
+        uploadBox.classList.add('dragover');
+    });
 
-uploadBox.addEventListener("dragleave", () => {
-    uploadBox.style.borderColor = "rgba(16, 185, 129, 0.3)";
-});
+    uploadBox.addEventListener("dragleave", () => {
+        uploadBox.classList.remove('dragover');
+    });
 
-uploadBox.addEventListener("drop", e => {
-    e.preventDefault();
-    if (e.dataTransfer.files.length) {
-        imageInput.files = e.dataTransfer.files;
-        const event = new Event('change');
-        imageInput.dispatchEvent(event);
-    }
-});
+    uploadBox.addEventListener("drop", e => {
+        e.preventDefault();
+        uploadBox.classList.remove('dragover');
+        if (e.dataTransfer.files.length) {
+            imageInput.files = e.dataTransfer.files;
+            const event = new Event('change');
+            imageInput.dispatchEvent(event);
+        }
+    });
+}
 
 function handlePuneHubSelect(val) {
     if (!val) return;
@@ -580,13 +733,24 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Check if user is a guest newcomer
+    // Check if user is a guest newcomer & populate donor live preview
     fetch('/api/user', { credentials: 'include' })
         .then(res => res.json())
         .then(user => {
             if (!user || !user.loggedIn) {
                 const notice = document.getElementById('guestDonorNotice');
                 if (notice) notice.style.display = 'flex';
+            } else {
+                const donorName = user.name || (user.email ? user.email.split('@')[0] : 'Neighbor');
+                const donorNameEl = document.getElementById('prevDonorName');
+                const donorAvatarEl = document.getElementById('prevDonorAvatar');
+                if (donorNameEl) donorNameEl.textContent = donorName;
+                if (donorAvatarEl && donorName) donorAvatarEl.textContent = donorName.charAt(0).toUpperCase();
+
+                // If user has a saved city, select it by default if nothing selected yet
+                if (user.city && !document.getElementById('locInput').value) {
+                    handlePuneHubSelect(user.city);
+                }
             }
         })
         .catch(() => {
