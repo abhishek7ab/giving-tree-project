@@ -112,7 +112,7 @@ exports.showRegister = (req, res) => {
 // ================= REGISTER =================
 exports.register = async (req, res) => {
     try {
-        const { password } = req.body;
+        const { password, captcha, captcha_token } = req.body;
         const rawName = String(req.body.name || '').trim();
         const email = String(req.body.email || '').trim().toLowerCase();
         const rawCity = String(req.body.city || req.body.location || '').trim();
@@ -138,6 +138,11 @@ exports.register = async (req, res) => {
         if (!email || !password) {
             if (isJson) return res.status(400).json({ error: 'missingfields', message: 'Please complete all required fields.' });
             return res.redirect("/register.html?error=missingfields");
+        }
+
+        if (isProduction && (!captcha_token || !captcha || !verifyCaptchaToken(captcha, captcha_token))) {
+            if (isJson) return res.status(400).json({ error: 'captchainvalid', message: 'Please complete the CAPTCHA to verify you are a real person.' });
+            return res.redirect("/register.html?error=captchainvalid");
         }
 
         if (!isValidAuthenticEmail(email)) {
@@ -220,15 +225,9 @@ exports.loginUser = async (req, res) => {
         }
 
         // Real-person Human Verification (Security CAPTCHA)
-        if (captcha_token && captcha) {
-            const isCaptchaValid = verifyCaptchaToken(captcha, captcha_token);
-            if (!isCaptchaValid) {
-                if (isJson) return res.status(400).json({ error: 'captchainvalid', message: 'CAPTCHA code is incorrect or expired. Please verify you are a real person.' });
-                return res.redirect("/login.html?error=captchainvalid");
-            }
-        } else if (process.env.NODE_ENV !== 'test' && captcha_token && !captcha) {
-            if (isJson) return res.status(400).json({ error: 'captcharequired', message: 'Please complete the CAPTCHA to verify you are a real person.' });
-            return res.redirect("/login.html?error=captcharequired");
+        if (isProduction && (!captcha_token || !captcha || !verifyCaptchaToken(captcha, captcha_token))) {
+            if (isJson) return res.status(400).json({ error: 'captchainvalid', message: 'Please complete the CAPTCHA to verify you are a real person.' });
+            return res.redirect("/login.html?error=captchainvalid");
         }
 
         const user = await userModel.findUserByEmail(email);

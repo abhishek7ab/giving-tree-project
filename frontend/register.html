@@ -214,6 +214,26 @@
                         </div>
                     </div>
 
+                    <div class="form-group" style="margin-top:14px;">
+                        <label for="registerCaptcha">
+                            <span>Human Verification (Security CAPTCHA)</span>
+                            <span class="auth-label-badge req">Required</span>
+                        </label>
+                        <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+                            <div id="registerCaptchaContainer" style="background:#060911; border:1px solid rgba(16,185,129,0.35); border-radius:10px; height:46px; display:flex; align-items:center; justify-content:center; flex:1; min-width:160px; overflow:hidden;">
+                                <i class="fas fa-spinner fa-spin" style="color:var(--accent);"></i>
+                            </div>
+                            <button type="button" onclick="loadRegisterCaptcha()" title="Refresh security CAPTCHA" style="height:46px; width:46px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14); color:#FFFFFF; display:flex; align-items:center; justify-content:center;">
+                                <i class="fas fa-arrows-rotate"></i>
+                            </button>
+                        </div>
+                        <div class="input-icon-wrapper">
+                            <i class="fas fa-shield-halved"></i>
+                            <input type="text" name="captcha" id="registerCaptcha" placeholder="ENTER 5-CHARACTER CODE ABOVE" required maxlength="6" autocomplete="off" style="text-transform:uppercase; font-weight:800; letter-spacing:2.5px; font-family:monospace;">
+                        </div>
+                        <input type="hidden" name="captcha_token" id="registerCaptchaToken">
+                    </div>
+
                     <button type="submit" class="btn primary auth-btn" id="registerBtn">
                         <span>Create My Account</span>
                         <i class="fas fa-arrow-right"></i>
@@ -238,6 +258,22 @@
     const params = new URLSearchParams(window.location.search);
     const errorMsg = document.getElementById('errorMsg');
     const errorText = document.getElementById('errorText');
+
+    async function loadRegisterCaptcha() {
+        const container = document.getElementById('registerCaptchaContainer');
+        const tokenInput = document.getElementById('registerCaptchaToken');
+        if (!container || !tokenInput) return;
+        try {
+            const response = await fetch('/api/captcha');
+            const data = await response.json();
+            container.innerHTML = data.svg || '';
+            tokenInput.value = data.captchaToken || '';
+        } catch (error) {
+            container.innerHTML = '<span style="color:#f43f5e; font-size:12px;">CAPTCHA unavailable</span>';
+        }
+    }
+
+    loadRegisterCaptcha();
 
     const errorType = params.get('error');
 
@@ -381,6 +417,8 @@
         const passwordVal = passwordInput ? passwordInput.value : '';
         const confirmPasswordVal = confirmPasswordInput ? confirmPasswordInput.value : '';
         const phoneVal = phoneInputField ? phoneInputField.value.trim() : '';
+        const captchaVal = document.getElementById('registerCaptcha')?.value.trim() || '';
+        const captchaTokenVal = document.getElementById('registerCaptchaToken')?.value || '';
 
         if (!nameVal) {
             errorText.textContent = 'Username / Name is compulsory.';
@@ -424,6 +462,12 @@
             return;
         }
 
+        if (!captchaVal || !captchaTokenVal) {
+            errorText.textContent = 'Please complete the CAPTCHA to verify you are a real person.';
+            errorMsg.style.display = 'block';
+            return;
+        }
+
         btn.disabled = true;
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
 
@@ -432,7 +476,9 @@
             city: cityVal,
             email: emailVal,
             password: passwordVal,
-            phone: phoneVal
+            phone: phoneVal,
+            captcha: captchaVal,
+            captcha_token: captchaTokenVal
         };
 
         try {

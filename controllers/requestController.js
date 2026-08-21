@@ -147,10 +147,15 @@ exports.updateRequestStatus = async (req, res) => {
             return res.status(400).send('Only an accepted request can be marked complete.');
         }
 
+        if (['accepted', 'rejected'].includes(mappedStatus) && String(requestDetails.status).toLowerCase() !== 'pending') {
+            if (isJson) return res.status(400).json({ error: 'Only pending requests can be accepted or rejected.' });
+            return res.status(400).send('Only pending requests can be accepted or rejected.');
+        }
+
         // 4-Digit Handover Safety PIN Verification
         if (mappedStatus === 'completed' && requestDetails.handover_pin) {
             const inputPin = req.body.pin || req.body.handover_pin;
-            if (inputPin && String(inputPin).trim() !== String(requestDetails.handover_pin).trim()) {
+            if (!inputPin || String(inputPin).trim() !== String(requestDetails.handover_pin).trim()) {
                 if (isJson) return res.status(400).json({ error: 'Incorrect 4-digit Handover PIN. Please ask the recipient for the verification code shown on their screen.' });
                 return res.status(400).send('Incorrect 4-digit Handover PIN.');
             }

@@ -37,7 +37,7 @@ async function createWish(req, res) {
             return res.status(400).json({ error: 'Please select a valid donation category.' });
         }
 
-        if (!locality || typeof locality !== 'string' || locality.trim().length < 2) {
+        if (!locality || typeof locality !== 'string' || !VALID_LOCALITIES.includes(locality.trim())) {
             return res.status(400).json({ error: 'Please select your Pune neighborhood hub.' });
         }
 

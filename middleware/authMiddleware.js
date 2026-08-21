@@ -51,7 +51,10 @@ exports.isLoggedIn = async (req, res, next) => {
                 }
             }
         } catch (dbErr) {
-            // If DB check fails due to transient connection issue in test mode, proceed with verified JWT
+            if (process.env.NODE_ENV !== 'test') {
+                if (isJson) return res.status(503).json({ error: 'Authentication service temporarily unavailable.' });
+                return res.status(503).send('Authentication service temporarily unavailable.');
+            }
         }
 
         return next();

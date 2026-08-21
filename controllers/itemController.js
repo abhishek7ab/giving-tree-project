@@ -50,8 +50,9 @@ function sanitizeItemForPublic(item, viewerUserId = null, isAdmin = false) {
     if (isOwner || isAdmin) {
         return item; // Retain exact coordinates for item owner and admins
     }
+    const { donor_email, ...publicItem } = item;
     return {
-        ...item,
+        ...publicItem,
         latitude: fuzzCoordinate(item.latitude),
         longitude: fuzzCoordinate(item.longitude)
     };
@@ -304,7 +305,9 @@ exports.getItemDetail = async (req, res) => {
         if (!id) return res.status(400).json({ error: 'Invalid item ID' });
         const item = await itemModel.getItemById(id);
         if (!item) return res.status(404).json({ error: 'Item not found' });
-        res.json(item);
+        const user = getUserFromReq(req);
+        const isAdmin = user?.role === 'admin' || isMasterAdmin(user?.email);
+        res.json(sanitizeItemForPublic(item, user?.id, isAdmin));
     } catch (err) {
         console.error("GET ITEM DETAIL ERROR:", err);
         res.status(500).json({ error: 'Failed to fetch item detail' });

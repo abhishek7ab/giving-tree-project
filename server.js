@@ -220,6 +220,7 @@ const io = new Server(server, {
     credentials: true
   }
 });
+app.set('io', io);
 requestController.setSocketIO(io);
 const adminNotifier = require('./utils/adminNotifier');
 adminNotifier.setSocketIO(io);
