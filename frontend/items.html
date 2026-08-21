@@ -761,6 +761,7 @@
             const hasImg = rawImg !== '' && !rawImg.includes('dummyimage.com');
             const imgSrc = hasImg ? rawImg : '/assets/icon-144.png';
             const isOwnItem = currentUserId !== null && Number(item.user_id) === Number(currentUserId);
+            const requestLabel = currentUserId ? 'Request' : 'Sign in to Request';
 
             card.innerHTML = `
                 <img src="${imgSrc}" class="map-card-thumb" alt="${escapeHtml(item.title)}" onerror="this.src='/assets/icon-144.png'">
@@ -775,7 +776,7 @@
                             <i class="fas fa-eye"></i> Details
                         </button>
                         <button type="button" class="map-card-btn" style="background:rgba(255,255,255,0.08); border:1px solid var(--border);" ${isOwnItem ? 'disabled style="opacity:0.5;"' : ''} onclick="openRequestModal(${item.id}, '${escapeHtml(item.title).replace(/'/g, "\\'")}', ${isOwnItem}, ${item.latitude || 'null'}, ${item.longitude || 'null'}, '${escapeHtml(item.location || '').replace(/'/g, "\\'")}')">
-                            <i class="fas fa-hand-holding-heart"></i> ${isOwnItem ? 'Yours' : 'Request'}
+                            <i class="fas fa-hand-holding-heart"></i> ${isOwnItem ? 'Yours' : requestLabel}
                         </button>
                     </div>
                 </div>
@@ -1305,6 +1306,7 @@
                 const hasImg = rawImg !== '' && !rawImg.includes('dummyimage.com');
                 const imgTag = hasImg ? `<img src="${rawImg}" alt="${escapeHtml(i.title)}" class="card-img" onerror="this.remove();">` : '';
                 const isOwnItem = currentUserId !== null && Number(i.user_id) === Number(currentUserId);
+                const requestLabel = currentUserId ? 'Request' : 'Sign in to Request';
                 const isSaved = currentUserSavedIds.has(Number(i.id));
                 const safeTitle = escapeHtml(i.title);
 
@@ -1377,7 +1379,7 @@
                                 <i class="fas fa-eye"></i> View Details
                             </button>
                             <button class="btn-req-primary" ${isOwnItem ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''} onclick="openRequestModal(${i.id}, '${safeTitle.replace(/'/g, "\\'")}', ${isOwnItem}, ${i.latitude || 'null'}, ${i.longitude || 'null'}, '${escapeHtml(i.location || '').replace(/'/g, "\\'")}')">
-                                <i class="fas fa-hand-holding-heart"></i> ${isOwnItem ? 'Yours' : 'Request'}
+                                <i class="fas fa-hand-holding-heart"></i> ${isOwnItem ? 'Yours' : requestLabel}
                             </button>
                         </div>
                     </div>
@@ -1536,7 +1538,9 @@
                     reqBtn.style.opacity = '0.6';
                 } else {
                     reqBtn.disabled = false;
-                    reqBtn.innerHTML = '<i class="fas fa-hand-holding-heart"></i> Request This Item';
+                    reqBtn.innerHTML = currentUserId
+                        ? '<i class="fas fa-hand-holding-heart"></i> Request This Item'
+                        : '<i class="fas fa-right-to-bracket"></i> Sign in to Request';
                     reqBtn.style.opacity = '1';
                     reqBtn.onclick = () => {
                         closeDetailModal();
