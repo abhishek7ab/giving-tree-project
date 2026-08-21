@@ -727,6 +727,11 @@
     position: relative;
     display: inline-flex;
     align-items: center;
+    z-index: 105;
+}
+
+.location-dropdown-container.open {
+    z-index: 1000;
 }
 
 .btn-location-trigger {
@@ -907,6 +912,8 @@
     max-width: 1200px;
     margin: 0 auto 60px;
     padding: 0 20px;
+    position: relative;
+    z-index: 1;
 }
 
 /* ============================================================

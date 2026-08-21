@@ -900,12 +900,16 @@
     display: flex;
     flex-direction: column;
     gap: 14px;
+    position: relative;
+    z-index: 100;
 }
 
 .catalog-search-card {
     width: 100%;
     display: flex;
     justify-content: center;
+    position: relative;
+    z-index: 100;
 }
 
 .catalog-search-card .unified-search-pill {
@@ -920,8 +924,8 @@
 }
 
 .unified-search-pill {
-    background: rgba(15, 23, 42, 0.92);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(15, 23, 42, 0.96);
+    border: 1px solid rgba(255, 255, 255, 0.14);
     border-radius: var(--radius-full);
     padding: 6px 8px 6px 20px;
     display: flex;
@@ -932,6 +936,8 @@
     -webkit-backdrop-filter: blur(16px);
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
     flex-wrap: wrap;
+    position: relative;
+    z-index: 100;
 }
 
 .unified-search-pill:focus-within {
