@@ -283,6 +283,16 @@
 
                 <p class="detail-description" id="detailDesc">Item description will be shown here.</p>
 
+                <div class="detail-specs" aria-label="Item specifications">
+                    <div class="detail-specs-heading"><i class="fas fa-list-check"></i> Item Specifications</div>
+                    <div class="detail-specs-grid">
+                        <div class="detail-spec-row"><span>Category</span><strong id="detailSpecCategory">General</strong></div>
+                        <div class="detail-spec-row"><span>Condition</span><strong id="detailSpecCondition">Good</strong></div>
+                        <div class="detail-spec-row"><span>Portability</span><strong id="detailSpecWeight">Easy to carry</strong></div>
+                        <div class="detail-spec-row"><span>Pickup</span><strong id="detailSpecPickup">Local meetup</strong></div>
+                    </div>
+                </div>
+
                 <div style="font-size:13px; color:var(--text-2); display:flex; flex-direction:column; gap:6px;">
                     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
                         <div><i class="fas fa-map-marker-alt" style="color:var(--accent); width:18px;"></i> <span id="detailLoc">Location</span></div>
@@ -1364,7 +1374,7 @@
 
                         <div class="card-actions-row">
                             <button class="btn-inspect" onclick="openItemDetail(${i.id})">
-                                <i class="fas fa-eye"></i> Details
+                                <i class="fas fa-eye"></i> View Details
                             </button>
                             <button class="btn-req-primary" ${isOwnItem ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''} onclick="openRequestModal(${i.id}, '${safeTitle.replace(/'/g, "\\'")}', ${isOwnItem}, ${i.latitude || 'null'}, ${i.longitude || 'null'}, '${escapeHtml(i.location || '').replace(/'/g, "\\'")}')">
                                 <i class="fas fa-hand-holding-heart"></i> ${isOwnItem ? 'Yours' : 'Request'}
@@ -1468,6 +1478,10 @@
                 document.getElementById('detailCondition').textContent = item.condition || 'Good Condition';
                 document.getElementById('detailWeight').innerHTML = `<i class="fas fa-weight-hanging"></i> ${item.weight_category || 'Easy to carry'}`;
                 document.getElementById('detailLoc').textContent = item.location || 'Local Neighborhood';
+                document.getElementById('detailSpecCategory').textContent = item.category || 'General';
+                document.getElementById('detailSpecCondition').textContent = item.condition || 'Good';
+                document.getElementById('detailSpecWeight').textContent = item.weight_category || 'Easy to carry';
+                document.getElementById('detailSpecPickup').textContent = item.pickup_availability || 'Local meetup';
                 
                 const googleMapLink = document.getElementById('detailGoogleMapLink');
                 if (googleMapLink) {
