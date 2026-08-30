@@ -5,14 +5,12 @@
     let currentNotifications = [];
 
     document.addEventListener('DOMContentLoaded', async () => {
-        // 1. Service Worker Registration
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/sw.js').catch(err => {
                 console.log('SW note:', err.message);
             });
         }
 
-        // 2. Mobile Navbar Toggle Setup
         const toggleBtn = document.getElementById('mobileMenuToggle');
         const navLinks = document.getElementById('navLinks');
         if (toggleBtn && navLinks) {
@@ -34,7 +32,6 @@
             });
         }
 
-        // 3. Setup Notification Bell Popover & User State
         try {
             const userRes = await fetch('/api/user', { credentials: 'include' });
             const userData = await userRes.json();
@@ -44,16 +41,10 @@
                 initNotificationBell();
                 fetchNotifications();
 
-                // Connect Socket.io for Live Notifications if available
-                let socketConnected = false;
                 if (typeof io !== 'undefined') {
                     try {
                         const socket = io({ withCredentials: true, timeout: 5000 });
-                        socket.on('connect', () => {
-                            socketConnected = true;
-                            socket.emit('join-user', userEmail);
-                        });
-
+                        socket.on('connect', () => socket.emit('join-user', userEmail));
                         socket.on('notification:new', (notif) => {
                             fetchNotifications();
                             showNotificationToast(notif);
@@ -63,11 +54,8 @@
                     }
                 }
 
-                // Resilient Polling Fallback (ensures live notifications on Vercel / serverless)
                 setInterval(() => {
-                    if (document.visibilityState === 'visible') {
-                        fetchNotifications(true);
-                    }
+                    if (document.visibilityState === 'visible') fetchNotifications(true);
                 }, 15000);
             }
         } catch (e) {
@@ -79,7 +67,6 @@
         const bell = document.querySelector('.nav-notif-bell');
         if (!bell) return;
 
-        // Wrap bell in popover container if not already wrapped
         if (!bell.parentElement.classList.contains('nav-notif-wrapper')) {
             const wrapper = document.createElement('div');
             wrapper.className = 'nav-notif-wrapper';
@@ -134,22 +121,12 @@
         const popover = document.getElementById('navNotifPopover');
         if (!wrapper) return;
         const isOpen = wrapper.classList.toggle('open');
-        if (popover && popover.classList.contains('mobile-notif-portal')) {
-            popover.classList.toggle('open', isOpen);
-        }
+        if (popover && popover.classList.contains('mobile-notif-portal')) popover.classList.toggle('open', isOpen);
         if (isOpen) {
-            // Once checked, clear badge immediately to 0 and normal appearance
             clearNotificationBadge();
-
-            // Mark all notifications as read in database
             try {
-                fetch('/api/notifications/read-all', {
-                    method: 'POST',
-                    credentials: 'include'
-                }).catch(() => {});
+                fetch('/api/notifications/read-all', { method: 'POST', credentials: 'include' }).catch(() => {});
             } catch (e) {}
-
-            // Update client in-memory states
             currentNotifications = currentNotifications.map(n => ({ ...n, is_read: true }));
             renderNotificationPopover(currentNotifications);
         }
@@ -162,7 +139,6 @@
             const data = await res.json();
             currentNotifications = data.notifications || [];
             const unreadCount = data.unreadCount || 0;
-
             const badge = document.getElementById('navNotifBadge');
             if (badge) {
                 if (unreadCount > 0) {
@@ -173,7 +149,6 @@
                     badge.style.display = 'none';
                 }
             }
-
             renderNotificationPopover(currentNotifications);
         } catch (err) {
             console.error('Error fetching notifications:', err);
@@ -183,7 +158,6 @@
     function renderNotificationPopover(notifications) {
         const popover = document.getElementById('navNotifPopover');
         if (!popover) return;
-
         if (!notifications.length) {
             popover.innerHTML = `
                 <div class="notif-popover-header">
@@ -193,8 +167,7 @@
                 <div class="notif-empty-state">
                     <i class="fas fa-check-circle" style="font-size:24px; color:var(--accent); margin-bottom:8px; display:block;"></i>
                     You're all caught up! No new notifications. 🌿
-                </div>
-            `;
+                </div>`;
             return;
         }
 
@@ -206,62 +179,39 @@
             const iconHtml = isMsg ? '<i class="fas fa-comment-dots"></i>' : '<i class="fas fa-handshake"></i>';
             const unreadIndicator = !n.is_read ? '<span style="width:7px; height:7px; border-radius:50%; background:#10b981; margin-left:auto; flex-shrink:0;"></span>' : '';
             const targetUrl = n.request_id ? `/requests.html?requestId=${n.request_id}` : `/requests.html`;
-
             itemsHtml += `
                 <a href="${targetUrl}" class="notif-popover-item" onclick="handleNotificationClick(${n.id}, ${n.request_id || 'null'})">
-                    <div class="notif-item-icon ${iconClass}">
-                        ${iconHtml}
-                    </div>
+                    <div class="notif-item-icon ${iconClass}">${iconHtml}</div>
                     <div class="notif-item-content">
                         <div class="notif-item-title">${escapeHtml(n.title || 'Handover Update')}</div>
                         <div style="font-size:11px; color:#cbd5e1; line-height:1.3; margin-bottom:2px;">${escapeHtml(n.body || '')}</div>
                         <div class="notif-item-time">${timeAgo(n.created_at)}</div>
                     </div>
                     ${unreadIndicator}
-                </a>
-            `;
+                </a>`;
         });
 
         popover.innerHTML = `
             <div class="notif-popover-header">
                 <span class="notif-popover-title"><i class="fas fa-bell" style="color:var(--accent);"></i> Notifications</span>
                 <div style="display:flex; align-items:center; gap:8px;">
-                    ${hasUnread ? `
-                    <button type="button" class="notif-mark-all" onclick="markAllNotificationsRead(event)" style="background:none; border:none; color:var(--accent); font-size:11px; cursor:pointer; padding:2px 4px; font-weight:600; display:inline-flex; align-items:center; gap:4px;">
-                        <i class="fas fa-check-double"></i> Mark read
-                    </button>` : ''}
+                    ${hasUnread ? `<button type="button" class="notif-mark-all" onclick="markAllNotificationsRead(event)" style="background:none; border:none; color:var(--accent); font-size:11px; cursor:pointer; padding:2px 4px; font-weight:600; display:inline-flex; align-items:center; gap:4px;"><i class="fas fa-check-double"></i> Mark read</button>` : ''}
                     <a href="/requests.html" class="notif-view-all">View All Activity →</a>
                 </div>
             </div>
-            <div class="notif-list-container">
-                ${itemsHtml}
-            </div>
-        `;
+            <div class="notif-list-container">${itemsHtml}</div>`;
     }
 
     window.markAllNotificationsRead = async function (e) {
-        if (e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
+        if (e) { e.preventDefault(); e.stopPropagation(); }
         clearNotificationBadge();
-        try {
-            await fetch('/api/notifications/read-all', {
-                method: 'POST',
-                credentials: 'include'
-            });
-        } catch (err) {}
+        try { await fetch('/api/notifications/read-all', { method: 'POST', credentials: 'include' }); } catch (err) {}
         currentNotifications = currentNotifications.map(n => ({ ...n, is_read: true }));
         renderNotificationPopover(currentNotifications);
     };
 
     window.handleNotificationClick = async function (notifId, requestId) {
-        try {
-            await fetch(`/api/notifications/${notifId}/read`, {
-                method: 'POST',
-                credentials: 'include'
-            });
-        } catch (e) {}
+        try { await fetch(`/api/notifications/${notifId}/read`, { method: 'POST', credentials: 'include' }); } catch (e) {}
         currentNotifications = currentNotifications.map(n => n.id === notifId ? { ...n, is_read: true } : n);
         const remaining = currentNotifications.filter(n => !n.is_read).length;
         const badge = document.getElementById('navNotifBadge');
@@ -286,42 +236,14 @@
         }
 
         const toast = document.createElement('div');
-        toast.style.cssText = `
-            background: rgba(15, 23, 42, 0.96);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            color: #f8fafc;
-            border-left: 4px solid #10b981;
-            border-top: 1px solid rgba(255,255,255,0.12);
-            border-right: 1px solid rgba(255,255,255,0.12);
-            border-bottom: 1px solid rgba(255,255,255,0.12);
-            padding: 14px 18px;
-            border-radius: 14px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-            font-family: inherit;
-            font-size: 13px;
-            pointer-events: auto;
-            min-width: 280px;
-            max-width: 380px;
-            cursor: pointer;
-            animation: dropdownFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        `;
-        toast.innerHTML = `
-            <div style="font-weight:700; color:#10b981; margin-bottom:3px; font-size:13px; display:flex; align-items:center; gap:6px;">
-                <i class="fas fa-bell"></i> ${escapeHtml(notif.title || 'Giving Tree Alert')}
-            </div>
-            <div style="color:#cbd5e1; line-height:1.4; font-size:12px;">${escapeHtml(notif.body || '')}</div>
-        `;
-
-        toast.onclick = () => {
-            window.location.href = '/requests.html';
-        };
-
+        toast.style.cssText = `background:rgba(15,23,42,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);color:#f8fafc;border-left:4px solid #10b981;border-top:1px solid rgba(255,255,255,.12);border-right:1px solid rgba(255,255,255,.12);border-bottom:1px solid rgba(255,255,255,.12);padding:14px 18px;border-radius:14px;box-shadow:0 20px 40px rgba(0,0,0,.6);font-family:inherit;font-size:13px;pointer-events:auto;min-width:280px;max-width:380px;cursor:pointer;animation:dropdownFadeIn .3s cubic-bezier(.16,1,.3,1);`;
+        toast.innerHTML = `<div style="font-weight:700;color:#10b981;margin-bottom:3px;font-size:13px;display:flex;align-items:center;gap:6px;"><i class="fas fa-bell"></i> ${escapeHtml(notif.title || 'Giving Tree Alert')}</div><div style="color:#cbd5e1;line-height:1.4;font-size:12px;">${escapeHtml(notif.body || '')}</div>`;
+        toast.onclick = () => { window.location.href = '/requests.html'; };
         container.appendChild(toast);
         setTimeout(() => {
             toast.style.opacity = '0';
             toast.style.transform = 'translateY(10px)';
-            toast.style.transition = 'all 0.35s ease';
+            toast.style.transition = 'all .35s ease';
             setTimeout(() => toast.remove(), 350);
         }, 4500);
     }
@@ -343,11 +265,103 @@
 
     function escapeHtml(str) {
         return String(str || '')
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;");
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
     }
 
     window.fetchNotificationCount = fetchNotifications;
+})();
+
+// ================= PROFILE DATA RECOVERY =================
+// The profile page has its own data loader. Keep this small fallback here so
+// profile data still renders if an optional profile widget throws an error.
+(function () {
+    'use strict';
+
+    async function loadProfileData() {
+        const profileName = document.getElementById('profileName');
+        const statsEl = document.getElementById('pStatShared');
+        if (!profileName && !statsEl) return;
+
+        try {
+            const response = await fetch('/api/user', { credentials: 'include', cache: 'no-store' });
+            if (!response.ok) throw new Error(`Profile request failed: ${response.status}`);
+            const data = await response.json();
+
+            if (!data || !data.loggedIn) {
+                window.location.href = '/login.html';
+                return;
+            }
+
+            const name = data.name || (data.email ? data.email.split('@')[0] : 'Neighbor');
+            const email = data.email || '';
+            const city = data.city || 'Kothrud, Pune';
+            const stats = data.stats || {};
+
+            const shared = Number(stats.total_shared || 0);
+            const helped = Number(stats.people_helped || 0);
+            const received = Number(stats.items_received || 0);
+            const co2 = ((shared * 4.5) + (received * 2.8)).toFixed(1);
+            const karma = (shared * 50) + (helped * 30) + (received * 10);
+
+            const setText = (id, value) => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = String(value);
+            };
+
+            setText('profileName', name);
+            setText('profileEmail', email);
+            setText('profileLocText', city);
+            setText('pStatShared', shared);
+            setText('pStatHelped', helped);
+            setText('pStatReceived', received);
+            setText('pStatCo2', co2);
+            setText('pStatKarma', karma);
+            setText('viewDisplayName', name);
+            setText('viewDisplayCity', `📍 ${city}`);
+            setText('viewDisplayEmail', email);
+
+            const avatar = document.getElementById('profileAvatar');
+            if (avatar) {
+                const firstLetter = name.charAt(0).toUpperCase();
+                avatar.innerHTML = `<span style="font-size:36px;font-weight:800;color:var(--accent);">${escapeProfileText(firstLetter)}</span>`;
+            }
+
+            const nameInput = document.getElementById('nameInput');
+            const citySelect = document.getElementById('profileCitySelect');
+            const emailInput = document.getElementById('emailInput');
+            if (nameInput) nameInput.value = name;
+            if (citySelect) citySelect.value = city;
+            if (emailInput) emailInput.value = email;
+
+            if (typeof currentProfile === 'object') {
+                currentProfile.name = name;
+                currentProfile.city = city;
+                currentProfile.email = email;
+                currentProfile.itemsGiven = shared;
+                currentProfile.karma = karma;
+            }
+        } catch (error) {
+            console.error('Profile data loading failed:', error);
+            if (profileName) profileName.textContent = 'Profile unavailable';
+            ['pStatShared', 'pStatHelped', 'pStatReceived', 'pStatCo2', 'pStatKarma'].forEach(id => setFallbackText(id, '—'));
+        }
+    }
+
+    function setFallbackText(id, value) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = value;
+    }
+
+    function escapeProfileText(value) {
+        return String(value).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[ch]));
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', loadProfileData, { once: true });
+    } else {
+        loadProfileData();
+    }
 })();
