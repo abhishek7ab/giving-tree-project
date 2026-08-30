@@ -1,0 +1,170 @@
+/* Giving Tree profile page visual polish
+   Focus: cleaner mobile hierarchy, compact impact metrics,
+   better loading state, and more consistent spacing.
+*/
+
+.profile-header {
+    padding-top: calc(var(--nav-height) + 34px);
+    padding-bottom: 30px;
+    background:
+        radial-gradient(circle at 50% 10%, rgba(16,185,129,0.12), transparent 34%),
+        linear-gradient(180deg, rgba(16,185,129,0.055) 0%, transparent 100%);
+}
+
+.profile-avatar {
+    background: linear-gradient(145deg, rgba(16,185,129,0.24), rgba(16,185,129,0.05));
+    border-color: rgba(52,211,153,0.45);
+    box-shadow: 0 0 0 7px rgba(16,185,129,0.055), 0 14px 34px rgba(0,0,0,0.34);
+}
+
+.profile-name {
+    font-weight: 800;
+    letter-spacing: -0.035em;
+}
+
+.profile-email {
+    margin-top: 7px;
+}
+
+.profile-body {
+    max-width: 1120px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.impact-strip {
+    gap: 12px;
+    margin-bottom: 26px;
+}
+
+.impact-tile {
+    position: relative;
+    overflow: hidden;
+    background: rgba(15,23,42,0.72);
+    border-color: rgba(255,255,255,0.09);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.impact-tile::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 3px;
+    height: 100%;
+    background: rgba(255,255,255,0.16);
+}
+
+.impact-tile:nth-child(1)::before { background: var(--accent); }
+.impact-tile:nth-child(2)::before { background: #38bdf8; }
+.impact-tile:nth-child(3)::before { background: #a78bfa; }
+.impact-tile:nth-child(4)::before { background: #34d399; }
+.impact-tile:nth-child(5)::before { background: #fbbf24; }
+
+.impact-tile:hover {
+    transform: translateY(-2px);
+    border-color: rgba(16,185,129,0.25);
+    background: rgba(18,28,50,0.86);
+}
+
+.impact-tile-num {
+    font-variant-numeric: tabular-nums;
+}
+
+.profile-form-card,
+.sidebar-stat-card {
+    box-shadow: 0 8px 26px rgba(0,0,0,0.16);
+}
+
+/* Make the temporary loading state look intentional instead of empty. */
+.profile-name#profileName,
+#pStatShared,
+#pStatHelped,
+#pStatReceived,
+#pStatCo2,
+#pStatKarma {
+    position: relative;
+}
+
+.profile-name#profileName:empty::after,
+#pStatShared:empty::after,
+#pStatHelped:empty::after,
+#pStatReceived:empty::after,
+#pStatCo2:empty::after,
+#pStatKarma:empty::after {
+    content: '';
+    display: block;
+    height: 1em;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.08);
+    animation: profileSkeleton 1.25s ease-in-out infinite;
+}
+
+@keyframes profileSkeleton {
+    0%, 100% { opacity: 0.45; }
+    50% { opacity: 0.9; }
+}
+
+@media (max-width: 768px) {
+    .profile-header {
+        padding: calc(var(--nav-height) + 12px) 18px 24px !important;
+    }
+
+    .profile-avatar {
+        width: 72px !important;
+        height: 72px !important;
+        margin-bottom: 12px !important;
+    }
+
+    .profile-name {
+        font-size: clamp(1.45rem, 7vw, 1.9rem) !important;
+    }
+
+    .profile-body {
+        padding: 16px 14px 104px !important;
+    }
+
+    .impact-strip {
+        gap: 9px !important;
+        margin-bottom: 18px !important;
+    }
+
+    .impact-tile {
+        min-height: 82px !important;
+        padding: 14px 12px 14px 15px !important;
+        border-radius: 14px !important;
+    }
+
+    .impact-tile-num {
+        font-size: 23px !important;
+    }
+
+    .impact-tile-label {
+        font-size: 10.5px !important;
+    }
+
+    .impact-strip > div:nth-child(5) {
+        min-height: 62px !important;
+    }
+
+    .profile-form-card {
+        background: rgba(15,23,42,0.62) !important;
+        border-color: rgba(255,255,255,0.09) !important;
+    }
+}
+
+@media (max-width: 380px) {
+    .impact-tile {
+        padding-left: 13px !important;
+        padding-right: 10px !important;
+    }
+
+    .impact-tile-num {
+        font-size: 21px !important;
+    }
+
+    .impact-tile-label {
+        font-size: 10px !important;
+    }
+}
