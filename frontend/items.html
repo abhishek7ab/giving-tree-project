@@ -700,8 +700,11 @@
                     };
                     for (const [k, coords] of Object.entries(PUNE_MAP)) {
                         if (locStr.includes(k)) {
-                            lat = coords[0] + (Math.random() - 0.5) * 0.005;
-                            lng = coords[1] + (Math.random() - 0.5) * 0.005;
+                            // Keep fallback pins stable between renders so the map does not
+                            // appear to move items when filters or view modes change.
+                            const stableOffset = (Number(item.id) || 0) % 7;
+                            lat = coords[0] + (stableOffset - 3) * 0.00045;
+                            lng = coords[1] + (((Number(item.id) || 0) * 3) % 7 - 3) * 0.00045;
                             break;
                         }
                     }

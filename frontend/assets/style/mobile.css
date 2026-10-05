@@ -49,6 +49,24 @@
     .statement-body {
         font-size: 1rem !important;
     }
+
+    .catalog-map-wrapper {
+        width: calc(100% - 32px) !important;
+        height: 62vh !important;
+        min-height: 400px !important;
+        margin-bottom: 40px !important;
+        border-radius: 16px !important;
+    }
+
+    .catalog-leaflet-map {
+        min-height: 400px !important;
+    }
+
+    .catalog-map-floating-card {
+        right: 10px !important;
+        bottom: 10px !important;
+        width: calc(100% - 20px) !important;
+    }
 }
 
 /* ============================================================
