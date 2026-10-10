@@ -1,6 +1,6 @@
-const CACHE_NAME = 'giving-tree-v34';
-const STATIC_CACHE = 'giving-tree-static-v34';
-const API_CACHE = 'giving-tree-api-v34';
+const CACHE_NAME = 'giving-tree-v35';
+const STATIC_CACHE = 'giving-tree-static-v35';
+const API_CACHE = 'giving-tree-api-v35';
 
 const STATIC_ASSETS = [
   '/',
@@ -34,7 +34,6 @@ const STATIC_ASSETS = [
 ];
 
 const API_ROUTES = [
-  '/api/user',
   '/api/stats',
   '/api/items/recent',
 ];

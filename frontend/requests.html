@@ -1243,6 +1243,12 @@
             if (modal) modal.classList.remove('active');
         }
 
+        function handleReceiptOverlayClick(e) {
+            if (e.target && e.target.id === 'generosityReceiptModal') {
+                closeGenerosityReceipt();
+            }
+        }
+
         // Startup & Deep URL Query Handling
         initPinBoxes();
 

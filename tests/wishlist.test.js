@@ -53,9 +53,11 @@ describe('Community Wishlist & Items Wanted Matching Board API Suite', () => {
 
     afterAll(async () => {
         // Strict Teardown: Clean up all test artifacts
-        if (testUser && testUser.id) {
-            await db.query('DELETE FROM community_wishes WHERE user_id = $1', [testUser.id]);
-            await db.query('DELETE FROM users WHERE id = $1', [testUser.id]);
+        try {
+            await db.query('DELETE FROM community_wishes WHERE user_id IN (SELECT id FROM users WHERE email = $1)', [testUserData.email]);
+            await db.query('DELETE FROM users WHERE email = $1', [testUserData.email]);
+        } catch (e) {
+            console.error('Teardown error:', e);
         }
     });
 

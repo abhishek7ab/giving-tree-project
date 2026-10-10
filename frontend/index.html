@@ -369,7 +369,7 @@
                                 📍 Aundh
                             </button>
                             <button type="button" class="pune-locality-chip" id="btnPuneGPSLocate"
-                                onclick="locateUserOnPuneMap()" style="background:var(--tree-green); color:#FFFFFF;">
+                                onclick="locateNearMe()" style="background:var(--tree-green); color:#FFFFFF;">
                                 <i class="fas fa-crosshairs"></i> Locate Near Me
                             </button>
                         </div>
@@ -813,14 +813,7 @@
             puneMapMarkers.forEach(m => puneMapInstance.removeLayer(m));
             puneMapMarkers = [];
 
-            const defaultLocs = [
-                { title: 'Engineering Textbooks', loc: 'Kothrud', lat: 18.5074, lng: 73.8077, cat: 'Books' },
-                { title: 'Wooden Study Table', loc: 'Baner', lat: 18.5590, lng: 73.7868, cat: 'Furniture' },
-                { title: 'Acoustic Guitar', loc: 'FC Road', lat: 18.5284, lng: 73.8417, cat: 'Music' },
-                { title: 'LED Monitor 24"', loc: 'Hinjawadi', lat: 18.5913, lng: 73.7389, cat: 'Electronics' }
-            ];
-
-            const displayList = itemsList && itemsList.length > 0 ? itemsList : defaultLocs;
+            const displayList = Array.isArray(itemsList) ? itemsList : [];
 
             displayList.forEach(item => {
                 const lat = item.latitude || (item.lat || 18.5204);

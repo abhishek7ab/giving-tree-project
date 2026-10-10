@@ -51,8 +51,8 @@ describe('Comprehensive End-to-End System Audit', () => {
             const res = await request(app).get('/post-item.html');
             expect(res.status).toBe(200);
             expect(res.text).toContain('Donate to');
-            expect(res.text).toContain('What item are you donating?');
-            expect(res.text).toContain('Donation Category');
+            expect(res.text).toContain('Item Title');
+            expect(res.text).toContain('Category');
             expect(res.text).toContain('id="donorGratitudeModal"');
             expect(res.text).toContain('id="gratitudeModalTitle"');
             expect(res.text).not.toContain('Vidya Jyoti');

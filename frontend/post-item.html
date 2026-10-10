@@ -639,7 +639,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const wishLocParam = urlParams.get('wishLoc');
 
     if (wishTitleParam) {
-        const titleInput = document.getElementById('itemTitle');
+        const titleInput = document.getElementById('itemName');
         if (titleInput) {
             titleInput.value = wishTitleParam;
             const prevTitle = document.getElementById('prevTitle');
@@ -651,12 +651,13 @@ window.addEventListener('DOMContentLoaded', () => {
         const catSelect = document.getElementById('itemCategory');
         if (catSelect) {
             catSelect.value = catParam;
-            const prevCat = document.getElementById('prevCat');
-            if (prevCat) prevCat.innerText = catParam;
+            const prevBadgeCat = document.getElementById('prevBadgeCat');
+            if (prevBadgeCat) prevBadgeCat.innerText = catParam;
         }
     }
 
     if (wishLocParam) {
+        handlePuneHubSelect(wishLocParam);
         const locInput = document.getElementById('locInput');
         if (locInput) {
             locInput.value = wishLocParam;

@@ -1820,9 +1820,8 @@
             document.getElementById('categoryFilter').value = 'All';
             document.getElementById('conditionFilter').value = 'All';
             document.getElementById('sortFilter').value = 'newest';
-            document.querySelectorAll('.pune-locality-chip').forEach(c => c.classList.remove('active'));
-            const allChip = document.querySelector('.pune-locality-chip');
-            if (allChip) allChip.classList.add('active');
+            if (typeof selectCatalogLocality === 'function') selectCatalogLocality('all', 'All Pune Hubs');
+            if (typeof setRadiusFilter === 'function') setRadiusFilter('all');
             loadItems('');
         }
 

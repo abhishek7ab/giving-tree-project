@@ -135,7 +135,7 @@ exports.getUserStats = async (user_id) => {
     const itemsShared = parseInt(itemsResult.rows[0].count, 10);
 
     const helpedResult = await db.query(
-        "SELECT COUNT(*) FROM requests r JOIN items i ON r.item_id = i.id WHERE i.user_id=$1 AND i.archived_at IS NULL AND r.archived_at IS NULL AND r.status ILIKE 'accepted'",
+        "SELECT COUNT(*) FROM requests r JOIN items i ON r.item_id = i.id WHERE i.user_id=$1 AND i.archived_at IS NULL AND r.archived_at IS NULL AND (r.status ILIKE 'accepted' OR r.status ILIKE 'completed')",
         [user_id]
     );
     const peopleHelped = parseInt(helpedResult.rows[0].count, 10);

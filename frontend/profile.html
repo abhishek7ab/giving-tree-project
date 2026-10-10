@@ -407,14 +407,38 @@
                 const firstLetter = name.charAt(0).toUpperCase();
                 document.getElementById('profileAvatar').innerHTML = `<span style="font-size:36px; font-weight:800; color:var(--accent);">${firstLetter}</span>`;
 
-                // Dynamic Ecological & Community Badges
+                // Populate impact strip stats
                 const sharedCount = Number(stats.total_shared || 0);
                 const helpedCount = Number(stats.people_helped || 0);
                 const receivedCount = Number(stats.items_received || 0);
-
                 const co2Kg = ((sharedCount * 4.5) + (receivedCount * 2.8)).toFixed(1);
                 const karmaPts = (sharedCount * 50) + (helpedCount * 30) + (receivedCount * 10);
 
+                const pStatShared = document.getElementById('pStatShared');
+                const pStatHelped = document.getElementById('pStatHelped');
+                const pStatReceived = document.getElementById('pStatReceived');
+                const pStatCo2 = document.getElementById('pStatCo2');
+                const pStatKarma = document.getElementById('pStatKarma');
+
+                if (pStatShared) pStatShared.textContent = sharedCount;
+                if (pStatHelped) pStatHelped.textContent = helpedCount;
+                if (pStatReceived) pStatReceived.textContent = receivedCount;
+                if (pStatCo2) pStatCo2.textContent = co2Kg;
+                if (pStatKarma) pStatKarma.textContent = karmaPts;
+
+                // Store for Impact Certificate
+                currentProfile.itemsGiven = sharedCount;
+                currentProfile.karma = karmaPts;
+
+                // Member since
+                if (data.created_at) {
+                    const memberSinceEl = document.getElementById('memberSince');
+                    if (memberSinceEl) {
+                        memberSinceEl.textContent = new Date(data.created_at).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
+                    }
+                }
+
+                // Dynamic Ecological & Community Badges
                 const badges = [];
                 if (isAdmin) badges.push(`<span class="profile-badge" style="background:rgba(244,63,94,0.1); color:var(--danger); border-color:rgba(244,63,94,0.25);"><i class="fas fa-shield-halved"></i> Master Admin</span>`);
                 if (sharedCount >= 5) badges.push(`<span class="profile-badge" style="background:rgba(245,158,11,0.12); color:#fbbf24; border-color:rgba(245,158,11,0.3);"><i class="fas fa-star"></i> Community Pillar</span>`);
@@ -423,55 +447,74 @@
                 badges.push(`<span class="profile-badge"><i class="fas fa-leaf"></i> Zero-Waste Member</span>`);
                 document.getElementById('profileBadges').innerHTML = badges.join('');
 
+                // Populate profile view and edit fields
+                updateProfileViews(name, city, email);
 
-                const reviews = resData.reviews || [];
-                if (countBadge) countBadge.textContent = `${reviews.length} ${reviews.length === 1 ? 'Note' : 'Notes'}`;
-
-                if (reviews.length === 0) {
-                    listEl.innerHTML = `
-                    <div style="text-align:center; padding:24px 12px; color:var(--text-3); font-size:13px;">
-                        <i class="fas fa-seedling" style="font-size:24px; color:var(--accent); margin-bottom:8px; display:block;"></i>
-                        No gratitude notes yet. When neighbors receive items from you, their thank-you notes will bloom here!
-                    </div>`;
-                    return;
-                }
-
-                let html = '';
-                reviews.forEach(rev => {
-                    const rName = rev.reviewer_name || 'Neighbor';
-                    const rLetter = rName.charAt(0).toUpperCase();
-                    const rCity = rev.reviewer_city ? ` • 📍 ${escapeHtml(rev.reviewer_city)}` : '';
-                    const rDate = new Date(rev.created_at || Date.now()).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' });
-                    const rRating = Number(rev.rating || 5);
-                    const starsHtml = '★'.repeat(rRating) + '☆'.repeat(5 - rRating);
-                    const commentText = rev.comment ? escapeHtml(rev.comment) : 'Thank you so much for your generosity!';
-
-                    html += `
-                    <div class="gratitude-wall-card">
-                        <div class="gratitude-card-header">
-                            <div class="gratitude-sender-badge">
-                                <div class="gratitude-sender-avatar">${rLetter}</div>
-                                <div>
-                                    <strong style="color:var(--text-1); font-size:13px;">${escapeHtml(rName)}</strong>
-                                    <span style="color:var(--text-3); font-size:11px;">${rCity}</span>
-                                </div>
-                            </div>
-                            <div style="text-align:right;">
-                                <div style="color:#f59e0b; font-size:12px; letter-spacing:1px;">${starsHtml}</div>
-                                <span style="font-size:10.5px; color:var(--text-3);">${rDate}</span>
-                            </div>
-                        </div>
-                        <div class="gratitude-text">
-                            “${commentText}”
-                        </div>
-                    </div>`;
-                });
-                listEl.innerHTML = html;
+                // Load gratitude wall for this user
+                if (data.id) loadGratitudeWall(data.id);
             })
             .catch(err => {
-                console.error("Error loading gratitude wall:", err);
+                console.error('Error loading profile:', err);
             });
-}
+
+        // ---- Load Gratitude Wall ----
+        function loadGratitudeWall(userId) {
+            const listEl = document.getElementById('gratitudeWallList');
+            const countBadge = document.getElementById('gratitudeCountBadge');
+
+            fetch(`/api/users/${userId}/reviews`, { credentials: 'include' })
+                .then(res => res.json())
+                .then(resData => {
+                    const reviews = (Array.isArray(resData) ? resData : (resData.reviews || []));
+                    if (countBadge) countBadge.textContent = `${reviews.length} ${reviews.length === 1 ? 'Note' : 'Notes'}`;
+
+                    if (!listEl) return;
+
+                    if (reviews.length === 0) {
+                        listEl.innerHTML = `
+                        <div style="text-align:center; padding:24px 12px; color:var(--text-3); font-size:13px;">
+                            <i class="fas fa-seedling" style="font-size:24px; color:var(--accent); margin-bottom:8px; display:block;"></i>
+                            No gratitude notes yet. When neighbors receive items from you, their thank-you notes will bloom here!
+                        </div>`;
+                        return;
+                    }
+
+                    let html = '';
+                    reviews.forEach(rev => {
+                        const rName = rev.reviewer_name || 'Neighbor';
+                        const rLetter = rName.charAt(0).toUpperCase();
+                        const rCity = rev.reviewer_city ? ` • 📍 ${escapeHtml(rev.reviewer_city)}` : '';
+                        const rDate = new Date(rev.created_at || Date.now()).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' });
+                        const rRating = Number(rev.rating || 5);
+                        const starsHtml = '★'.repeat(rRating) + '☆'.repeat(5 - rRating);
+                        const commentText = rev.comment ? escapeHtml(rev.comment) : 'Thank you so much for your generosity!';
+
+                        html += `
+                        <div class="gratitude-wall-card">
+                            <div class="gratitude-card-header">
+                                <div class="gratitude-sender-badge">
+                                    <div class="gratitude-sender-avatar">${rLetter}</div>
+                                    <div>
+                                        <strong style="color:var(--text-1); font-size:13px;">${escapeHtml(rName)}</strong>
+                                        <span style="color:var(--text-3); font-size:11px;">${rCity}</span>
+                                    </div>
+                                </div>
+                                <div style="text-align:right;">
+                                    <div style="color:#f59e0b; font-size:12px; letter-spacing:1px;">${starsHtml}</div>
+                                    <span style="font-size:10.5px; color:var(--text-3);">${rDate}</span>
+                                </div>
+                            </div>
+                            <div class="gratitude-text">
+                                "${commentText}"
+                            </div>
+                        </div>`;
+                    });
+                    listEl.innerHTML = html;
+                })
+                .catch(err => {
+                    console.error('Error loading gratitude wall:', err);
+                });
+        }
 
         let currentProfile = { name: '', city: '', email: '' };
 
