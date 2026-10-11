@@ -5,6 +5,7 @@
   "homepage": "https://giving-tree-project.vercel.app/",
   "main": "server.js",
   "scripts": {
+    "build": "echo 'Build successful'",
     "dev": "node --watch server.js",
     "start": "node server.js",
     "start:prod": "node server.js",
@@ -19,6 +20,9 @@
     "db:init": "node database/init.js",
     "docker:build": "docker build -t giving-tree .",
     "docker:run": "docker run -p 3000:3000 --env-file .env giving-tree"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   },
   "keywords": [
     "community",
