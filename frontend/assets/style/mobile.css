@@ -243,51 +243,75 @@
         font-size: 18px !important;
     }
 
-    /* ── UNIFIED SEARCH PILL: stack vertically ── */
-    .catalog-search-wrapper {
-        margin: 10px 0 12px !important;
-        padding: 0 !important;
+    /* ── COMMAND HUB CARD: Mobile Optimization ── */
+    .catalog-control-center {
+        padding: 0 12px !important;
+        margin-bottom: 20px !important;
     }
 
-    .unified-search-pill {
-        flex-direction: column !important;
+    .command-hub-card {
+        padding: 10px 12px 12px !important;
         border-radius: 16px !important;
-        padding: 10px !important;
+    }
+
+    .command-search-row {
+        gap: 8px !important;
+        padding: 2px 2px 8px !important;
+    }
+
+    .command-search-row input {
+        font-size: 13.5px !important;
+    }
+
+    .btn-search-go {
+        width: auto !important;
+        height: 36px !important;
+        padding: 0 13px !important;
+        font-size: 12.5px !important;
+        border-radius: 10px !important;
+        flex-shrink: 0 !important;
+    }
+
+    .command-filters-strip {
         gap: 6px !important;
+        padding-top: 8px !important;
     }
 
-    .search-input-wrap {
+    .command-filters-strip .location-dropdown-container {
+        width: calc(50% - 3px) !important;
+        flex: 1 1 calc(50% - 3px) !important;
+        min-width: 130px !important;
+    }
+
+    .command-filters-strip .btn-location-trigger {
         width: 100% !important;
-        min-width: unset !important;
-    }
-
-    /* Hide dividers between stacked items */
-    .filter-pill-divider {
-        display: none !important;
-    }
-
-    .select-pill-wrap {
-        width: 100% !important;
+        height: 36px !important;
+        padding: 0 10px !important;
+        font-size: 12px !important;
         justify-content: space-between !important;
     }
 
-    .select-pill-wrap select {
+    .command-filters-strip .select-pill-wrap {
+        width: calc(50% - 3px) !important;
+        flex: 1 1 calc(50% - 3px) !important;
+        min-width: 130px !important;
+        height: 36px !important;
+        padding: 0 10px !important;
+        justify-content: space-between !important;
+    }
+
+    .command-filters-strip .select-pill-wrap select {
         flex: 1 !important;
         width: 100% !important;
+        font-size: 12px !important;
     }
 
-    /* Location dropdown: full-width trigger, popover repositioned */
-    .location-dropdown-container {
+    .command-filters-strip .btn-clear-all-filters {
         width: 100% !important;
-    }
-
-    .btn-location-trigger {
-        width: 100% !important;
-        justify-content: space-between !important;
-        padding: 8px 14px !important;
-        border-radius: 10px !important;
-        background: rgba(255, 255, 255, 0.05) !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        justify-content: center !important;
+        margin-left: 0 !important;
+        height: 34px !important;
+        font-size: 11.5px !important;
     }
 
     /* Popover must appear nicely as a bottom sheet modal above dock */
@@ -315,13 +339,6 @@
     .loc-option-btn {
         padding: 9px 8px !important;
         font-size: 12px !important;
-    }
-
-    /* Search go button: full width */
-    .btn-search-go {
-        width: 100% !important;
-        height: 42px !important;
-        border-radius: 10px !important;
     }
 
     /* ── RESULTS BAR: stack vertically ── */

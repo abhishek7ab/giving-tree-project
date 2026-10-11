@@ -1,6 +1,6 @@
-const CACHE_NAME = 'giving-tree-v35';
-const STATIC_CACHE = 'giving-tree-static-v35';
-const API_CACHE = 'giving-tree-api-v35';
+const CACHE_NAME = 'giving-tree-v39';
+const STATIC_CACHE = 'giving-tree-static-v39';
+const API_CACHE = 'giving-tree-api-v39';
 
 const STATIC_ASSETS = [
   '/',
@@ -83,6 +83,11 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
 
   if (request.method !== 'GET') {
+    return;
+  }
+
+  // Security CAPTCHA challenges must NEVER be cached or handled by SW
+  if (url.pathname === '/api/captcha' || url.pathname.startsWith('/api/captcha')) {
     return;
   }
 

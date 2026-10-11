@@ -89,7 +89,7 @@ app.use(cors({
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Cookie', 'Accept', 'X-Requested-With', 'Cache-Control', 'Pragma'],
 }));
 
 // Handle preflight requests globally
@@ -419,24 +419,22 @@ app.use((err, req, res, next) => {
 let PORT = process.env.PORT || 3000;
 
 function startServer(port) {
-    initDB().catch(err => {
-        logger.warn({ err: err.message || err }, "Database initialization note (DB connection pending or offline)");
-    }).finally(() => {
-        server.listen(port, () => {
-            console.log(`\n==================================================`);
-            console.log(`🚀 Giving Tree Server is Live!`);
-            console.log(`👉 Home Page:  http://localhost:${port}/index.html`);
-            console.log(`👉 Login Page: http://localhost:${port}/login.html`);
-            console.log(`==================================================\n`);
-            logger.info(`🚀 Server running on http://localhost:${port}`);
-        }).on('error', (err) => {
-            if (err.code === 'EADDRINUSE') {
-                logger.warn(`⚠️ Port ${port} is in use, trying port ${port + 1}...`);
-                startServer(port + 1);
-            } else {
-                logger.error({ err }, "Server error");
-            }
-        });
+    server.listen(port, () => {
+        console.log(`\n==================================================`);
+        console.log(`🚀 Giving Tree Server is Live!`);
+        console.log(`👉 Home Page:  http://localhost:${port}/index.html`);
+        console.log(`👉 Login Page: http://localhost:${port}/login.html`);
+        console.log(`==================================================\n`);
+        logger.info(`🚀 Server running on http://localhost:${port}`);
+        
+        ensureDBInit();
+    }).on('error', (err) => {
+        if (err.code === 'EADDRINUSE') {
+            logger.warn(`⚠️ Port ${port} is in use, trying port ${port + 1}...`);
+            startServer(port + 1);
+        } else {
+            logger.error({ err }, "Server error");
+        }
     });
 }
 

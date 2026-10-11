@@ -30,9 +30,12 @@
     <link rel="stylesheet" href="/assets/style/pages.css">
     <link rel="stylesheet" href="/assets/style/mobile.css">
 
-    <!-- Leaflet & Fonts -->
+    <!-- Leaflet & MapLibre GL for OpenFreeMap Vector Tiles -->
     <link rel="stylesheet" href="/assets/vendor/leaflet/leaflet.css">
+    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css">
     <script src="/assets/vendor/leaflet/leaflet.js"></script>
+    <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
+    <script src="https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.0.22/leaflet-maplibre-gl.js"></script>
     <script src="/assets/js/location-picker.js"></script>
     <link
         href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap"
@@ -310,66 +313,73 @@
         <!-- ================= 5. LIVE COMMUNITY & PUNE MAP ================= -->
         <section class="section section-white" id="puneMapSection">
             <div class="container">
-                <div class="reveal-on-scroll" style="text-align:left; max-width:720px;">
-                    <span class="eyebrow-pill"
-                        style="background:var(--coral-dim); color:var(--coral); border-color:var(--coral);">
-                        📍 Local Neighborhood Network
-                    </span>
-                    <h2 class="section-headline">Your neighborhood is already sharing.</h2>
-                    <p class="editorial-lead">Explore free items and pickup hubs in real time across Pune, Maharashtra.
-                    </p>
+                <div class="reveal-on-scroll" style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px; margin-bottom:16px;">
+                    <div>
+                        <div class="eyebrow-pill-wrap" style="justify-content:flex-start; margin-bottom:8px;">
+                            <span class="eyebrow-pill">
+                                <span class="pulse-emerald-dot"></span>
+                                Live Neighborhood Network
+                            </span>
+                        </div>
+                        <h2 class="section-headline" style="margin:0 0 6px;">Your neighborhood is already sharing.</h2>
+                        <p class="editorial-lead" style="margin:0; max-width:620px;">Explore free items and pickup hubs in real time across Pune, Maharashtra.</p>
+                    </div>
+                    <div class="map-live-status-pill">
+                        <span class="live-status-dot"></span>
+                        <span id="puneMapCountBadge">Loading live items...</span>
+                    </div>
                 </div>
 
                 <div class="map-editorial-wrapper reveal-on-scroll delay-100">
                     <!-- Pune Locality Filter Chips -->
-                    <div class="pune-chips-scroll-wrapper" style="margin-bottom:20px;">
+                    <div class="pune-chips-scroll-wrapper" style="margin-bottom:18px;">
                         <div class="pune-chips-scroll" id="puneHomeChipsScroll">
                             <button type="button" class="pune-locality-chip active"
                                 onclick="filterPuneLocality('all', 18.5204, 73.8567, 12, this)">
-                                🌐 All Pune
+                                <i class="fas fa-globe"></i> All Pune
                             </button>
                             <button type="button" class="pune-locality-chip"
                                 onclick="filterPuneLocality('Kothrud', 18.5074, 73.8077, 14, this)">
-                                📍 Kothrud
+                                <i class="fas fa-location-dot"></i> Kothrud
                             </button>
                             <button type="button" class="pune-locality-chip"
                                 onclick="filterPuneLocality('Baner', 18.5590, 73.7868, 14, this)">
-                                📍 Baner
+                                <i class="fas fa-location-dot"></i> Baner
                             </button>
                             <button type="button" class="pune-locality-chip"
                                 onclick="filterPuneLocality('FC Road', 18.5284, 73.8417, 15, this)">
-                                📍 FC Road
+                                <i class="fas fa-location-dot"></i> FC Road
                             </button>
                             <button type="button" class="pune-locality-chip"
                                 onclick="filterPuneLocality('Hinjawadi', 18.5913, 73.7389, 14, this)">
-                                📍 Hinjawadi
+                                <i class="fas fa-location-dot"></i> Hinjawadi
                             </button>
                             <button type="button" class="pune-locality-chip"
                                 onclick="filterPuneLocality('Viman Nagar', 18.5679, 73.9143, 14, this)">
-                                📍 Viman Nagar
+                                <i class="fas fa-location-dot"></i> Viman Nagar
                             </button>
                             <button type="button" class="pune-locality-chip"
                                 onclick="filterPuneLocality('Koregaon Park', 18.5362, 73.8940, 14, this)">
-                                📍 Koregaon Park
+                                <i class="fas fa-location-dot"></i> Koregaon Park
                             </button>
                             <button type="button" class="pune-locality-chip"
                                 onclick="filterPuneLocality('Hadapsar', 18.5089, 73.9259, 14, this)">
-                                📍 Hadapsar
+                                <i class="fas fa-location-dot"></i> Hadapsar
                             </button>
                             <button type="button" class="pune-locality-chip"
                                 onclick="filterPuneLocality('Katraj', 18.4575, 73.8677, 14, this)">
-                                📍 Katraj
+                                <i class="fas fa-location-dot"></i> Katraj
                             </button>
                             <button type="button" class="pune-locality-chip"
                                 onclick="filterPuneLocality('Wakad', 18.5987, 73.7660, 14, this)">
-                                📍 Wakad
+                                <i class="fas fa-location-dot"></i> Wakad
                             </button>
                             <button type="button" class="pune-locality-chip"
                                 onclick="filterPuneLocality('Aundh', 18.5602, 73.8031, 14, this)">
-                                📍 Aundh
+                                <i class="fas fa-location-dot"></i> Aundh
                             </button>
-                            <button type="button" class="pune-locality-chip" id="btnPuneGPSLocate"
-                                onclick="locateNearMe()" style="background:var(--tree-green); color:#FFFFFF;">
+                            <button type="button" class="pune-locality-chip btn-pune-gps" id="btnPuneGPSLocate"
+                                onclick="locateNearMe()">
                                 <i class="fas fa-crosshairs"></i> Locate Near Me
                             </button>
                         </div>
@@ -790,11 +800,25 @@
                 scrollWheelZoom: false
             });
 
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-                subdomains: 'abcd',
-                maxZoom: 19,
-                attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap'
-            }).addTo(puneMapInstance);
+            if (typeof applyOpenFreeMapLayer === 'function') {
+                applyOpenFreeMapLayer(puneMapInstance);
+            } else if (typeof L.maplibreGL === 'function' && typeof maplibregl !== 'undefined') {
+                try {
+                    L.maplibreGL({ style: 'https://tiles.openfreemap.org/styles/dark' }).addTo(puneMapInstance);
+                } catch (e) {
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        subdomains: 'abc',
+                        maxZoom: 19,
+                        className: 'gt-dark-tiles'
+                    }).addTo(puneMapInstance);
+                }
+            } else {
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    subdomains: 'abc',
+                    maxZoom: 19,
+                    className: 'gt-dark-tiles'
+                }).addTo(puneMapInstance);
+            }
 
             fetch(`${BACKEND_URL}/api/items/data`)
                 .then(res => res.json())
@@ -804,7 +828,11 @@
                     if (countBadge) countBadge.textContent = `${puneAllItems.length} Live Items in Pune`;
                     renderPuneMapMarkers(puneAllItems);
                 })
-                .catch(err => console.warn('Map items fetch note:', err));
+                .catch(err => {
+                    console.warn('Map items fetch note:', err);
+                    const countBadge = document.getElementById('puneMapCountBadge');
+                    if (countBadge) countBadge.textContent = 'Pune Community Hub';
+                });
         }
 
         function renderPuneMapMarkers(itemsList) {
@@ -823,21 +851,31 @@
                 const cat = item.category || 'General';
 
                 const customIcon = L.divIcon({
-                    className: 'pune-custom-marker',
-                    html: `<div style="width:36px; height:36px; background:#10B981; color:#042F24; border:2px solid rgba(255,255,255,0.8); border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 16px rgba(0,0,0,0.6); font-size:15px;"><i class="fas fa-leaf"></i></div>`,
+                    className: 'pune-custom-marker-wrapper',
+                    html: `
+                        <div class="gt-map-pulse-marker" title="${title}">
+                            <span class="gt-marker-wave"></span>
+                            <span class="gt-marker-dot">
+                                <i class="fas fa-leaf"></i>
+                            </span>
+                        </div>
+                    `,
                     iconSize: [36, 36],
                     iconAnchor: [18, 18]
                 });
 
                 const marker = L.marker([lat, lng], { icon: customIcon }).addTo(puneMapInstance);
                 marker.bindPopup(`
-            <div style="font-family:'Plus Jakarta Sans',sans-serif; padding:8px; min-width:190px; background:#0F172A; color:#FFFFFF; border-radius:12px;">
-                <span style="font-size:10px; font-weight:800; text-transform:uppercase; color:#10B981; background:rgba(16,185,129,0.15); padding:2px 6px; border-radius:4px;">${cat}</span>
-                <h4 style="margin:6px 0 2px; font-size:14px; font-weight:800; color:#FFFFFF;">${title}</h4>
-                <p style="margin:0 0 8px; font-size:12px; color:#94A3B8;"><i class="fas fa-map-marker-alt" style="color:#10B981;"></i> ${loc}</p>
-                <a href="/items.html?openRequest=${item.id || ''}" style="display:inline-block; font-size:12px; font-weight:800; color:#10B981; text-decoration:none;">Request This Item →</a>
-            </div>
-        `);
+                    <div class="gt-leaflet-popup-card">
+                        <span class="popup-cat-badge">${cat}</span>
+                        <h4 class="popup-item-title">${title}</h4>
+                        <p class="popup-item-loc"><i class="fas fa-location-dot"></i> ${loc}</p>
+                        <a href="/items.html?openRequest=${item.id || ''}" class="popup-action-btn">
+                            <span>Request This Item</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                `);
                 puneMapMarkers.push(marker);
             });
         }
@@ -848,6 +886,19 @@
 
             if (puneMapInstance) {
                 puneMapInstance.flyTo([lat, lng], zoomLevel, { duration: 1 });
+            }
+
+            if (!puneAllItems || puneAllItems.length === 0) return;
+            if (locName === 'all') {
+                renderPuneMapMarkers(puneAllItems);
+            } else {
+                const target = locName.toLowerCase();
+                const filtered = puneAllItems.filter(it => (it.location || '').toLowerCase().includes(target));
+                if (filtered.length > 0) {
+                    renderPuneMapMarkers(filtered);
+                } else {
+                    renderPuneMapMarkers(puneAllItems);
+                }
             }
         }
 

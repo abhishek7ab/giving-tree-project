@@ -34,6 +34,36 @@
         }) || null;
     }
 
+    /**
+     * Apply OpenFreeMap Vector Layer (Dark style) with automatic OpenStreetMap fallback
+     * @see https://github.com/hyperknot/openfreemap
+     */
+    function applyOpenFreeMapLayer(mapInstance) {
+        if (typeof L === 'undefined' || !mapInstance) return null;
+
+        // 1. Primary: Native OpenFreeMap Vector Tiles via MapLibre GL Leaflet
+        if (typeof L.maplibreGL === 'function' && typeof maplibregl !== 'undefined') {
+            try {
+                return L.maplibreGL({
+                    style: 'https://tiles.openfreemap.org/styles/dark'
+                }).addTo(mapInstance);
+            } catch (err) {
+                console.warn('OpenFreeMap vector tile note, falling back to OSM:', err);
+            }
+        }
+
+        // 2. High-performance fallback: OpenStreetMap raster with dark mode filter
+        return L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            subdomains: 'abc',
+            attribution: '&copy; <a href="https://openfreemap.org" target="_blank" rel="noopener">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>',
+            className: 'gt-dark-tiles'
+        }).addTo(mapInstance);
+    }
+
+    // Expose globally for other map modules
+    window.applyOpenFreeMapLayer = applyOpenFreeMapLayer;
+
     // SVG Pin Icon Generator
     function createMapPinIcon(color = '#10b981', label = '') {
         if (typeof L === 'undefined') return null;
@@ -253,19 +283,8 @@
             attributionControl: false
         });
 
-        // Add Dark Themed Tile Layer (CartoDB Dark Matter / OpenFreeMap)
-        try {
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-                maxZoom: 19,
-                subdomains: 'abcd',
-                attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            }).addTo(map);
-        } catch (e) {
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                className: 'gt-dark-map-tiles'
-            }).addTo(map);
-        }
+        // Add Dark Themed Tile Layer (OpenFreeMap Vector Dark / OSM fallback)
+        applyOpenFreeMapLayer(map);
 
         // Marker Pin
         const pinColor = pinType === 'delivery' ? '#06b6d4' : '#10b981';
@@ -559,11 +578,7 @@
             zoom: 13
         });
 
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-            maxZoom: 19,
-            subdomains: 'abcd',
-            attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        }).addTo(sharedModalMap);
+        applyOpenFreeMapLayer(sharedModalMap);
 
         sharedModalMarkers = [];
         sharedModalRouteLine = null;

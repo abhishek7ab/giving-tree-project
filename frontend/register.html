@@ -287,16 +287,25 @@
         const tokenInput = document.getElementById('registerCaptchaToken');
         const reloadBtn = document.getElementById('registerCaptchaReloadBtn');
         const reloadSvg = document.getElementById('registerCaptchaReloadSvg');
+        const captchaInput = document.getElementById('registerCaptcha');
         if (!container || !tokenInput) return;
 
         if (reloadBtn) reloadBtn.disabled = true;
         if (reloadSvg) reloadSvg.classList.add('spin-fast');
 
         try {
-            const response = await fetch('/api/captcha');
+            const response = await fetch(`/api/captcha?_t=${Date.now()}`, {
+                cache: 'no-store',
+                headers: {
+                    'Cache-Control': 'no-cache',
+                    'Pragma': 'no-cache'
+                }
+            });
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
             const data = await response.json();
             container.innerHTML = data.svg || '';
             tokenInput.value = data.captchaToken || '';
+            if (captchaInput) captchaInput.value = '';
         } catch (error) {
             container.innerHTML = '<span style="color:#f43f5e; font-size:12px; font-weight:600;">CAPTCHA unavailable</span>';
         } finally {
@@ -552,7 +561,11 @@
 
             window.location.href = data.redirect || '/login.html';
         } catch(err) {
-            errorText.innerHTML = err.message || 'Registration failed. Please check your details.';
+            loadRegisterCaptcha();
+            const isNetworkError = err.message === 'Failed to fetch' || err.name === 'TypeError';
+            errorText.innerHTML = isNetworkError
+                ? 'Unable to connect to the Giving Tree server. Please verify the server is running on http://localhost:3000 and you opened http://localhost:3000/register.html.'
+                : (err.message || 'Registration failed. Please check your details.');
             errorMsg.style.display = 'block';
             btn.disabled = false;
             btn.innerHTML = 'Create My Account';

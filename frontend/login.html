@@ -232,13 +232,22 @@
         if (reloadSvg) reloadSvg.classList.add('spin-fast');
 
         try {
-            const res = await fetch('/api/captcha');
+            const res = await fetch(`/api/captcha?_t=${Date.now()}`, {
+                cache: 'no-store',
+                headers: {
+                    'Cache-Control': 'no-cache',
+                    'Pragma': 'no-cache'
+                }
+            });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const data = await res.json();
             if (data.success && data.svg) {
                 container.innerHTML = data.svg;
                 currentCaptchaToken = data.captchaToken;
                 if (tokenInput) tokenInput.value = data.captchaToken;
-                if (captchaInput) captchaInput.value = '';
+                if (captchaInput) {
+                    captchaInput.value = '';
+                }
             }
         } catch(e) {
             console.error('Failed to load CAPTCHA:', e);
@@ -338,7 +347,11 @@
 
             window.location.href = targetUrl;
         } catch(err) {
-            errorText.textContent = err.message || 'Invalid credentials. Please try again.';
+            loadCaptcha(); // Auto refresh captcha on any error
+            const isNetworkError = err.message === 'Failed to fetch' || err.name === 'TypeError';
+            errorText.textContent = isNetworkError
+                ? 'Unable to connect to the Giving Tree server. Please verify the server is running on http://localhost:3000 and you opened http://localhost:3000/login.html.'
+                : (err.message || 'Invalid credentials. Please try again.');
             errorMsg.style.display = 'block';
             btn.disabled = false;
             btn.innerHTML = '<span>Sign In to Account</span> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>';

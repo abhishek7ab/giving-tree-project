@@ -37,6 +37,11 @@ exports.isValidAuthenticEmail = isValidAuthenticEmail;
 // ================= GENERATE CAPTCHA =================
 exports.generateCaptcha = (req, res) => {
     try {
+        res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+        res.setHeader('Surrogate-Control', 'no-store');
+
         const chars = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ'; // Clean characters avoiding ambiguous 0/O/1/I
         let text = '';
         for (let i = 0; i < 5; i++) {
