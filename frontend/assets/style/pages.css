@@ -144,6 +144,43 @@
     margin-top: 12px;
 }
 
+/* Hero Trust Bar — Key Platform Guarantees */
+.hero-trust-bar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 14px 24px;
+    margin-top: 22px;
+    padding: 10px 22px;
+    background: rgba(13, 19, 34, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 9999px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+    max-width: 90%;
+}
+
+.trust-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--text-2, #cbd5e1);
+    letter-spacing: 0.02em;
+}
+
+.trust-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent, #10b981);
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+    flex-shrink: 0;
+}
+
 /* Asymmetric Hero Visual Art Piece */
 .hero-visual-container {
     margin-top: clamp(40px, 6vw, 70px);
@@ -554,6 +591,127 @@
 @media (max-width: 860px) {
     .impact-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================================
+   4B. COMMUNITY TRUST BENTO GRID (index.html Section 7)
+   ============================================================ */
+.trust-bento-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 20px;
+}
+
+@media (max-width: 900px) {
+    .trust-bento-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.bento-card {
+    background: rgba(13, 19, 34, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-xl, 20px);
+    padding: 28px 26px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform var(--dur-base, 0.25s) var(--ease-out, ease-out),
+                border-color var(--dur-base, 0.25s) var(--ease-out, ease-out),
+                box-shadow var(--dur-base, 0.25s) var(--ease-out, ease-out);
+    position: relative;
+    overflow: hidden;
+}
+
+.bento-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(16, 185, 129, 0.35);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(16, 185, 129, 0.12);
+}
+
+.bento-card-featured {
+    grid-row: span 2;
+    background: linear-gradient(180deg, rgba(16, 185, 129, 0.08) 0%, rgba(13, 19, 34, 0.85) 100%);
+    border-color: rgba(16, 185, 129, 0.25);
+}
+
+.bento-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 19px;
+    margin-bottom: 14px;
+}
+
+.bento-icon-emerald {
+    background: rgba(16, 185, 129, 0.14);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: var(--accent, #10b981);
+}
+
+.bento-icon-blue {
+    background: rgba(56, 189, 248, 0.14);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    color: #38bdf8;
+}
+
+.bento-icon-amber {
+    background: rgba(245, 158, 11, 0.14);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    color: #f59e0b;
+}
+
+.bento-icon-red {
+    background: rgba(239, 68, 68, 0.14);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #ef4444;
+}
+
+.bento-title {
+    font-size: 1.125rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    margin: 0 0 8px 0;
+    letter-spacing: -0.01em;
+}
+
+.bento-desc {
+    font-size: 0.875rem;
+    color: var(--text-2, #94a3b8);
+    line-height: 1.65;
+    margin: 0;
+}
+
+.bento-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 4px 11px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text-2, #cbd5e1);
+    margin-top: 16px;
+    width: fit-content;
+}
+
+.bento-card-wide {
+    grid-column: span 2;
+}
+
+@media (max-width: 900px) {
+    .bento-card-wide {
+        grid-column: span 1;
     }
 }
 
