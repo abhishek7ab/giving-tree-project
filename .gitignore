@@ -22,4 +22,9 @@ Thumbs.db
 .vscode/
 frontend/assets/uploads/*
 !frontend/assets/uploads/.gitkeep
+!frontend/assets/uploads/helmet.jpg
+!frontend/assets/uploads/laptop.jpg
+!frontend/assets/uploads/phone.jpg
+!frontend/assets/uploads/printer.jpg
+!frontend/assets/uploads/tv.jpg
 

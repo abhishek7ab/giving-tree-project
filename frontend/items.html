@@ -1355,7 +1355,7 @@
             items.forEach(i => {
                 const rawImg = String(i.image || '').trim();
                 const hasImg = rawImg !== '' && !rawImg.includes('dummyimage.com') && !rawImg.includes('story-img.png');
-                const imgTag = hasImg ? `<img src="${rawImg}" alt="${escapeHtml(i.title)}" class="card-img" onerror="this.remove();">` : '';
+                const imgTag = hasImg ? `<img src="${rawImg}" alt="" class="card-img" onerror="this.remove();">` : '';
                 const isOwnItem = currentUserId !== null && Number(i.user_id) === Number(currentUserId);
                 const requestLabel = currentUserId ? 'Request' : 'Sign in to Request';
                 const isSaved = currentUserSavedIds.has(Number(i.id));
@@ -1559,7 +1559,8 @@
                 const mediaBox = document.getElementById('detailMediaBox');
                 if (item.image && !item.image.includes('dummyimage.com') && !item.image.includes('story-img.png')) {
                     mediaBox.innerHTML = `
-                        <img src="${item.image}" alt="${escapeHtml(item.title)}">
+                        <div class="img-placeholder-fallback"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.5; margin-bottom:6px;"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg><span style="font-weight:700; margin-top:4px;">Community Treasure</span></div>
+                        <img src="${item.image}" alt="" onerror="this.remove();" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:1;">
                         <div class="coords-pill-badge" style="position:absolute; bottom:12px; left:12px; z-index:3; background:rgba(9,13,22,0.88); backdrop-filter:blur(8px); border:1px solid rgba(16,185,129,0.35); color:#10b981;">
                             <i class="fas fa-camera"></i> Authentic Photo • Direct from Donor
                         </div>

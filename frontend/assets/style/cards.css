@@ -48,13 +48,14 @@
 .img-box img,
 .preview-image img,
 .item-img {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center;
     transition: transform var(--dur-smooth) var(--ease-out);
     display: block;
-    position: relative;
     z-index: 1;
 }
 
@@ -152,9 +153,10 @@
 
 /* Authentic Donor Listing Placeholder (Zero AI Mock Assets) */
 .card-authentic-placeholder {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
-    min-height: 170px;
     background: linear-gradient(145deg, rgba(15, 23, 42, 0.95) 0%, rgba(7, 10, 18, 0.98) 100%);
     display: flex;
     flex-direction: column;
@@ -163,6 +165,7 @@
     gap: 12px;
     padding: 24px 16px;
     box-sizing: border-box;
+    z-index: 0;
 }
 
 .authentic-icon-circle {

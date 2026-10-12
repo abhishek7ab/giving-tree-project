@@ -698,7 +698,7 @@
                     return;
                 }
 
-                function getCardPlaceholder(category, title = '') {
+                window.getCardPlaceholder = function(category, title = '') {
                     const text = (String(category || '') + ' ' + String(title || '')).toLowerCase();
                     let svgIcon = '';
                     if (text.includes('phone') || text.includes('mobile')) {
@@ -725,7 +725,7 @@
                         <div class="authentic-icon-circle">${svgIcon}</div>
                         <span class="authentic-donor-pill">${heartSvg} Real Community Listing</span>
                     </div>`;
-                }
+                };
 
                 let html = "";
                 items.forEach(item => {
@@ -735,16 +735,17 @@
                     const safeLocation = String(item.location || 'Pune').replace(/</g, '&lt;').replace(/>/g, '&gt;');
                     const safeCategory = String(item.category || 'Item').replace(/</g, '&lt;').replace(/>/g, '&gt;');
                     const safeCondition = String(item.condition || 'Good').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                    const escapedTitleArg = safeTitle.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
 
-                    const imgHtml = hasImg
-                        ? `<img src="${rawImg}" alt="${safeTitle}" onerror="this.parentElement.innerHTML = getCardPlaceholder('${safeCategory}', '${escapedTitleArg}');">`
-                        : getCardPlaceholder(safeCategory, safeTitle);
+                    const placeholderMarkup = window.getCardPlaceholder(safeCategory, safeTitle);
+                    const imgMarkup = hasImg
+                        ? `<img src="${rawImg}" alt="" class="card-loaded-img" onerror="this.remove();" loading="lazy">`
+                        : '';
 
                     html += `
         <div class="item-card is-revealed">
             <div class="item-card-media" onclick="window.location.href='/items.html?id=${item.id}'" style="cursor:pointer;">
-                ${imgHtml}
+                ${placeholderMarkup}
+                ${imgMarkup}
                 <div class="card-badge-container">
                     <span class="card-badge">${safeCategory}</span>
                     <span class="card-badge condition">${safeCondition}</span>
