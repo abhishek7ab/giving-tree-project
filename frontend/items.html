@@ -458,7 +458,7 @@
                 <label for="requesterNotesInput" class="modal-label" style="font-size:12px; color:var(--text-2);">
                     <i class="fas fa-comment-dots" style="color:var(--accent);"></i> Delivery / Handover Notes <span style="color:var(--text-3); font-weight:400;">(optional)</span>
                 </label>
-                <input type="text" id="requesterNotesInput" class="location-input" placeholder="e.g., Can meet outside metro gate 2 or building lobby" maxlength="300" style="padding:10px 14px; font-size:13px;">
+                <input type="text" id="requesterNotesInput" class="location-input" placeholder="e.g., Can meet outside metro gate 2 or building lobby" maxlength="300">
             </div>
 
             <div class="modal-safe-box" style="margin-top:10px;">
@@ -1781,6 +1781,13 @@
         function closeModal() {
             document.getElementById("requestModal").classList.remove("active");
             pendingItemId = null;
+            try {
+                const cleanUrl = new URL(window.location.href);
+                if (cleanUrl.searchParams.has('openRequest')) {
+                    cleanUrl.searchParams.delete('openRequest');
+                    window.history.replaceState({}, document.title, cleanUrl.toString());
+                }
+            } catch (_) {}
         }
 
         function handleRequestOverlayClick(e) {
@@ -1937,6 +1944,11 @@
                             const targetItem = currentLoadedItems.find(x => Number(x.id) === Number(autoReqId));
                             if (targetItem) {
                                 openRequestModal(targetItem.id, targetItem.title, false, targetItem.latitude, targetItem.longitude, targetItem.location);
+                                try {
+                                    const cleanUrl = new URL(window.location.href);
+                                    cleanUrl.searchParams.delete('openRequest');
+                                    window.history.replaceState({}, document.title, cleanUrl.toString());
+                                } catch (_) {}
                             }
                         }
                     }, 100);

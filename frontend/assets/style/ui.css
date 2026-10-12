@@ -294,7 +294,8 @@ textarea.form-control,
 .detail-modal-card,
 .edit-modal-card,
 .neighbor-modal-card,
-.chat-modal-card {
+.chat-modal-card,
+.modal-box {
     background: #0F172A;
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: var(--radius-xl);
@@ -382,6 +383,196 @@ textarea.form-control,
     border-color: var(--accent) !important;
     outline: none !important;
     box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2) !important;
+}
+
+/* Modal Inner Elements */
+.modal-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin-bottom: 14px;
+}
+
+.modal-box h3 {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    margin: 0 0 8px;
+    letter-spacing: -0.02em;
+}
+
+.modal-box p {
+    font-size: 0.9rem;
+    color: var(--text-2);
+    line-height: 1.5;
+    margin: 0 0 16px;
+}
+
+.modal-item-name {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-md);
+    padding: 10px 14px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #FFFFFF;
+    margin-bottom: 14px;
+}
+
+.modal-form-group {
+    margin-bottom: 14px;
+    text-align: left;
+}
+
+.modal-label {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text-2);
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+}
+
+/* Modal Form Inputs (.location-input) */
+.location-input {
+    width: 100% !important;
+    background: rgba(15, 23, 42, 0.85) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    border-radius: var(--radius-md) !important;
+    padding: 12px 16px !important;
+    color: #FFFFFF !important;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    font-family: inherit !important;
+    box-sizing: border-box !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.location-input:focus {
+    border-color: var(--accent) !important;
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2) !important;
+}
+
+.location-input::placeholder {
+    color: var(--text-3) !important;
+}
+
+select.location-input {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 14px center !important;
+    background-size: 16px !important;
+    padding-right: 38px !important;
+}
+
+select.location-input option {
+    background: #0F172A;
+    color: #FFFFFF;
+}
+
+/* Safe Box */
+.modal-safe-box {
+    background: rgba(16, 185, 129, 0.08);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    color: var(--text-2);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.modal-safe-box i {
+    color: var(--accent);
+    font-size: 15px;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.modal-safe-box strong {
+    color: #FFFFFF;
+}
+
+/* Modal Actions & Buttons */
+.modal-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.btn-confirm {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: var(--accent);
+    color: #042F24 !important;
+    border: 1px solid var(--accent);
+    border-radius: var(--radius-full);
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
+    transition: transform var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+}
+
+.btn-confirm:hover {
+    background: var(--leaf-green);
+    border-color: var(--leaf-green);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45);
+}
+
+.btn-confirm:active {
+    transform: translateY(0);
+}
+
+.btn-confirm:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.btn-cancel-modal {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-2);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-full);
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: transform var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.btn-cancel-modal:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #FFFFFF;
+    transform: translateY(-2px);
+}
+
+.btn-cancel-modal:active {
+    transform: translateY(0);
 }
 
 /* Star Rating System */
