@@ -179,6 +179,13 @@
     transition: transform var(--dur-fast, 0.2s) ease, border-color var(--dur-fast, 0.2s) ease;
 }
 
+.authentic-icon-circle svg {
+    width: 25px;
+    height: 25px;
+    stroke: var(--accent, #10b981);
+    display: block;
+}
+
 .item-card:hover .authentic-icon-circle,
 .pro-card:hover .authentic-icon-circle {
     transform: scale(1.08);
@@ -195,6 +202,12 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
+}
+
+.authentic-donor-pill svg {
+    display: inline-block;
+    vertical-align: middle;
+    flex-shrink: 0;
 }
 
 .btn-wishlist {

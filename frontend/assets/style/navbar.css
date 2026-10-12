@@ -26,8 +26,8 @@
 }
 
 .navbar.navbar-scrolled {
-    background: rgba(10, 15, 29, 0.95);
-    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.75);
+    background: #090D16;
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.85);
     border-color: rgba(255, 255, 255, 0.15);
 }
 
@@ -640,6 +640,13 @@
         right: 10px;
         height: 56px;
         padding: 0 14px;
+        background: #090D16 !important;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.85);
+    }
+
+    .navbar.navbar-scrolled {
+        background: #090D16 !important;
     }
 
     .logo-icon-wrap {

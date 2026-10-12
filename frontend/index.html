@@ -698,21 +698,32 @@
                     return;
                 }
 
-                function getCardPlaceholder(category) {
-                    const c = String(category || '').toLowerCase();
-                    let icon = 'fa-box-open';
-                    if (c.includes('elect') || c.includes('tv') || c.includes('gadget')) icon = 'fa-tv';
-                    else if (c.includes('laptop') || c.includes('comput')) icon = 'fa-laptop';
-                    else if (c.includes('phone') || c.includes('mobile')) icon = 'fa-mobile-screen';
-                    else if (c.includes('book') || c.includes('study')) icon = 'fa-book-open';
-                    else if (c.includes('cloth') || c.includes('wear') || c.includes('fashion')) icon = 'fa-shirt';
-                    else if (c.includes('home') || c.includes('furn') || c.includes('decor')) icon = 'fa-couch';
-                    else if (c.includes('toy') || c.includes('kid') || c.includes('game')) icon = 'fa-puzzle-piece';
-                    else if (c.includes('sport') || c.includes('fitness') || c.includes('helmet') || c.includes('cycle')) icon = 'fa-bicycle';
+                function getCardPlaceholder(category, title = '') {
+                    const text = (String(category || '') + ' ' + String(title || '')).toLowerCase();
+                    let svgIcon = '';
+                    if (text.includes('phone') || text.includes('mobile')) {
+                        svgIcon = '<svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>';
+                    } else if (text.includes('tv') || text.includes('elect') || text.includes('gadget') || text.includes('screen') || text.includes('display')) {
+                        svgIcon = '<svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="15" x="2" y="3" rx="2"/><polyline points="17 21 12 18 7 21"/></svg>';
+                    } else if (text.includes('laptop') || text.includes('comput')) {
+                        svgIcon = '<svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="12" x="3" y="4" rx="2"/><line x1="2" x2="22" y1="20" y2="20"/></svg>';
+                    } else if (text.includes('helmet') || text.includes('healmet') || text.includes('sport') || text.includes('cycle') || text.includes('bike') || text.includes('fitness')) {
+                        svgIcon = '<svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a8 8 0 0 1 16 0v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2z"/><path d="M4 14h16"/><path d="M7 10a5 5 0 0 1 10 0"/></svg>';
+                    } else if (text.includes('book') || text.includes('study') || text.includes('read')) {
+                        svgIcon = '<svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>';
+                    } else if (text.includes('cloth') || text.includes('wear') || text.includes('fashion') || text.includes('shirt')) {
+                        svgIcon = '<svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>';
+                    } else if (text.includes('furn') || text.includes('home') || text.includes('decor') || text.includes('couch') || text.includes('chair') || text.includes('table')) {
+                        svgIcon = '<svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11V9a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v2"/><path d="M5 11v6"/><path d="M19 11v6"/><path d="M2 13h20v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-4Z"/></svg>';
+                    } else {
+                        svgIcon = '<svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>';
+                    }
+
+                    const heartSvg = '<svg width="12" height="12" viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)" stroke-width="2" style="display:inline-block; vertical-align:middle; flex-shrink:0;"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>';
 
                     return `<div class="card-authentic-placeholder">
-                        <div class="authentic-icon-circle"><i class="fas ${icon}"></i></div>
-                        <span class="authentic-donor-pill"><i class="fas fa-hand-holding-heart" style="color:var(--accent);"></i> Real Community Listing</span>
+                        <div class="authentic-icon-circle">${svgIcon}</div>
+                        <span class="authentic-donor-pill">${heartSvg} Real Community Listing</span>
                     </div>`;
                 }
 
@@ -724,10 +735,11 @@
                     const safeLocation = String(item.location || 'Pune').replace(/</g, '&lt;').replace(/>/g, '&gt;');
                     const safeCategory = String(item.category || 'Item').replace(/</g, '&lt;').replace(/>/g, '&gt;');
                     const safeCondition = String(item.condition || 'Good').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const escapedTitleArg = safeTitle.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
 
                     const imgHtml = hasImg
-                        ? `<img src="${rawImg}" alt="${safeTitle}" onerror="this.parentElement.innerHTML = getCardPlaceholder('${safeCategory}');">`
-                        : getCardPlaceholder(safeCategory);
+                        ? `<img src="${rawImg}" alt="${safeTitle}" onerror="this.parentElement.innerHTML = getCardPlaceholder('${safeCategory}', '${escapedTitleArg}');">`
+                        : getCardPlaceholder(safeCategory, safeTitle);
 
                     html += `
         <div class="item-card is-revealed">

@@ -16,6 +16,16 @@
         width: 100%;
     }
 
+    /* Opaque Floating Navbar on Mobile — prevents any scrolled text from bleeding through */
+    .navbar {
+        background: #090D16 !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85) !important;
+    }
+    .navbar.navbar-scrolled {
+        background: #090D16 !important;
+    }
+
     /* Global container padding on mobile */
     .container,
     .container-narrow,
