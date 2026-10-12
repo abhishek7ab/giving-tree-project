@@ -1,6 +1,6 @@
-const CACHE_NAME = 'giving-tree-v44';
-const STATIC_CACHE = 'giving-tree-static-v44';
-const API_CACHE = 'giving-tree-api-v44';
+const CACHE_NAME = 'giving-tree-v45';
+const STATIC_CACHE = 'giving-tree-static-v45';
+const API_CACHE = 'giving-tree-api-v45';
 
 const STATIC_ASSETS = [
   '/',
@@ -91,6 +91,11 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // External CDNs (Cloudinary, OpenStreetMap tiles, etc.) bypass SW directly
+  if (url.origin !== self.location.origin) {
+    return;
+  }
+
   const isApiRequest = url.pathname.startsWith('/api/');
   const isStaticAsset = STATIC_ASSETS.some(asset => url.pathname === asset || url.pathname.startsWith(asset.replace('*', '')));
 
@@ -134,6 +139,10 @@ async function networkFirstStrategy(request) {
     const cachedResponse = await cache.match(request);
     if (cachedResponse) {
       return cachedResponse;
+    }
+    const reqUrl = new URL(request.url);
+    if (reqUrl.pathname.match(/\.(jpg|jpeg|png|webp|gif|svg|ico)$/i)) {
+      return new Response('', { status: 404, statusText: 'Not Found' });
     }
     return new Response(JSON.stringify({ error: 'Offline', cached: false }), {
       status: 503,

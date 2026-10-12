@@ -47,7 +47,9 @@
 .item-card-media img,
 .img-box img,
 .preview-image img,
-.item-img {
+.item-img,
+.card-img,
+.card-loaded-img {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -56,12 +58,13 @@
     object-position: center;
     transition: transform var(--dur-smooth) var(--ease-out);
     display: block;
-    z-index: 1;
+    z-index: 2;
 }
 
 .item-card:hover .item-card-media img,
 .pro-card:hover .img-box img,
-.item-card:hover .item-img {
+.item-card:hover .item-img,
+.item-card:hover .card-loaded-img {
     transform: scale(1.05);
 }
 

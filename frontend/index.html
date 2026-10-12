@@ -738,7 +738,7 @@
 
                     const placeholderMarkup = window.getCardPlaceholder(safeCategory, safeTitle);
                     const imgMarkup = hasImg
-                        ? `<img src="${rawImg}" alt="" class="card-loaded-img" onerror="this.remove();" loading="lazy">`
+                        ? `<img src="${rawImg}" alt="" class="card-loaded-img" onerror="this.remove();" loading="eager">`
                         : '';
 
                     html += `
