@@ -121,7 +121,11 @@
     }
 
     .hero-art-right {
-        aspect-ratio: 16 / 9 !important;
+        aspect-ratio: auto !important;
+        height: auto !important;
+        overflow: visible !important;
+        background: transparent !important;
+        border: none !important;
     }
 
     /* Scroll indicator: hide on mobile */
@@ -1509,6 +1513,24 @@
     .items-grid {
         grid-template-columns: 1fr !important;
         gap: 12px !important;
+    }
+
+    /* Pune Spotlight & Guarantee on Small Phones */
+    .pune-spotlight-card {
+        padding: 18px 16px !important;
+    }
+
+    .spotlight-guarantee-row {
+        grid-template-columns: 1fr !important;
+        gap: 8px !important;
+    }
+
+    .card-control-grid {
+        flex-wrap: wrap !important;
+    }
+
+    .card-control-grid .btn-ctrl {
+        flex: 1 1 120px !important;
     }
 
     /* Footer: single column */

@@ -432,10 +432,12 @@
     gap: 8px;
     margin-top: 12px;
     width: 100%;
+    flex-wrap: wrap;
 }
 
 .btn-ctrl {
-    flex: 1;
+    flex: 1 1 120px;
+    min-width: 0;
     padding: 8px 12px;
     border-radius: var(--radius-sm);
     background: rgba(255, 255, 255, 0.05);
