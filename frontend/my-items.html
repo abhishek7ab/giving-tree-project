@@ -280,8 +280,8 @@
                 grid.innerHTML = sharedItems.map(i => {
                     const rawImg = String(i.image || '').trim();
                     const hasImg = rawImg !== '' && !rawImg.includes('dummyimage.com') && !rawImg.includes('story-img.png');
-                    const imgTag = hasImg 
-                        ? `<img src="${rawImg}" alt="" class="item-img" onerror="this.remove();">` 
+                    const imgTag = hasImg
+                        ? `<img src="${rawImg}" alt="${safeTitle}" class="item-img" style="position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;z-index:999!important;display:block!important;" loading="eager">`
                         : '';
                     const safeTitle = escapeHtml(i.title);
                     const isReserved = i.status === 'reserved' || i.is_reserved;
@@ -349,8 +349,8 @@
                 grid.innerHTML = savedItems.map(i => {
                     const rawImg = String(i.image || '').trim();
                     const hasImg = rawImg !== '' && !rawImg.includes('dummyimage.com') && !rawImg.includes('story-img.png');
-                    const imgTag = hasImg 
-                        ? `<img src="${rawImg}" alt="" class="item-img" onerror="this.remove();">` 
+                    const imgTag = hasImg
+                        ? `<img src="${rawImg}" alt="${safeTitle}" class="item-img" style="position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;z-index:999!important;display:block!important;" loading="eager">`
                         : '';
                     const safeTitle = escapeHtml(i.title);
 
