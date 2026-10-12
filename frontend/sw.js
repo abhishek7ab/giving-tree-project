@@ -1,6 +1,6 @@
-const CACHE_NAME = 'giving-tree-v46';
-const STATIC_CACHE = 'giving-tree-static-v46';
-const API_CACHE = 'giving-tree-api-v46';
+const CACHE_NAME = 'giving-tree-v47';
+const STATIC_CACHE = 'giving-tree-static-v47';
+const API_CACHE = 'giving-tree-api-v47';
 
 const STATIC_ASSETS = [
   '/',
@@ -67,7 +67,7 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-async function fetchWithTimeout(request, timeout = 5000) {
+async function fetchWithTimeout(request, timeout = 3500) {
   const controller = new AbortController();
   const id = setTimeout(() => controller.abort(), timeout);
   try {
@@ -99,17 +99,19 @@ self.addEventListener('fetch', (event) => {
   const isApiRequest = url.pathname.startsWith('/api/');
   const isStaticAsset = STATIC_ASSETS.some(asset => url.pathname === asset || url.pathname.startsWith(asset.replace('*', '')));
 
+  // Navigation and dynamic API requests use networkFirst
   if (request.mode === 'navigate' || url.pathname.endsWith('.html') || url.pathname === '/' || isApiRequest) {
     event.respondWith(networkFirstStrategy(request));
     return;
   }
 
+  // All static scripts, styles, fonts, and images use staleWhileRevalidate for instant render
   if (isStaticAsset || url.pathname.endsWith('.css') || url.pathname.endsWith('.js') || url.pathname.endsWith('.png') || url.pathname.endsWith('.jpg') || url.pathname.endsWith('.svg') || url.pathname.endsWith('.ico') || url.pathname.endsWith('.woff2')) {
-    event.respondWith(networkFirstStrategy(request));
+    event.respondWith(staleWhileRevalidate(request));
     return;
   }
 
-  event.respondWith(networkFirstStrategy(request));
+  event.respondWith(staleWhileRevalidate(request));
 });
 
 async function staleWhileRevalidate(request) {

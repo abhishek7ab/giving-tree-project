@@ -21,13 +21,14 @@
     <link rel="stylesheet" href="/assets/style/animations.css">
     <link rel="stylesheet" href="/assets/style/pages.css">
     <link rel="stylesheet" href="/assets/style/mobile.css">
+    <link rel="stylesheet" href="/assets/style/mobile-polish.css">
     <!-- Leaflet & MapLibre GL for OpenFreeMap Vector Tiles -->
     <link rel="stylesheet" href="/assets/vendor/leaflet/leaflet.css">
     <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css">
     <script src="/assets/vendor/leaflet/leaflet.js"></script>
-    <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
-    <script src="https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.0.22/leaflet-maplibre-gl.js"></script>
-    <script src="/assets/js/location-picker.js"></script>
+    <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js" defer></script>
+    <script src="https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.0.22/leaflet-maplibre-gl.js" defer></script>
+    <script src="/assets/js/location-picker.js" defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
@@ -1899,31 +1900,38 @@
             if (e.key === "Enter") searchItems();
         });
 
-        // Initialize User state, URL query routing & Wishlist
+        // Parse URL query routing and load items immediately without waiting for auth waterfall
+        const urlParams = new URLSearchParams(window.location.search);
+        const querySearch = urlParams.get('search');
+        const queryLoc = urlParams.get('location') || urlParams.get('locality');
+        const queryView = urlParams.get('view');
+
+        if (querySearch) {
+            document.getElementById('searchInput').value = querySearch;
+            loadItems(querySearch);
+        } else if (queryLoc) {
+            document.getElementById('searchInput').value = queryLoc;
+            loadItems(queryLoc);
+        } else {
+            loadItems();
+        }
+
+        // Run user authentication and saved IDs concurrently in parallel
         fetch(`/api/user`, { credentials: "include" })
             .then(res => res.json())
             .then(user => {
                 if (user && user.loggedIn) currentUserId = user.id;
             })
-            .catch(() => { })
-            .finally(async () => {
-                await loadUserSavedIds();
-                loadHeaderStats();
+            .catch(() => { });
 
-                const urlParams = new URLSearchParams(window.location.search);
-                const querySearch = urlParams.get('search');
-                const queryLoc = urlParams.get('location') || urlParams.get('locality');
-                const queryView = urlParams.get('view');
+        loadUserSavedIds().then(() => {
+            // Re-render heart badges once saved IDs arrive without re-fetching
+            if (currentLoadedItems && currentLoadedItems.length > 0) {
+                renderFilteredResults();
+            }
+        });
 
-                if (querySearch) {
-                    document.getElementById('searchInput').value = querySearch;
-                    loadItems(querySearch);
-                } else if (queryLoc) {
-                    document.getElementById('searchInput').value = queryLoc;
-                    loadItems(queryLoc);
-                } else {
-                    loadItems();
-                }
+        loadHeaderStats();
 
                 const autoDetailId = urlParams.get('id');
                 if (autoDetailId) {

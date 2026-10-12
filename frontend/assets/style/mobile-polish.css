@@ -1,0 +1,667 @@
+/* ============================================================
+   GIVING TREE — mobile-polish.css
+   Mobile UI Polish & Refinements (2026-10-12)
+   Load AFTER mobile.css for final polish layer
+   ============================================================ */
+
+/* ============================================================
+   1. CARD SPACING & ALIGNMENT FIXES
+   ============================================================ */
+@media (max-width: 768px) {
+    /* Better card padding - less cramped */
+    .item-card,
+    .pro-card,
+    .hub-card {
+        padding: 0 !important;
+        margin-bottom: 16px !important;
+        border-radius: 16px !important;
+    }
+
+    .card-body,
+    .item-card-content {
+        padding: 16px !important;
+    }
+
+    /* Fix uneven gaps in item grid */
+    .items-grid {
+        gap: 16px !important;
+        padding: 0 16px 40px !important;
+    }
+
+    .wishes-grid {
+        gap: 16px !important;
+        padding: 0 16px 40px !important;
+    }
+}
+
+/* ============================================================
+   2. REMOVE/HIDE BROKEN/INCOMPLETE ELEMENTS
+   ============================================================ */
+@media (max-width: 768px) {
+    /* Hide decorative floating cards on hero - don't scale well */
+    .hero-floating-card {
+        display: none !important;
+    }
+
+    /* Simplify trust bar - too cluttered on mobile */
+    .hero-trust-bar {
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+        justify-content: center !important;
+    }
+
+    .trust-item {
+        font-size: 10.5px !important;
+        padding: 5px 10px !important;
+        white-space: nowrap !important;
+    }
+
+    .trust-dot {
+        width: 5px !important;
+        height: 5px !important;
+    }
+
+    /* Hide empty donation drives if not ready */
+    .donation-drives-section:empty,
+    .donation-drives-grid:empty {
+        display: none !important;
+    }
+
+    /* Hide empty gratitude wall placeholders */
+    .gratitude-wall-card:empty {
+        display: none !important;
+    }
+}
+
+/* ============================================================
+   3. BUTTON SIZING - PROPER TOUCH TARGETS (44x44px minimum)
+   ============================================================ */
+@media (max-width: 768px) {
+    /* All primary buttons */
+    .btn,
+    .btn-primary,
+    .btn-secondary,
+    .btn-lg,
+    .btn-hub-primary,
+    .btn-hub-glass {
+        min-height: 44px !important;
+        padding: 12px 20px !important;
+        font-size: 14px !important;
+        line-height: 1.4 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    /* Card action buttons */
+    .btn-card-request,
+    .btn-req-primary,
+    .btn-inspect {
+        min-height: 44px !important;
+        padding: 10px 16px !important;
+        font-size: 13px !important;
+    }
+
+    /* Control buttons in cards */
+    .btn-ctrl,
+    .btn-ctrl-status {
+        min-height: 40px !important;
+        padding: 10px 14px !important;
+        font-size: 12.5px !important;
+    }
+
+    /* Delete buttons */
+    .btn-delete,
+    .btn-hub-danger {
+        min-height: 42px !important;
+        padding: 11px 16px !important;
+    }
+
+    /* Icon buttons */
+    .nav-notif-bell,
+    .nav-mobile-toggle,
+    .btn-wishlist {
+        min-width: 44px !important;
+        min-height: 44px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    /* Bottom nav items */
+    .mobile-nav-item {
+        min-height: 48px !important;
+        padding: 8px 12px !important;
+    }
+
+    /* Ensure gaps between touch targets */
+    .card-actions-row,
+    .card-control-grid {
+        gap: 10px !important;
+    }
+}
+
+/* ============================================================
+   4. TYPOGRAPHY HIERARCHY CLEANUP
+   ============================================================ */
+@media (max-width: 768px) {
+    /* Card titles - more readable */
+    .item-card-title,
+    .card-body h3,
+    .preview-card h4 {
+        font-size: 1.05rem !important;
+        line-height: 1.35 !important;
+        font-weight: 800 !important;
+        margin-bottom: 8px !important;
+    }
+
+    /* Card descriptions - better readability */
+    .card-desc,
+    .item-card-desc,
+    .card-body p {
+        font-size: 13.5px !important;
+        line-height: 1.55 !important;
+        color: var(--text-2) !important;
+        -webkit-line-clamp: 3 !important;
+        margin-bottom: 10px !important;
+    }
+
+    /* Meta text - location, category */
+    .card-meta-line,
+    .locality-pin {
+        font-size: 12.5px !important;
+    }
+
+    /* Section headlines - better scaling */
+    .section-headline {
+        font-size: clamp(1.6rem, 6vw, 2.2rem) !important;
+        line-height: 1.2 !important;
+        margin-bottom: 12px !important;
+    }
+
+    .editorial-lead {
+        font-size: 14.5px !important;
+        line-height: 1.6 !important;
+    }
+}
+
+/* ============================================================
+   5. SPOTLIGHT CARD MOBILE FIXES
+   ============================================================ */
+@media (max-width: 768px) {
+    .pune-spotlight-card {
+        padding: 18px 16px !important;
+        border-radius: 14px !important;
+        gap: 14px !important;
+    }
+
+    .spotlight-card-header {
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+    }
+
+    .spotlight-badge {
+        font-size: 10.5px !important;
+        padding: 4px 10px !important;
+    }
+
+    .spotlight-status {
+        font-size: 10px !important;
+        padding: 4px 8px !important;
+    }
+
+    .spotlight-localities-cloud {
+        gap: 6px !important;
+        margin: 10px 0 !important;
+    }
+
+    .locality-tag {
+        font-size: 11px !important;
+        padding: 5px 10px !important;
+        white-space: nowrap !important;
+    }
+
+    /* Stack guarantee columns on mobile */
+    .spotlight-guarantee-row {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+        margin-top: 12px !important;
+    }
+
+    .guarantee-col {
+        padding: 10px !important;
+        text-align: center !important;
+    }
+
+    .guarantee-col strong {
+        font-size: 13px !important;
+    }
+
+    .guarantee-col span {
+        font-size: 11.5px !important;
+    }
+}
+
+/* ============================================================
+   6. IOS INPUT ZOOM PREVENTION
+   ============================================================ */
+@media (max-width: 768px) {
+    /* Prevent iOS auto-zoom on input focus */
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="search"],
+    input[type="tel"],
+    input[type="number"],
+    textarea,
+    select {
+        font-size: 16px !important;
+    }
+
+    /* Smaller labels are OK */
+    label,
+    .form-label,
+    .input-label {
+        font-size: 13px !important;
+    }
+}
+
+/* ============================================================
+   7. LOADING STATES - SKELETON SHIMMER
+   ============================================================ */
+@media (max-width: 768px) {
+    /* Skeleton shimmer animation */
+    .item-card.loading,
+    .skeleton-card {
+        background: linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.03) 0%,
+            rgba(255, 255, 255, 0.08) 50%,
+            rgba(255, 255, 255, 0.03) 100%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.8s infinite ease-in-out;
+        pointer-events: none !important;
+    }
+
+    @keyframes shimmer {
+        0% {
+            background-position: -200% 0;
+        }
+        100% {
+            background-position: 200% 0;
+        }
+    }
+
+    /* Hide spinner in favor of skeleton */
+    .fa-spinner.fa-spin {
+        display: none !important;
+    }
+
+    /* Loading state for images */
+    .item-card-media.loading::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.02) 0%,
+            rgba(255, 255, 255, 0.06) 50%,
+            rgba(255, 255, 255, 0.02) 100%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+        z-index: 5;
+    }
+}
+
+/* ============================================================
+   8. BOTTOM NAVIGATION SAFE AREA
+   ============================================================ */
+@media (max-width: 768px) {
+    /* Safe area for notched phones */
+    .mobile-bottom-nav {
+        padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px)) !important;
+        padding-top: 8px !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+        backdrop-filter: blur(20px) !important;
+        -webkit-backdrop-filter: blur(20px) !important;
+    }
+
+    /* Add bottom padding to body to prevent content hiding under nav */
+    body {
+        padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
+    }
+
+    /* Footer also needs padding */
+    footer {
+        padding-bottom: calc(86px + env(safe-area-inset-bottom, 0px)) !important;
+    }
+}
+
+/* ============================================================
+   9. MODAL POLISH - NATIVE BOTTOM SHEET STYLE
+   ============================================================ */
+@media (max-width: 768px) {
+    /* Bottom sheet modal presentation */
+    .detail-modal-overlay,
+    .modal-overlay,
+    .chat-overlay {
+        padding: 0 !important;
+        align-items: flex-end !important;
+        background: rgba(4, 7, 13, 0.75) !important;
+        backdrop-filter: blur(8px) !important;
+    }
+
+    .detail-modal-card,
+    .modal-box,
+    .modal-card,
+    .chat-modal {
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 24px 24px 0 0 !important;
+        max-height: 90vh !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        margin: 0 !important;
+        position: relative !important;
+    }
+
+    /* iOS-style drag handle */
+    .detail-modal-card::before,
+    .modal-box::before,
+    .modal-card::before,
+    .chat-modal::before {
+        content: '' !important;
+        position: absolute !important;
+        top: 10px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        width: 40px !important;
+        height: 4px !important;
+        background: rgba(255, 255, 255, 0.25) !important;
+        border-radius: 2px !important;
+        z-index: 10 !important;
+    }
+
+    /* Modal content padding adjustment for handle */
+    .detail-modal-card > *:first-child,
+    .modal-box > *:first-child {
+        margin-top: 24px !important;
+    }
+
+    /* Close button adjustment */
+    .detail-modal-close,
+    .modal-close {
+        top: 16px !important;
+        right: 16px !important;
+        min-width: 36px !important;
+        min-height: 36px !important;
+    }
+}
+
+/* ============================================================
+   10. REMOVE HOVER EFFECTS ON MOBILE (Performance)
+   ============================================================ */
+@media (max-width: 768px) {
+    /* Disable hover animations that don't work on touch */
+    .item-card:hover,
+    .pro-card:hover,
+    .step-card:hover,
+    .impact-card:hover,
+    .mission-card:hover,
+    .drive-card:hover,
+    .gratitude-wall-card:hover {
+        transform: none !important;
+    }
+
+    /* Keep hover effects only on buttons */
+    .btn:hover,
+    .btn-primary:hover,
+    .btn-secondary:hover {
+        transform: translateY(0) !important;
+    }
+
+    /* Remove tap highlight flash */
+    * {
+        -webkit-tap-highlight-color: transparent !important;
+    }
+}
+
+/* ============================================================
+   11. SCROLLBAR CLEANUP (Hide on mobile)
+   ============================================================ */
+@media (max-width: 768px) {
+    /* Hide scrollbars but keep scroll functionality */
+    * {
+        scrollbar-width: none !important;
+    }
+
+    *::-webkit-scrollbar {
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
+    }
+}
+
+/* ============================================================
+   12. CARD IMAGE CONTAINER POLISH
+   ============================================================ */
+@media (max-width: 768px) {
+    /* Ensure consistent image aspect ratio */
+    .item-card-media,
+    .img-box {
+        aspect-ratio: 16 / 11 !important;
+        min-height: 180px !important;
+        max-height: 220px !important;
+    }
+
+    /* Badge positioning inside cards */
+    .card-badge-container {
+        gap: 6px !important;
+        max-width: calc(100% - 80px) !important;
+    }
+
+    .card-badge {
+        font-size: 10px !important;
+        padding: 4px 10px !important;
+        max-width: 100% !important;
+    }
+}
+
+/* ============================================================
+   13. FORM POLISH
+   ============================================================ */
+@media (max-width: 768px) {
+    /* Better form spacing */
+    .form-group,
+    .pf-group,
+    .edit-group {
+        margin-bottom: 16px !important;
+    }
+
+    /* Input fields */
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="search"],
+    textarea,
+    select {
+        min-height: 48px !important;
+        padding: 12px 16px !important;
+        border-radius: 12px !important;
+    }
+
+    textarea {
+        min-height: 100px !important;
+    }
+
+    /* Form buttons */
+    .form-footer button,
+    .btn-submit {
+        min-height: 48px !important;
+        font-size: 15px !important;
+        font-weight: 700 !important;
+    }
+}
+
+/* ============================================================
+   14. NOTIFICATION POLISH
+   ============================================================ */
+@media (max-width: 768px) {
+    /* Toast notifications */
+    .toast,
+    .notification-toast {
+        min-height: 56px !important;
+        padding: 14px 16px !important;
+        font-size: 14px !important;
+        border-radius: 14px !important;
+        margin: 12px !important;
+        max-width: calc(100vw - 24px) !important;
+    }
+
+    /* Notification badge */
+    .nav-notif-badge {
+        min-width: 18px !important;
+        min-height: 18px !important;
+        font-size: 10px !important;
+    }
+}
+
+/* ============================================================
+   15. EMPTY STATES POLISH
+   ============================================================ */
+@media (max-width: 768px) {
+    .hub-empty-state,
+    .empty-state {
+        padding: 40px 20px !important;
+        text-align: center !important;
+    }
+
+    .hub-empty-icon,
+    .empty-state-icon {
+        width: 72px !important;
+        height: 72px !important;
+        margin: 0 auto 16px !important;
+        font-size: 32px !important;
+    }
+
+    .hub-empty-state h3,
+    .empty-state h3 {
+        font-size: 1.1rem !important;
+        margin-bottom: 10px !important;
+    }
+
+    .hub-empty-state p,
+    .empty-state p {
+        font-size: 13.5px !important;
+        line-height: 1.6 !important;
+        max-width: 320px !important;
+        margin: 0 auto 20px !important;
+    }
+}
+
+/* ============================================================
+   16. CHIP/PILL COMPONENTS POLISH
+   ============================================================ */
+@media (max-width: 768px) {
+    /* Horizontal scroll containers */
+    .pune-chips-scroll,
+    .post-loc-chips-wrap,
+    .filter-bar,
+    .quick-metrics-row,
+    .catalog-view-actions {
+        gap: 8px !important;
+        padding: 4px 2px 8px !important;
+    }
+
+    /* Individual chips */
+    .pune-locality-chip,
+    .post-loc-chip,
+    .filter-control,
+    .metric-pill {
+        flex-shrink: 0 !important;
+        white-space: nowrap !important;
+        font-size: 12px !important;
+        padding: 8px 14px !important;
+        min-height: 36px !important;
+    }
+}
+
+/* ============================================================
+   17. HERO CTA POLISH
+   ============================================================ */
+@media (max-width: 768px) {
+    .hero-cta-group {
+        gap: 12px !important;
+        margin-top: 20px !important;
+    }
+
+    .hero-cta-group .btn-lg {
+        min-height: 52px !important;
+        font-size: 15px !important;
+        padding: 14px 24px !important;
+        border-radius: 14px !important;
+    }
+
+    .btn-arrow {
+        font-size: 18px !important;
+        margin-left: 6px !important;
+    }
+}
+
+/* ============================================================
+   18. PREVENT TEXT SELECTION ON UI ELEMENTS
+   ============================================================ */
+@media (max-width: 768px) {
+    /* Prevent accidental text selection on buttons/cards */
+    .btn,
+    .item-card,
+    .nav-link,
+    .mobile-nav-item,
+    .chip,
+    .pill {
+        -webkit-user-select: none !important;
+        user-select: none !important;
+    }
+
+    /* Allow selection in content areas */
+    .card-body p,
+    .card-desc,
+    textarea,
+    input {
+        -webkit-user-select: text !important;
+        user-select: text !important;
+    }
+}
+
+/* ============================================================
+   19. LANDSCAPE ORIENTATION ADJUSTMENTS
+   ============================================================ */
+@media (max-width: 768px) and (orientation: landscape) {
+    /* Reduce hero height in landscape */
+    .hero-editorial {
+        min-height: auto !important;
+        padding: calc(56px + 20px) 20px 40px !important;
+    }
+
+    /* Modals take less height */
+    .detail-modal-card,
+    .modal-box {
+        max-height: 80vh !important;
+    }
+}
+
+/* ============================================================
+   20. FINAL TOUCH - SMOOTH SCROLLING
+   ============================================================ */
+@media (max-width: 768px) {
+    html {
+        scroll-behavior: smooth !important;
+    }
+
+    /* Improve scroll performance */
+    * {
+        -webkit-overflow-scrolling: touch !important;
+    }
+}
