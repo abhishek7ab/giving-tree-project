@@ -12,7 +12,7 @@
     <meta property="og:title" content="Giving Tree | Small Acts. Big Connections.">
     <meta property="og:description"
         content="Give what you no longer need. Find what someone nearby can use. Build a community where things get a second life.">
-    <meta property="og:image" content="/assets/story-img.png">
+    <meta property="og:image" content="/assets/icon-512.png">
     <meta property="og:url" content="https://giving-tree-project.vercel.app/">
     <meta property="og:type" content="website">
     <link rel="canonical" href="https://giving-tree-project.vercel.app/">
@@ -211,7 +211,32 @@
                             </div>
                         </div>
                         <div class="hero-art-right">
-                            <img src="/assets/story-img.png" alt="Pune neighbors sharing items">
+                            <div class="pune-spotlight-card">
+                                <div class="spotlight-card-header">
+                                    <span class="spotlight-badge"><span class="trust-dot"></span> Pune Neighborhoods</span>
+                                    <span class="spotlight-status">100% Free · P2P</span>
+                                </div>
+                                <div class="spotlight-localities-cloud">
+                                    <span class="locality-tag"><i class="fas fa-map-pin"></i> Kothrud</span>
+                                    <span class="locality-tag"><i class="fas fa-map-pin"></i> Baner</span>
+                                    <span class="locality-tag"><i class="fas fa-map-pin"></i> FC Road</span>
+                                    <span class="locality-tag"><i class="fas fa-map-pin"></i> Hinjawadi</span>
+                                    <span class="locality-tag"><i class="fas fa-map-pin"></i> Viman Nagar</span>
+                                    <span class="locality-tag"><i class="fas fa-map-pin"></i> Katraj</span>
+                                    <span class="locality-tag"><i class="fas fa-map-pin"></i> Aundh</span>
+                                    <span class="locality-tag"><i class="fas fa-map-pin"></i> Hadapsar</span>
+                                </div>
+                                <div class="spotlight-guarantee-row">
+                                    <div class="guarantee-col">
+                                        <strong>No Middlemen</strong>
+                                        <span>Direct neighbor handovers</span>
+                                    </div>
+                                    <div class="guarantee-col">
+                                        <strong>Zero Landfill</strong>
+                                        <span>Durable goods recirculated</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -673,21 +698,36 @@
                     return;
                 }
 
+                function getCardPlaceholder(category) {
+                    const c = String(category || '').toLowerCase();
+                    let icon = 'fa-box-open';
+                    if (c.includes('elect') || c.includes('tv') || c.includes('gadget')) icon = 'fa-tv';
+                    else if (c.includes('laptop') || c.includes('comput')) icon = 'fa-laptop';
+                    else if (c.includes('phone') || c.includes('mobile')) icon = 'fa-mobile-screen';
+                    else if (c.includes('book') || c.includes('study')) icon = 'fa-book-open';
+                    else if (c.includes('cloth') || c.includes('wear') || c.includes('fashion')) icon = 'fa-shirt';
+                    else if (c.includes('home') || c.includes('furn') || c.includes('decor')) icon = 'fa-couch';
+                    else if (c.includes('toy') || c.includes('kid') || c.includes('game')) icon = 'fa-puzzle-piece';
+                    else if (c.includes('sport') || c.includes('fitness') || c.includes('helmet') || c.includes('cycle')) icon = 'fa-bicycle';
+
+                    return `<div class="card-authentic-placeholder">
+                        <div class="authentic-icon-circle"><i class="fas ${icon}"></i></div>
+                        <span class="authentic-donor-pill"><i class="fas fa-hand-holding-heart" style="color:var(--accent);"></i> Real Community Listing</span>
+                    </div>`;
+                }
+
                 let html = "";
                 items.forEach(item => {
                     const rawImg = String(item.image || '').trim();
-                    const hasImg = rawImg !== '' && !rawImg.includes('dummyimage.com');
+                    const hasImg = rawImg !== '' && !rawImg.includes('dummyimage.com') && !rawImg.includes('story-img.png');
                     const safeTitle = String(item.title || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
                     const safeLocation = String(item.location || 'Pune').replace(/</g, '&lt;').replace(/>/g, '&gt;');
                     const safeCategory = String(item.category || 'Item').replace(/</g, '&lt;').replace(/>/g, '&gt;');
                     const safeCondition = String(item.condition || 'Good').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
                     const imgHtml = hasImg
-                        ? `<img src="${rawImg}" alt="${safeTitle}" onerror="this.src='/assets/story-img.png';">`
-                        : `<div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; color:var(--muted-light); gap:8px;">
-                 <i class="fas fa-box-open fa-2x"></i>
-                 <span style="font-size:11px; font-weight:800; text-transform:uppercase;">Giving Tree Item</span>
-               </div>`;
+                        ? `<img src="${rawImg}" alt="${safeTitle}" onerror="this.parentElement.innerHTML = getCardPlaceholder('${safeCategory}');">`
+                        : getCardPlaceholder(safeCategory);
 
                     html += `
         <div class="item-card is-revealed">

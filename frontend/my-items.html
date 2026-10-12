@@ -279,7 +279,7 @@
 
                 grid.innerHTML = sharedItems.map(i => {
                     const rawImg = String(i.image || '').trim();
-                    const hasImg = rawImg !== '' && !rawImg.includes('dummyimage.com');
+                    const hasImg = rawImg !== '' && !rawImg.includes('dummyimage.com') && !rawImg.includes('story-img.png');
                     const imgTag = hasImg 
                         ? `<img src="${rawImg}" alt="" class="item-img" onerror="this.remove();">` 
                         : '';
@@ -348,7 +348,7 @@
 
                 grid.innerHTML = savedItems.map(i => {
                     const rawImg = String(i.image || '').trim();
-                    const hasImg = rawImg !== '' && !rawImg.includes('dummyimage.com');
+                    const hasImg = rawImg !== '' && !rawImg.includes('dummyimage.com') && !rawImg.includes('story-img.png');
                     const imgTag = hasImg 
                         ? `<img src="${rawImg}" alt="" class="item-img" onerror="this.remove();">` 
                         : '';

@@ -150,6 +150,53 @@
     border: 1px solid rgba(148, 163, 184, 0.4);
 }
 
+/* Authentic Donor Listing Placeholder (Zero AI Mock Assets) */
+.card-authentic-placeholder {
+    width: 100%;
+    height: 100%;
+    min-height: 170px;
+    background: linear-gradient(145deg, rgba(15, 23, 42, 0.95) 0%, rgba(7, 10, 18, 0.98) 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 24px 16px;
+    box-sizing: border-box;
+}
+
+.authentic-icon-circle {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: rgba(16, 185, 129, 0.08);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent, #10b981);
+    font-size: 22px;
+    transition: transform var(--dur-fast, 0.2s) ease, border-color var(--dur-fast, 0.2s) ease;
+}
+
+.item-card:hover .authentic-icon-circle,
+.pro-card:hover .authentic-icon-circle {
+    transform: scale(1.08);
+    background: rgba(16, 185, 129, 0.14);
+    border-color: rgba(16, 185, 129, 0.45);
+}
+
+.authentic-donor-pill {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-2, #94a3b8);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
 .btn-wishlist {
     position: absolute;
     top: 12px;

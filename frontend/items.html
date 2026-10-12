@@ -8,7 +8,7 @@
     <meta name="description" content="Browse free items shared by your neighbors on Giving Tree. Find furniture, electronics, clothing, books and more — all completely free.">
     <meta property="og:title" content="Browse Free Items | Giving Tree">
     <meta property="og:description" content="Find items shared for free by neighbors near you. Join Giving Tree today.">
-    <meta property="og:image" content="/assets/story-img.png">
+    <meta property="og:image" content="/assets/icon-512.png">
     <meta property="og:type" content="website">
 
     <link rel="stylesheet" href="/assets/style/variables.css">
@@ -1354,7 +1354,7 @@
             let html = "";
             items.forEach(i => {
                 const rawImg = String(i.image || '').trim();
-                const hasImg = rawImg !== '' && !rawImg.includes('dummyimage.com');
+                const hasImg = rawImg !== '' && !rawImg.includes('dummyimage.com') && !rawImg.includes('story-img.png');
                 const imgTag = hasImg ? `<img src="${rawImg}" alt="${escapeHtml(i.title)}" class="card-img" onerror="this.remove();">` : '';
                 const isOwnItem = currentUserId !== null && Number(i.user_id) === Number(currentUserId);
                 const requestLabel = currentUserId ? 'Request' : 'Sign in to Request';
@@ -1557,7 +1557,7 @@
 
                 // Media Box
                 const mediaBox = document.getElementById('detailMediaBox');
-                if (item.image && !item.image.includes('dummyimage.com')) {
+                if (item.image && !item.image.includes('dummyimage.com') && !item.image.includes('story-img.png')) {
                     mediaBox.innerHTML = `
                         <img src="${item.image}" alt="${escapeHtml(item.title)}">
                         <div class="coords-pill-badge" style="position:absolute; bottom:12px; left:12px; z-index:3; background:rgba(9,13,22,0.88); backdrop-filter:blur(8px); border:1px solid rgba(16,185,129,0.35); color:#10b981;">
