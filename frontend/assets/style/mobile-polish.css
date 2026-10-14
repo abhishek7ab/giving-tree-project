@@ -889,7 +889,6 @@
     }
 
     .guest-donor-notice {
-        display: flex !important;
         flex-direction: column !important;
         align-items: stretch !important;
         gap: 12px !important;
@@ -897,6 +896,11 @@
         width: 100% !important;
         max-width: 100% !important;
         box-sizing: border-box !important;
+    }
+
+    .guest-donor-notice[style*="display: none"],
+    .guest-donor-notice[style*="display:none"] {
+        display: none !important;
     }
 
     .guest-donor-info {

@@ -57,7 +57,6 @@
                 word-wrap: break-word !important;
             }
             .guest-donor-notice {
-                display: flex !important;
                 flex-direction: column !important;
                 align-items: stretch !important;
                 gap: 12px !important;
@@ -65,6 +64,10 @@
                 width: 100% !important;
                 max-width: 100% !important;
                 box-sizing: border-box !important;
+            }
+            .guest-donor-notice[style*="display: none"],
+            .guest-donor-notice[style*="display:none"] {
+                display: none !important;
             }
             .guest-donor-info {
                 display: flex !important;
@@ -851,10 +854,11 @@ window.addEventListener('DOMContentLoaded', () => {
     fetch('/api/user', { credentials: 'include' })
         .then(res => res.json())
         .then(user => {
+            const notice = document.getElementById('guestDonorNotice');
             if (!user || !user.loggedIn) {
-                const notice = document.getElementById('guestDonorNotice');
-                if (notice) notice.style.display = 'flex';
+                if (notice) notice.style.setProperty('display', 'flex', 'important');
             } else {
+                if (notice) notice.style.setProperty('display', 'none', 'important');
                 const donorName = user.name || (user.email ? user.email.split('@')[0] : 'Neighbor');
                 const donorNameEl = document.getElementById('prevDonorName');
                 const donorAvatarEl = document.getElementById('prevDonorAvatar');
@@ -869,7 +873,7 @@ window.addEventListener('DOMContentLoaded', () => {
         })
         .catch(() => {
             const notice = document.getElementById('guestDonorNotice');
-            if (notice) notice.style.display = 'flex';
+            if (notice) notice.style.setProperty('display', 'flex', 'important');
         });
 });
 </script>
