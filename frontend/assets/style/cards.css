@@ -1046,6 +1046,8 @@
     align-items: center;
     gap: 12px;
     padding: 4px 6px 10px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .search-lead-icon {
@@ -1057,7 +1059,9 @@
 }
 
 .command-search-row input {
-    flex: 1;
+    flex: 1 1 0%;
+    min-width: 0;
+    width: 0;
     background: transparent !important;
     border: none !important;
     outline: none !important;
@@ -1066,6 +1070,8 @@
     font-weight: 500 !important;
     font-family: inherit;
     padding: 8px 0 !important;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
 }
 
 .command-search-row input::placeholder {

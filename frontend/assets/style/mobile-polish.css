@@ -246,15 +246,15 @@
    6. IOS INPUT ZOOM PREVENTION
    ============================================================ */
 @media (max-width: 768px) {
-    /* Prevent iOS auto-zoom on input focus */
-    input[type="text"],
+    /* Prevent iOS auto-zoom on form input focus (exclude embedded command search & filter pills) */
+    input[type="text"]:not(#searchInput),
     input[type="email"],
     input[type="password"],
     input[type="search"],
     input[type="tel"],
     input[type="number"],
     textarea,
-    select {
+    select:not(.command-filters-strip select):not(.select-pill-wrap select) {
         font-size: 16px !important;
     }
 
@@ -480,13 +480,13 @@
         margin-bottom: 16px !important;
     }
 
-    /* Input fields */
-    input[type="text"],
+    /* Input fields (excluding embedded command search & filter pills) */
+    input[type="text"]:not(#searchInput),
     input[type="email"],
     input[type="password"],
     input[type="search"],
     textarea,
-    select {
+    select:not(.command-filters-strip select):not(.select-pill-wrap select) {
         min-height: 48px !important;
         padding: 12px 16px !important;
         border-radius: 12px !important;
@@ -665,3 +665,258 @@
         -webkit-overflow-scrolling: touch !important;
     }
 }
+
+/* ============================================================
+   21. CATALOG COMMAND HUB & FILTER ALIGNMENT (Mobile Refinement)
+   ============================================================ */
+@media (max-width: 768px) {
+    .catalog-control-center {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        padding: 0 12px !important;
+    }
+
+    .catalog-search-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .command-hub-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        padding: 10px 12px 12px !important;
+        border-radius: 16px !important;
+        overflow: hidden !important;
+    }
+
+    .command-search-row {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        padding: 2px 0 8px !important;
+    }
+
+    .command-search-row input#searchInput {
+        flex: 1 1 0% !important;
+        min-width: 0 !important;
+        width: 0 !important;
+        min-height: 38px !important;
+        height: 38px !important;
+        padding: 4px 6px !important;
+        font-size: 13.5px !important;
+        background: transparent !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-sizing: border-box !important;
+        text-overflow: ellipsis !important;
+    }
+
+    .btn-search-go {
+        flex-shrink: 0 !important;
+        height: 38px !important;
+        padding: 0 12px !important;
+        font-size: 12.5px !important;
+        font-weight: 700 !important;
+        border-radius: 10px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        white-space: nowrap !important;
+    }
+
+    .command-filters-strip {
+        width: 100% !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+        padding-top: 8px !important;
+    }
+
+    .command-filters-strip .location-dropdown-container,
+    .command-filters-strip .select-pill-wrap {
+        width: calc(50% - 3px) !important;
+        flex: 1 1 calc(50% - 3px) !important;
+        min-width: 0 !important;
+        max-width: calc(50% - 3px) !important;
+        height: 38px !important;
+        min-height: 38px !important;
+        padding: 0 8px !important;
+        gap: 5px !important;
+        box-sizing: border-box !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        border-radius: 10px !important;
+        overflow: hidden !important;
+    }
+
+    .command-filters-strip .btn-location-trigger {
+        width: 100% !important;
+        height: 100% !important;
+        min-height: 0 !important;
+        padding: 0 !important;
+        font-size: 12px !important;
+        gap: 5px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        background: transparent !important;
+        border: none !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+        white-space: nowrap !important;
+    }
+
+    .command-filters-strip .btn-location-trigger #selectedLocationLabel {
+        flex: 1 1 auto !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+        text-align: left !important;
+    }
+
+    .command-filters-strip .select-pill-wrap select {
+        flex: 1 1 0% !important;
+        width: 0 !important;
+        min-width: 0 !important;
+        min-height: 0 !important;
+        height: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        font-size: 12px !important;
+        font-weight: 600 !important;
+        line-height: 38px !important;
+        border: none !important;
+        background: transparent !important;
+        border-radius: 0 !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+    }
+
+    .command-filters-strip .select-pill-wrap svg,
+    .command-filters-strip .btn-location-trigger svg {
+        flex-shrink: 0 !important;
+        width: 14px !important;
+        height: 14px !important;
+    }
+
+    .command-filters-strip .pill-caret,
+    .command-filters-strip .loc-caret {
+        flex-shrink: 0 !important;
+        font-size: 9px !important;
+        margin-left: 2px !important;
+    }
+
+    .command-filters-strip .btn-clear-all-filters {
+        width: 100% !important;
+        height: 34px !important;
+        min-height: 34px !important;
+        font-size: 11.5px !important;
+        justify-content: center !important;
+        margin-left: 0 !important;
+        margin-top: 2px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Hide redundant floating quick action button on mobile (dock has center + Give button) */
+    .mobile-quick-fab {
+        display: none !important;
+    }
+}
+
+/* ============================================================
+   22. POST ITEM DONATION FORM (Mobile Refinement)
+   ============================================================ */
+@media (max-width: 768px) {
+    .post-wrapper {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: calc(56px + 24px) 0 calc(76px + env(safe-area-inset-bottom, 0px) + 24px) 0 !important;
+        padding: 0 12px !important;
+        gap: 20px !important;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
+    }
+
+    .form-side {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 20px 14px !important;
+        border-radius: 18px !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+        min-width: 0 !important;
+    }
+
+    .guest-donor-notice {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 12px !important;
+        padding: 12px 14px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .guest-donor-actions {
+        width: 100% !important;
+        display: flex !important;
+        gap: 8px !important;
+        box-sizing: border-box !important;
+    }
+
+    .guest-donor-actions .btn {
+        flex: 1 1 50% !important;
+        min-height: 40px !important;
+        padding: 8px 12px !important;
+        font-size: 12.5px !important;
+        font-weight: 700 !important;
+        justify-content: center !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+    }
+
+    .select-wrapper select {
+        padding-right: 36px !important;
+        text-overflow: ellipsis !important;
+    }
+
+    .location-group-clean {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+    }
+
+    .pune-quick-chips {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    .btn-toggle-map {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .upload-box {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+}
+
+

@@ -660,7 +660,7 @@
     }
 
     .mobile-quick-fab {
-        display: inline-flex;
+        display: none !important;
     }
 }
 
