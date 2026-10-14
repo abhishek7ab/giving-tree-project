@@ -835,6 +835,18 @@
     .mobile-quick-fab {
         display: none !important;
     }
+
+    .tab-text-full {
+        display: none !important;
+    }
+    .tab-text-short {
+        display: inline !important;
+        font-weight: 700 !important;
+    }
+}
+
+.tab-text-short {
+    display: none;
 }
 
 /* ============================================================

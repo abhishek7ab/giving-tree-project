@@ -186,15 +186,25 @@
                 flex: 1 1 50% !important;
                 min-width: 0 !important;
                 justify-content: center !important;
-                padding: 8px 4px !important;
-                font-size: clamp(11px, 3vw, 12.5px) !important;
+                padding: 8px 6px !important;
+                font-size: 12.5px !important;
                 white-space: nowrap !important;
-                gap: 5px !important;
+                gap: 6px !important;
                 box-sizing: border-box !important;
+            }
+            .tab-text-full {
+                display: none !important;
+            }
+            .tab-text-short {
+                display: inline !important;
+                font-weight: 700 !important;
             }
             .mobile-quick-fab {
                 display: none !important;
             }
+        }
+        .tab-text-short {
+            display: none;
         }
     </style>
     <!-- Leaflet & MapLibre GL for OpenFreeMap Vector Tiles -->
@@ -250,12 +260,14 @@
             <div class="catalog-tab-switch" role="tablist">
                 <button type="button" class="catalog-tab-opt active" id="tabModeDonations" onclick="switchCatalogMode('donations')" role="tab" aria-selected="true">
                     <i class="fas fa-gift"></i>
-                    <span>Available Donations</span>
+                    <span class="tab-text-full">Available Donations</span>
+                    <span class="tab-text-short">Donations</span>
                     <span class="tab-badge-num" id="donationsTabCount">0</span>
                 </button>
                 <button type="button" class="catalog-tab-opt" id="tabModeWishes" onclick="switchCatalogMode('wishes')" role="tab" aria-selected="false">
                     <i class="fas fa-sparkles"></i>
-                    <span>Community Wishlist</span>
+                    <span class="tab-text-full">Community Wishlist</span>
+                    <span class="tab-text-short">Wishlist</span>
                     <span class="tab-badge-num" id="wishesTabCount">0</span>
                 </button>
             </div>

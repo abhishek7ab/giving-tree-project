@@ -281,6 +281,7 @@
     'use strict';
 
     async function loadProfileData() {
+        if (!window.location.pathname.includes('profile.html')) return;
         const profileName = document.getElementById('profileName');
         const statsEl = document.getElementById('pStatShared');
         if (!profileName && !statsEl) return;
