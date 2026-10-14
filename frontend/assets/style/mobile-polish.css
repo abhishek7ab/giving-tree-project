@@ -163,6 +163,7 @@
         line-height: 1.55 !important;
         color: var(--text-2) !important;
         -webkit-line-clamp: 3 !important;
+        line-clamp: 3 !important;
         margin-bottom: 10px !important;
     }
 
