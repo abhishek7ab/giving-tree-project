@@ -184,10 +184,10 @@ const frontendPath = fs.existsSync(path.join(__dirname, 'frontend'))
 
 app.use(express.static(frontendPath, {
   setHeaders: (res, filePath) => {
-    if (filePath.endsWith('.html')) {
+    if (filePath.endsWith('.html') || filePath.endsWith('.css') || filePath.endsWith('.js')) {
       res.setHeader('Cache-Control', 'no-cache, must-revalidate');
-    } else if (filePath.endsWith('.css') || filePath.endsWith('.js') || filePath.endsWith('.woff2') || filePath.endsWith('.png') || filePath.endsWith('.jpg') || filePath.endsWith('.svg') || filePath.endsWith('.ico')) {
-      res.setHeader('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
+    } else if (filePath.endsWith('.woff2') || filePath.endsWith('.png') || filePath.endsWith('.jpg') || filePath.endsWith('.svg') || filePath.endsWith('.ico')) {
+      res.setHeader('Cache-Control', 'public, max-age=86400');
     }
   }
 }));

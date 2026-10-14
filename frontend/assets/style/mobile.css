@@ -12,8 +12,9 @@
 
     /* Ensure no horizontal overflow anywhere */
     html, body {
-        overflow-x: hidden;
-        width: 100%;
+        overflow-x: hidden !important;
+        width: 100% !important;
+        max-width: 100vw !important;
     }
 
     /* Opaque Floating Navbar on Mobile — prevents any scrolled text from bleeding through */
